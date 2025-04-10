@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tuan An Group</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .section {
+            text-align: center;
+            padding: 50px;
+        }
+        .section img {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        .section h3 {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .box {
+            width: 200px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .box img {
+            width: 100%;        /* Make the image take up 100% of the width of the container */
+            height: auto;       /* Maintain the aspect ratio of the image */
+            object-fit: contain; /* Ensure the image fits within the box without being stretched */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box">
+            <img src="{% static 'images/BanKinhDoanh.png' %}" alt="Business">
+            <h3>BP KINH DOANH</h3>
+        </div>
+        <div class="box">
+            <img src="https://via.placeholder.com/150" alt="Warehouse">
+            <h3>BP KHO</h3>
+        </div>
+        <div class="box">
+            <img src="{% static 'images/VAT_TU.png' %}" alt="Assets">
+            <h3>BP VẬT TƯ</h3>
+        </div>
+        <div class="box">
+            <img src="{{ MEDIA_URL }}images/BanKinhDoanh.png' %" alt="Finance">
+            <h3>BP TÀI CHÍNH</h3>
+        </div>
+        <div class="box">
+            <img src="https://via.placeholder.com/150" alt="Tech">
+            <h3>BP KỸ THUẬT</h3>
+        </div>
+        <div class="box">
+            <img src="https://via.placeholder.com/150" alt="HR">
+            <h3>BP NHÂN SỰ</h3>
+        </div>
+    </div>
+</body>
+</html>
