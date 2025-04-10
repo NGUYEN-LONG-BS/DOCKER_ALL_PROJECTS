@@ -1,0 +1,46 @@
+# Các file Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+
+# Thư mục môi trường ảo (virtual environment)
+venv/
+env/
+.venv/
+.virtualenv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Thư mục Django
+db.sqlite3
+*.log
+*.pot
+*.pyc
+*.mo
+*.db
+*.sqlite3
+
+# Thư mục media
+/media/
+
+# Thư mục static
+/static/
+
+# Các file cấu hình của hệ thống
+.idea/
+.vscode/
+
+# Các file của OS
+.DS_Store
+Thumbs.db
+
+# Thư mục của các công cụ quản lý dự án (IDE, editor)
+*.swp
+*.swo
+
+# Các file cài đặt của editor như Sublime Text, Atom, etc.
+*.sublime-workspace
+*.sublime-project
+
