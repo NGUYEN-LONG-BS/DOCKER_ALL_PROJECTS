@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuan An Group</title>
+    <title>Tuan An Group - Bộ phận kho</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -79,7 +79,7 @@
     <!-- Header Section with Avatar -->
     <header class="header">
         <div class="logo">
-            <h2>Tuan An Group</h2>
+            <h2>Tuan An Group - Bộ phận kho</h2>
         </div>
         <div class="avatar">
             <img src="{{ MEDIA_URL }}images/avata_user_01.png" alt="User Avatar" class="avatar-img">
@@ -87,48 +87,23 @@
     </header>
 
     <div class="container">
-
-        <a href="{% url 'DashboardBPKinhDoanh' %}" class="box-link">
-            <div class="box">
-                <img src="{% static 'images/BPKinhDoanh.png' %}" alt="Business">
-                <h3>BP KINH DOANH</h3>
-            </div>
-        </a>
+        <div class="box">
+            <img src="{% static 'images/VatTuQuanLyKho.png' %}" alt="Business">
+            <h3>QUẢN LÝ KHO</h3>
+        </div>
 
         <a href="{% url 'bp_kho' %}" class="box-link">
             <div class="box">
-                <img src="{% static 'images/BPKho.png' %}" alt="Warehouse">
-                <h3>BP KHO</h3>
+                <img src="{% static 'images/VatTuDanhSachNhaCungCap.png' %}" alt="Warehouse">
+                <h3>DS NHÀ CUNG CẤP</h3>
             </div>
         </a>
         
-        <a href="{% url 'bp_kho' %}" class="box-link">
-            <div class="box">
-                <img src="{% static 'images/BPVatTu.png' %}" alt="Assets">
-                <h3>BP VẬT TƯ</h3>
-            </div>
-        </a>
+        <div class="box">
+            <img src="{% static 'images/VatTuQuanLyDonDatHang.png' %}" alt="Assets">
+            <h3>QL ĐƠN ĐẶT HÀNG</h3>
+        </div>
         
-        <a href="{% url 'bp_kho' %}" class="box-link">
-            <div class="box">
-                <img src="{% static 'images/BPTaiChinh.png' %}" alt="Finance">
-                <h3>BP TÀI CHÍNH</h3>
-            </div>
-        </a>
-
-        <a href="{% url 'bp_kho' %}" class="box-link">
-            <div class="box">
-                <img src="{% static 'images/BPKyThuat.png' %}" alt="Tech">
-                <h3>BP KỸ THUẬT</h3>
-            </div>
-        </a>
-
-        <a href="{% url 'bp_kho' %}" class="box-link">
-            <div class="box">
-                <img src="{% static 'images/BPNhanSu.png' %}" alt="HR">
-                <h3>BP NHÂN SỰ</h3>
-            </div>
-        </a>
     </div>
 </body>
 </html>
