@@ -4,11 +4,11 @@
 {% block title %}Trang Quản lý Tab{% endblock %}
 
 {% block content %}
-<div class="container my-5">
-    <h2 class="text-center mb-4">QUẢN LÝ DANH MỤC HÀNG HOÁ</h2>
+<div class="container">
+    <h2 class="text-center">QUẢN LÝ DANH MỤC HÀNG HOÁ</h2>
 
     <!-- Nav pills (Tab Navigation) -->
-    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <ul class="nav nav-pills mb-1" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">NHẬP KHO</a>
         </li>
@@ -36,24 +36,34 @@
             <h4>PHIẾU NHẬP KHO</h4>
             
             <!-- Hàng đầu tiên, cột thứ nhất và cột thứ hai -->
-            <div class="row mb-4 pl-0 pr-0">
-                <div class="col-md-6 pl-0 pr-0">
+            <div class="row pl-0 pr-0">
+                <div class="col pl-0 pr-0">
+                    {% include 'includes/frameDate.html' %}
+                </div>
+                <div class="col">
+                    {% include 'includes/frameSlipNumber.html' %}
+                </div>
+            </div>
+
+            <!-- Hàng đầu tiên, cột thứ nhất và cột thứ hai -->
+            <div class="row pl-0 pr-0">
+                <div class="col pl-0 pr-0">
                     {% include 'includes/frameInfoNhaCungCap.html' %}
                 </div>
-                <div class="col-md-6">
+                <div class="col">
                     {% include 'includes/frameInfoInventory.html' %}
                 </div>
             </div>
             
             <!-- Hàng thứ hai, cột thứ nhất -->
             <div class="row">
-                <div class="row mb-12">
+                <div class="row">
                     {% include 'includes/frameInfoRequestNumber.html' %}
                 </div>
             </div>
 
             <!-- Nút điều hướng -->
-            <div class="text-center mt-4">
+            <div class="text-center">
                 <button class="btn btn-primary">Add Row</button>
                 <button class="btn btn-warning">Update Row</button>
                 <button class="btn btn-danger">Delete Row</button>
@@ -63,13 +73,13 @@
             {% include 'includes/table.html' %}
 
             <!-- Nút điều hướng -->
-            <div class="text-center mt-4">
+            <div class="text-center mb-1">
                 <button class="btn btn-primary">Template</button>
                 <button class="btn btn-warning">Get file</button>
             </div>
 
             <!-- Nút điều hướng -->
-            <div class="text-center mt-4">
+            <div class="text-center mb-1">
                 <button class="btn btn-primary">Print</button>
                 <button class="btn btn-warning">Save</button>
                 <button class="btn btn-danger">update</button>
