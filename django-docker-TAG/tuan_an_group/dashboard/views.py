@@ -2,11 +2,7 @@ from django.conf import settings
 from django.shortcuts import render
 
 def index(request):
-    # Pass MEDIA_URL to the context
-    context = {
-        'MEDIA_URL': settings.MEDIA_URL
-    }
-    return render(request, 'dashboard/index.html', context)
+    return render(request, 'home.html')
 
 def bp_kho(request):
     # Render a template or return a response for BP KHO
@@ -22,3 +18,10 @@ def template_01(request):
 
 def home(request):
     return render(request, 'home.html')
+
+def DashboardAllDepartment(request):
+    # Pass MEDIA_URL to the context
+    context = {
+        'MEDIA_URL': settings.MEDIA_URL
+    }
+    return render(request, 'dashboard/DashboardAllDepartment.html', context)

@@ -1,109 +1,50 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tuan An Group - Bộ phận kho</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Header styles */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-        }
+{% block title %}Tuan An Group - Bộ phận Kho{% endblock %}
 
-        .header .avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #ddd; /* Default background in case of missing image */
-        }
-        .header .avatar img {
-            width: 100%;        /* Make the image take up 100% of the width of the container */
-            height: auto;       /* Maintain the aspect ratio of the image */
-            object-fit: contain; /* Ensure the image fits within the box without being stretched */
-        }
+{% block content %}
+<div class="container my-5">
 
-        /* Container and box styles */
-        .section {
-            text-align: center;
-            padding: 50px;
-        }
-        .section img {
-            width: 150px;
-            height: 150px;
-            margin-bottom: 20px;
-        }
-        .section h3 {
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        .container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-        .box {
-            display: flex;               /* Use flexbox for layout */
-            flex-direction: column;      /* Arrange children vertically */
-            justify-content: center;     /* Center content vertically */
-            align-items: center;         /* Center content horizontally */
-            width: 200px;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        .box img {
-            width: 100%;         /* Make the image take up 100% of the width of the container */
-            height: auto;        /* Maintain the aspect ratio of the image */
-            object-fit: contain; /* Ensure the image fits within the box without being stretched */
-            margin-bottom: 10px; /* Space between image and text */
-        }
-        .box h3 {
-            margin-top: 10px;     /* Add some spacing between the image and the text */
-            font-size: 20px;
-        }
-    </style>
-</head>
-<body>
-    <!-- Header Section with Avatar -->
-    <header class="header">
-        <div class="logo">
-            <h2>Tuan An Group - Bộ phận kho</h2>
-        </div>
-        <div class="avatar">
-            <img src="{{ MEDIA_URL }}images/avata_user_01.png" alt="User Avatar" class="avatar-img">
-        </div>
-    </header>
+  <div class="text-center mb-5">
+    <img src="{% static 'images/logo-Dark.jpg' %}" alt="Company Logo" class="img-fluid mb-3" style="max-width: 200px;">
+    <h2 class="fw-bold">Tuan An Group - Bộ phận Kho</h2>
+  </div>
 
-    <div class="container">
-        <div class="box">
-            <img src="{% static 'images/VatTuQuanLyKho.png' %}" alt="Business">
-            <h3>QUẢN LÝ KHO</h3>
+  <div class="row justify-content-center">
+    
+    <!-- Box: Quản lý kho -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <div class="card h-100 text-center shadow-sm">
+        <img src="{% static 'images/VatTuQuanLyKho.png' %}" class="card-img-top p-3" alt="Quản lý kho">
+        <div class="card-body">
+          <h5 class="card-title">QUẢN LÝ KHO</h5>
         </div>
-
-        <a href="{% url 'bp_kho' %}" class="box-link">
-            <div class="box">
-                <img src="{% static 'images/VatTuDanhSachNhaCungCap.png' %}" alt="Warehouse">
-                <h3>DS NHÀ CUNG CẤP</h3>
-            </div>
-        </a>
-        
-        <div class="box">
-            <img src="{% static 'images/VatTuQuanLyDonDatHang.png' %}" alt="Assets">
-            <h3>QL ĐƠN ĐẶT HÀNG</h3>
-        </div>
-        
+      </div>
     </div>
-</body>
-</html>
+
+    <!-- Box: DS nhà cung cấp -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <a href="{% url 'bp_kho' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/VatTuDanhSachNhaCungCap.png' %}" class="card-img-top p-3" alt="Nhà cung cấp">
+          <div class="card-body">
+            <h5 class="card-title">DS NHÀ CUNG CẤP</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Box: Quản lý đơn đặt hàng -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <div class="card h-100 text-center shadow-sm">
+        <img src="{% static 'images/VatTuQuanLyDonDatHang.png' %}" class="card-img-top p-3" alt="Quản lý đơn đặt hàng">
+        <div class="card-body">
+          <h5 class="card-title">QL ĐƠN ĐẶT HÀNG</h5>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

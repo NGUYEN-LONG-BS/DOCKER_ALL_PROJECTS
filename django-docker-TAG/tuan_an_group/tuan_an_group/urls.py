@@ -27,6 +27,7 @@ urlpatterns = [
     path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
     path('template_01/', views.template_01, name='template_01'),
     path('home/', views.home, name='home'),
+    path('DashboardAllDepartment/', views.DashboardAllDepartment, name='DashboardAllDepartment'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development

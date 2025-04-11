@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tuan An Group{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+  <div class="row justify-content-center">
+    <!-- Box: Kinh Doanh -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <a href="{% url 'DashboardBPKinhDoanh' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/BPKinhDoanh.png' %}" class="card-img-top p-3" alt="Business">
+          <div class="card-body">
+            <h5 class="card-title">BP KINH DOANH</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Box: Kho -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <a href="{% url 'bp_kho' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/BPKho.png' %}" class="card-img-top p-3" alt="Kho">
+          <div class="card-body">
+            <h5 class="card-title">BP KHO</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Box: Vật Tư -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <a href="{% url 'bp_kho' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/BPVatTu.png' %}" class="card-img-top p-3" alt="Vật tư">
+          <div class="card-body">
+            <h5 class="card-title">BP VẬT TƯ</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Box: Tài Chính -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <a href="{% url 'bp_kho' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/BPTaiChinh.png' %}" class="card-img-top p-3" alt="Tài chính">
+          <div class="card-body">
+            <h5 class="card-title">BP TÀI CHÍNH</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Box: Kỹ Thuật -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <a href="{% url 'bp_kho' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/BPKyThuat.png' %}" class="card-img-top p-3" alt="Kỹ thuật">
+          <div class="card-body">
+            <h5 class="card-title">BP KỸ THUẬT</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Box: Nhân Sự -->
+    <div class="col-6 col-sm-4 col-md-3 mb-4">
+      <a href="{% url 'bp_kho' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/BPNhanSu.png' %}" class="card-img-top p-3" alt="Nhân sự">
+          <div class="card-body">
+            <h5 class="card-title">BP NHÂN SỰ</h5>
+          </div>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
