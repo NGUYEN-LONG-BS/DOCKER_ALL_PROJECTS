@@ -11,6 +11,20 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
+def login(request):
+    # Pass MEDIA_URL to the context
+    context = {
+        'MEDIA_URL': settings.MEDIA_URL
+    }
+    return render(request, 'login.html', context)
+
+def register(request):
+    # Pass MEDIA_URL to the context
+    context = {
+        'MEDIA_URL': settings.MEDIA_URL
+    }
+    return render(request, 'register.html', context)
+
 def DashboardAllDepartment(request):
     # Pass MEDIA_URL to the context
     context = {

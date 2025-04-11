@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - Tuan An Group{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="height: 80vh;">
+  <div class="card p-4" style="max-width: 400px; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    
+    <!-- Logo -->
+    <div class="text-center mb-4">
+      <img src="{% static 'images/logo-Light.jpg' %}" alt="Tuan An Group Logo" class="img-fluid" style="max-width: 150px;">
+    </div>
+
+    <!-- Title -->
+    <h3 class="text-center mb-4">Welcome Back!</h3>
+
+    <!-- Login Form -->
+    <form>
+      <!-- Username Field -->
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" placeholder="Enter your username" required>
+      </div>
+
+      <!-- Password Field -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+        <small><a href="#" class="text-decoration-none">Show</a></small>
+      </div>
+
+      <!-- Subsidiary Dropdown -->
+      <div class="mb-3">
+        <label for="subsidiary" class="form-label">Subsidiary</label>
+        <select class="form-select" id="subsidiary">
+          <option value="TA Thiết bị điện">TA Thiết bị điện</option>
+          <option value="TA Phụ tùng">TA Phụ tùng</option>
+          <option value="TA Logistics">TA Logistics</option>
+        </select>
+      </div>
+
+      <!-- Login Button -->
+      <div class="d-grid mb-3">
+        <button type="submit" class="btn btn-success">Login</button>
+      </div>
+
+      <!-- Register Link -->
+      <div class="text-center">
+        <p>Don't have an account? <a href="{% url 'register' %}" class="text-decoration-none">Register</a></p>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
