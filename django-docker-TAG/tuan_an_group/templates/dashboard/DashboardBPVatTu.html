@@ -15,12 +15,14 @@
     
     <!-- Box: Quản lý kho -->
     <div class="col-6 col-sm-4 col-md-3 mb-4">
-      <div class="card h-100 text-center shadow-sm">
-        <img src="{% static 'images/VatTuQuanLyKho.png' %}" class="card-img-top p-3" alt="Quản lý kho">
-        <div class="card-body">
-          <h5 class="card-title">QUẢN LÝ KHO</h5>
+      <a href="{% url 'inventory' %}" class="text-decoration-none text-dark">
+        <div class="card h-100 text-center shadow-sm">
+          <img src="{% static 'images/VatTuQuanLyKho.png' %}" class="card-img-top p-3" alt="Quản lý kho">
+          <div class="card-body">
+            <h5 class="card-title">QUẢN LÝ KHO</h5>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
 
     <!-- Box: DS nhà cung cấp -->

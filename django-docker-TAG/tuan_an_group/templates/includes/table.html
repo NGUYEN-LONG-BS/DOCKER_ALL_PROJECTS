@@ -1,0 +1,62 @@
+{% load static %}
+<div class="container my-5">
+    <!-- Table -->
+    <div class="card p-4 shadow-sm">
+        <table class="table table-bordered">
+            <thead>
+                <tr id="table-header"></tr> <!-- Headers will be inserted dynamically -->
+            </thead>
+            <tbody id="table-body"></tbody> <!-- Data rows will be inserted dynamically -->
+        </table>
+    </div>
+</div>
+
+<script>
+// Function to fetch and parse the JSON data
+async function loadTableData() {
+    const response = await fetch("{% static 'templates/json/KD_DE_NGHI_XUAT_KHO/treeview_tab_01_DNXK_input.json' %}");
+    const tableData = await response.json();
+
+    // Generate the table header
+    generateTableHeader(tableData);
+
+    // Generate the table body (you can adjust this part based on your actual data)
+    generateTableBody();
+}
+
+// Function to generate table headers dynamically
+function generateTableHeader(tableData) {
+    const headerRow = document.getElementById('table-header');
+    tableData.table.columns.forEach(column => {
+        const th = document.createElement('th');
+        th.textContent = column.name;
+        th.style.width = `${column.width}px`; // Set the column width based on the JSON data
+        headerRow.appendChild(th);
+    });
+}
+
+// Function to generate table rows dynamically (example data)
+function generateTableBody() {
+    const tbody = document.getElementById('table-body');
+
+    // Example row data, you can fetch this data dynamically as well
+    const rows = [
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        // Add more rows as needed
+    ];
+
+    rows.forEach(rowData => {
+        const tr = document.createElement('tr');
+        rowData.forEach(cellData => {
+            const td = document.createElement('td');
+            td.textContent = cellData;
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+}
+
+// Run loadTableData when the page is loaded
+document.addEventListener('DOMContentLoaded', loadTableData);
+</script>

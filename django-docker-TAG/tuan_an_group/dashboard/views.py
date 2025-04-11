@@ -67,7 +67,12 @@ def DashboardBPKinhDoanh(request):
     }
     # Render a template or return a response
     return render(request, 'dashboard/DashboardBPKinhDoanh.html', context)
-
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# Vat Tu
 def DashboardBPVatTu(request):
     # Pass MEDIA_URL to the context
     context = {
@@ -75,6 +80,14 @@ def DashboardBPVatTu(request):
     }
     # Render a template or return a response
     return render(request, 'dashboard/DashboardBPVatTu.html', context)
+
+def inventory(request):
+    # Pass MEDIA_URL to the context
+    context = {
+        'MEDIA_URL': settings.MEDIA_URL
+    }
+    # Render a template or return a response
+    return render(request, 'inventory.html', context)
 
 def DashboardBPKho(request):
     # Pass MEDIA_URL to the context

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Trang Quản lý Tab{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">QUẢN LÝ DANH MỤC HÀNG HOÁ</h2>
+
+    <!-- Nav pills (Tab Navigation) -->
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">NHẬP KHO</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">XUẤT KHO</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">TẠO MỚI MÃ HÀNG</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">NHẬT KÝ NHẬP KHO</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">NHẬT KÝ XUẤT KHO</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">BÁO CÁO TỒN KHO</a>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="pills-tabContent">
+        <!-- Content for Tab 1 -->
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+            <h4>PHIẾU NHẬP KHO</h4>
+            
+            <!-- Hàng đầu tiên, cột thứ nhất và cột thứ hai -->
+            <div class="row mb-4 pl-0 pr-0">
+                <div class="col-md-6 pl-0 pr-0">
+                    {% include 'includes/frameInfoNhaCungCap.html' %}
+                </div>
+                <div class="col-md-6">
+                    {% include 'includes/frameInfoInventory.html' %}
+                </div>
+            </div>
+            
+            <!-- Hàng thứ hai, cột thứ nhất -->
+            <div class="row">
+                <div class="row mb-12">
+                    {% include 'includes/frameInfoRequestNumber.html' %}
+                </div>
+            </div>
+
+            <!-- Nút điều hướng -->
+            <div class="text-center mt-4">
+                <button class="btn btn-primary">Add Row</button>
+                <button class="btn btn-warning">Update Row</button>
+                <button class="btn btn-danger">Delete Row</button>
+                <button class="btn btn-secondary">Clear Rows</button>
+            </div>
+
+            {% include 'includes/table.html' %}
+
+            <!-- Nút điều hướng -->
+            <div class="text-center mt-4">
+                <button class="btn btn-primary">Template</button>
+                <button class="btn btn-warning">Get file</button>
+            </div>
+
+            <!-- Nút điều hướng -->
+            <div class="text-center mt-4">
+                <button class="btn btn-primary">Print</button>
+                <button class="btn btn-warning">Save</button>
+                <button class="btn btn-danger">update</button>
+            </div>
+        </div>
+
+        <!-- Content for Tab 2 -->
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+            <h4>Tab 2 - Nội dung</h4>
+            <p>Đây là nội dung của Tab 2. Có thể thêm hình ảnh, video hoặc các thông tin khác vào đây.</p>
+        </div>
+
+        <!-- Content for Tab 3 -->
+        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+            <h4>Tab 3 - Nội dung</h4>
+            <p>Đây là nội dung của Tab 3. Thêm các biểu mẫu hoặc thông tin sản phẩm tại đây.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

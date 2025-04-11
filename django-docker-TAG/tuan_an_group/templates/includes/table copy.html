@@ -1,0 +1,69 @@
+
+<div class="container my-5">
+    <!-- Table -->
+    <div class="card p-4 shadow-sm">
+        <table class="table table-bordered">
+            <thead>
+                <tr id="table-header"></tr> <!-- Headers will be inserted dynamically -->
+            </thead>
+            <tbody id="table-body"></tbody> <!-- Data rows will be inserted dynamically -->
+        </table>
+    </div>
+</div>
+
+<script>
+    // JSON data
+    const tableData = {
+        "table": {
+            "columns": [
+                {"name": "STT", "width": 50},
+                {"name": "Mã hàng", "width": 100},
+                {"name": "Tên mặt hàng", "width": 300},
+                {"name": "Đvt", "width": 100},
+                {"name": "SL tồn kho", "width": 120},
+                {"name": "Số lượng", "width": 120},
+                {"name": "Đơn giá", "width": 120},
+                {"name": "Ghi chú sản phẩm", "width": 300}
+            ]
+        }
+    };
+
+    // Function to generate table headers
+    function generateTableHeader() {
+        const headerRow = document.getElementById('table-header');
+        tableData.table.columns.forEach(column => {
+            const th = document.createElement('th');
+            th.textContent = column.name;
+            th.style.width = `${column.width}px`;
+            headerRow.appendChild(th);
+        });
+    }
+
+    // Function to generate table body (you can add dynamic data here later)
+    function generateTableBody() {
+        const tbody = document.getElementById('table-body');
+        
+        // Example row data, should be dynamic in real use case
+        const rows = [
+            [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+            [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+            // Add more rows as needed
+        ];
+        
+        rows.forEach(rowData => {
+            const tr = document.createElement('tr');
+            rowData.forEach(cellData => {
+                const td = document.createElement('td');
+                td.textContent = cellData;
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Run functions when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        generateTableHeader();
+        generateTableBody();
+    });
+</script>
