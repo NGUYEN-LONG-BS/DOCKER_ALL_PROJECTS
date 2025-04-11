@@ -26,6 +26,7 @@ urlpatterns = [
     path('bp-kho/', views.bp_kho, name='bp_kho'),
     path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
     path('template_01/', views.template_01, name='template_01'),
+    path('home/', views.home, name='home'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development

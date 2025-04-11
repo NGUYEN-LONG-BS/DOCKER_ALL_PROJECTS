@@ -1,5 +1,5 @@
 step 01: C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>python -m venv venv
-step 01: C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>venv\Scripts\activate
+step 02: C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>venv\Scripts\activate
 step 03: (venv) C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>code .
 
 Chạy server

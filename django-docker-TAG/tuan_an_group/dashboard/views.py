@@ -19,3 +19,6 @@ def DashboardBPKinhDoanh(request):
 def template_01(request):
     # Render a template or return a response for BP KHO
     return render(request, './template_01.html')
+
+def home(request):
+    return render(request, 'home.html')
