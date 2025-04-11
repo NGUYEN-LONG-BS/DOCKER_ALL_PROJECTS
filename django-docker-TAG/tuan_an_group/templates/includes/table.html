@@ -1,13 +1,16 @@
 {% load static %}
+
 <div class="container my-1">
     <!-- Table -->
     <div class="card p-4 shadow-sm">
-        <table class="table table-bordered">
-            <thead>
-                <tr id="table-header"></tr> <!-- Headers will be inserted dynamically -->
-            </thead>
-            <tbody id="table-body"></tbody> <!-- Data rows will be inserted dynamically -->
-        </table>
+        <div class="table-responsive" style="max-height: 400px;">
+            <table class="table table-bordered" id="data-table">
+                <thead>
+                    <tr id="table-header"></tr> <!-- Headers will be inserted dynamically -->
+                </thead>
+                <tbody id="table-body"></tbody> <!-- Data rows will be inserted dynamically -->
+            </table>
+        </div>
     </div>
 </div>
 
@@ -43,6 +46,36 @@ function generateTableBody() {
     const rows = [
         [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
         [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
         // Add more rows as needed
     ];
 
@@ -60,3 +93,26 @@ function generateTableBody() {
 // Run loadTableData when the page is loaded
 document.addEventListener('DOMContentLoaded', loadTableData);
 </script>
+
+<style>
+/* CSS to enable horizontal and vertical scroll */
+.table-responsive {
+    overflow-x: auto;  /* Horizontal scroll */
+    overflow-y: auto;  /* Vertical scroll */
+}
+
+/* CSS to fix the header row */
+#data-table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* White background for header */
+    z-index: 10;
+}
+
+#data-table th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 2;
+}
+</style>
