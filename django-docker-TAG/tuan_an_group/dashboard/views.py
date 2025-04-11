@@ -15,3 +15,7 @@ def bp_kho(request):
 def DashboardBPKinhDoanh(request):
     # Render a template or return a response for BP KHO
     return render(request, 'dashboard/DashboardBPKinhDoanh.html')  # Replace 'bp_kho.html' with the actual template you want to render
+
+def template_01(request):
+    # Render a template or return a response for BP KHO
+    return render(request, './template_01.html')

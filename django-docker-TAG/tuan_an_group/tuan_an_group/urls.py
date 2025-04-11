@@ -23,8 +23,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('bp-kho/', views.bp_kho, name='bp_kho'),  # Define URL for BP KHO
-    path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),  # Define URL for BP KHO
+    path('bp-kho/', views.bp_kho, name='bp_kho'),
+    path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
+    path('template_01/', views.template_01, name='template_01'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development

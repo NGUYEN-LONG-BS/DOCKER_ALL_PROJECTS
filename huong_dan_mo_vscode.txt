@@ -1,3 +1,6 @@
 step 01: C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>python -m venv venv
 step 01: C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>venv\Scripts\activate
 step 03: (venv) C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>code .
+
+Chạy server
+step 04: PS C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG\tuan_an_group> python manage.py runserver
