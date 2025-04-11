@@ -23,11 +23,15 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
-    path('DashboardBPVatTu/', views.DashboardBPVatTu, name='DashboardBPVatTu'),
-    path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
     path('template_01/', views.template_01, name='template_01'),
     path('home/', views.home, name='home'),
     path('DashboardAllDepartment/', views.DashboardAllDepartment, name='DashboardAllDepartment'),
+    path('DashboardBPVatTu/', views.DashboardBPVatTu, name='DashboardBPVatTu'),
+    path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
+    path('DashboardBPKho/', views.DashboardBPKho, name='DashboardBPKho'),
+    path('DashboardBPKyThuat/', views.DashboardBPKyThuat, name='DashboardBPKyThuat'),
+    path('DashboardBPNhanSu/', views.DashboardBPNhanSu, name='DashboardBPNhanSu'),
+    path('DashboardBPTaiChinh/', views.DashboardBPTaiChinh, name='DashboardBPTaiChinh'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development
