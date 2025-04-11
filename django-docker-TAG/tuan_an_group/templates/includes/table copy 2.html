@@ -46,36 +46,6 @@ function generateTableBody() {
     const rows = [
         [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
         [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
-        // [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
-        // [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
         // Add more rows as needed
     ];
 
@@ -86,8 +56,27 @@ function generateTableBody() {
             td.textContent = cellData;
             tr.appendChild(td);
         });
+
+        // Add click event listener to each row
+        tr.addEventListener('click', () => {
+            printRowData(rowData);  // Call function to print row data
+        });
+
         tbody.appendChild(tr);
     });
+}
+
+// Function to print row data when a row is clicked
+function printRowData(rowData) {
+    console.log("Selected row data:");
+    console.log("STT:", rowData[0]);
+    console.log("Mã hàng:", rowData[1]);
+    console.log("Tên mặt hàng:", rowData[2]);
+    console.log("Đvt:", rowData[3]);
+    console.log("SL tồn kho:", rowData[4]);
+    console.log("SL khả dụng:", rowData[5]);
+    console.log("SL DN xuất:", rowData[6]);
+    console.log("Ghi chú sản phẩm:", rowData[7]);
 }
 
 // Run loadTableData when the page is loaded
