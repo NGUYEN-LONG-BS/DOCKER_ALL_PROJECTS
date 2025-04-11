@@ -1,5 +1,6 @@
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 def index(request):
     return render(request, 'home.html')
@@ -10,6 +11,12 @@ def home(request):
         'MEDIA_URL': settings.MEDIA_URL
     }
     return render(request, 'home.html', context)
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# Login
 
 def login(request):
     # Pass MEDIA_URL to the context
@@ -17,6 +24,27 @@ def login(request):
         'MEDIA_URL': settings.MEDIA_URL
     }
     return render(request, 'login.html', context)
+
+def login_view(request):
+    if request.method == 'POST':
+        # Lấy thông tin từ form
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        # Kiểm tra thông tin đăng nhập
+        if username == 'admin' and password == '123':
+            return redirect('DashboardAllDepartment')  # Chuyển hướng đến trang chủ hoặc trang bạn muốn
+        else:
+            # Thông báo sai thông tin đăng nhập
+            messages.error(request, 'Sai tên đăng nhập hoặc mật khẩu')
+    
+    return render(request, 'login.html')
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# Register
 
 def register(request):
     # Pass MEDIA_URL to the context
