@@ -15,29 +15,8 @@
 </div>
 
 <script>
-// // Function to fetch and parse the JSON data for each tab
-// async function loadTableData(tab) {
-//     let jsonPath = '';
-
-//     // Choose JSON path based on tab
-//     if (tab === 'tab1') {
-//         jsonPath = "{% static json_path_tab1 %}";
-//     } else if (tab === 'tab2') {
-//         jsonPath = "{% static json_path_tab2 %}";
-//     }
-
-//     // Fetch the data
-//     const response = await fetch(jsonPath);
-//     const tableData = await response.json();
-
-//     // Generate the table header and body dynamically
-//     generateTableHeader(tableData);
-//     generateTableBody(tableData);
-// }
-
 // Function to fetch and parse the JSON data
 async function loadTableData() {
-    // const response = await fetch("{% static 'templates/json/KD_DE_NGHI_XUAT_KHO/treeview_tab_01_DNXK_input.json' %}");
     const response = await fetch("{% static json_path %}");
     const tableData = await response.json();
 
