@@ -125,6 +125,29 @@ def template_01(request):
     # Render a template or return a response
     return render(request, './template_01.html')
 
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# Manage table
 
+# def manage_inventory(request):
+#     # Đường dẫn JSON cho Tab 1 và Tab 2
+#     json_path_tab1 = 'templates/json/VT_QUAN_LY_HANG_HOA/PNK_table_input.json'
+#     json_path_tab2 = 'templates/json/VT_QUAN_LY_HANG_HOA/PXK_table_input.json'
 
+#     return render(request, 'inventory.html', {
+#         'json_path_tab1': json_path_tab1,
+#         'json_path_tab2': json_path_tab2
+#     })
+def manage_inventory(request):
+    # Đường dẫn JSON cho Tab 1 và Tab 2
+    json_path_tab1 = 'templates/json/VT_QUAN_LY_HANG_HOA/PNK_table_input.json'
+    json_path_tab2 = 'templates/json/VT_QUAN_LY_HANG_HOA/PXK_table_input.json'
 
+    # Truyền các đường dẫn JSON vào template
+    return render(request, 'inventory.html', {
+        'json_path_tab1': json_path_tab1,
+        'json_path_tab2': json_path_tab2
+    })

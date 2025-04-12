@@ -71,7 +71,8 @@
             
             <!-- Bảng -->
             <div>
-                {% include 'includes/table_PNK.html' with json_path=json_path_tab1 %}
+                <!-- {% include 'includes/table.html' %} -->
+                {% include 'includes/table.html' with json_path=json_path_tab1 %}
             </div>
 
             <!-- Nút tương tác với phiếu -->
@@ -129,7 +130,8 @@
 
             <!-- Bảng -->
             <div>
-                {% include 'includes/table_PXK.html' with json_path=json_path_tab2 %}
+                <!-- {% include 'includes/table.html' %} -->
+                {% include 'includes/table.html' with json_path=json_path_tab2 %}
             </div>
 
             <!-- Nút tương tác với phiếu -->
@@ -161,5 +163,7 @@
             </div>
         </div>
     </div>
+
 </div>
 {% endblock %}
+

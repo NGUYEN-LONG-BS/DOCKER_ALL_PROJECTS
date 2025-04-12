@@ -29,7 +29,10 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('DashboardAllDepartment/', views.DashboardAllDepartment, name='DashboardAllDepartment'),
     path('DashboardBPVatTu/', views.DashboardBPVatTu, name='DashboardBPVatTu'),
-    path('inventory/', views.inventory, name='inventory'),
+    
+    path('inventory/', views.manage_inventory, name='inventory'),
+    path('manage-inventory/', views.manage_inventory, name='manage_inventory'),
+    
     path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
     path('DashboardBPKho/', views.DashboardBPKho, name='DashboardBPKho'),
     path('DashboardBPKyThuat/', views.DashboardBPKyThuat, name='DashboardBPKyThuat'),

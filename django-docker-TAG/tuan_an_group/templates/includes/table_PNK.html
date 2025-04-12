@@ -3,7 +3,7 @@
 <div class="container my-1">
     <!-- Table -->
     <div class="card p-4 shadow-sm">
-        <div class="table-responsive" style="max-height: 400px; min-height: 400px;">
+        <div class="table-responsive" style="max-height: 200px; min-height: 200px;">
             <table class="table table-bordered" id="data-table">
                 <thead>
                     <tr id="table-header"></tr> <!-- Headers will be inserted dynamically -->
@@ -15,9 +15,30 @@
 </div>
 
 <script>
+// // Function to fetch and parse the JSON data for each tab
+// async function loadTableData(tab) {
+//     let jsonPath = '';
+
+//     // Choose JSON path based on tab
+//     if (tab === 'tab1') {
+//         jsonPath = "{% static json_path_tab1 %}";
+//     } else if (tab === 'tab2') {
+//         jsonPath = "{% static json_path_tab2 %}";
+//     }
+
+//     // Fetch the data
+//     const response = await fetch(jsonPath);
+//     const tableData = await response.json();
+
+//     // Generate the table header and body dynamically
+//     generateTableHeader(tableData);
+//     generateTableBody(tableData);
+// }
+
 // Function to fetch and parse the JSON data
 async function loadTableData() {
-    const response = await fetch("{% static 'templates/json/KD_DE_NGHI_XUAT_KHO/treeview_tab_01_DNXK_input.json' %}");
+    // const response = await fetch("{% static 'templates/json/KD_DE_NGHI_XUAT_KHO/treeview_tab_01_DNXK_input.json' %}");
+    const response = await fetch("{% static json_path %}");
     const tableData = await response.json();
 
     // Generate the table header
@@ -46,6 +67,10 @@ function generateTableBody() {
     const rows = [
         [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
         [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [3, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [4, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [5, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [6, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
         // Add more rows as needed
     ];
 
