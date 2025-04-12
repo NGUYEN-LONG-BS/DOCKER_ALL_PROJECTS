@@ -30,7 +30,7 @@ urlpatterns = [
     path('DashboardAllDepartment/', views.DashboardAllDepartment, name='DashboardAllDepartment'),
     path('DashboardBPVatTu/', views.DashboardBPVatTu, name='DashboardBPVatTu'),
     
-    path('inventory/', views.manage_inventory, name='inventory'),
+    path('inventory/', views.inventory, name='inventory'),
     
     path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
     path('DashboardBPKho/', views.DashboardBPKho, name='DashboardBPKho'),

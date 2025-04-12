@@ -17,7 +17,7 @@
 <script>
 // Function to fetch and parse the JSON data
 async function loadTableData() {
-    const response = await fetch("{% static json_path %}");
+    const response = await fetch("{% static 'json/VT_QUAN_LY_HANG_HOA/PNK_table_input.json' %}");
     const tableData = await response.json();
 
     // Generate the table header

@@ -81,14 +81,6 @@ def DashboardBPVatTu(request):
     # Render a template or return a response
     return render(request, 'dashboard/DashboardBPVatTu.html', context)
 
-def inventory(request):
-    # Pass MEDIA_URL to the context
-    context = {
-        'MEDIA_URL': settings.MEDIA_URL
-    }
-    # Render a template or return a response
-    return render(request, 'inventory.html', context)
-
 def DashboardBPKho(request):
     # Pass MEDIA_URL to the context
     context = {
@@ -132,13 +124,26 @@ def template_01(request):
 # ===================================================================================================================
 # Manage table
 
+def inventory(request):
+    # Pass MEDIA_URL to the context
+    context = {
+        'MEDIA_URL': settings.MEDIA_URL
+    }
+    # Render a template or return a response
+    return render(request, 'inventory.html', context)
+
 def manage_inventory(request):
     # Đường dẫn JSON cho Tab 1 và Tab 2
     json_path_tab1 = 'templates/json/VT_QUAN_LY_HANG_HOA/PNK_table_input.json'
     json_path_tab2 = 'templates/json/VT_QUAN_LY_HANG_HOA/PXK_table_input.json'
 
-    # Truyền các đường dẫn JSON vào template
-    return render(request, 'inventory.html', {
+    context = {
         'json_path_tab1': json_path_tab1,
-        'json_path_tab2': json_path_tab2
-    })
+        'json_path_tab2': json_path_tab2,
+    }
+    
+    print(request)
+    print(context)
+    
+    # Truyền các đường dẫn JSON vào template
+    return render(request, 'inventory.html', context)

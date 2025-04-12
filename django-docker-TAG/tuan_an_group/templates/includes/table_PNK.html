@@ -17,7 +17,7 @@
 <script>
 // Function to fetch and parse the JSON data
 async function loadTableData() {
-    const response = await fetch("{% static json_path %}");
+    const response = await fetch("{% static 'json/VT_QUAN_LY_HANG_HOA/PNK_table_input.json' %}");
     const tableData = await response.json();
 
     // Generate the table header
@@ -29,6 +29,9 @@ async function loadTableData() {
 
 // Function to generate table headers dynamically
 function generateTableHeader(tableData) {
+    console.log("Generate table header:");
+    console.log(tableData);
+
     const headerRow = document.getElementById('table-header');
     tableData.table.columns.forEach(column => {
         const th = document.createElement('th');
