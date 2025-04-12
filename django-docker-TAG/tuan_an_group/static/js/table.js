@@ -1,6 +1,7 @@
 // Function to fetch and parse the JSON data
 async function loadTableData() {
     const response = await fetch("{% static 'templates/json/VT_QUAN_LY_HANG_HOA/PNK_table_input.json' %}");
+
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
