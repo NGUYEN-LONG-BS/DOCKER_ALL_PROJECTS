@@ -4,3 +4,7 @@ step 03: (venv) C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-d
 
 Chạy server
 step 04: PS C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG\tuan_an_group> python manage.py runserver
+
+python manage.py makemigrations
+
+python manage.py migrate
