@@ -71,7 +71,7 @@
             
             <!-- Bảng -->
             <div>
-                {% include 'includes/table_PNK.html' %}
+                {% include 'includes/tab_1_table_PNK.html' %}
             </div>
 
             <!-- Nút tương tác với phiếu -->
@@ -129,7 +129,7 @@
 
             <!-- Bảng -->
             <div>
-                {% include 'includes/table_PXK.html' %}
+                {% include 'includes/tab_2_table_PXK.html' %}
             </div>
 
             <!-- Nút tương tác với phiếu -->
@@ -159,12 +159,33 @@
                     {% include 'includes/frameSlipNumber.html' %}
                 </div>
             </div>
+            
+            <!-- Bảng -->
+            <div>
+                {% include 'includes/tab_3_create.html' %}
+            </div>
 
             <!-- Nút để chuyển đến trang Add -->
             <br>
             <a href="{% url 'add_inventory_category' %}"><button>Thêm Mới Danh Mục</button></a>
-            
+
         </div>
+
+        <!-- Content for Tab 6 -->
+        <div class="tab-pane fade" id="pills-report" role="tabpanel" aria-labelledby="pills-report-tab">
+            <h4>Danh mục hàng hoá</h4>
+            
+            <!-- Bảng -->
+            <div>
+                {% include 'includes/tab_6_report.html' %}
+            </div>
+
+            <!-- Nút để chuyển đến trang Add -->
+            <br>
+            <a href="{% url 'add_inventory_category' %}"><button>Thêm Mới Danh Mục</button></a>
+
+        </div>
+
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,26 @@
+/* CSS to enable horizontal and vertical scroll */
+.table-responsive {
+    overflow-x: auto;  /* Horizontal scroll */
+    overflow-y: auto;  /* Vertical scroll */
+}
+
+/* CSS to fix the header row */
+#data-table thead {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa; /* White background for header */
+    z-index: 10;
+}
+
+#data-table th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f9fa;
+    z-index: 2;
+}
+
+/* Highlight row on hover */
+#data-table tr.highlight {
+    background-color: #e9ecef; /* Light grey background when hovering */
+    cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+}

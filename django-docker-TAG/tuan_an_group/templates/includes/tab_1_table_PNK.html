@@ -1,0 +1,143 @@
+{% load static %}
+
+<div class="container my-1">
+    <!-- Table -->
+    <div class="card p-4 shadow-sm">
+        <div class="table-responsive" style="max-height: 200px; min-height: 200px;">
+            <table class="table table-bordered" id="data-table">
+                <thead>
+                    <tr id="table-header_PNK"></tr> <!-- Headers will be inserted dynamically -->
+                </thead>
+                <tbody id="table-body_PNK"></tbody> <!-- Data rows will be inserted dynamically -->
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to fetch and parse the JSON data
+async function loadTableData() {
+    const response = await fetch("{% static 'templates/json/VT_QUAN_LY_HANG_HOA/PNK_table_input.json' %}");
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const tableData = await response.json();
+
+    // Generate the table header
+    generateTableHeader(tableData);
+
+    // Generate the table body (you can adjust this part based on your actual data)
+    generateTableBody();
+}
+
+// Function to generate table headers dynamically
+function generateTableHeader(tableData) {
+    console.log("Generate table header:");
+    console.log(tableData);
+
+    const headerRow = document.getElementById('table-header_PNK');
+    tableData.table.columns.forEach(column => {
+        const th = document.createElement('th');
+        th.textContent = column.name;
+        th.style.width = `${column.width}px`; // Set the column width based on the JSON data
+        headerRow.appendChild(th);
+    });
+}
+
+// Function to generate table rows dynamically (example data)
+function generateTableBody() {
+    const tbody = document.getElementById('table-body_PNK');
+
+    // Example row data, you can fetch this data dynamically as well
+    const rows = [
+        [1, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [2, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [3, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [4, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        [5, 'MH001', 'Điện thoại', 'Cái', 100, 80, 50, 'Mới'],
+        [6, 'MH002', 'Laptop', 'Cái', 200, 150, 100, 'Mới'],
+        // Add more rows as needed
+    ];
+
+    rows.forEach(rowData => {
+        const tr = document.createElement('tr');
+        rowData.forEach(cellData => {
+            const td = document.createElement('td');
+            td.textContent = cellData;
+            tr.appendChild(td);
+        });
+
+        // Add click event listener for single click (prints all row data)
+        tr.addEventListener('click', () => {
+            printRowData(rowData);  // Call function to print row data
+        });
+
+        // Add double click event listener for double click (prints only second column)
+        tr.addEventListener('dblclick', () => {
+            printSecondColumn(rowData);  // Call function to print only second column (Mã hàng)
+        });
+
+        // Highlight the row on mouseenter and remove highlight on mouseleave
+        tr.addEventListener('mouseenter', function () {
+            this.classList.add('highlight'); // Add highlight class when mouse enters
+        });
+        tr.addEventListener('mouseleave', function () {
+            this.classList.remove('highlight'); // Remove highlight class when mouse leaves
+        });
+
+        tbody.appendChild(tr);
+    });
+}
+
+// Function to print all row data when a row is clicked (single click)
+function printRowData(rowData) {
+    console.log("Selected row data:");
+    console.log("STT:", rowData[0]);
+    console.log("Mã hàng:", rowData[1]);
+    console.log("Tên mặt hàng:", rowData[2]);
+    console.log("Đvt:", rowData[3]);
+    console.log("SL tồn kho:", rowData[4]);
+    console.log("SL khả dụng:", rowData[5]);
+    console.log("SL DN xuất:", rowData[6]);
+    console.log("Ghi chú sản phẩm:", rowData[7]);
+}
+
+// Function to print the value of the second column (Mã hàng) when double clicked
+function printSecondColumn(rowData) {
+    // The second column (Mã hàng) is at index 1
+    console.log("Selected value from the second column (Mã hàng):", rowData[1]);
+}
+
+// Run loadTableData when the page is loaded
+document.addEventListener('DOMContentLoaded', loadTableData);
+</script>
+
+<style>
+    /* CSS to enable horizontal and vertical scroll */
+    .table-responsive {
+        overflow-x: auto;  /* Horizontal scroll */
+        overflow-y: auto;  /* Vertical scroll */
+    }
+
+    /* CSS to fix the header row */
+    #data-table thead {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa; /* White background for header */
+        z-index: 10;
+    }
+
+    #data-table th {
+        position: sticky;
+        top: 0;
+        background-color: #f8f9fa;
+        z-index: 2;
+    }
+
+    /* Highlight row on hover */
+    #data-table tr.highlight {
+        background-color: #e9ecef; /* Light grey background when hovering */
+        cursor: pointer; /* Change cursor to pointer to indicate interactivity */
+    }
+</style>
