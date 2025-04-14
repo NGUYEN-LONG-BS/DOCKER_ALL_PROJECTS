@@ -27,43 +27,33 @@
             
             <!-- Nhãn và Trường Dữ Liệu (Sử dụng tiếng Việt có dấu) -->
             <div class="mb-3">
-                <label for="id_nhan_vien" class="form-label">Mã Nhân Viên</label>
-                <input type="text" class="form-control" id="id_nhan_vien" name="id_nhan_vien" value="{{ form.id_nhan_vien.value }}">
-            </div>
-
-            <div class="mb-3">
-                <label for="xoa_sua" class="form-label">Xóa/Sửa</label>
-                <input type="text" class="form-control" id="xoa_sua" name="xoa_sua" value="{{ form.xoa_sua.value }}">
-            </div>
-
-            <div class="mb-3">
                 <label for="ma_hang" class="form-label">Mã Hàng</label>
-                <input type="text" class="form-control" id="ma_hang" name="ma_hang" value="{{ form.ma_hang.value }}">
+                <input type="text" class="form-control" id="ma_hang" name="ma_hang" value="{{ form.ma_hang.value|default:'' }}">
             </div>
 
             <div class="mb-3">
                 <label for="ten_hang" class="form-label">Tên Hàng</label>
-                <input type="text" class="form-control" id="ten_hang" name="ten_hang" value="{{ form.ten_hang.value }}">
+                <input type="text" class="form-control" id="ten_hang" name="ten_hang" value="{{ form.ten_hang.value|default:'' }}">
             </div>
 
             <div class="mb-3">
                 <label for="dvt" class="form-label">Đơn Vị Tính</label>
-                <input type="text" class="form-control" id="dvt" name="dvt" value="{{ form.dvt.value }}">
+                <input type="text" class="form-control" id="dvt" name="dvt" value="{{ form.dvt.value|default:'' }}">
             </div>
 
             <div class="mb-3">
                 <label for="sl_ton_dau_ky" class="form-label">Số Lượng Tồn Đầu Kỳ</label>
-                <input type="number" class="form-control" id="sl_ton_dau_ky" name="sl_ton_dau_ky" value="{{ form.sl_ton_dau_ky.value }}">
+                <input type="number" class="form-control" id="sl_ton_dau_ky" name="sl_ton_dau_ky" value="{{ form.sl_ton_dau_ky.value|default:0 }}">
             </div>
 
             <div class="mb-3">
                 <label for="don_gia_ton_dau_ky" class="form-label">Đơn Giá Tồn Đầu Kỳ</label>
-                <input type="number" step="0.01" class="form-control" id="don_gia_ton_dau_ky" name="don_gia_ton_dau_ky" value="{{ form.don_gia_ton_dau_ky.value }}">
+                <input type="number" step="0.01" class="form-control" id="don_gia_ton_dau_ky" name="don_gia_ton_dau_ky" value="{{ form.don_gia_ton_dau_ky.value|default:0 }}">
             </div>
 
             <div class="mb-3">
                 <label for="ma_kho_luu_tru" class="form-label">Mã Kho Lưu Trữ</label>
-                <input type="text" class="form-control" id="ma_kho_luu_tru" name="ma_kho_luu_tru" value="{{ form.ma_kho_luu_tru.value }}">
+                <input type="text" class="form-control" id="ma_kho_luu_tru" name="ma_kho_luu_tru" value="{{ form.ma_kho_luu_tru.value|default:'' }}">
             </div>
 
             <!-- Submit button -->

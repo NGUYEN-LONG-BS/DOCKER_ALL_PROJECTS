@@ -163,9 +163,35 @@ def manage_inventory(request):
 
 #     return render(request, 'add_inventory_category.html', {'form': form})
 
+# def add_inventory_category(request):
+#     if request.method == 'POST':
+#         form = InventoryCategoryForm(request.POST)
+
+#         # Kiểm tra xem mã hàng đã tồn tại chưa
+#         ma_hang = request.POST.get('ma_hang')
+#         if InventoryCategory.objects.filter(ma_hang=ma_hang).exists():
+#             # Nếu mã hàng đã tồn tại, hiển thị thông báo cảnh báo
+#             messages.error(request, f"Mã hàng '{ma_hang}' đã tồn tại.")
+#         else:
+#             # Nếu mã hàng chưa tồn tại, lưu dữ liệu vào cơ sở dữ liệu
+#             if form.is_valid():
+#                 form.save()
+#                 messages.success(request, "Danh mục hàng đã được thêm thành công!")
+#                 return redirect('inventory_data')  # Chuyển hướng tới trang hiển thị dữ liệu
+#     else:
+#         form = InventoryCategoryForm()
+
+#     return render(request, 'add_inventory_category.html', {'form': form})
+
 def add_inventory_category(request):
     if request.method == 'POST':
         form = InventoryCategoryForm(request.POST)
+
+        # Lấy mã nhân viên từ tên người dùng đăng nhập (request.user.username)
+        if request.user.is_authenticated:  # Kiểm tra xem người dùng đã đăng nhập chưa
+            id_nhan_vien = request.user.username  # Hoặc bạn có thể lấy thêm thông tin từ người dùng nếu cần
+        else:
+            id_nhan_vien = "NV01"  # Nếu không có người dùng đăng nhập, đặt giá trị mặc định
 
         # Kiểm tra xem mã hàng đã tồn tại chưa
         ma_hang = request.POST.get('ma_hang')
@@ -175,7 +201,11 @@ def add_inventory_category(request):
         else:
             # Nếu mã hàng chưa tồn tại, lưu dữ liệu vào cơ sở dữ liệu
             if form.is_valid():
-                form.save()
+                # Lấy đối tượng từ form và gán thêm id_nhan_vien
+                inventory_category = form.save(commit=False)
+                inventory_category.id_nhan_vien = id_nhan_vien  # Gán mã nhân viên
+                inventory_category.save()  # Lưu đối tượng vào cơ sở dữ liệu
+
                 messages.success(request, "Danh mục hàng đã được thêm thành công!")
                 return redirect('inventory_data')  # Chuyển hướng tới trang hiển thị dữ liệu
     else:
