@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dữ Liệu Danh Mục Hàng Tồn Kho</title>
+</head>
+<body>
+    <h2>Dữ Liệu Danh Mục Hàng Tồn Kho</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ngày</th>
+                <th>Mã Hàng</th>
+                <th>Tên Hàng</th>
+                <th>ĐVT</th>
+                <th>Số Lượng Tồn Đầu Kỳ</th>
+                <th>Đơn Giá Tồn Đầu Kỳ</th>
+                <th>Mã Kho Lưu Trữ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inventory_data %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.date }}</td>
+                    <td>{{ item.ma_hang }}</td>
+                    <td>{{ item.ten_hang }}</td>
+                    <td>{{ item.dvt }}</td>
+                    <td>{{ item.sl_ton_dau_ky }}</td>
+                    <td>{{ item.don_gia_ton_dau_ky }}</td>
+                    <td>{{ item.ma_kho_luu_tru }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Nút để chuyển đến trang Add -->
+    <br>
+    <a href="{% url 'add_inventory_category' %}"><button>Thêm Mới Danh Mục</button></a>
+</body>
+</html>

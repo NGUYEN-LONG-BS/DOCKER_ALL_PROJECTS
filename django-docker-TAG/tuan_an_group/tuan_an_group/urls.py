@@ -15,6 +15,9 @@ urlpatterns = [
     path('DashboardBPVatTu/', views.DashboardBPVatTu, name='DashboardBPVatTu'),
     
     path('inventory/', views.inventory, name='inventory'),
+    path('add/', views.add_inventory_category, name='add_inventory_category'),
+    path('success/', views.success, name='success'),  # Thêm URL success
+    path('inventorydata/', views.get_inventory_data, name='inventory_data'),  # URL hiển thị dữ liệu
     
     path('DashboardBPKinhDoanh/', views.DashboardBPKinhDoanh, name='DashboardBPKinhDoanh'),
     path('DashboardBPKho/', views.DashboardBPKho, name='DashboardBPKho'),

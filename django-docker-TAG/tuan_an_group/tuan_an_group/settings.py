@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
@@ -77,11 +78,14 @@ WSGI_APPLICATION = 'tuan_an_group.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Chỉnh sửa thành PostgreSQL
+        'NAME': 'TBD_2025',  # Tên cơ sở dữ liệu PostgreSQL
+        'USER': 'postgres',  # Tên người dùng PostgreSQL
+        'PASSWORD': 'Ta#9999',  # Mật khẩu người dùng PostgreSQL
+        'HOST': 'localhost',  # Máy chủ PostgreSQL (localhost nếu là máy cục bộ)
+        'PORT': '5432',  # Cổng PostgreSQL (mặc định là 5432)
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from .forms import InventoryCategoryForm
+from .models import InventoryCategory
 
 def index(request):
     return render(request, 'home.html')
@@ -147,3 +149,25 @@ def manage_inventory(request):
     
     # Truyền các đường dẫn JSON vào template
     return render(request, 'inventory.html', context)
+
+
+
+def add_inventory_category(request):
+    if request.method == 'POST':
+        form = InventoryCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()  # Lưu dữ liệu vào bảng
+            return redirect('success')  # Chuyển hướng đến trang thành công sau khi lưu
+    else:
+        form = InventoryCategoryForm()
+
+    return render(request, 'add_inventory_category.html', {'form': form})
+
+def success(request):
+    return render(request, 'success.html')
+
+def get_inventory_data(request):
+    # Lấy tất cả dữ liệu từ bảng InventoryCategory
+    inventory_data = InventoryCategory.objects.all()
+
+    return render(request, 'inventory_data.html', {'inventory_data': inventory_data})

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Mới Danh Mục Hàng Tồn Kho</title>
+</head>
+<body>
+    <h2>Thêm Mới Danh Mục Hàng Tồn Kho</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Hiển thị form dưới dạng các phần tử HTML -->
+        <button type="submit">Lưu</button>
+    </form>
+
+    <!-- Nút để chuyển đến trang Inventory -->
+    <br>
+    <a href="{% url 'inventory_data' %}"><button>Đi tới Inventory</button></a>
+</body>
+</html>
