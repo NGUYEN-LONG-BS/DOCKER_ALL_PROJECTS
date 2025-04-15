@@ -14,3 +14,8 @@ django-admin startproject myproject
 
 Tạo một ứng dụng Django
 python manage.py startapp blog
+
+Chạy lệnh tạo tài khoản admin
+python manage.py createsuperuser
+admin
+123

@@ -151,38 +151,6 @@ def manage_inventory(request):
     return render(request, 'inventory.html', context)
 
 
-
-# def add_inventory_category(request):
-#     if request.method == 'POST':
-#         form = InventoryCategoryForm(request.POST)
-#         if form.is_valid():
-#             form.save()  # Lưu dữ liệu vào bảng
-#             return redirect('success')  # Chuyển hướng đến trang thành công sau khi lưu
-#     else:
-#         form = InventoryCategoryForm()
-
-#     return render(request, 'add_inventory_category.html', {'form': form})
-
-# def add_inventory_category(request):
-#     if request.method == 'POST':
-#         form = InventoryCategoryForm(request.POST)
-
-#         # Kiểm tra xem mã hàng đã tồn tại chưa
-#         ma_hang = request.POST.get('ma_hang')
-#         if InventoryCategory.objects.filter(ma_hang=ma_hang).exists():
-#             # Nếu mã hàng đã tồn tại, hiển thị thông báo cảnh báo
-#             messages.error(request, f"Mã hàng '{ma_hang}' đã tồn tại.")
-#         else:
-#             # Nếu mã hàng chưa tồn tại, lưu dữ liệu vào cơ sở dữ liệu
-#             if form.is_valid():
-#                 form.save()
-#                 messages.success(request, "Danh mục hàng đã được thêm thành công!")
-#                 return redirect('inventory_data')  # Chuyển hướng tới trang hiển thị dữ liệu
-#     else:
-#         form = InventoryCategoryForm()
-
-#     return render(request, 'add_inventory_category.html', {'form': form})
-
 def add_inventory_category(request):
     if request.method == 'POST':
         form = InventoryCategoryForm(request.POST)
