@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Trang Chủ{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Chào mừng bạn đến với trang web của chúng tôi!</h2>
+            <p>Đây là trang chủ của ứng dụng Django của chúng tôi. Bạn có thể thêm các thông tin giới thiệu về dự án hoặc công ty của mình ở đây.</p>
+            <p>Chúng tôi cung cấp nhiều dịch vụ và tính năng tuyệt vời để hỗ trợ bạn trong công việc và cuộc sống. Hãy tham khảo các phần khác trong menu để biết thêm chi tiết.</p>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    Tin tức mới
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li><a href="#">Cập nhật mới nhất về dự án</a></li>
+                        <li><a href="#">Sự kiện sắp tới</a></li>
+                        <li><a href="#">Thông báo quan trọng</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h3>Thông tin liên hệ</h3>
+        <p>Chúng tôi luôn sẵn sàng hỗ trợ bạn. Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với chúng tôi qua:</p>
+        <ul>
+            <li>Email: <a href="mailto:info@example.com">info@example.com</a></li>
+            <li>Điện thoại: +123 456 789</li>
+        </ul>
+    </div>
+{% endblock %}

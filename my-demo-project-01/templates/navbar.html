@@ -1,0 +1,70 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">MY NOTE</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Trang chủ</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/about/">Giới thiệu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/contact/">Liên hệ</a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Kế toán
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Nguyên lý kế toán</a></li>
+                    <li><a class="dropdown-item" href="#">CFA</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">ACCA</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Python
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'django_guidance' %}">Web app</a></li>
+                    <li><a class="dropdown-item" href="#">Desktop app</a></li>
+                    <li><a class="dropdown-item" href="#">Mobile app</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Data analysis</a></li>
+                </ul>
+            </li>
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    SQL
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">SQL Server</a></li>
+                    <li><a class="dropdown-item" href="#">PostgreSQL</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">SQLlite</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    My projects
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="https://trangdiemcodau.online/">Trang điểm cô dâu</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Trang giới thiệu sản phẩm</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">SQLlite</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</nav>

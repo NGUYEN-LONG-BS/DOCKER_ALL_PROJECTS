@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn bắt đầu dự án Django với Docker trên Windows</title>
+    <!-- Liên kết tới Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .section-title {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="text-center mb-5">
+        <h1>Hướng dẫn bắt đầu dự án Django với Docker trên Windows</h1>
+        <p class="lead">Cài đặt và cấu hình Django với Docker trên Windows</p>
+    </header>
+
+    <section>
+        <h2 class="section-title">Bước 1: Cài đặt Docker Desktop</h2>
+        <p>Trước khi bắt đầu, bạn cần cài đặt Docker Desktop trên máy tính của mình. Bạn có thể tải Docker Desktop cho Windows tại <a href="https://www.docker.com/products/docker-desktop" target="_blank">đây</a>.</p>
+        <ol>
+            <li>Tải và cài đặt Docker Desktop.</li>
+            <li>Khởi động lại máy tính nếu được yêu cầu.</li>
+            <li>Kiểm tra Docker đã hoạt động chưa bằng cách mở Command Prompt và chạy:</li>
+        </ol>
+        <pre>docker --version</pre>
+
+        <h2 class="section-title">Bước 2: Tạo dự án Django mới</h2>
+        <ol>
+            <li>Tạo một thư mục mới cho dự án, tên là my-demo-project-01, bạn có thể tạo bằng tay cho dễ hoặc chạy câu lệnh như sau:</li>
+        </ol>
+        <pre>mkdir my-demo-project-01    # Tạo thư mục
+cd my-demo-project-01    # Di chuyển đến thư mục vừa tạo</pre>
+        <ol>
+            <li>Tạo môi trường ảo và cài đặt Django:</li>
+        </ol>
+        <pre>python -m venv venv    # dùng cho Windows
+.\venv\Scripts\activate    # Trên Windows
+pip install django
+django-admin startproject myproject .    # myproject là tên thư mục chứa code Django, nếu muốn đổi thì đổi bây giờ, chứ tạo rồi là không được đổi nữa nhen</pre>
+
+        <h2 class="section-title">Bước 3: Tạo Dockerfile</h2>
+        <p>Tạo tệp <code>Dockerfile</code> trong thư mục gốc của dự án với nội dung sau:</p>
+        <pre>
+# Sử dụng image chính thức của Python
+FROM python:3.9-slim
+
+# Đặt thư mục làm việc trong container
+WORKDIR /app
+
+# Sao chép tệp requirements.txt vào container
+COPY requirements.txt .
+
+# Cài đặt các dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Sao chép toàn bộ mã nguồn vào container
+COPY . .
+
+# Mở cổng 8000 cho Django
+EXPOSE 8000
+
+# Lệnh chạy server Django
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+        </pre>
+
+        <h2 class="section-title">Bước 4: Tạo tệp requirements.txt</h2>
+        <p>Bạn dùng câu lệnh sau, để liệt kê toàn bộ thư viện trong dự án của bạn:</p>
+        <pre>pip list</pre>
+        <p>Tạo tệp <code>requirements.txt</code> và copy toàn bộ thư viện của bạn vào nó, nhưng thay vì làm thủ công, mình dùng lệnh luôn. Với câu lệnh như sau:</p>
+        <pre>pip freeze > requirements.txt</pre>
+
+        <h2 class="section-title">Bước 5: Tạo tệp docker-compose.yml</h2>
+        <p>Tạo tệp <code>docker-compose.yml</code> với nội dung sau:</p>
+        <pre>
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+  web:
+    build: .
+    command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+        </pre>
+
+        <h2 class="section-title">Bước 6: Cấu hình Django để sử dụng PostgreSQL</h2>
+        <p>Trong tệp <code>settings.py</code> của Django, bạn cần chỉnh sửa phần cấu hình cơ sở dữ liệu để kết nối với PostgreSQL từ Docker container:</p>
+        <p>Bạn hoàn toàn có thể giữ nguyên mặc định là SQlite khi đó, bạn bỏ qua bước này.</p>
+        <pre>
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydb',
+        'USER': 'user',
+        'PASSWORD': 'password',
+        'HOST': 'db',  # Dịch vụ 'db' từ docker-compose.yml
+        'PORT': '5432',
+    }
+}
+        </pre>
+
+        <h2 class="section-title">Bước 7: Chạy các dịch vụ Docker</h2>
+        <p>Chạy lệnh dưới đây để tạo và khởi động các dịch vụ Docker từ tệp docker-compose.yml:</p>
+        <pre>docker-compose up --build</pre>
+        <p>Để dừng các dịch vụ Docker đang chạy</p>
+        <pre>docker-compose down</pre>
+
+        <h2 class="section-title">Bước 8: Truy cập ứng dụng Django</h2>
+        <p>Khởi chạy server Django bằng cách chạy lệnh sau:</p>
+        <pre>python manage.py runserver 0.0.0.0:8000</pre>
+        <p>hoặc</p>
+        <pre>python manage.py runserver</pre>
+        <p>Mở trình duyệt và truy cập <code>http://localhost:8000</code> để xem ứng dụng Django của bạn.</p>
+
+        <h2 class="section-title">Bước 9: Tạo tệp .gitignore</h2>
+        <p>Tạo tệp <code>.gitignore</code> trong thư mục gốc của dự án với nội dung sau để loại bỏ các tệp không cần thiết khỏi Git:</p>
+        <pre>
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+db.sqlite3
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Docker
+*.log
+*.pot
+*.pyc
+__pycache__/
+
+# Django
+*.db
+*.sqlite3
+media/
+static/
+
+# IDE/Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+        </pre>
+    </section>
+</div>
+
+<!-- Liên kết tới Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
