@@ -19,3 +19,9 @@ Chạy lệnh tạo tài khoản admin
 python manage.py createsuperuser
 admin
 123
+
+Khởi động các dịch vụ Docker
+docker-compose up --build
+
+Để dừng các dịch vụ Docker đang chạy
+docker-compose down

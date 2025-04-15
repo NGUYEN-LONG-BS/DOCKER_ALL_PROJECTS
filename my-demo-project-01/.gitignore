@@ -1,0 +1,60 @@
+# Thư mục và tệp của Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+db.sqlite3
+
+# Thư mục ảo (virtual environment)
+venv/
+.env/
+.venv/
+
+# Thư mục của Docker
+*.log
+*.pot
+*.pyc
+__pycache__/
+
+# Thư mục chứa dữ liệu của Docker
+docker-compose.override.yml
+docker-compose.yml
+.docker/
+
+# Tệp Django
+*.db
+*.sqlite3
+
+# Thư mục media và static trong Django
+media/
+static/
+
+# Tệp cấu hình của IDE/Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+
+# Tệp cấu hình của hệ điều hành (Mac, Windows, Linux)
+.DS_Store
+Thumbs.db
+
+# Tệp cấu hình của Python
+*.egg
+*.egg-info
+dist/
+build/
+*.pyc
+*.pyo
+
+# Các tệp do Python Package Index (PyPI) tạo
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Tệp chứa các cài đặt của Django
+local_settings.py
+settings.pyc
+
+# Các tệp nhạy cảm không nên đưa lên Git (ví dụ: tệp khóa API)
+secret_key.txt
