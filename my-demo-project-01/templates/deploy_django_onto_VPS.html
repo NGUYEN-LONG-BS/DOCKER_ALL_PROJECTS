@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn Deploy Dự Án Django lên VPS Windows Server với Docker</title>
+
+    <!-- Liên kết tới Bootstrap CSS từ CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .section-title {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="text-center mb-5">
+        <h1>Hướng dẫn Deploy Dự Án Django lên VPS Windows Server với Docker</h1>
+        <p class="lead">Cài đặt Docker, clone dự án từ GitHub và triển khai ứng dụng Django trên VPS Windows Server.</p>
+    </header>
+
+    <section>
+        <h2 class="section-title">Bước 1: Cài đặt Docker trên Windows Server</h2>
+        <p>Trước tiên, bạn cần cài đặt Docker trên VPS Windows Server của mình:</p>
+        <ol>
+            <li>Mở PowerShell với quyền quản trị (Run as Administrator).</li>
+            <li>Cài đặt Docker trên Windows Server bằng cách chạy các lệnh sau:</li>
+        </ol>
+        <pre>
+sudo apt update
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt update
+sudo apt install docker-ce -y
+        </pre>
+        <p>Khởi động Docker:</p>
+        <pre>
+sudo systemctl start docker
+sudo systemctl enable docker
+        </pre>
+        <p>Kiểm tra Docker đã được cài đặt thành công:</p>
+        <pre>
+sudo docker --version
+        </pre>
+
+        <h2 class="section-title">Bước 2: Cài đặt Git trên Windows Server</h2>
+        <p>Để clone dự án từ GitHub, bạn cần cài đặt Git:</p>
+        <ol>
+            <li>Tải và cài đặt <a href="https://git-scm.com/download/win" target="_blank">Git cho Windows</a>.</li>
+            <li>Kiểm tra cài đặt Git bằng lệnh:</li>
+        </ol>
+        <pre>
+git --version
+        </pre>
+
+        <h2 class="section-title">Bước 3: Clone Dự Án từ GitHub</h2>
+        <p>Clone dự án của bạn từ GitHub vào VPS:</p>
+        <pre>
+git clone https://github.com/yourusername/your-repository.git
+cd your-repository
+        </pre>
+
+        <h2 class="section-title">Bước 4: Cài đặt Docker Compose (Nếu sử dụng)</h2>
+        <p>Docker Compose giúp bạn dễ dàng quản lý các container nhiều hơn:</p>
+        <pre>
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+        </pre>
+        <p>Kiểm tra Docker Compose:</p>
+        <pre>
+docker-compose --version
+        </pre>
+
+        <h2 class="section-title">Bước 5: Build và Chạy Dự Án Docker</h2>
+        <p>Tiếp theo, bạn sẽ build Docker image từ tệp <code>Dockerfile</code> (nếu có) hoặc sử dụng <code>docker-compose.yml</code> để chạy ứng dụng:</p>
+        <ol>
+            <li>Build Docker image từ Dockerfile:</li>
+        </ol>
+        <pre>
+sudo docker build -t myapp .
+        </pre>
+        <ol>
+            <li>Chạy Docker container:</li>
+        </ol>
+        <pre>
+sudo docker run -d -p 80:80 myapp
+        </pre>
+        <p>Hoặc nếu sử dụng Docker Compose:</p>
+        <pre>
+sudo docker-compose up -d
+        </pre>
+
+        <h2 class="section-title">Bước 6: Mở Cổng trên Tường Lửa (Firewall)</h2>
+        <p>Nếu VPS của bạn có tường lửa (Firewall), bạn cần mở cổng 80 để người dùng có thể truy cập ứng dụng của bạn:</p>
+        <pre>
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw enable
+        </pre>
+
+        <h2 class="section-title">Bước 7: Kiểm Tra và Truy Cập Ứng Dụng</h2>
+        <p>Sau khi ứng dụng đã được chạy trên Docker, bạn có thể truy cập nó qua trình duyệt:</p>
+        <pre>
+http://your_vps_ip
+        </pre>
+
+        <h2 class="section-title">Bước 8: Cấu hình Reverse Proxy với Nginx (Tùy chọn)</h2>
+        <p>Để sử dụng Nginx làm reverse proxy cho ứng dụng Docker, bạn cần cài đặt và cấu hình Nginx:</p>
+        <ol>
+            <li>Cài đặt Nginx:</li>
+        </ol>
+        <pre>
+sudo apt install nginx
+        </pre>
+        <ol>
+            <li>Cấu hình Nginx làm reverse proxy:</li>
+        </ol>
+        <pre>
+server {
+    listen 80;
+    server_name your_vps_ip;
+
+    location / {
+        proxy_pass http://localhost:80;  # Chuyển tiếp lưu lượng tới Docker container
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+        </pre>
+        <ol>
+            <li>Khởi động lại Nginx:</li>
+        </ol>
+        <pre>
+sudo systemctl restart nginx
+        </pre>
+
+        <h2 class="section-title">Kết luận</h2>
+        <p>Chúc mừng! Bạn đã triển khai thành công dự án Django lên VPS chạy Windows Server với Docker. Bạn có thể truy cập ứng dụng của mình từ bất kỳ đâu thông qua IP của VPS.</p>
+    </section>
+</div>
+
+<!-- Liên kết tới Bootstrap JS và Popper.js từ CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
