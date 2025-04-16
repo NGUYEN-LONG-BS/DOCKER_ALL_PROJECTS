@@ -1,8 +1,9 @@
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
 from .forms import InventoryCategoryForm
-from .models import InventoryCategory
+from .models import TB_INVENTORY_CATEGORIES
 
 def index(request):
     return render(request, 'home.html')
@@ -151,6 +152,7 @@ def manage_inventory(request):
     return render(request, 'inventory.html', context)
 
 
+
 def add_inventory_category(request):
     if request.method == 'POST':
         form = InventoryCategoryForm(request.POST)
@@ -163,7 +165,7 @@ def add_inventory_category(request):
 
         # Kiểm tra xem mã hàng đã tồn tại chưa
         ma_hang = request.POST.get('ma_hang')
-        if InventoryCategory.objects.filter(ma_hang=ma_hang).exists():
+        if TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=ma_hang).exists():
             # Nếu mã hàng đã tồn tại, hiển thị thông báo cảnh báo
             messages.error(request, f"Mã hàng '{ma_hang}' đã tồn tại.")
         else:
@@ -186,6 +188,6 @@ def success(request):
 
 def get_inventory_data(request):
     # Lấy tất cả dữ liệu từ bảng InventoryCategory
-    inventory_data = InventoryCategory.objects.all()
+    inventory_data = TB_INVENTORY_CATEGORIES.objects.all()
 
     return render(request, 'inventory_data.html', {'inventory_data': inventory_data})
