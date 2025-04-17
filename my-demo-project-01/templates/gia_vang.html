@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Giá Vàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Quy Đổi Giá Trị Quốc Tế Ra Giá Trị Trong Nước</h1>
+
+    <!-- Form nhập liệu -->
+    <form id="goldPriceForm">
+        <div class="mb-3">
+            <label for="worldPrice" class="form-label">Giá thế giới ($/ounce)</label>
+            <input type="number" class="form-control" id="worldPrice" value="3300" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="shippingFee" class="form-label">Phí vận chuyển ($/ounce)</label>
+            <input type="number" class="form-control" id="shippingFee" value="0.75" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="insurance" class="form-label">Bảo hiểm (%)</label>
+            <input type="number" class="form-control" id="insurance" value="0.25" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="importTax" class="form-label">Thuế nhập khẩu (%)</label>
+            <input type="number" class="form-control" id="importTax" value="1" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="processingFee" class="form-label">Phí gia công ($)</label>
+            <input type="number" class="form-control" id="processingFee" value="40000" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="exchangeRate" class="form-label">Tỷ giá (USD/VND)</label>
+            <input type="number" class="form-control" id="exchangeRate" value="25844" required>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="calculatePrice()">Tính Giá</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+    </form>
+
+    <!-- Kết quả -->
+    <div class="mt-4">
+        <h4>Giá vàng SJC (VNĐ): <span id="result">Chưa có kết quả</span></h4>
+    </div>
+</div>
+
+<script>
+    // Hàm tính giá vàng
+    function calculatePrice() {
+        // Lấy giá trị từ các input
+        var worldPrice = parseFloat(document.getElementById('worldPrice').value);
+        var shippingFee = parseFloat(document.getElementById('shippingFee').value);
+        var insurance = parseFloat(document.getElementById('insurance').value) / 100;  // Chuyển đổi sang phần trăm
+        var importTax = parseFloat(document.getElementById('importTax').value) / 100;  // Chuyển đổi sang phần trăm
+        var processingFee = parseFloat(document.getElementById('processingFee').value);
+        var exchangeRate = parseFloat(document.getElementById('exchangeRate').value);
+
+        // Kiểm tra tất cả các giá trị có hợp lệ không
+        if (isNaN(worldPrice) || isNaN(shippingFee) || isNaN(insurance) || isNaN(importTax) || isNaN(processingFee) || isNaN(exchangeRate)) {
+            alert('Vui lòng nhập đầy đủ và chính xác các giá trị.');
+            return;
+        }
+
+        // Công thức tính giá vàng
+        var result = ((worldPrice + shippingFee + insurance * (worldPrice + shippingFee) + importTax * (worldPrice + shippingFee)) * (1 + insurance) / 0.82945 * exchangeRate) + processingFee;
+
+        // Hiển thị kết quả, định dạng với dấu phân cách hàng nghìn và không có số thập phân
+        document.getElementById('result').textContent = result.toLocaleString('vi-VN');  // Dùng toLocaleString để định dạng
+    }
+
+    // Hàm reset các giá trị về mặc định
+    function resetForm() {
+        document.getElementById('worldPrice').value = 3300;
+        document.getElementById('shippingFee').value = 0.75;
+        document.getElementById('insurance').value = 0.25;
+        document.getElementById('importTax').value = 1;
+        document.getElementById('processingFee').value = 40000;
+        document.getElementById('exchangeRate').value = 25844;
+
+        // Xóa kết quả
+        document.getElementById('result').textContent = "Chưa có kết quả";
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

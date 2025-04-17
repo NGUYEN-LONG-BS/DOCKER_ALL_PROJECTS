@@ -34,3 +34,6 @@ def get_exchange_rate(request):
             return render(request, 'exchange_rate.html', {'error': f'Lỗi phân tích XML: {str(e)}'})
     else:
         return render(request, 'exchange_rate.html', {'error': 'Không thể lấy dữ liệu từ API'})
+
+def gold_price(request):
+    return render(request, 'gia_vang.html')
