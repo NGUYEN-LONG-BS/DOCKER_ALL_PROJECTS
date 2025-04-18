@@ -1,0 +1,55 @@
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+
+const Navbar = () => {
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        {/* Thêm logo vào Navbar */}
+        <Link className="navbar-brand d-flex align-items-center" href="/">
+          <Image
+            src="/logo-Light.jpg" // Logo của bạn nằm trong thư mục public
+            alt="Logo"
+            width={40}        // Điều chỉnh kích thước logo
+            height={40}       // Điều chỉnh kích thước logo
+            priority
+          />
+          <span className="ms-2">Trang chủ</span> {/* Tên trang hoặc khẩu hiệu */}
+        </Link>
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link className="nav-link" href="/">Home</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/about">BP Kinh Doanh</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/contact">BP Vật Tư</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/contact">BP Kế Toán - Tài Chính</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/contact">BP Nhân Sự</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
