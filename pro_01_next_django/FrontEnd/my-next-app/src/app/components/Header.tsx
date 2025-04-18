@@ -8,9 +8,9 @@ const Header = () => {
         {/* Thêm logo */}
         <div className="d-flex align-items-center">
           <Image
-            src="/logo-Light.jpg"  // Logo của bạn nằm trong thư mục public
+            src="/images/logo-Light.jpg"  // Logo của bạn nằm trong thư mục public
             alt="Logo"
-            width={50}        // Điều chỉnh kích thước logo theo ý muốn
+            width={100}        // Điều chỉnh kích thước logo theo ý muốn
             height={50}       // Điều chỉnh kích thước logo theo ý muốn
             priority
           />

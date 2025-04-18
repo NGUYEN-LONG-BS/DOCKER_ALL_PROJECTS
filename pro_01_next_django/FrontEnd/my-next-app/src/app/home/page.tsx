@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -5,6 +6,10 @@ import Footer from '../components/Footer';
 export default function Home() {
   return (
     <div className="d-flex flex-column min-vh-100">
+      <Head>
+        <title>TAG-Home</title>
+        <meta name="description" content="Trang chủ của công ty XYZ, nơi bạn có thể tìm thấy thông tin về sản phẩm và dịch vụ của chúng tôi." />
+      </Head>
       <Header />
       <Navbar />
       <main className="container py-5 flex-grow-1">

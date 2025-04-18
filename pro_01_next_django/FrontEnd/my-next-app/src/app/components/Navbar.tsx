@@ -9,9 +9,9 @@ const Navbar = () => {
         {/* Thêm logo vào Navbar */}
         <Link className="navbar-brand d-flex align-items-center" href="/">
           <Image
-            src="/logo-Light.jpg" // Logo của bạn nằm trong thư mục public
+            src="/images/logo-Light.jpg" // Logo của bạn nằm trong thư mục public
             alt="Logo"
-            width={40}        // Điều chỉnh kích thước logo
+            width={80}        // Điều chỉnh kích thước logo
             height={40}       // Điều chỉnh kích thước logo
             priority
           />
@@ -44,6 +44,26 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" href="/contact">BP Nhân Sự</Link>
+            </li>
+
+            {/* Dropdown */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Test link
+              </a>
+              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><Link className="dropdown-item" href="#">Action</Link></li>
+                <li><Link className="dropdown-item" href="#">Another action</Link></li>
+                <li><hr className="dropdown-divider" /></li>
+                <li><Link className="dropdown-item" href="#">Something else here</Link></li>
+              </ul>
             </li>
           </ul>
         </div>
