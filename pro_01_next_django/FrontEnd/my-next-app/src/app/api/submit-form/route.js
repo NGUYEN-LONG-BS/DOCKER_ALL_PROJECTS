@@ -6,7 +6,7 @@ export async function POST(request) {
     const data = await request.json();
 
     // Gửi dữ liệu từ form tới backend Django
-    const response = await axios.post('http://localhost:8000/api/your-endpoint/', data, {
+    const response = await axios.post('http://localhost:8000/api/submit-form/', data, {
       headers: {
         'Content-Type': 'application/json',
       },

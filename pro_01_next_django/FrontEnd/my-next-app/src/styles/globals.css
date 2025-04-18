@@ -1,0 +1,19 @@
+/* Thêm kiểu cho body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Màu nền sáng */
+    color: #333; /* Màu chữ tối */
+  }
+  
+  /* Kiểu cho các trường input khi được focus */
+  .form-control:focus {
+    border-color: #0066cc;
+    box-shadow: 0 0 5px rgba(0, 102, 204, 0.5);
+  }
+  
+  /* Thêm kiểu cho các nút khi hover */
+  .btn-primary:hover {
+    background-color: #005bb5;
+    border-color: #005bb5;
+  }
+  
