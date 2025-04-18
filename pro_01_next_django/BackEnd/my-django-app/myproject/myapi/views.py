@@ -7,16 +7,12 @@ from .serializers import FormSubmissionSerializer
 
 class FormSubmissionView(APIView):
     def post(self, request):
-        print("staring")
         try:
-            print("b1")
             serializer = FormSubmissionSerializer(data=request.data)
             if serializer.is_valid():
-                print("b2")
                 serializer.save()  # Lưu dữ liệu vào database
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
-                print("b3")
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             # Ghi lại lỗi chi tiết để giúp bạn debug
