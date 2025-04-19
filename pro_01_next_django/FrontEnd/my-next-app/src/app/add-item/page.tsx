@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
+
 
 const AddItem = () => {
   const [itemData, setItemData] = useState({
@@ -10,10 +12,10 @@ const AddItem = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setItemData({
       ...itemData,
@@ -21,7 +23,7 @@ const AddItem = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -41,6 +43,13 @@ const AddItem = () => {
       setError('Không thể thêm mã hàng, vui lòng thử lại!');
       setLoading(false);
     }
+  };
+
+  const router = useRouter(); // Khởi tạo router
+
+  const handleGoHome = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();  // Ngăn không gửi form khi nhấn nút
+    router.push('/'); // Điều hướng về trang chủ (home)
   };
 
   return (
@@ -94,6 +103,11 @@ const AddItem = () => {
 
         <button type="submit" className="btn btn-primary w-100" disabled={loading}>
           {loading ? 'Đang gửi...' : 'Thêm Mã Hàng'}
+        </button>
+
+        {/* Nút quay lại trang home */}
+        <button onClick={handleGoHome} className="btn btn-secondary mt-4 w-100">
+            Quay Lại Trang Chủ
         </button>
       </form>
     </div>

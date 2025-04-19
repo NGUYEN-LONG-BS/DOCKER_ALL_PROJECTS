@@ -48,6 +48,9 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" href="/users">Login</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/add-item">test add item</Link>
+            </li>
 
             {/* Dropdown */}
             <li className="nav-item dropdown">

@@ -1,3 +1,6 @@
+'use client'; // Đảm bảo đây là một component client-side
+
+import { useRouter } from 'next/navigation'; // Dùng next/navigation thay vì next/router
 import Head from "next/head";
 import Header from '../components/Header';
 import Navbar from '../components/Navbar';
