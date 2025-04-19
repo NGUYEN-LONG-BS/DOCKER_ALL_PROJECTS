@@ -71,6 +71,10 @@ const HomePage = () => {
                 <Tab.Pane eventKey="tab5">
                   <h3>Nhật ký xuất kho</h3>
                   <p>Danh sách các phiếu xuất kho đã được ghi nhận trong hệ thống.</p>
+                  <div className="container mt-5">
+                    <h1 className="text-center">User Information</h1>
+                    <Table columns={columns} data={data} />
+                  </div>
                 </Tab.Pane>
                 <Tab.Pane eventKey="tab6">
                   <h3>Báo cáo tồn kho</h3>
