@@ -3,9 +3,17 @@
 import { useState } from 'react';
 import { Tab, Nav, Row, Col, Container } from 'react-bootstrap'; // Import các component từ Bootstrap
 import Navbar from '@/components/Navbar'; // Import Navbar từ components
+import Table from '@/components/table'; // Đảm bảo import đúng đường dẫn
 
 const HomePage = () => {
   const [key, setKey] = useState<string>('tab1'); // State để theo dõi tab hiện tại
+  const columns = ['Name', 'Age', 'Email']; // Định nghĩa các cột của bảng
+  const data = [
+    { Name: 'John Doe', Age: 30, Email: 'john@example.com' },
+    { Name: 'Jane Smith', Age: 25, Email: 'jane@example.com' },
+    { Name: 'Alice Johnson', Age: 28, Email: 'alice@example.com' },
+  ]; // Dữ liệu mẫu cho bảng
+
 
   return (
     <div>
@@ -67,6 +75,10 @@ const HomePage = () => {
                 <Tab.Pane eventKey="tab6">
                   <h3>Báo cáo tồn kho</h3>
                   <p>Thông tin về tình trạng tồn kho hiện tại trong hệ thống.</p>
+                  <div className="container mt-5">
+                    <h1 className="text-center">User Information</h1>
+                    <Table columns={columns} data={data} />
+                  </div>
                 </Tab.Pane>
               </Tab.Content>
             </Col>
