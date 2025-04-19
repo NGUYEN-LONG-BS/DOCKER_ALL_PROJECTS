@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css"; // Nhập Bootstrap 5
-import "./globals.css"; // Nếu bạn có thêm CSS tùy chỉnh
+import global_style from "@/styles/globals.module.css"; // Nếu bạn có thêm CSS tùy chỉnh
+import style_01 from "@/styles/style_01.module.css"; // Nếu bạn có thêm CSS tùy chỉnh
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

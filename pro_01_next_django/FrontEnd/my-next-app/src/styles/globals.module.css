@@ -1,11 +1,21 @@
+/* Thêm kiểu cho body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Màu nền sáng */
+    color: #333; /* Màu chữ tối */
+  }
+  
 /* Thêm hiệu ứng focus cho các trường nhập liệu */
 .form-control:focus {
   border-color: #0066cc; /* Thay đổi màu viền khi trường input được focus */
   box-shadow: 0 0 5px rgba(0, 102, 204, 0.5); /* Thêm bóng khi focus */
 }
-
-/* Thêm hiệu ứng hover cho nút gửi */
+  
+/* Thêm kiểu cho các nút khi hover */
 .btn-primary:hover {
-  background-color: #005bb5; /* Màu nền khi hover */
+  background-color: #005bb5;
   border-color: #005bb5;
 }
+
+
+  
