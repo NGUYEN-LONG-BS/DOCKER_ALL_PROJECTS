@@ -31,19 +31,22 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link className="nav-link" href="/">Home</Link>
+              <Link className="nav-link" href="/home">Home</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/about">BP Kinh Doanh</Link>
+              <Link className="nav-link" href="/bpkinhdoanh">BP Kinh Doanh</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/contact">BP Vật Tư</Link>
+              <Link className="nav-link" href="/bpvattu">BP Vật Tư</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/contact">BP Kế Toán - Tài Chính</Link>
+              <Link className="nav-link" href="/bpkttc">BP Kế Toán - Tài Chính</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/contact">BP Nhân Sự</Link>
+              <Link className="nav-link" href="/bpnhansu">BP Nhân Sự</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/users">Login</Link>
             </li>
 
             {/* Dropdown */}
