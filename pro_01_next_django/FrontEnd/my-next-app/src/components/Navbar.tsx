@@ -51,6 +51,12 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" href="/add-item">test add item</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/form">test form</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" href="/bpvattu/inventory">test trang thêm mã hàng</Link>
+            </li>
 
             {/* Dropdown */}
             <li className="nav-item dropdown">
