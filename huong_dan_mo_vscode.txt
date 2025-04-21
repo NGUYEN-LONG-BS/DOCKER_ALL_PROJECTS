@@ -9,6 +9,8 @@ Tạo các bảng trong cơ sở dữ liệu
 python manage.py makemigrations your_app_name --empty
 python manage.py makemigrations
 python manage.py migrate
+
+apply without actually running
 python manage.py migrate --fake
 
 Tạo dự án Django (nếu chưa có)
