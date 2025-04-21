@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar'; // Import Navbar từ components
 import Table from '@/components/table'; // Đảm bảo import đúng đường dẫn
 import TableLoginInfo from '@/components/table_login_info'; // Đảm bảo import đúng đường dẫn
 import TableInventory from '@/components/table_inventory';
+import TableInventoryReceive from '@/components/table_inventory_receive';
 
 const HomePage = () => {
   const [key, setKey] = useState<string>('tab1'); // State để theo dõi tab hiện tại
@@ -57,6 +58,9 @@ const HomePage = () => {
                 <Tab.Pane eventKey="tab1">
                   <h3>Phiếu nhập kho</h3>
                   <p>Nhập kho sản phẩm vào hệ thống quản lý kho.</p>
+                  <div className="container mt-5">
+                    <TableInventoryReceive />
+                  </div>
                 </Tab.Pane>
                 <Tab.Pane eventKey="tab2">
                   <h3>Phiếu xuất kho</h3>

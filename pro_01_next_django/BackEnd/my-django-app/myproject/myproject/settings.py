@@ -132,5 +132,4 @@ MEDIA_ROOT = BASE_DIR / 'media'  # Absolute path to the 'media' directory
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 CORS_ALLOW_ALL_ORIGINS = True  # Cho phép tất cả các domain
