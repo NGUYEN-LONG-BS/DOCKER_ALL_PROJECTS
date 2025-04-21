@@ -18,6 +18,11 @@ from .serializers import TBInventoryCategoriesSerializer
 
 from rest_framework.generics import ListAPIView
 
+import json
+from django.http import JsonResponse
+from django.conf import settings
+import os
+
 class FormSubmissionView(APIView):
     def post(self, request):
         try:
@@ -48,4 +53,23 @@ class LoginInfoListView(ListAPIView):
 class TBInventoryCategoriesView(ListAPIView):
     queryset = TB_INVENTORY_CATEGORIES.objects.all()  # Lấy tất cả dữ liệu từ model LoginInfo
     serializer_class = TBInventoryCategoriesSerializer  # Sử dụng serializer đã tạo cho LoginInfo
+
     
+def get_json_data(request):
+    # Đường dẫn đến file JSON trong thư mục static/templates/json
+    json_file_path = os.path.join(settings.BASE_DIR, 'static', 'templates', 'json', 'VT_QUAN_LY_HANG_HOA', 'PNK_table_input.json')
+    
+    try:
+        # Mở và đọc file JSON với mã hóa UTF-8
+        with open(json_file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+        
+        # Trả dữ liệu dưới dạng JSON
+        return JsonResponse(data, safe=False)
+    
+    except FileNotFoundError:
+        return JsonResponse({"error": "File not found"}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON format"}, status=400)
+    except UnicodeDecodeError:
+        return JsonResponse({"error": "Unicode decoding error in file"}, status=400)

@@ -5,6 +5,7 @@ import { Tab, Nav, Row, Col, Container } from 'react-bootstrap'; // Import các 
 import Navbar from '@/components/Navbar'; // Import Navbar từ components
 import Table from '@/components/table'; // Đảm bảo import đúng đường dẫn
 import TableLoginInfo from '@/components/table_login_info'; // Đảm bảo import đúng đường dẫn
+import TableInventory from '@/components/table_inventory';
 
 const HomePage = () => {
   const [key, setKey] = useState<string>('tab1'); // State để theo dõi tab hiện tại
@@ -68,12 +69,16 @@ const HomePage = () => {
                 <Tab.Pane eventKey="tab4">
                   <h3>Nhật ký nhập kho</h3>
                   <p>Danh sách các phiếu nhập kho đã được ghi nhận trong hệ thống.</p>
+                  <div className="container mt-5">
+                    <h1 className="text-center">Inventory</h1>
+                    <TableInventory />
+                  </div>
                 </Tab.Pane>
                 <Tab.Pane eventKey="tab5">
                   <h3>Nhật ký xuất kho</h3>
                   <p>Danh sách các phiếu xuất kho đã được ghi nhận trong hệ thống.</p>
                   <div className="container mt-5">
-                    <h1 className="text-center">User Information</h1>
+                    <h1 className="text-center">Login Information</h1>
                     <TableLoginInfo />
                   </div>
                 </Tab.Pane>
