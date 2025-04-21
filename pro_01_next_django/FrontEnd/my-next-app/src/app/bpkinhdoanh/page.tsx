@@ -2,6 +2,13 @@
 import useSWR from 'swr';
 import { useState } from 'react';
 
+import Head from "next/head";
+import Header from '@/components/Header';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+
+
+
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -19,25 +26,46 @@ export default function Home() {
   if (!data) return <div>Loading...</div>;
 
   return (
-    <div className="container mt-5">
-      <h1 className="text-center">Login Information</h1>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Login ID</th>
-            <th scope="col">Password</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((loginInfo) => (
-            <tr key={loginInfo.login_id}>
-              <td>{loginInfo.login_id}</td>
-              <td>{loginInfo.pass_field}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="d-flex flex-column min-vh-100">
+      <Head>
+        <title>TAG-Home</title>
+        <meta name="description" content="Trang chủ của công ty XYZ, nơi bạn có thể tìm thấy thông tin về sản phẩm và dịch vụ của chúng tôi." />
+      </Head>
+      <Header />
+      <Navbar />
+      <main className="container py-5 flex-grow-1">
+        <div className="row justify-content-center">
+          <div className="col-md-8">
+            <div className="card shadow-lg">
+              <div className="card-body">
+                <h2 className="card-title text-center mb-4">Login Information</h2>
+                
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Login ID</th>
+                      <th scope="col">Password</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((loginInfo) => (
+                      <tr key={loginInfo.login_id}>
+                        <td>{loginInfo.login_id}</td>
+                        <td>{loginInfo.pass_field}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }
+
 
