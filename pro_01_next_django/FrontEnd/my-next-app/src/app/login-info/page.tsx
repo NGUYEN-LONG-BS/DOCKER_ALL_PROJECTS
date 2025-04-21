@@ -37,6 +37,7 @@ const Form: React.FC = () => {
       setSuccess(true);
       setLoading(false);
     } catch (err) {
+      console.error(err);  // Log the error to the console
       setError('Không thể gửi dữ liệu, vui lòng thử lại!');
       setLoading(false);
     }
