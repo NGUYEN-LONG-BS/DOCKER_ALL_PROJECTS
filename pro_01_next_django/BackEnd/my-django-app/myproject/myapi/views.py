@@ -7,8 +7,16 @@ from rest_framework.decorators import api_view
 from .models import FormSubmission
 from .serializers import FormSubmissionSerializer
 
+from .models import LoginInfo, TB_INVENTORY_CATEGORIES
+from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer
+
 from .models import LoginInfo
 from .serializers import LoginInfoSerializer
+
+from .models import TB_INVENTORY_CATEGORIES
+from .serializers import TBInventoryCategoriesSerializer
+
+from rest_framework.generics import ListAPIView
 
 class FormSubmissionView(APIView):
     def post(self, request):
@@ -32,3 +40,12 @@ def submit_login_info(request):
             serializer.save()
             return Response({"message": "Dữ liệu đã được thêm thành công!"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginInfoListView(ListAPIView):
+    queryset = LoginInfo.objects.all()  # Lấy tất cả dữ liệu từ model LoginInfo
+    serializer_class = LoginInfoSerializer  # Sử dụng serializer đã tạo cho LoginInfo
+
+class TBInventoryCategoriesView(ListAPIView):
+    queryset = TB_INVENTORY_CATEGORIES.objects.all()  # Lấy tất cả dữ liệu từ model LoginInfo
+    serializer_class = TBInventoryCategoriesSerializer  # Sử dụng serializer đã tạo cho LoginInfo
+    
