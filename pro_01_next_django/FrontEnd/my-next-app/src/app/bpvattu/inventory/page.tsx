@@ -1,8 +1,10 @@
 'use client';
 import { useState } from 'react';
+import React from 'react';
+import useSWR from 'swr';
 import { Tab, Nav, Row, Col, Container } from 'react-bootstrap';
 import Navbar from '@/components/Navbar';
-import Table from '@/components/table';
+import Table_Test from '@/components/table';
 import TableLoginInfo from '@/components/table_login_info';
 import TableInventoryCategories from '@/components/table_inventory_category';
 
@@ -11,12 +13,6 @@ type TabKey = 'tab1' | 'tab2' | 'tab3' | 'tab4' | 'tab5' | 'tab6';
 
 const HomePage = () => {
   const [key, setKey] = useState<TabKey>('tab1');
-  const columns = ['Name', 'Age', 'Email'];
-  const data = [
-    { Name: 'John Doe', Age: 30, Email: 'john@example.com' },
-    { Name: 'Jane Smith', Age: 25, Email: 'jane@example.com' },
-    { Name: 'Alice Johnson', Age: 28, Email: 'alice@example.com' },
-  ];
 
   return (
     <div>
@@ -90,10 +86,9 @@ const HomePage = () => {
                 {/* Báo cáo tồn kho */}
                 <Tab.Pane eventKey="tab6">
                   <h3>Báo cáo tồn kho</h3>
-                  <p>Thông tin về tình trạng tồn kho hiện tại trong hệ thống.</p>
-                  <h1 className="text-center">User Information</h1>
-                  <Table columns={columns} data={data} />
+                  <Table_Test/>
                 </Tab.Pane>
+
               </Tab.Content>
             </Col>
           </Row>

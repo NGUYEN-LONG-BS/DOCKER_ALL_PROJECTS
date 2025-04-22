@@ -1,5 +1,4 @@
 'use client';
-
 import React from 'react';
 
 interface TableProps {
@@ -40,4 +39,20 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
   );
 };
 
-export default Table;
+// Dữ liệu của bạn
+const columns = ['Name', 'Age', 'Email'];
+const data = [
+  { Name: 'John Doe', Age: 30, Email: 'john@example.com' },
+  { Name: 'Jane Smith', Age: 25, Email: 'jane@example.com' },
+  { Name: 'Alice Johnson', Age: 28, Email: 'alice@example.com' },
+];
+
+const Table_Test = () => {
+  return (
+    <div>
+      <Table columns={columns} data={data} />
+    </div>
+  );
+};
+
+export default Table_Test;
