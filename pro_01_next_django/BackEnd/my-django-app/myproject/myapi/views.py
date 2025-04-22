@@ -8,7 +8,7 @@ from .models import FormSubmission
 from .serializers import FormSubmissionSerializer
 
 from .models import LoginInfo, TB_INVENTORY_CATEGORIES
-from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer
+from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
 
 from .models import LoginInfo
 from .serializers import LoginInfoSerializer
@@ -57,6 +57,15 @@ class FormSubmissionView(APIView):
 def submit_login_info(request):
     if request.method == 'POST':
         serializer = LoginInfoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Dữ liệu đã được thêm thành công!"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def submit_inventory_categories(request):
+    if request.method == 'POST':
+        serializer = InventoryCategoriesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Dữ liệu đã được thêm thành công!"}, status=status.HTTP_201_CREATED)
