@@ -17,8 +17,8 @@ interface InventoryFormData {
 const InventoryForm: React.FC = () => {
   // State để lưu trữ dữ liệu form
   const [formData, setFormData] = useState<InventoryFormData>({
-    id_nhan_vien: '',
-    xoa_sua: '',
+    id_nhan_vien: 'NV01',
+    xoa_sua: 'new',
     ma_hang: '',
     ten_hang: '',
     dvt: '',
@@ -45,7 +45,7 @@ const InventoryForm: React.FC = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post('http://localhost:8000/api/submit-login-info/', formData, {
+      const response = await axios.post('http://localhost:8000/api/submit-inventory-categories/', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -65,7 +65,7 @@ const InventoryForm: React.FC = () => {
     <div className="container mt-5">
       <h2 className="mb-4">Nhập thông tin hàng hóa</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
+        <div className="mb-3" style={{ display: 'none' }}>
           <label htmlFor="id_nhan_vien" className="form-label">ID Nhân Viên</label>
           <input
             type="text"
@@ -77,7 +77,7 @@ const InventoryForm: React.FC = () => {
             required
           />
         </div>
-        <div className="mb-3">
+        <div className="mb-3" style={{ display: 'none' }}>
           <label htmlFor="xoa_sua" className="form-label">Xóa/Sửa</label>
           <input
             type="text"
