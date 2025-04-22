@@ -1,10 +1,9 @@
 'use client';
 import { useState } from 'react';
-import React from 'react';
-import useSWR from 'swr';
 import { Tab, Nav, Row, Col, Container } from 'react-bootstrap';
 import Navbar from '@/components/Navbar';
-import Table_Test from '@/components/table';
+import Table_Test from '@/components/table_test';
+import Table_TestCategory from '@/components/table_test_02category';
 import TableLoginInfo from '@/components/table_login_info';
 import TableInventoryCategories from '@/components/table_inventory_category';
 
@@ -72,7 +71,7 @@ const HomePage = () => {
                 {/* Nhật ký nhập kho */}
                 <Tab.Pane eventKey="tab4">
                   <h3>Nhật ký nhập kho</h3>
-                  
+                  <Table_TestCategory/>
                 </Tab.Pane>
 
                 {/* Nhật ký xuất kho */}
