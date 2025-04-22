@@ -1,9 +1,7 @@
 'use client';
-
 import React from 'react';
 import useSWR from 'swr';
 
-// Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 interface ColumnConfig {
@@ -23,47 +21,44 @@ interface ColumnConfig {
 }
 
 interface TableConfig {
-  name: string;
-  description: string;
-  headings: {
-    family: string;
-    size: number;
-    weight: string;
-  };
-  columns: ColumnConfig[];
-  scrollbars: {
-    vertical: {
-      enabled: boolean;
-      command: string;
+  table: {
+    name: string;
+    description: string;
+    headings: {
+      family: string;
+      size: number;
+      weight: string;
     };
-    horizontal: {
-      enabled: boolean;
-      command: string;
+    columns: ColumnConfig[];
+    general: {
+      border_width: number;
+      relief: string;
+      padding: number;
+      background_color: string;
     };
-  };
-  general: {
-    border_width: number;
-    relief: string;
-    padding: number;
-    background_color: string;
   };
 }
 
-const TableInventory: React.FC = () => {
-  // Fetch dữ liệu từ API để lấy cấu hình bảng
-  const { data, error } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/', fetcher);
-  // const { data, error } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/VT_QUAN_LY_HANG_HOA/inventoies_categoried.json', fetcher);
+interface InventoryRow {
+  [key: string]: any; // Each row can have multiple fields with dynamic keys
+}
 
-  // Kiểm tra lỗi hoặc trạng thái loading
-  if (error) return <div>Error loading data...</div>;
-  if (!data) return <div>Loading...</div>;
+const TableInventoryCategories: React.FC = () => {
+  // Fetch table config data
+  const { data: tableConfig, error: tableError } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/', fetcher);
+  // Fetch inventory data
+  const { data: inventoryData, error: inventoryError } = useSWR<InventoryRow[]>('http://localhost:8000/api/get-inventory-categories/', fetcher);
 
-  // Lấy thông tin cấu hình bảng từ dữ liệu JSON
-  const { columns, general } = data.table;
+  // Check for errors or loading states
+  if (tableError || inventoryError) return <div>Error loading data...</div>;
+  if (!tableConfig || !inventoryData) return <div>Loading...</div>;
+
+  const { columns, general } = tableConfig.table;
 
   return (
     <div className="table-responsive">
-      <table className="table table-bordered table-striped" style={{ borderColor: general.background_color }}>
+      <h2>{tableConfig.table.name}</h2>
+      <table className="table table-bordered table-striped">
         <thead>
           <tr>
             {columns.map((column, index) => (
@@ -86,11 +81,11 @@ const TableInventory: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {/* Tạo dữ liệu cho bảng */}
-          {data.length > 0 ? (
-            data.map((row, rowIndex) => (
+          {/* Render table rows */}
+          {inventoryData.length > 0 ? (
+            inventoryData.map((row: InventoryRow, rowIndex: number) => (
               <tr key={rowIndex}>
-                {columns.map((column, colIndex) => (
+                {columns.map((column, colIndex: number) => ( // Explicitly typing colIndex as number
                   <td
                     key={colIndex}
                     style={{
@@ -102,7 +97,7 @@ const TableInventory: React.FC = () => {
                       fontWeight: column.font.weight,
                     }}
                   >
-                    {row[column.name.toLowerCase().replace(/\s+/g, '_')]} {/* Thay đổi theo tên cột của dữ liệu */}
+                    {row[column.name.toLowerCase().replace(/\s+/g, '_')]} {/* Adjust this line based on your data */}
                   </td>
                 ))}
               </tr>
@@ -120,4 +115,4 @@ const TableInventory: React.FC = () => {
   );
 };
 
-export default TableInventory;
+export default TableInventoryCategories;

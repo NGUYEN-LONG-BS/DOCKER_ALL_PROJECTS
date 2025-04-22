@@ -14,4 +14,4 @@ class LoginInfoSerializer(serializers.ModelSerializer):
 class TBInventoryCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = TB_INVENTORY_CATEGORIES
-        fields = ['ma_hang', 'ten_hang', 'dvt', 'sl_ton_dau_ky', 'don_gia_ton_dau_ky', 'ma_kho_luu_tru']
+        fields = ['ma_hang', 'ten_hang', 'dvt']

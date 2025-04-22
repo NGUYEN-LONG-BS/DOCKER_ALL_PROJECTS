@@ -63,12 +63,12 @@ def submit_login_info(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginInfoListView(ListAPIView):
-    queryset = LoginInfo.objects.all()  # Lấy tất cả dữ liệu từ model LoginInfo
-    serializer_class = LoginInfoSerializer  # Sử dụng serializer đã tạo cho LoginInfo
+    queryset = LoginInfo.objects.all()
+    serializer_class = LoginInfoSerializer
 
 class TBInventoryCategoriesView(ListAPIView):
-    queryset = TB_INVENTORY_CATEGORIES.objects.all()  # Lấy tất cả dữ liệu từ model LoginInfo
-    serializer_class = TBInventoryCategoriesSerializer  # Sử dụng serializer đã tạo cho LoginInfo
+    queryset = TB_INVENTORY_CATEGORIES.objects.all()
+    serializer_class = TBInventoryCategoriesSerializer
 
 #========================================================================================================================
 #========================================================================================================================
@@ -78,9 +78,27 @@ class TBInventoryCategoriesView(ListAPIView):
 #========================================================================================================================
 #========================================================================================================================
 
+# def get_json_data(request, file_path: str):
+#     json_file_path = os.path.join(settings.BASE_DIR, 'static', 'templates', 'json', file_path)
+#     print(json_file_path)
+#     try:
+#         # Mở và đọc file JSON với mã hóa UTF-8
+#         with open(json_file_path, 'r', encoding='utf-8') as file:
+#             data = json.load(file)
+        
+#         # Trả dữ liệu dưới dạng JSON
+#         return JsonResponse(data, safe=False)
+    
+#     except FileNotFoundError:
+#         return JsonResponse({"error": "File not found"}, status=404)
+#     except json.JSONDecodeError:
+#         return JsonResponse({"error": "Invalid JSON format"}, status=400)
+#     except UnicodeDecodeError:
+#         return JsonResponse({"error": "Unicode decoding error in file"}, status=400)
+    
 def get_json_data(request):
     # Đường dẫn đến file JSON trong thư mục static/templates/json
-    json_file_path = os.path.join(settings.BASE_DIR, 'static', 'templates', 'json', 'VT_QUAN_LY_HANG_HOA', 'PNK_table_input.json')
+    json_file_path = os.path.join(settings.BASE_DIR, 'static', 'templates', 'json', 'VT_QUAN_LY_HANG_HOA', 'inventoies_categoried.json')
     
     try:
         # Mở và đọc file JSON với mã hóa UTF-8

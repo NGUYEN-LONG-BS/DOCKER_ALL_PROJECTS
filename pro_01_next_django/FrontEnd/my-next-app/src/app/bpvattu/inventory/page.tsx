@@ -1,22 +1,22 @@
 'use client';
-
 import { useState } from 'react';
-import { Tab, Nav, Row, Col, Container } from 'react-bootstrap'; // Import các component từ Bootstrap
-import Navbar from '@/components/Navbar'; // Import Navbar từ components
-import Table from '@/components/table'; // Đảm bảo import đúng đường dẫn
-import TableLoginInfo from '@/components/table_login_info'; // Đảm bảo import đúng đường dẫn
-import TableInventory from '@/components/table_inventory';
-import TableInventoryReceive from '@/components/table_inventory_receive';
+import { Tab, Nav, Row, Col, Container } from 'react-bootstrap';
+import Navbar from '@/components/Navbar';
+import Table from '@/components/table';
+import TableLoginInfo from '@/components/table_login_info';
+import TableInventoryCategories from '@/components/table_inventory_category';
+
+// Define the type for tab keys
+type TabKey = 'tab1' | 'tab2' | 'tab3' | 'tab4' | 'tab5' | 'tab6';
 
 const HomePage = () => {
-  const [key, setKey] = useState<string>('tab1'); // State để theo dõi tab hiện tại
-  const columns = ['Name', 'Age', 'Email']; // Định nghĩa các cột của bảng
+  const [key, setKey] = useState<TabKey>('tab1');
+  const columns = ['Name', 'Age', 'Email'];
   const data = [
     { Name: 'John Doe', Age: 30, Email: 'john@example.com' },
     { Name: 'Jane Smith', Age: 25, Email: 'jane@example.com' },
     { Name: 'Alice Johnson', Age: 28, Email: 'alice@example.com' },
-  ]; // Dữ liệu mẫu cho bảng
-
+  ];
 
   return (
     <div>
@@ -26,7 +26,7 @@ const HomePage = () => {
       <Container className="mt-5">
         <h1 className="text-center mb-4">QUẢN LÝ HÀNG HOÁ</h1>
 
-        <Tab.Container id="left-tabs-example" activeKey={key} onSelect={(k: string) => setKey(k)}>
+        <Tab.Container id="left-tabs-example" activeKey={key} onSelect={(k: string | null) => setKey(k as TabKey || 'tab1')}>
           <Row>
             <Col sm={12}>
               {/* Dùng Nav với variant="pills" để hiển thị các tab ngang */}
@@ -55,44 +55,44 @@ const HomePage = () => {
           <Row>
             <Col sm={12}>
               <Tab.Content>
+                {/* Phiếu nhập kho */}
                 <Tab.Pane eventKey="tab1">
                   <h3>Phiếu nhập kho</h3>
-                  <p>Nhập kho sản phẩm vào hệ thống quản lý kho.</p>
-                  <div className="container mt-5">
-                    <TableInventoryReceive />
-                  </div>
+                  
                 </Tab.Pane>
+
+                {/* Phiếu xuất kho */}
                 <Tab.Pane eventKey="tab2">
                   <h3>Phiếu xuất kho</h3>
-                  <p>Xuất kho sản phẩm khỏi hệ thống quản lý kho.</p>
+                  
                 </Tab.Pane>
+
+                {/* Tạo mới mã hàng */}
                 <Tab.Pane eventKey="tab3">
                   <h3>Tạo mới mã hàng</h3>
-                  <p>Tạo và thêm mã hàng mới vào hệ thống.</p>
+                  <TableInventoryCategories />
                 </Tab.Pane>
+
+                {/* Nhật ký nhập kho */}
                 <Tab.Pane eventKey="tab4">
                   <h3>Nhật ký nhập kho</h3>
-                  <p>Danh sách các phiếu nhập kho đã được ghi nhận trong hệ thống.</p>
-                  <div className="container mt-5">
-                    <h1 className="text-center">Inventory</h1>
-                    <TableInventory />
-                  </div>
+                  
                 </Tab.Pane>
+
+                {/* Nhật ký xuất kho */}
                 <Tab.Pane eventKey="tab5">
                   <h3>Nhật ký xuất kho</h3>
                   <p>Danh sách các phiếu xuất kho đã được ghi nhận trong hệ thống.</p>
-                  <div className="container mt-5">
-                    <h1 className="text-center">Login Information</h1>
-                    <TableLoginInfo />
-                  </div>
+                  <h1 className="text-center">Login Information</h1>
+                  <TableLoginInfo />
                 </Tab.Pane>
+
+                {/* Báo cáo tồn kho */}
                 <Tab.Pane eventKey="tab6">
                   <h3>Báo cáo tồn kho</h3>
                   <p>Thông tin về tình trạng tồn kho hiện tại trong hệ thống.</p>
-                  <div className="container mt-5">
-                    <h1 className="text-center">User Information</h1>
-                    <Table columns={columns} data={data} />
-                  </div>
+                  <h1 className="text-center">User Information</h1>
+                  <Table columns={columns} data={data} />
                 </Tab.Pane>
               </Tab.Content>
             </Col>

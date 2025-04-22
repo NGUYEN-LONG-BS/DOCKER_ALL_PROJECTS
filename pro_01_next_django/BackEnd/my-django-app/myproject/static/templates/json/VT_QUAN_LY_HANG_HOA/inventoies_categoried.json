@@ -1,0 +1,89 @@
+{
+    "table": {
+        "name": "Danh sách mặt hàng",
+        "description": "Tập hợp cấu hình cho bảng.",
+        "headings": {
+            "family": "Arial",
+            "size": 12,
+            "weight": "bold"
+        },
+        "columns": [
+            {
+                "name": "STT",
+                "width": "50px",
+                "min_width": "50px",
+                "anchor": "center",
+                "stretch": true,
+                "font": {
+                    "family": "Arial",
+                    "size": 12,
+                    "weight": "bold"
+                },
+                "background_color": "#f0f0f0",
+                "foreground_color": "#000000",
+                "show": "headings"
+            },
+            {
+                "name": "Mã hàng",
+                "width": "150px",
+                "min_width": "100px",
+                "anchor": "left",
+                "stretch": true,
+                "font": {
+                    "family": "Verdana",
+                    "size": 12,
+                    "weight": "normal"
+                },
+                "background_color": "#ffffff",
+                "foreground_color": "#000000",
+                "show": "headings"
+            },
+            {
+                "name": "Tên mặt hàng",
+                "width": "300px",
+                "min_width": "200px",
+                "anchor": "left",
+                "stretch": true,
+                "font": {
+                    "family": "Verdana",
+                    "size": 12,
+                    "weight": "normal"
+                },
+                "background_color": "#ffffff",
+                "foreground_color": "#000000",
+                "show": "headings"
+            },
+            {
+                "name": "Đvt",
+                "width": "100px",
+                "min_width": "100px",
+                "anchor": "left",
+                "stretch": true,
+                "font": {
+                    "family": "Verdana",
+                    "size": 12,
+                    "weight": "normal"
+                },
+                "background_color": "#ffffff",
+                "foreground_color": "#000000",
+                "show": "headings"
+            }
+        ],
+        "scrollbars": {
+            "vertical": {
+                "enabled": true,
+                "command": "yscrollcommand"
+            },
+            "horizontal": {
+                "enabled": true,
+                "command": "xscrollcommand"
+            }
+        },
+        "general": {
+            "border_width": 1,
+            "relief": "solid",
+            "padding": "8px",
+            "background_color": "#be03fc"
+        }
+    }
+}
