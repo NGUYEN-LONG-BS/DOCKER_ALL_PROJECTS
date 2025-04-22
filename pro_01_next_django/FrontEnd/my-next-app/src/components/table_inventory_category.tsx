@@ -43,7 +43,7 @@ interface InventoryRow {
   [key: string]: any; // Each row can have multiple fields with dynamic keys
 }
 
-const TableInventoryCategories: React.FC = () => {
+const Table_inventory_category: React.FC = () => {
   // Fetch table config data
   const { data: tableConfig, error: tableError } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/', fetcher);
   // Fetch inventory data
@@ -57,7 +57,7 @@ const TableInventoryCategories: React.FC = () => {
 
   return (
     <div className="table-responsive">
-      <h2>{tableConfig.table.name}</h2>
+      {/* <h2>{tableConfig.table.name}</h2> */}
       <table className="table table-bordered table-striped">
         <thead>
           <tr>
@@ -115,4 +115,4 @@ const TableInventoryCategories: React.FC = () => {
   );
 };
 
-export default TableInventoryCategories;
+export default Table_inventory_category;

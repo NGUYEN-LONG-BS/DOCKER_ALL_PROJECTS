@@ -83,7 +83,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
 };
 
 // Component Table_TestCategory
-const Table_TestCategory = () => {
+const Table_test_02category = () => {
   // Fetch dữ liệu từ API
   const { data: tableConfig, error: tableError } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/', fetcher);
   const { data: inventoryData, error: inventoryError } = useSWR<InventoryRow[]>('http://localhost:8000/api/get-inventory-categories/', fetcher);
@@ -113,4 +113,4 @@ const Table_TestCategory = () => {
   );
 };
 
-export default Table_TestCategory;
+export default Table_test_02category;

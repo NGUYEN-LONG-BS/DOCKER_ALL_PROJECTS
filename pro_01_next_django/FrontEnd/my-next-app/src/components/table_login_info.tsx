@@ -11,7 +11,7 @@ interface LoginInfo {
   pass_field: string;
 }
 
-const TableLoginInfo: React.FC = () => {
+const Table_login_info: React.FC = () => {
   // Fetch dữ liệu từ API
   const { data, error } = useSWR<LoginInfo[]>('http://localhost:8000/api/get-login-info/', fetcher);
 
@@ -53,4 +53,4 @@ const TableLoginInfo: React.FC = () => {
   );
 };
 
-export default TableLoginInfo;
+export default Table_login_info;

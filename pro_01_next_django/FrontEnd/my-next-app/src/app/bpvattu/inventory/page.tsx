@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { Tab, Nav, Row, Col, Container } from 'react-bootstrap';
 import Navbar from '@/components/Navbar';
 import Table_Test from '@/components/table_test';
-import Table_TestCategory from '@/components/table_test_02category';
-import TableLoginInfo from '@/components/table_login_info';
-import TableInventoryCategories from '@/components/table_inventory_category';
+import Table_test_02category from '@/components/table_test_02category';
+import Table_login_info from '@/components/table_login_info';
+import Table_inventory_category from '@/components/table_inventory_category';
 
 // Define the type for tab keys
 type TabKey = 'tab1' | 'tab2' | 'tab3' | 'tab4' | 'tab5' | 'tab6';
@@ -65,21 +65,19 @@ const HomePage = () => {
                 {/* Tạo mới mã hàng */}
                 <Tab.Pane eventKey="tab3">
                   <h3>Tạo mới mã hàng</h3>
-                  <TableInventoryCategories />
+                  <Table_inventory_category />
                 </Tab.Pane>
 
                 {/* Nhật ký nhập kho */}
                 <Tab.Pane eventKey="tab4">
                   <h3>Nhật ký nhập kho</h3>
-                  <Table_TestCategory/>
+                  <Table_test_02category/>
                 </Tab.Pane>
 
                 {/* Nhật ký xuất kho */}
                 <Tab.Pane eventKey="tab5">
                   <h3>Nhật ký xuất kho</h3>
-                  <p>Danh sách các phiếu xuất kho đã được ghi nhận trong hệ thống.</p>
-                  <h1 className="text-center">Login Information</h1>
-                  <TableLoginInfo />
+                  <Table_login_info/>
                 </Tab.Pane>
 
                 {/* Báo cáo tồn kho */}
