@@ -2,11 +2,11 @@
 
 import { DateComponent } from "./date-component"
 import { DocumentNumberComponent } from "./document-number-component"
-import { SupplierComponent } from "./supplier-component"
+import { SupplierComponent } from "./SupplierComponent"
 import { ProductComponent } from "./product-component"
-import { InventoryTable } from "./inventory-table"
+import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip"
 
-export function InventoryForm() {
+export function InventoryFormStockReceiveSlip() {
   return (
     <div className="card mt-3">
       <div className="card-header text-center">
@@ -31,7 +31,7 @@ export function InventoryForm() {
           </div>
         </div>
 
-        <InventoryTable />
+        <InventoryTableStockReceiveSlip />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
           <button type="button" className="btn btn-outline-secondary">

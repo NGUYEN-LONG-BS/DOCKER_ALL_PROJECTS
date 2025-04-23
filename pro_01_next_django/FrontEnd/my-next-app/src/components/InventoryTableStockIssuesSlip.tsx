@@ -12,7 +12,7 @@ interface InventoryItem {
   notes: string
 }
 
-export function InventoryTable() {
+export function InventoryTableStockIssuesSlip() {
   const [items, setItems] = useState<InventoryItem[]>([])
 
   const addRow = () => {

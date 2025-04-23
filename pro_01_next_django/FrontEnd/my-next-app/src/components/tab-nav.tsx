@@ -1,6 +1,7 @@
 "use client"
 import { useState } from "react"
-import { InventoryForm } from "./inventory-form"
+import { InventoryFormStockReceiveSlip } from "./InventoryFormStockReceiveSlip"
+import { InventoryFormStockIssuesSlip } from "./InventoryFormStockIssuesSlip"
 
 export function TabNav() {
   const [activeTab, setActiveTab] = useState("nhap-kho")
@@ -71,19 +72,10 @@ export function TabNav() {
       </ul>
       <div className="tab-content" id="inventoryTabsContent">
         <div className={`tab-pane fade ${activeTab === "nhap-kho" ? "show active" : ""}`} role="tabpanel">
-          <InventoryForm />
+          <InventoryFormStockReceiveSlip />
         </div>
         <div className={`tab-pane fade ${activeTab === "xuat-kho" ? "show active" : ""}`} role="tabpanel">
-          <div className="card mt-3">
-            <div className="card-header text-center">
-              <h5 className="card-title mb-0">PHIẾU XUẤT KHO</h5>
-            </div>
-            <div className="card-body">
-              <div className="d-flex align-items-center justify-content-center" style={{ height: "250px" }}>
-                <span className="text-muted">Nội dung phiếu xuất kho sẽ được hiển thị ở đây</span>
-              </div>
-            </div>
-          </div>
+          <InventoryFormStockIssuesSlip />
         </div>
         <div className={`tab-pane fade ${activeTab === "tao-moi-ma-hang" ? "show active" : ""}`} role="tabpanel">
           <div className="card mt-3">
