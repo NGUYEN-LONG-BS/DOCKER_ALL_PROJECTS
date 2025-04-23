@@ -63,7 +63,7 @@ export function InventoryTableStockIssuesSlip() {
                 <th>Mã hàng</th>
                 <th>Tên mặt hàng</th>
                 <th>Đvt</th>
-                <th>SL thực nhập</th>
+                <th>SL thực xuất</th>
                 <th>Đơn giá</th>
                 <th>Giá trị</th>
                 <th>Ghi chú sản phẩm</th>

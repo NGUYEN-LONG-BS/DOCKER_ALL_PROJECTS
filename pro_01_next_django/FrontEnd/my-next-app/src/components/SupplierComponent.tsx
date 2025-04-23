@@ -41,7 +41,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               type="text"
               className="form-control"
               id="supplier-code"
-              placeholder="Nhập mã"
+              placeholder="Search here ..."
               value={supplier.code}
               onChange={(e) => handleChange("code", e.target.value)}
               style={{ width: "120px" }}
@@ -50,7 +50,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               type="text"
               className="form-control flex-grow-1"
               id="supplier-name"
-              placeholder="Nhập tên nhà cung cấp"
+              placeholder="..."
               value={supplier.name}
               onChange={(e) => handleChange("name", e.target.value)}
             />
@@ -63,7 +63,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               type="text"
               className="form-control"
               id="supplier-tax"
-              placeholder="Mã số thuế"
+              placeholder="..."
               value={supplier.taxId}
               onChange={(e) => handleChange("taxId", e.target.value)}
               style={{ width: "120px" }}
@@ -72,7 +72,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               type="text"
               className="form-control flex-grow-1"
               id="supplier-address"
-              placeholder="Nhập địa chỉ"
+              placeholder="..."
               value={supplier.address}
               onChange={(e) => handleChange("address", e.target.value)}
             />
