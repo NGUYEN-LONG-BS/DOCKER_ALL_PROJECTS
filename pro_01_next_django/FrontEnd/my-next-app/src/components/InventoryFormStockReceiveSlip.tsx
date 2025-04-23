@@ -3,7 +3,7 @@
 import { DateComponent } from "./date-component"
 import { DocumentNumberComponent } from "./document-number-component"
 import { SupplierComponent } from "./ObjectSupplierComponent"
-import { ProductComponent } from "./product-component"
+import { ProductComponent } from "./ObjectProductComponent"
 import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip"
 
 export function InventoryFormStockReceiveSlip() {
