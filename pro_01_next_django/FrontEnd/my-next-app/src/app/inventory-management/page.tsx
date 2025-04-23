@@ -10,7 +10,7 @@ export default function Home() {
       <header className="sticky-top border-bottom bg-white">
         <div className="container-fluid d-flex align-items-center py-2">
           <div className="d-flex align-items-center">
-            <img src="/logo.svg" alt="Tuan An Group" className="me-2" style={{ height: "40px" }} />
+            <img src="/images/logo-Light.jpg" alt="Tuan An Group" className="me-2" style={{ height: "40px" }} />
             <span className="d-none d-md-inline fs-4 fw-bold text-primary">TUAN AN GROUP</span>
           </div>
           <MainNav className="mx-4" />
