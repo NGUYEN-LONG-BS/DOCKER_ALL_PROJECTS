@@ -2,7 +2,7 @@
 
 import { DateComponent } from "./date-component"
 import { DocumentNumberComponent } from "./document-number-component"
-import { SupplierComponent } from "./SupplierComponent"
+import { SupplierComponent } from "./ObjectSupplierComponent"
 import { ProductComponent } from "./product-component"
 import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip"
 
