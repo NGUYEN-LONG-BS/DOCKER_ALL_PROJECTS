@@ -154,7 +154,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               type="text"
               className="form-control flex-grow-1"
               id="supplier-name"
-              placeholder=""
+              placeholder="tên đối tượng"
               value={supplier.name}
               onChange={(e) => handleChange("name", e.target.value)} // Update supplier name
             />
@@ -204,7 +204,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
             type="text"
             className="form-control"
             id="supplier-tax"
-            placeholder=""
+            placeholder="mst"
             value={supplier.taxId}
             onChange={(e) => handleChange("taxId", e.target.value)} // Update supplier tax ID
             style={{ width: "170px" }}
@@ -214,7 +214,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
             type="text"
             className="form-control flex-grow-1"
             id="supplier-address"
-            placeholder=""
+            placeholder="địa chỉ"
             value={supplier.address}
             onChange={(e) => handleChange("address", e.target.value)} // Update supplier address
           />

@@ -149,10 +149,10 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       <div className="card-body">
         <div className="mb-3 position-relative">
           <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
-            <label htmlFor="Product-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
+            <label htmlFor="Product-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }}>
               Sản phẩm
             </label>
-            {/* Mã nhà cung cấp input */}
+            {/* Mã hàng input */}
             <input
               type="text"
               className="form-control"
@@ -164,12 +164,12 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               onFocus={handleFocus} // Show dropdown on focus
               style={{ width: "150px" }}
             />
-            {/* Tên nhà cung cấp input */}
+            {/* Tên hàng input */}
             <input
               type="text"
               className="form-control flex-grow-1"
               id="Product-name"
-              placeholder=""
+              placeholder="tên hàng"
               value={Product.name}
               onChange={(e) => handleChange("name", e.target.value)} // Update Product name
             />
@@ -212,52 +212,56 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
           )}
         </div>
 
-        <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
+        <div className="row mb-0">
           {/* Đvt input */}
-          <input
-            type="text"
-            className="form-control"
-            id="Product-unit"
-            placeholder=""
-            value={Product.unit}
-            onChange={(e) => handleChange("unit", e.target.value)} // Update Product tax ID
-            style={{ width: "80px" }}
-          />
-          <label htmlFor="Product-Quantity" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
-              Số lượng
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="quantity"
-            placeholder=""
-            onChange={handleQuantityChange}
-            style={{ width: "120px" }}
-          />
-          <label htmlFor="Product-unitPrice" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
-              Đơn giá
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="unitPrice"
-            placeholder=""
-            onChange={handlePriceChange}
-            style={{ width: "120px" }}
-          />
+          <div className="col-md-3">
+            <input
+              type="text"
+              className="form-control"
+              id="Product-unit"
+              placeholder="đvt"
+              value={Product.unit}
+              onChange={(e) => handleChange("unit", e.target.value)} // Update Product tax ID
+            />
+          </div>
+
+          {/* Số lượng input */}
+          <div className="col-md-3">
+            <input
+              type="text"
+              className="form-control"
+              id="quantity"
+              placeholder="số lượng"
+              onChange={handleQuantityChange}
+            />
+          </div>
+
+          {/* Đơn giá input */}
+          <div className="col-md-3">
+            <input
+              type="text"
+              className="form-control"
+              id="unitPrice"
+              placeholder="đơn giá"
+              onChange={handlePriceChange}
+            />
+          </div>
+
           {/* Dropdown for kho nhập */}
-          <select
-            className="form-control"
-            style={{ width: "100px" }}
-            defaultValue="Kho A"
-          >
-            <option value="Kho A">Kho A</option>
-            {mockWarehouses.map((warehouse, index) => (
-              <option key={index} value={warehouse}>
-                {warehouse}
-              </option>
-            ))}
-          </select>
+          <div className="col-md-3">
+            <select
+              className="form-control"
+              id="Product-warehouse"
+              defaultValue="Kho A"
+            >
+              <option value="Kho A">Kho A</option>
+              {mockWarehouses.map((warehouse, index) => (
+                <option key={index} value={warehouse}>
+                  {warehouse}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
     </div>

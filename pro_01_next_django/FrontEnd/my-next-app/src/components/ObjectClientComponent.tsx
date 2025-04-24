@@ -137,7 +137,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
             <label htmlFor="Client-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
               Khách hàng
             </label>
-            {/* Mã nhà cung cấp input */}
+            {/* Mã khách hàng input */}
             <input
               type="text"
               className="form-control"
@@ -149,12 +149,12 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
               onFocus={handleFocus} // Show dropdown on focus
               style={{ width: "150px" }}
             />
-            {/* Tên nhà cung cấp input */}
+            {/* Tên khách hàng input */}
             <input
               type="text"
               className="form-control flex-grow-1"
               id="Client-name"
-              placeholder=""
+              placeholder="tên đối tượng"
               value={Client.name}
               onChange={(e) => handleChange("name", e.target.value)} // Update Client name
             />
@@ -204,7 +204,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
             type="text"
             className="form-control"
             id="Client-tax"
-            placeholder=""
+            placeholder="mst"
             value={Client.taxId}
             onChange={(e) => handleChange("taxId", e.target.value)} // Update Client tax ID
             style={{ width: "170px" }}
@@ -214,7 +214,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
             type="text"
             className="form-control flex-grow-1"
             id="Client-address"
-            placeholder=""
+            placeholder="địa chỉ"
             value={Client.address}
             onChange={(e) => handleChange("address", e.target.value)} // Update Client address
           />
