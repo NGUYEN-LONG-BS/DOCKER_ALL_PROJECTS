@@ -74,7 +74,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     setSearchText(s.code) // Set the search text to the Product's code
     setFilteredProducts([]) // Clear the filtered Products list
     setShowDropdown(false) // Hide the dropdown after selection
-        
+    
     // Reset quantity, unit price, and value when product is selected
     setQuantity("")
     setUnitPrice("")
