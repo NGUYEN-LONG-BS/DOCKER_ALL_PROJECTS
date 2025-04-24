@@ -14,7 +14,7 @@ interface InventoryItem {
 }
 
 interface InventoryTableStockReceiveSlipProps {
-  product: { code: string; name: string; unit: string; quantity: number; price: number }
+  product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string }
 }
 
 export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockReceiveSlipProps) {
@@ -29,8 +29,11 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
       quantity: product.quantity,
       price: product.price,
       value: product.quantity * product.price,
-      notes: "",
+      notes: product.notes,
     }
+    // In ra console.log các giá trị dùng để thêm dòng mới
+    console.log("Adding row with values:", newItem)
+    // Thêm newItem vào mảng items
     setItems([...items, newItem])
   }
 

@@ -8,21 +8,35 @@ import { ProductComponent } from "./ObjectProductComponent"
 import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip"
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 
+// Định nghĩa InventoryItemExport interface
+interface InventoryItemExport {
+  id: number
+  code: string
+  name: string
+  unit: string
+  quantity: number
+  price: number
+  value: number
+  notes: string
+}
+
 export function InventoryFormStockReceiveSlip() {
-  const [selectedProduct, setSelectedProduct] = useState({
+  // Cập nhật state để lưu trữ thông tin sản phẩm với kiểu InventoryItemExport
+  const [selectedProduct, setSelectedProduct] = useState<InventoryItemExport>({
+    id: Date.now(),  // Tạo id tạm thời
     code: "",
     name: "",
     unit: "",
     quantity: 0,
-    price: 0
+    price: 0,
+    value: 0,
+    notes: ""
   })
 
-  const handleProductChange = (product: { code: string; name: string; unit: string }) => {
-    setSelectedProduct({
-      ...product,
-      quantity: 0,  // Reset lại quantity mỗi lần chọn sản phẩm mới
-      price: 0  // Cập nhật giá trị price từ ProductComponent
-    })
+  // Hàm xử lý khi sản phẩm thay đổi
+  const handleProductChange = (product: InventoryItemExport) => {
+    console.log("Selected product:", product)  // In thông tin sản phẩm ra console
+    setSelectedProduct(product)  // Cập nhật thông tin sản phẩm đã chọn
   }
 
   return (

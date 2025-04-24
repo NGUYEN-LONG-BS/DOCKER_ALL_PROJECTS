@@ -2,6 +2,18 @@
 
 import { useState, useRef, useEffect } from "react"
 
+// Define InventoryItemExport interface if it's not imported from another file
+interface InventoryItemExport { 
+  id: number;
+  code: string;
+  name: string;
+  unit: string;
+  quantity: number;
+  price: number;
+  value: number;
+  notes: string;
+}
+
 interface ProductData {
   code: string
   name: string
@@ -11,18 +23,18 @@ interface ProductData {
 const mockWarehouses = ["Kho A", "Kho B", "Kho C"]
 
 interface ProductComponentProps {
-  onProductChange?: (Product: ProductData) => void
+  onProductChange?: (Product: InventoryItemExport) => void
 }
 
 const mockProducts: ProductData[] = [
-  { code: "HH-01A-001", name: "Mặt hàng A1", unit: "cái"},
-  { code: "HH-01A-002", name: "Mặt hàng A2", unit: "chiếc"},
-  { code: "HH-01A-003", name: "Mặt hàng A3", unit: "thùng"},
-  { code: "HH-01A-004", name: "Mặt hàng A4", unit: "bộ"},
-  { code: "HH-01A-005", name: "Mặt hàng A5", unit: "kg"},
-  { code: "HH-01A-006", name: "Mặt hàng A6", unit: "m"},
-  { code: "HH-01A-007", name: "Mặt hàng A7", unit: "lít"},
-  { code: "HH-01A-008", name: "Mặt hàng A8", unit: "hộp"},
+  { code: "HH-01A-001", name: "Mặt hàng A1", unit: "cái" },
+  { code: "HH-01A-002", name: "Mặt hàng A2", unit: "chiếc" },
+  { code: "HH-01A-003", name: "Mặt hàng A3", unit: "thùng" },
+  { code: "HH-01A-004", name: "Mặt hàng A4", unit: "bộ" },
+  { code: "HH-01A-005", name: "Mặt hàng A5", unit: "kg" },
+  { code: "HH-01A-006", name: "Mặt hàng A6", unit: "m" },
+  { code: "HH-01A-007", name: "Mặt hàng A7", unit: "lít" },
+  { code: "HH-01A-008", name: "Mặt hàng A8", unit: "hộp" },
 ]
 
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
@@ -41,6 +53,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const [quantity, setQuantity] = useState<string>("")
   const [unitPrice, setUnitPrice] = useState<string>("")
   const [value, setValue] = useState<string>("")
+  const [notes, setNotes] = useState<string>("")
 
   const wrapperRef = useRef<HTMLDivElement>(null) // Reference to the wrapper for outside click detection
   const dropdownRef = useRef<HTMLUListElement>(null) // Reference to the dropdown list for scroll control
@@ -79,8 +92,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     setQuantity("")
     setUnitPrice("")
     setValue("")
+    setNotes("")
 
-    if (onProductChange) onProductChange(s) // Trigger the callback if provided
+    if (onProductChange) onProductChange(createInventoryItem(s)) // Trigger the callback if provided
   }
 
   // Close the dropdown if a click occurs outside the wrapper
@@ -96,12 +110,12 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside) // Clean up on component unmount
   }, [])
 
-  // Function to handle changes in the other fields (name, unit, address)
+  // Function to handle changes in the other fields
   const handleChange = (field: keyof ProductData, value: string) => {
     const updatedProduct = { ...Product, [field]: value }
     setProduct(updatedProduct) // Update the Product state
     if (onProductChange) {
-      onProductChange(updatedProduct) // Trigger the callback if provided
+      onProductChange(createInventoryItem(updatedProduct)) // Trigger the callback if provided
     }
   }
 
@@ -138,6 +152,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       }
     }
   }, [highlightedIndex]) // Trigger this effect when the highlighted index changes
+  
   // Function to update the value (price * quantity)
   const updateValue = (quantity: string, price: string) => {
     const qty = parseFloat(quantity.replace(/\./g, "")) || 0
@@ -162,6 +177,24 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     const formattedValue = formatNumber(value)
     setUnitPrice(formattedValue)
     updateValue(quantity, formattedValue) // Update value when unit price changes
+  }
+
+  // Create InventoryItemExport object
+  const createInventoryItem = (product: ProductData): InventoryItemExport => {
+    const qty = parseFloat(quantity.replace(/\./g, "")) || 0
+    const price = parseFloat(unitPrice.replace(/\./g, "")) || 0
+    const value = qty * price
+
+    return {
+      id: Date.now(), // Temporarily use current timestamp as ID
+      code: product.code,
+      name: product.name,
+      unit: product.unit,
+      quantity: qty,
+      price: price,
+      value: value,
+      notes: "", // You can modify this if you need to include notes
+    }
   }
 
   return (
