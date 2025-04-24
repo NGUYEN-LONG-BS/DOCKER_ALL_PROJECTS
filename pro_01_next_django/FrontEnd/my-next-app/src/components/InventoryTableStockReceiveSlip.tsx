@@ -9,20 +9,26 @@ interface InventoryItem {
   unit: string
   quantity: number
   price: number
+  value: number
   notes: string
 }
 
-export function InventoryTableStockReceiveSlip() {
+interface InventoryTableStockReceiveSlipProps {
+  product: { code: string; name: string; unit: string; quantity: number; price: number }
+}
+
+export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockReceiveSlipProps) {
   const [items, setItems] = useState<InventoryItem[]>([])
 
   const addRow = () => {
     const newItem: InventoryItem = {
       id: items.length + 1,
-      code: "",
-      name: "",
-      unit: "",
-      quantity: 0,
-      price: 0,
+      code: product.code,
+      name: product.name,
+      unit: product.unit,
+      quantity: product.quantity,
+      price: product.price,
+      value: product.quantity * product.price,
       notes: "",
     }
     setItems([...items, newItem])
@@ -38,7 +44,7 @@ export function InventoryTableStockReceiveSlip() {
 
   const clearRows = () => {
     setItems([])
-  }
+    }
 
   return (
     <div className="mt-3">
@@ -122,6 +128,7 @@ export function InventoryTableStockReceiveSlip() {
                         onChange={(e) => {
                           const newItems = [...items]
                           newItems[index].quantity = Number(e.target.value)
+                          newItems[index].value = newItems[index].quantity * newItems[index].price
                           setItems(newItems)
                         }}
                         style={{ width: "80px" }}
@@ -135,6 +142,7 @@ export function InventoryTableStockReceiveSlip() {
                         onChange={(e) => {
                           const newItems = [...items]
                           newItems[index].price = Number(e.target.value)
+                          newItems[index].value = newItems[index].quantity * newItems[index].price
                           setItems(newItems)
                         }}
                         style={{ width: "100px" }}
@@ -144,7 +152,7 @@ export function InventoryTableStockReceiveSlip() {
                       <input
                         type="number"
                         className="form-control form-control-sm"
-                        value={item.quantity * item.price}
+                        value={item.value} // Hiển thị giá trị tính toán
                         readOnly
                         style={{ width: "100px" }}
                       />

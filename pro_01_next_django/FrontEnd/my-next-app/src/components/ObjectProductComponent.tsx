@@ -128,6 +128,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       }
     }
   }, [highlightedIndex]) // Trigger this effect when the highlighted index changes
+  
   const formatNumber = (value: string) => {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
   }
@@ -145,9 +146,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   }
 
   return (
-    <div className="card card-dashed" ref={wrapperRef}>
-      <div className="card-body">
-        <div className="mb-3 position-relative">
+    <div className="card" ref={wrapperRef}>
+      <div className="card-body py-2">
+        <div className="mb-1 position-relative">
           <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
             <label htmlFor="Product-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }}>
               Sản phẩm
@@ -212,7 +213,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
           )}
         </div>
 
-        <div className="row mb-0">
+        <div className="row mb-1">
           {/* Đvt input */}
           <div className="col-md-3">
             <input
@@ -247,22 +248,31 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
             />
           </div>
 
-          {/* Dropdown for kho nhập */}
+          {/* Giá trị input */}
           <div className="col-md-3">
-            <select
+            <input
+              type="text"
               className="form-control"
-              id="Product-warehouse"
-              defaultValue="Kho A"
-            >
-              <option value="Kho A">Kho A</option>
-              {mockWarehouses.map((warehouse, index) => (
-                <option key={index} value={warehouse}>
-                  {warehouse}
-                </option>
-              ))}
-            </select>
+              id="value"
+              placeholder="giá trị"
+              onChange={handlePriceChange}
+            />
           </div>
         </div>
+
+        <div className="row mb-1">
+          {/* notes input */}
+          <div className="col-md-12">
+            <input
+              type="text"
+              className="form-control"
+              id="Product-notes"
+              placeholder="ghi chú sản phẩm"
+            />
+          </div>
+
+        </div>
+
       </div>
     </div>
   )

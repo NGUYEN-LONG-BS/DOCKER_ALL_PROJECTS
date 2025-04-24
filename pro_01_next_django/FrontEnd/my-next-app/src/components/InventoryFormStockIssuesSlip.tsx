@@ -5,6 +5,7 @@ import { DocumentNumberComponent } from "./document-number-component"
 import { ClientComponent } from "./ObjectClientComponent"
 import { ProductComponent } from "./ObjectProductComponent"
 import { InventoryTableStockIssuesSlip } from "./InventoryTableStockIssuesSlip"
+import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 
 export function InventoryFormStockIssuesSlip() {
   return (
@@ -22,9 +23,10 @@ export function InventoryFormStockIssuesSlip() {
           </div>
         </div>
 
-        <div className="row g-3 mt-2">
+        <div className="row g-3 mt-1">
           <div className="col-md-6">
             <ClientComponent />
+            <InventoryNoteOfStockReceiveSlip />
           </div>
           <div className="col-md-6">
             <ProductComponent />

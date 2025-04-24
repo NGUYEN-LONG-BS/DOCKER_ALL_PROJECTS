@@ -130,10 +130,10 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
   }, [highlightedIndex]) // Trigger this effect when the highlighted index changes
 
   return (
-    <div className="card card-dashed" ref={wrapperRef}>
-      <div className="card-body">
-        <div className="mb-3 position-relative">
-          <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
+    <div className="card" ref={wrapperRef}>
+      <div className="card-body py-2">
+        <div className="mb-1 position-relative">
+          <div className="d-flex align-items-center gap-1" style={{ marginBottom: "0px" }}>
             <label htmlFor="Client-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
               Khách hàng
             </label>
@@ -198,7 +198,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
           )}
         </div>
 
-        <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
+        <div className="d-flex align-items-center gap-1" style={{ marginBottom: "0px" }}>
           {/* Mã số thuế input */}
           <input
             type="text"
