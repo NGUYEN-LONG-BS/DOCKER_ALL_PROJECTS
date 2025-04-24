@@ -34,12 +34,10 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
     setItems([...items, newItem])
   }
 
-  const deleteRow = () => {
-    if (items.length > 0) {
-      const newItems = [...items]
-      newItems.pop()
-      setItems(newItems)
-    }
+  const deleteRow = (id: number) => {
+    const newItems = items.filter(item => item.id !== id)
+    // Cập nhật lại số thứ tự sau khi xóa
+    setItems(newItems.map((item, index) => ({ ...item, id: index + 1 })))
   }
 
   const clearRows = () => {
@@ -51,9 +49,6 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
       <div className="d-flex justify-content-center gap-2 mb-3">
         <button type="button" className="btn btn-primary" onClick={addRow}>
           Add Row
-        </button>
-        <button type="button" className="btn btn-outline-secondary" onClick={deleteRow}>
-          Delete Row
         </button>
         <button type="button" className="btn btn-outline-secondary" onClick={clearRows}>
           Clear Rows
@@ -170,11 +165,40 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
                         }}
                       />
                     </td>
+                    <td>
+                      {/* Thêm button xóa với icon dấu "X" */}
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm position-relative"
+                        onClick={() => deleteRow(item.id)}
+                        style={{
+                          borderRadius: "50%",
+                          padding: "5px 10px",
+                          width: "30px",
+                          height: "30px",
+                        }}
+                      >
+                        <span className="fw-bold">X</span> {/* Dấu X */}
+                        {/* Hiển thị chữ "Delete" khi hover */}
+                        <span
+                          className="position-absolute top-100 start-50 translate-middle-x"
+                          style={{
+                            fontSize: "12px",
+                            whiteSpace: "nowrap",
+                            display: "none",
+                            zIndex: 1,
+                          }}
+                          id={`deleteText-${item.id}`}
+                        >
+                          Delete
+                        </span>
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={8} className="text-center py-4">
+                  <td colSpan={9} className="text-center py-4">
                     No data
                   </td>
                 </tr>

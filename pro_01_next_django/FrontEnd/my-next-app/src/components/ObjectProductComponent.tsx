@@ -37,6 +37,11 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const [showDropdown, setShowDropdown] = useState(false) // Flag to toggle dropdown visibility
   const [loading, setLoading] = useState(false) // Loading state to show spinner when filtering
 
+  // State to manage quantity, price, and value
+  const [quantity, setQuantity] = useState<string>("")
+  const [unitPrice, setUnitPrice] = useState<string>("")
+  const [value, setValue] = useState<string>("")
+
   const wrapperRef = useRef<HTMLDivElement>(null) // Reference to the wrapper for outside click detection
   const dropdownRef = useRef<HTMLUListElement>(null) // Reference to the dropdown list for scroll control
 
@@ -128,6 +133,13 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       }
     }
   }, [highlightedIndex]) // Trigger this effect when the highlighted index changes
+  // Function to update the value (price * quantity)
+  const updateValue = (quantity: string, price: string) => {
+    const qty = parseFloat(quantity.replace(/\./g, "")) || 0
+    const unitPrice = parseFloat(price.replace(/\./g, "")) || 0
+    const result = qty * unitPrice
+    setValue(formatNumber(result.toString())) // Set the formatted value
+  }
   
   const formatNumber = (value: string) => {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
@@ -136,13 +148,15 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\./g, "")
     const formattedValue = formatNumber(value)
-    e.target.value = formattedValue
+    setQuantity(formattedValue)
+    updateValue(formattedValue, unitPrice) // Update value when quantity changes
   }
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\./g, "")
     const formattedValue = formatNumber(value)
-    e.target.value = formattedValue
+    setUnitPrice(formattedValue)
+    updateValue(quantity, formattedValue) // Update value when unit price changes
   }
 
   return (
@@ -213,9 +227,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
           )}
         </div>
 
-        <div className="row mb-1">
+        <div className="row mb-1 g-1">
           {/* Đvt input */}
-          <div className="col-md-3">
+          <div className="col-md-2">
             <input
               type="text"
               className="form-control"
@@ -233,7 +247,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="quantity"
               placeholder="số lượng"
-              onChange={handleQuantityChange}
+              value={quantity} // Bind the quantity value
+              onChange={handleQuantityChange} // Update quantity
             />
           </div>
 
@@ -244,18 +259,20 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="unitPrice"
               placeholder="đơn giá"
-              onChange={handlePriceChange}
+              value={unitPrice} // Bind the unit price value
+              onChange={handlePriceChange} // Update unit price
             />
           </div>
 
           {/* Giá trị input */}
-          <div className="col-md-3">
+          <div className="col-md-4">
             <input
               type="text"
               className="form-control"
               id="value"
               placeholder="giá trị"
-              onChange={handlePriceChange}
+              value={value} // Bind the value (calculated)
+              readOnly
             />
           </div>
         </div>
@@ -270,9 +287,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               placeholder="ghi chú sản phẩm"
             />
           </div>
-
         </div>
-
       </div>
     </div>
   )
