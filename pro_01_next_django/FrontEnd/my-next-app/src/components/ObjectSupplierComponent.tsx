@@ -166,10 +166,11 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               ref={dropdownRef} // Reference to the dropdown for auto-scrolling
               style={{
                 zIndex: 1000,
-                width: "calc(100% - 100px)",
+                width: "calc(100% - 0px)",
                 marginLeft: "100px",
                 maxHeight: "200px", // Set max height
                 overflowY: "auto", // Enable scroll when list is too long
+                gridTemplateColumns: "1fr 5fr 1fr 3fr", // Điều chỉnh số cột và kích thước cột (tỷ lệ)
               }}
             >
               {loading ? (
@@ -182,7 +183,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
                     style={{ cursor: "pointer", fontSize: "0.9rem" }}
                     onClick={() => handleSelectSupplier(s)} // Select item on click
                   >
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 2fr 3fr", gap: "10px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr 1fr 3fr", gap: "10px" }}>
                       <div><strong>{s.code}</strong></div>
                       <div>{s.name}</div>
                       <div>{s.taxId}</div>
