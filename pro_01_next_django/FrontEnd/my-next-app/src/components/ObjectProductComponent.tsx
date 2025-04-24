@@ -60,8 +60,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       const filtered = mockProducts.filter(
         s =>
           s.code.toLowerCase().includes(text.toLowerCase()) || // Filter by code
-          s.name.toLowerCase().includes(text.toLowerCase()) || // Filter by name
-          s.unit.toLowerCase().includes(text.toLowerCase()) // Filter by tax ID
+          s.name.toLowerCase().includes(text.toLowerCase())
       )
       setFilteredProducts(filtered) // Set the filtered list of Products
       setLoading(false) // Hide loading spinner after filtering
@@ -196,10 +195,11 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               ref={dropdownRef} // Reference to the dropdown for auto-scrolling
               style={{
                 zIndex: 1000,
-                width: "calc(100% - 100px)",
+                width: "calc(100% - 50px)",
                 marginLeft: "100px",
                 maxHeight: "200px", // Set max height
                 overflowY: "auto", // Enable scroll when list is too long
+                gridTemplateColumns: "2fr 3fr 1fr", // Điều chỉnh số cột và kích thước cột (tỷ lệ)
               }}
             >
               {loading ? (
@@ -212,7 +212,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                     style={{ cursor: "pointer", fontSize: "0.9rem" }}
                     onClick={() => handleSelectProduct(s)} // Select item on click
                   >
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 2fr 3fr", gap: "10px" }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "2fr 3fr 1fr", gap: "10px" }}>
                       <div><strong>{s.code}</strong></div>
                       <div>{s.name}</div>
                       <div>{s.unit}</div>
