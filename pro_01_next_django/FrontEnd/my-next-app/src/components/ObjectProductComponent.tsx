@@ -6,22 +6,23 @@ interface ProductData {
   code: string
   name: string
   unit: string
-  address: string
 }
+
+const mockWarehouses = ["Kho A", "Kho B", "Kho C"]
 
 interface ProductComponentProps {
   onProductChange?: (Product: ProductData) => void
 }
 
 const mockProducts: ProductData[] = [
-  { code: "HH-01A-001", name: "Mặt hàng A1", unit: "cái", address: "Hà Nội" },
-  { code: "HH-01A-002", name: "Mặt hàng A2", unit: "chiếc", address: "TP.HCM" },
-  { code: "HH-01A-003", name: "Mặt hàng A3", unit: "thùng", address: "Đà Nẵng" },
-  { code: "HH-01A-004", name: "Mặt hàng A4", unit: "bộ", address: "Cần Thơ" },
-  { code: "HH-01A-005", name: "Mặt hàng A5", unit: "kg", address: "Hà Nội" },
-  { code: "HH-01A-006", name: "Mặt hàng A6", unit: "m", address: "TP.HCM" },
-  { code: "HH-01A-007", name: "Mặt hàng A7", unit: "lít", address: "Đà Nẵng" },
-  { code: "HH-01A-008", name: "Mặt hàng A8", unit: "hộp", address: "Cần Thơ" },
+  { code: "HH-01A-001", name: "Mặt hàng A1", unit: "cái"},
+  { code: "HH-01A-002", name: "Mặt hàng A2", unit: "chiếc"},
+  { code: "HH-01A-003", name: "Mặt hàng A3", unit: "thùng"},
+  { code: "HH-01A-004", name: "Mặt hàng A4", unit: "bộ"},
+  { code: "HH-01A-005", name: "Mặt hàng A5", unit: "kg"},
+  { code: "HH-01A-006", name: "Mặt hàng A6", unit: "m"},
+  { code: "HH-01A-007", name: "Mặt hàng A7", unit: "lít"},
+  { code: "HH-01A-008", name: "Mặt hàng A8", unit: "hộp"},
 ]
 
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
@@ -30,7 +31,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     code: "",
     name: "",
     unit: "",
-    address: "",
   })
   const [searchText, setSearchText] = useState("") // The search text entered by the user
   const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([]) // Filtered list of Products based on search text
@@ -128,6 +128,21 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       }
     }
   }, [highlightedIndex]) // Trigger this effect when the highlighted index changes
+  const formatNumber = (value: string) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+  }
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\./g, "")
+    const formattedValue = formatNumber(value)
+    e.target.value = formattedValue
+  }
+
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\./g, "")
+    const formattedValue = formatNumber(value)
+    e.target.value = formattedValue
+  }
 
   return (
     <div className="card card-dashed" ref={wrapperRef}>
@@ -186,7 +201,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                       <div><strong>{s.code}</strong></div>
                       <div>{s.name}</div>
                       <div>{s.unit}</div>
-                      <div>{s.address}</div>
                     </div>
                   </li>
                 ))
@@ -199,39 +213,51 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
         </div>
 
         <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
-          {/* Mã số thuế input */}
+          {/* Đvt input */}
           <input
             type="text"
             className="form-control"
-            id="Product-tax"
+            id="Product-unit"
             placeholder=""
             value={Product.unit}
             onChange={(e) => handleChange("unit", e.target.value)} // Update Product tax ID
-            style={{ width: "170px" }}
+            style={{ width: "80px" }}
           />
-          {/* Địa chỉ input */}
+          <label htmlFor="Product-Quantity" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
+              Số lượng
+          </label>
           <input
             type="text"
-            className="form-control flex-grow-1"
-            id="Product-address"
-            placeholder=""
-            value={Product.address}
-            onChange={(e) => handleChange("address", e.target.value)} // Update Product address
-          />
-          <input
-            type="number"
             className="form-control"
             id="quantity"
-            placeholder="Số lượng nhập"
-            style={{ width: "100px" }}
+            placeholder=""
+            onChange={handleQuantityChange}
+            style={{ width: "120px" }}
           />
+          <label htmlFor="Product-unitPrice" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
+              Đơn giá
+          </label>
           <input
-            type="number"
+            type="text"
             className="form-control"
             id="unitPrice"
-            placeholder="Đơn giá"
-            style={{ width: "150px" }}
+            placeholder=""
+            onChange={handlePriceChange}
+            style={{ width: "120px" }}
           />
+          {/* Dropdown for kho nhập */}
+          <select
+            className="form-control"
+            style={{ width: "100px" }}
+            defaultValue="Kho A"
+          >
+            <option value="Kho A">Kho A</option>
+            {mockWarehouses.map((warehouse, index) => (
+              <option key={index} value={warehouse}>
+                {warehouse}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
     </div>
