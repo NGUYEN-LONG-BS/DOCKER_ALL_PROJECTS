@@ -20,8 +20,6 @@ interface ProductData {
   unit: string
 }
 
-const mockWarehouses = ["Kho A", "Kho B", "Kho C"]
-
 interface ProductComponentProps {
   onProductChange?: (Product: InventoryItemExport) => void
 }
@@ -43,7 +41,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     code: "",
     name: "",
     unit: "",
+    
   })
+
   const [searchText, setSearchText] = useState("") // The search text entered by the user
   const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([]) // Filtered list of Products based on search text
   const [showDropdown, setShowDropdown] = useState(false) // Flag to toggle dropdown visibility
@@ -82,9 +82,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   }
 
   // Handle selection of a Product from the dropdown
-  const handleSelectProduct = (s: ProductData) => {
-    setProduct(s) // Set the selected Product in the state
-    setSearchText(s.code) // Set the search text to the Product's code
+  const handleSelectProduct = (selectedItem: ProductData) => {
+    setProduct(selectedItem) // Set the selected Product in the state
+    setSearchText(selectedItem.code) // Set the search text to the Product's code
     setFilteredProducts([]) // Clear the filtered Products list
     setShowDropdown(false) // Hide the dropdown after selection
         
@@ -94,7 +94,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     setValue("")
     setNotes("")
 
-    if (onProductChange) onProductChange(createInventoryItem(s)) // Trigger the callback if provided
+    if (onProductChange) 
+      onProductChange(createInventoryItem(selectedItem)) // Trigger the callback if provided
   }
 
   // Close the dropdown if a click occurs outside the wrapper
@@ -112,11 +113,41 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Function to handle changes in the other fields
   const handleChange = (field: keyof ProductData, value: string) => {
+    console.log("Updated data")
     const updatedProduct = { ...Product, [field]: value }
     setProduct(updatedProduct) // Update the Product state
     if (onProductChange) {
       onProductChange(createInventoryItem(updatedProduct)) // Trigger the callback if provided
     }
+    console.log("Updated data:", updatedProduct)
+  }
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\./g, "")
+    const formattedValue = formatNumber(value)
+    setQuantity(formattedValue)  // Update quantity
+    
+    // Update the Product state with the new quantity
+    const updatedProduct = {
+      ...Product, 
+      // Include other fields here to ensure the Product state is fully updated
+      quantity: formattedValue,
+      price: unitPrice,  // Assuming you want to keep the price from the current state
+      value: (parseFloat(formattedValue.replace(/\./g, "")) * parseFloat(unitPrice.replace(/\./g, ""))).toString(), // Calculate value based on quantity and price
+      notes: notes,  // Keep existing notes, or modify if needed
+    }
+    
+    setProduct(updatedProduct)  // Update the Product state
+
+    updateValue(formattedValue, unitPrice) // Update value when quantity changes
+
+    // Cập nhật InventoryItemExport sau khi thay đổi đơn giá
+    if (onProductChange) {
+      const updatedInventoryItem = createInventoryItem(updatedProduct)  // Create updated InventoryItemExport with the updated Product
+      onProductChange(updatedInventoryItem)  // Call callback to update product information
+    }
+    console.log("Updated data:", updatedProduct); // Log updated data
+    console.log("updatedInventoryItem", createInventoryItem(updatedProduct)); // Log updated data
   }
 
   // Keyboard navigation logic: navigate through the dropdown using arrow keys
@@ -165,18 +196,30 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
   }
 
-  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\./g, "")
-    const formattedValue = formatNumber(value)
-    setQuantity(formattedValue)
-    updateValue(formattedValue, unitPrice) // Update value when quantity changes
-  }
+  
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\./g, "")
     const formattedValue = formatNumber(value)
     setUnitPrice(formattedValue)
     updateValue(quantity, formattedValue) // Update value when unit price changes
+    // Cập nhật InventoryItemExport sau khi thay đổi đơn giá
+    if (onProductChange) {
+      const updatedProduct = createInventoryItem(Product) // Tạo lại InventoryItemExport với thông tin hiện tại của sản phẩm
+      onProductChange(updatedProduct) // Gọi callback để cập nhật thông tin sản phẩm
+    }
+  }
+
+  const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value // Lấy giá trị ghi chú từ input
+    setNotes(value) // Cập nhật giá trị ghi chú trong state
+  
+    // Cập nhật InventoryItemExport sau khi thay đổi ghi chú
+    if (onProductChange) {
+      const updatedProduct = createInventoryItem(Product) // Tạo lại InventoryItemExport với thông tin hiện tại của sản phẩm
+      updatedProduct.notes = value // Cập nhật trường ghi chú trong InventoryItemExport
+      onProductChange(updatedProduct) // Gọi callback để cập nhật thông tin sản phẩm
+    }
   }
 
   // Create InventoryItemExport object
@@ -193,7 +236,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       quantity: qty,
       price: price,
       value: value,
-      notes: "", // You can modify this if you need to include notes
+      notes: notes, // You can modify this if you need to include notes
     }
   }
 
@@ -252,9 +295,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                     onClick={() => handleSelectProduct(s)} // Select item on click
                   >
                     <div style={{ display: "grid", gridTemplateColumns: "2fr 3fr 1fr", gap: "10px" }}>
-                      <div><strong>{s.code}</strong></div>
-                      <div>{s.name}</div>
-                      <div>{s.unit}</div>
+                      <div><span>{s.code}</span></div>
+                      <div><span>{s.name}</span></div>
+                      <div><span>{s.unit}</span></div>
                     </div>
                   </li>
                 ))
@@ -324,6 +367,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="Product-notes"
               placeholder="ghi chú sản phẩm"
+              value={notes} // Bind the unit price value
+              onChange={handleNotesChange} // Update unit price
             />
           </div>
         </div>

@@ -35,7 +35,7 @@ export function InventoryFormStockReceiveSlip() {
 
   // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: InventoryItemExport) => {
-    console.log("Selected product:", product)  // In thông tin sản phẩm ra console
+    console.log("Exported product:", product)  // In thông tin sản phẩm ra console
     setSelectedProduct(product)  // Cập nhật thông tin sản phẩm đã chọn
   }
 
