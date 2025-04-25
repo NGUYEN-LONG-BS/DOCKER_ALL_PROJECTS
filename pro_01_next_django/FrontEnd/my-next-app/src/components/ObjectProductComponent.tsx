@@ -18,10 +18,11 @@ interface ProductData {
   code: string
   name: string
   unit: string
+  
 }
 
 interface ProductComponentProps {
-  onProductChange?: (Product: InventoryItemExport) => void
+  onProductChange?: (ProductProps: InventoryItemExport) => void
 }
 
 const mockProducts: ProductData[] = [
@@ -41,7 +42,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     code: "",
     name: "",
     unit: "",
-    
   })
 
   const [searchText, setSearchText] = useState("") // The search text entered by the user
@@ -63,11 +63,15 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Filter function that is triggered when user types in the search box
   const handleFilter = (text: string) => {
+    console.log("handleFilter:")
+    // cập nhật text vào searchText
     setSearchText(text)
+    // Xóa timeout hiện tại nếu có: nếu người dùng đang gõ thì không tìm kiếm
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current) // Clear the previous timeout
     }
 
+    // Trong vòng 300ms, nếu người dùng không gõ thì tìm kiếm
     debounceTimeout.current = setTimeout(() => {
       setLoading(true) // Show loading spinner while filtering
       const filtered = mockProducts.filter(
@@ -83,6 +87,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Handle selection of a Product from the dropdown
   const handleSelectProduct = (selectedItem: ProductData) => {
+    console.log("handleSelectProduct:")
     setProduct(selectedItem) // Set the selected Product in the state
     setSearchText(selectedItem.code) // Set the search text to the Product's code
     setFilteredProducts([]) // Clear the filtered Products list
@@ -100,6 +105,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Close the dropdown if a click occurs outside the wrapper
   const handleClickOutside = (event: MouseEvent) => {
+    console.log("handleClickOutside:")
     if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
       setShowDropdown(false) // Close the dropdown
     }
@@ -113,41 +119,78 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Function to handle changes in the other fields
   const handleChange = (field: keyof ProductData, value: string) => {
-    console.log("Updated data")
-    const updatedProduct = { ...Product, [field]: value }
+    console.log("handleChange:")
+    const updatedProduct = {
+      ...Product, 
+      [field]: value }
+
     setProduct(updatedProduct) // Update the Product state
     if (onProductChange) {
       onProductChange(createInventoryItem(updatedProduct)) // Trigger the callback if provided
     }
-    console.log("Updated data:", updatedProduct)
+    console.log("handleChange:", updatedProduct)
   }
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\./g, "")
-    const formattedValue = formatNumber(value)
-    setQuantity(formattedValue)  // Update quantity
+    console.log("qty before")
+    console.log(e.target.value);
+    const newQuantity = e.target.value.replace(/\./g, "")
+    console.log(newQuantity);
+    const formattedNewQuantity = formatNumber(newQuantity)  // Định dạng lại số lượng nếu cần
+
+      // Cập nhật state quantity
+    setQuantity(formattedNewQuantity)  // Update quantity
     
     // Update the Product state with the new quantity
     const updatedProduct = {
       ...Product, 
       // Include other fields here to ensure the Product state is fully updated
-      quantity: formattedValue,
+      quantity: newQuantity,  // Cập nhật quantity
       price: unitPrice,  // Assuming you want to keep the price from the current state
-      value: (parseFloat(formattedValue.replace(/\./g, "")) * parseFloat(unitPrice.replace(/\./g, ""))).toString(), // Calculate value based on quantity and price
+      value: (parseFloat(formattedNewQuantity.replace(/\./g, "")) * parseFloat(unitPrice.replace(/\./g, ""))).toString(), // Calculate value based on quantity and price
       notes: notes,  // Keep existing notes, or modify if needed
     }
     
+    console.log("updatedProduct before:", updatedProduct); // Log updated data
     setProduct(updatedProduct)  // Update the Product state
 
-    updateValue(formattedValue, unitPrice) // Update value when quantity changes
+    // Cập nhật giá trị khi quantity thay đổi
+    updateValue(newQuantity, unitPrice) // Update value when quantity changes
+
+    // Cập nhật InventoryItemExport và truyền callback cho component cha
+    if (onProductChange) {
+      const updatedInventoryItem = createInventoryItem(updatedProduct)  // Create updated InventoryItemExport with the updated Product
+      onProductChange(updatedInventoryItem)  // Call callback to update product information
+    }
+    console.log("updatedProduct after:", updatedProduct); // Log updated data
+  }
+
+  const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handleUnitPriceChange:")
+    const newUnitPrice = e.target.value.replace(/\./g, "")
+    const formattedNewUnitPrice = formatNumber(newUnitPrice)
+    setUnitPrice(formattedNewUnitPrice)
+
+    // Update the Product state with the new quantity
+    const updatedProduct = {
+      ...Product, 
+      // Include other fields here to ensure the Product state is fully updated
+      quantity: quantity,
+      price: formattedNewUnitPrice,  // Assuming you want to keep the price from the current state
+      value: (parseFloat(quantity.replace(/\./g, "")) * parseFloat(formattedNewUnitPrice.replace(/\./g, ""))).toString(), // Calculate value based on quantity and price
+      notes: notes,  // Keep existing notes, or modify if needed
+    }
+
+    setProduct(updatedProduct)  // Update the Product state
+
+    updateValue(quantity, formattedNewUnitPrice) // Update value when unit price changes
 
     // Cập nhật InventoryItemExport sau khi thay đổi đơn giá
     if (onProductChange) {
       const updatedInventoryItem = createInventoryItem(updatedProduct)  // Create updated InventoryItemExport with the updated Product
       onProductChange(updatedInventoryItem)  // Call callback to update product information
     }
-    console.log("Updated data:", updatedProduct); // Log updated data
-    console.log("updatedInventoryItem", createInventoryItem(updatedProduct)); // Log updated data
+    console.log("Unit Price change:", updatedProduct); // Log updated data
   }
 
   // Keyboard navigation logic: navigate through the dropdown using arrow keys
@@ -196,20 +239,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
   }
 
-  
-
-  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\./g, "")
-    const formattedValue = formatNumber(value)
-    setUnitPrice(formattedValue)
-    updateValue(quantity, formattedValue) // Update value when unit price changes
-    // Cập nhật InventoryItemExport sau khi thay đổi đơn giá
-    if (onProductChange) {
-      const updatedProduct = createInventoryItem(Product) // Tạo lại InventoryItemExport với thông tin hiện tại của sản phẩm
-      onProductChange(updatedProduct) // Gọi callback để cập nhật thông tin sản phẩm
-    }
-  }
-
   const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value // Lấy giá trị ghi chú từ input
     setNotes(value) // Cập nhật giá trị ghi chú trong state
@@ -228,6 +257,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     const price = parseFloat(unitPrice.replace(/\./g, "")) || 0
     const value = qty * price
 
+    console.log("createInventoryItem:");
+    console.log(qty);
     return {
       id: Date.now(), // Temporarily use current timestamp as ID
       code: product.code,
@@ -236,8 +267,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       quantity: qty,
       price: price,
       value: value,
-      notes: notes, // You can modify this if you need to include notes
+      notes: notes,
     }
+    
   }
 
   return (
@@ -342,7 +374,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               id="unitPrice"
               placeholder="đơn giá"
               value={unitPrice} // Bind the unit price value
-              onChange={handlePriceChange} // Update unit price
+              onChange={handleUnitPriceChange} // Update unit price
             />
           </div>
 
