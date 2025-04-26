@@ -61,6 +61,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   // State to manage quantity, price, and value
   const [quantity, setQuantity] = useState<string>("")
   const [unitPrice, setUnitPrice] = useState<string>("")
+  const [formattedUnitPrice, setFormattedUnitPrice] = useState<string>("");
   const [value, setValue] = useState<string>("")
   const [notes, setNotes] = useState<string>("")
 
@@ -169,6 +170,78 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   }
 
+  // const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value; // Lấy giá trị đơn giá từ input
+
+  //   // Nếu chứa chữ cái thì không làm gì
+  //   if (/[a-zA-Z]/.test(value)) {
+  //     return; // Không làm gì cả
+  //   }
+
+  //   // Nếu có dấu phẩy, cho phép người dùng nhập, nhưng xử lý và chuyển sang số đúng
+  //   // Loại bỏ tất cả ký tự không phải số và dấu chấm (.) (không xóa dấu phẩy cho đến khi tính toán)
+  //   const validValue = value.replace(/[^0-9,\.]/g, "");
+
+  //   // Kiểm tra nếu số nhập có nhiều dấu chấm (.) hoặc dấu phẩy (,) không hợp lệ
+  //   if (validValue.split(".").length > 2) {
+  //     return; // Chặn không cho nhiều dấu chấm
+  //   }
+
+  //   // Đảm bảo rằng dấu phẩy chỉ xuất hiện trong phần phân cách hàng nghìn
+  //   // Chuyển dấu phẩy thành dấu không gian tạm thời để xử lý phần phân tách số
+  //   const noCommasValue = validValue.replace(/,/g, "");
+
+  //   // Cập nhật giá trị đơn giá trong state
+  //   setUnitPrice(noCommasValue); 
+
+  //   // Update value when unit price changes
+  //   updateValue(quantity, noCommasValue) 
+
+  //   // chuyển chuỗi thành số
+  //   // Kiểm tra nếu noCommasValue là chuỗi rỗng
+  //   const numericValidValue = parseFloat(noCommasValue);
+  //   const newValueTypeNumber = isNaN(numericValidValue) ? 0 : numericValidValue // Nếu không phải số, gán giá trị 0
+
+  //   // // Kiểm tra nếu newValueTypeNumber là số hợp lệ với định dạng 123,456.78
+  //   // const formattedValue = isNaN(newValueTypeNumber)
+  //   // ? "0"
+  //   // : new Intl.NumberFormat("en-US", {
+  //   //     style: "decimal",
+  //   //     maximumFractionDigits: 2,
+  //   //   }).format(newValueTypeNumber);
+
+  //   // Cập nhật lại giá trị hiển thị cho người dùng
+  //   // setFormattedUnitPrice(newValueTypeNumber);
+
+  //   // Cập nhật InventoryItemExport sau khi thay đổi đơn giá
+  //   if (onProductChange) {
+  //     const updatedProduct = createInventoryItem(Product); // Tạo lại InventoryItemExport với thông tin hiện tại của sản phẩm
+  //     updatedProduct.price = newValueTypeNumber; // Nếu không phải số, gán giá trị 0
+  //     onProductChange(updatedProduct); // Gọi callback để cập nhật thông tin sản phẩm
+  //   }
+  // }
+
+  // const handleBlurUnitPrice = () => {
+  //   // Khi người dùng rời khỏi input, định dạng giá trị thành 123,456.12
+  //   const numericValidValue = parseFloat(unitPrice);
+  
+  //   const newValueTypeNumber = isNaN(numericValidValue) ? 0 : numericValidValue;
+  
+  //   // Định dạng giá trị
+  //   const formattedValue = new Intl.NumberFormat("en-US", {
+  //     style: "decimal",
+  //     maximumFractionDigits: 2,
+  //   }).format(newValueTypeNumber);
+  
+  //   // Cập nhật giá trị đã được định dạng
+  //   setFormattedUnitPrice(formattedValue);
+  // };
+  
+  // const handleFocusUnitPrice = () => {
+  //   // Khi người dùng focus vào input, hiển thị giá trị gốc (không định dạng)
+  //   setFormattedUnitPrice(unitPrice);
+  // };
+
   // Keyboard navigation logic: navigate through the dropdown using arrow keys
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
 
@@ -186,7 +259,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   }
 
   // Show the dropdown when the input is focused (clicking the input shows the dropdown)
-  const handleFocus = () => {
+  const handleFocusProductCode = () => {
     setShowDropdown(true) // Show the dropdown when the input field is focused
   }
 
@@ -244,7 +317,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       price: price,
       notes: notes,
     }
-    
   }
 
   return (
@@ -264,7 +336,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               value={searchText}
               onChange={(e) => handleFilter(e.target.value)} // Filter Products when input changes
               onKeyDown={handleKeyDown} // Handle keyboard navigation
-              onFocus={handleFocus} // Show dropdown on focus
+              onFocus={handleFocusProductCode} // Show dropdown on focus
               style={{ width: "150px" }}
             />
             {/* Tên hàng input */}
@@ -348,8 +420,10 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="unitPrice"
               placeholder="đơn giá"
-              value={unitPrice} // Bind the unit price value
+              // value={formattedUnitPrice} // Bind the unit price value
               onChange={handleUnitPriceChange} // Update unit price
+              // onFocus={handleFocusUnitPrice} // Show dropdown on focus
+              // onBlur={handleBlurUnitPrice}  // Khi người dùng rời đi
             />
           </div>
 
