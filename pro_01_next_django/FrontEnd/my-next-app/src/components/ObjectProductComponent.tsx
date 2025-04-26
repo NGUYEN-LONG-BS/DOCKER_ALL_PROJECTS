@@ -10,7 +10,6 @@ interface InventoryItemExport {
   unit: string;
   quantity: number;
   price: number;
-  value: number;
   notes: string;
 }
 
@@ -43,6 +42,16 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     name: "",
     unit: "",
   })
+
+  const [inventoryItem, setInventoryItem] = useState<InventoryItemExport>({
+    id: 0,
+    code: "",
+    name: "",
+    unit: "",
+    quantity: 0,
+    price: 0,
+    notes: "",
+  });
 
   const [searchText, setSearchText] = useState("") // The search text entered by the user
   const [filteredProducts, setFilteredProducts] = useState<ProductData[]>([]) // Filtered list of Products based on search text
@@ -98,7 +107,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     setUnitPrice("")
     setValue("")
     setNotes("")
-
+    console.log("handleSelectProduct:")
+    console.log(selectedItem)
     if (onProductChange) 
       onProductChange(createInventoryItem(selectedItem)) // Trigger the callback if provided
   }
@@ -131,66 +141,32 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     console.log("handleChange:", updatedProduct)
   }
 
+  const handleProductChange = (newProductData: InventoryItemExport) => {
+    setInventoryItem(newProductData);
+  };
+
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("qty before")
-    console.log(e.target.value);
-    const newQuantity = e.target.value.replace(/\./g, "")
-    console.log(newQuantity);
-    const formattedNewQuantity = formatNumber(newQuantity)  // Định dạng lại số lượng nếu cần
-
-      // Cập nhật state quantity
-    setQuantity(formattedNewQuantity)  // Update quantity
-    
-    // Update the Product state with the new quantity
-    const updatedProduct = {
-      ...Product, 
-      // Include other fields here to ensure the Product state is fully updated
-      quantity: newQuantity,  // Cập nhật quantity
-      price: unitPrice,  // Assuming you want to keep the price from the current state
-      value: (parseFloat(formattedNewQuantity.replace(/\./g, "")) * parseFloat(unitPrice.replace(/\./g, ""))).toString(), // Calculate value based on quantity and price
-      notes: notes,  // Keep existing notes, or modify if needed
-    }
-    
-    console.log("updatedProduct before:", updatedProduct); // Log updated data
-    setProduct(updatedProduct)  // Update the Product state
-
-    // Cập nhật giá trị khi quantity thay đổi
-    updateValue(newQuantity, unitPrice) // Update value when quantity changes
-
-    // Cập nhật InventoryItemExport và truyền callback cho component cha
+    const value = e.target.value; // Lấy giá trị đơn giá từ input
+    setQuantity(value); // Cập nhật giá trị đơn giá trong state
+    updateValue(value, unitPrice) // Update value when unit price changes
+    // Cập nhật InventoryItemExport sau khi thay đổi đơn giá
     if (onProductChange) {
-      const updatedInventoryItem = createInventoryItem(updatedProduct)  // Create updated InventoryItemExport with the updated Product
-      onProductChange(updatedInventoryItem)  // Call callback to update product information
+      const updatedProduct = createInventoryItem(Product); // Tạo lại InventoryItemExport với thông tin hiện tại của sản phẩm
+      updatedProduct.quantity = parseFloat(value.replace(/\./g, "")) || 0; // Cập nhật trường đơn giá trong InventoryItemExport
+      onProductChange(updatedProduct); // Gọi callback để cập nhật thông tin sản phẩm
     }
-    console.log("updatedProduct after:", updatedProduct); // Log updated data
   }
 
   const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("handleUnitPriceChange:")
-    const newUnitPrice = e.target.value.replace(/\./g, "")
-    const formattedNewUnitPrice = formatNumber(newUnitPrice)
-    setUnitPrice(formattedNewUnitPrice)
-
-    // Update the Product state with the new quantity
-    const updatedProduct = {
-      ...Product, 
-      // Include other fields here to ensure the Product state is fully updated
-      quantity: quantity,
-      price: formattedNewUnitPrice,  // Assuming you want to keep the price from the current state
-      value: (parseFloat(quantity.replace(/\./g, "")) * parseFloat(formattedNewUnitPrice.replace(/\./g, ""))).toString(), // Calculate value based on quantity and price
-      notes: notes,  // Keep existing notes, or modify if needed
-    }
-
-    setProduct(updatedProduct)  // Update the Product state
-
-    updateValue(quantity, formattedNewUnitPrice) // Update value when unit price changes
-
+    const value = e.target.value; // Lấy giá trị đơn giá từ input
+    setUnitPrice(value); // Cập nhật giá trị đơn giá trong state
+    updateValue(quantity, value) // Update value when unit price changes
     // Cập nhật InventoryItemExport sau khi thay đổi đơn giá
     if (onProductChange) {
-      const updatedInventoryItem = createInventoryItem(updatedProduct)  // Create updated InventoryItemExport with the updated Product
-      onProductChange(updatedInventoryItem)  // Call callback to update product information
+      const updatedProduct = createInventoryItem(Product); // Tạo lại InventoryItemExport với thông tin hiện tại của sản phẩm
+      updatedProduct.price = parseFloat(value.replace(/\./g, "")) || 0; // Cập nhật trường đơn giá trong InventoryItemExport
+      onProductChange(updatedProduct); // Gọi callback để cập nhật thông tin sản phẩm
     }
-    console.log("Unit Price change:", updatedProduct); // Log updated data
   }
 
   // Keyboard navigation logic: navigate through the dropdown using arrow keys
@@ -235,7 +211,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     setValue(formatNumber(result.toString())) // Set the formatted value
   }
   
-  const formatNumber = (value: string) => {
+  const formatNumber = (value: string): string => {
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
   }
 
@@ -266,7 +242,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       unit: product.unit,
       quantity: qty,
       price: price,
-      value: value,
       notes: notes,
     }
     

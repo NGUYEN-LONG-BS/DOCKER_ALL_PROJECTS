@@ -16,7 +16,6 @@ interface InventoryItemExport {
   unit: string
   quantity: number
   price: number
-  value: number
   notes: string
 }
 
@@ -29,7 +28,6 @@ export function InventoryFormStockReceiveSlip() {
     unit: "",
     quantity: 0,
     price: 0,
-    value: 0,
     notes: ""
   })
 
