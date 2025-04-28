@@ -20,22 +20,14 @@ interface InventoryTableStockReceiveSlipProps {
 export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockReceiveSlipProps) {
   const [items, setItems] = useState<InventoryItem[]>([])
 
-  // const addRow = () => {
-  //   const newItem: InventoryItem = {
-  //     id: items.length + 1,
-  //     code: product.code,
-  //     name: product.name,
-  //     unit: product.unit,
-  //     quantity: product.quantity,
-  //     price: product.price,
-  //     value: product.quantity * product.price,
-  //     notes: product.notes,
-  //   }
-  //   // Thêm newItem vào mảng items
-  //   setItems([...items, newItem])
-  // }
-
   const addRow = () => {
+    // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
+    if (!product.code || product.quantity === 0) {
+      // Show an alert or handle the error message
+      alert("Lỗi: Mã hàng không được trống và Số lượng phải lớn hơn 0.");
+      return; // Stop the function from continuing, thus preventing row addition
+    }
+    // Create a new InventoryItem based on the provided product
     const newItem: InventoryItem = {
       id: items.length + 1,
       code: product.code,
@@ -66,9 +58,6 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
 
   const deleteRow = (id: number) => {
     const newItems = items.filter(item => item.id !== id)
-    
-    // // Cập nhật lại số thứ tự sau khi xóa
-    // setItems(newItems.map((item, index) => ({ ...item, id: index + 1 })))
 
     // Reindex the remaining items to ensure sequential order
     setItems(reindexItems(newItems)); // Update the state with reindexed items
