@@ -20,10 +20,10 @@ const LeftBar: React.FC = () => {
         <NavigationComponent info="Báo cáo tồn kho!" side="left" link="#" linkIcon="/icons/inventoryReport.png" />
       </div>
       <div style={{ marginBottom: "1rem" }}>
-        <NavigationComponent info="Báo cáo doanh số!" side="left" link="#" linkIcon="/icons/generalRepot.png" />
+        <NavigationComponent info="Báo cáo doanh số!" side="left" link="#" linkIcon="/icons/Notification.png" />
       </div>
       <div style={{ marginBottom: "1rem" }}>
-        <NavigationComponent info="Báo cáo đơn đặt hàng." side="left" link="#" linkIcon="/icons/saleReport.png" />
+        <NavigationComponent info="Báo cáo đơn đặt hàng." side="left" link="#" linkIcon="/icons/calender.png" />
       </div>
       <div style={{ marginBottom: "1rem" }}>
         <NavigationComponent info="Thông tin nhân sự." side="left" link="#" linkIcon="/icons/generalRepot.png" />
