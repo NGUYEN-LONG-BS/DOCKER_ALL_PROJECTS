@@ -24,16 +24,16 @@ interface ProductComponentProps {
   onProductChange?: (ProductProps: InventoryItemExport) => void
 }
 
-// const mockProducts: ProductData[] = [
-//   { code: "HH-01A-001", name: "Mặt hàng A1", unit: "cái" },
-//   { code: "HH-01A-002", name: "Mặt hàng A2", unit: "chiếc" },
-//   { code: "HH-01A-003", name: "Mặt hàng A3", unit: "thùng" },
-//   { code: "HH-01A-004", name: "Mặt hàng A4", unit: "bộ" },
-//   { code: "HH-01A-005", name: "Mặt hàng A5", unit: "kg" },
-//   { code: "HH-01A-006", name: "Mặt hàng A6", unit: "m" },
-//   { code: "HH-01A-007", name: "Mặt hàng A7", unit: "lít" },
-//   { code: "HH-01A-008", name: "Mặt hàng A8", unit: "hộp" },
-// ]
+const mockProducts: ProductData[] = [
+  { code: "HH-01A-001", name: "Mặt hàng A1", unit: "cái" },
+  { code: "HH-01A-002", name: "Mặt hàng A2", unit: "chiếc" },
+  { code: "HH-01A-003", name: "Mặt hàng A3", unit: "thùng" },
+  { code: "HH-01A-004", name: "Mặt hàng A4", unit: "bộ" },
+  { code: "HH-01A-005", name: "Mặt hàng A5", unit: "kg" },
+  { code: "HH-01A-006", name: "Mặt hàng A6", unit: "m" },
+  { code: "HH-01A-007", name: "Mặt hàng A7", unit: "lít" },
+  { code: "HH-01A-008", name: "Mặt hàng A8", unit: "hộp" },
+]
 
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
   // State variables to manage Product data, search input, and filtered Products
@@ -67,32 +67,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   const wrapperRef = useRef<HTMLDivElement>(null) // Reference to the wrapper for outside click detection
   const dropdownRef = useRef<HTMLUListElement>(null) // Reference to the dropdown list for scroll control
-  const [mockProducts, setMockProducts] = useState<ProductData[]>([]); // State to store the fetched products
 
-  // Fetch data from the API on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("http://localhost:8000/api/get-inventory-categories/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        // Map the data into the ProductData format
-        const products: ProductData[] = data.map((item: { ma_hang: string, ten_hang: string, dvt: string }) => ({
-          code: item.ma_hang,
-          name: item.ten_hang,
-          unit: item.dvt,
-        }));
-        setMockProducts(products); // Set the fetched products into state
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData(); // Call the function to fetch data
-  }, []); // Empty dependency array to run only once on component mount
-  
   // Debounce logic to delay the filter operation after user stops typing
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
 
