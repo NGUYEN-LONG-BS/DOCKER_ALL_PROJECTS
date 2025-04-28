@@ -2,8 +2,8 @@
 
 import { MainNav } from "@/components/main-nav"
 import { TabNav } from "@/components/tab-nav"
-import RightBar from "@/components/rightBarComponent";
-import LeftBar from "@/components/leftBarComponent"; 
+import RightBar from "@/components/rightBarNotification/rightBarComponent";
+import LeftBar from "@/components/leftBarNavigator/leftBarComponent"; 
 
 export default function Home() {
   // Không cần import Bootstrap JS ở đây vì đã được import trong layout.tsx

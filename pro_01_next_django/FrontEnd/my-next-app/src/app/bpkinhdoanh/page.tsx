@@ -3,9 +3,9 @@ import useSWR from 'swr';
 import { useState } from 'react';
 
 import Head from "next/head";
-import Header from '@/components/Header';
+import Header from '@/components/header/Header';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Footer from '@/components/footer/Footer';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());

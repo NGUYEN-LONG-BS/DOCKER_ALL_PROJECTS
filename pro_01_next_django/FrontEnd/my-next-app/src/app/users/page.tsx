@@ -1,7 +1,7 @@
 import Head from "next/head";
-import Header from '@/components/Header';
+import Header from '@/components/header/Header';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Footer from '@/components/footer/Footer';
 export default function Home() {
   return (
     <div className="d-flex flex-column min-vh-100">
