@@ -6,7 +6,7 @@ interface PopupProps {
   onClose: () => void; // Function to close the popup
 }
 
-const Popup: React.FC<PopupProps> = ({ message, onClose }) => {
+const errorPopupTypeClickOK: React.FC<PopupProps> = ({ message, onClose }) => {
   // Early return if there is no message to show
   if (!message) return null;
 
@@ -59,4 +59,4 @@ const Popup: React.FC<PopupProps> = ({ message, onClose }) => {
   );
 };
 
-export default Popup;
+export default errorPopupTypeClickOK;

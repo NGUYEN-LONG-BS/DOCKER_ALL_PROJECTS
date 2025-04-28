@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
-import Popup from "./errorPopupCoponent"; // Assuming PopupComponent.tsx is in the same folder
+import { useState } from "react";
+import PopupFadeout from "./errorPopupComponentTypeFadeOut";
+// import Popup from "./errorPopupComponentTypeClickOK";
 
 interface InventoryItem {
   id: number
@@ -69,7 +70,7 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
 
     // Reindex the remaining items to ensure sequential order
     setItems(reindexItems(newItems)); // Update the state with reindexed items
-  }
+  };
 
   // Reindex function to ensure IDs are sequential
   const reindexItems = (items: InventoryItem[]): InventoryItem[] => {
@@ -80,8 +81,8 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
   };
 
   const clearRows = () => {
-    setItems([])
-    }
+    setItems([]);
+    };
 
   return (
     <div className="mt-3">
@@ -247,7 +248,7 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
         </div>
       </div>
       {/* Error Popup */}
-      <Popup message={errorMessage} onClose={() => setErrorMessage(null)} />
+      <PopupFadeout message={errorMessage} onClose={() => setErrorMessage(null)} />
     </div>
   )
 }
