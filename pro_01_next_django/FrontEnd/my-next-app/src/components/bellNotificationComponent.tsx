@@ -11,9 +11,23 @@ interface NotificationBellProps {
 const NotificationBell: React.FC<NotificationBellProps> = ({ label, info, side, link }) => {
   // Nếu label > 5 thì hiển thị "5+", nếu nhỏ hơn hoặc bằng 5 thì hiển thị số đó
   const displayLabel = label > 5 ? "5+" : label;
-
+// Hàm xử lý sự kiện click
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      if (e.ctrlKey) {
+        // Nếu Ctrl được nhấn, mở tab mới
+        window.open(link, "_blank");
+      } else {
+        // Nếu không Ctrl, chỉ đơn giản là chuyển trang trong cùng tab
+        window.location.href = link;
+      }
+      e.preventDefault(); // Ngừng hành vi mặc định (mở link trong cùng tab)
+    };
   return (
-    <a href={link} style={{ textDecoration: "none" }} target="_blank" rel="noopener noreferrer">
+    <a
+      href={link}
+      style={{ textDecoration: "none" }}
+      onClick={handleClick} // Đặt hàm xử lý vào sự kiện click
+    >
       <div
         className="d-inline-block position-relative"
         style={{
