@@ -1,5 +1,5 @@
 import React from "react";
-import NotificationBell from "./bellNotificationComponent"; // Import NotificationBell component
+import NavigationComponent from "./LeftBarNavigationComponent"; // Import NotificationBell component
 
 // Right Bar Component
 const LeftBar: React.FC = () => {
@@ -8,18 +8,26 @@ const LeftBar: React.FC = () => {
       className="position-fixed top-0 start-0 p-3" // RightBar vẫn nằm bên phải
       style={{
         width: "5rem", // Chiều rộng mới của Right Bar
-        backgroundColor: "#f8f9fa",
-        boxShadow: "-2px 0 5px rgba(0, 0, 0, 0.1)", // Đổi shadow để hướng bóng từ phải qua trái
+        backgroundColor: "rgba(255, 255, 255, 0)", // Nền trong suốt
+        boxShadow: "0px 0 0px rgba(0, 0, 0, 0.1)", // Thêm chút shadow nhẹ để tạo chiều sâu
         zIndex: 9999, // Đảm bảo Right Bar luôn hiển thị trên các phần tử khác
         marginTop: "80px", // Khoảng cách từ Header (có thể điều chỉnh)
         height: "auto", // Chiều cao tự động theo số lượng bell
       }}
     >
-      {/* Các component con NotificationBell */}
-      <NotificationBell label={6} info="You have 5 new messages!" />
-      <NotificationBell label={3} info="You have 10 new notifications!" />
-      <NotificationBell label={5} info="2 items left in your cart." />
-      <NotificationBell label={1} info="8 new orders to process." />
+      {/* Các component con NavigationComponent với khoảng cách 2rem giữa các component */}
+      <div style={{ marginBottom: "1rem" }}>
+        <NavigationComponent info="Báo cáo tồn kho!" side="left" link="#" linkIcon="/icons/inventoryReport.png" />
+      </div>
+      <div style={{ marginBottom: "1rem" }}>
+        <NavigationComponent info="Báo cáo doanh số!" side="left" link="#" linkIcon="/icons/generalRepot.png" />
+      </div>
+      <div style={{ marginBottom: "1rem" }}>
+        <NavigationComponent info="Báo cáo đơn đặt hàng." side="left" link="#" linkIcon="/icons/saleReport.png" />
+      </div>
+      <div style={{ marginBottom: "1rem" }}>
+        <NavigationComponent info="Thông tin nhân sự." side="left" link="#" linkIcon="/icons/generalRepot.png" />
+      </div>
     </div>
   );
 };

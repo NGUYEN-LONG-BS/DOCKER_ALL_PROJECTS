@@ -1,40 +1,33 @@
 import React from "react";
-import { BsBell } from "react-icons/bs"; // Sử dụng icon chuông từ react-icons
+import Image from 'next/image';
 
-interface NotificationBellProps {
-  label: number; // Label thông báo (số lượng thông báo)
+interface NavigationComponentProps {
   info: string;  // Thông tin hiển thị khi hover chuột
   side: string;  // Quyết định vị trí hiển thị tooltip (left hoặc right)
-  link: string;  // Link khi click vào NotificationBell
+  link: string;  // Link khi click vào NavigationComponent
+  linkIcon: string;  // Link icon tùy chỉnh
 }
 
-const NotificationBell: React.FC<NotificationBellProps> = ({ label, info, side, link }) => {
-  // Nếu label > 5 thì hiển thị "5+", nếu nhỏ hơn hoặc bằng 5 thì hiển thị số đó
-  const displayLabel = label > 5 ? "5+" : label;
-
+const NavigationComponent: React.FC<NavigationComponentProps> = ({ info, side, link, linkIcon }) => {
   return (
     <a href={link} style={{ textDecoration: "none" }} target="_blank" rel="noopener noreferrer">
       <div
         className="d-inline-block position-relative"
         style={{
-          border: "2px solid #ddd", // Viền bao quanh NotificationBell
+          border: "2px solid #ddd", // Viền bao quanh NavigationComponent
           padding: "5px",
           borderRadius: "8px",
           transition: "all 0.3s ease-in-out", // Thêm hiệu ứng cho viền
         }}
       >
-        {/* Icon chuông */}
-        <BsBell size={30} />
-        
-        {/* Label thông báo (5+ hoặc số lượng thực tế) */}
-        {displayLabel && (
-          <span
-            className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-            style={{ fontSize: "12px", transform: "translate(50%, -50%)" }}
-          >
-            {displayLabel}
-          </span>
-        )}
+        {/* Icon tùy chỉnh sử dụng Image component của Next.js */}
+                <Image 
+                  src={linkIcon} 
+                  alt="Navigation Icon" 
+                  width={45} // Đặt chiều rộng cho icon
+                  height={45} // Đặt chiều cao cho icon
+                  style={{ objectFit: "contain" }} // Đảm bảo ảnh không bị kéo dãn
+                />
 
         {/* Hiển thị khung thông tin khi hover */}
         <div className="tooltip-content position-absolute p-2 bg-light border rounded shadow-sm">
@@ -54,7 +47,7 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ label, info, side, 
             white-space: nowrap;
             transition: opacity 0.3s ease-in-out; /* Thêm hiệu ứng mờ dần */
             z-index: 1050; /* Đảm bảo tooltip nằm trên các phần tử khác */
-            top: 50%; /* Đặt tooltip vào giữa vị trí của chuông */
+            top: 50%; /* Đặt tooltip vào giữa vị trí của icon */
             transform: translateY(-50%); /* Đảm bảo tooltip xuất hiện ngang hàng */
           }
 
@@ -71,4 +64,4 @@ const NotificationBell: React.FC<NotificationBellProps> = ({ label, info, side, 
   );
 };
 
-export default NotificationBell;
+export default NavigationComponent;
