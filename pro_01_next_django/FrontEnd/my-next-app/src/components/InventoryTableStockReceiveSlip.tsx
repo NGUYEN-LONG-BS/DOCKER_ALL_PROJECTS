@@ -20,6 +20,21 @@ interface InventoryTableStockReceiveSlipProps {
 export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockReceiveSlipProps) {
   const [items, setItems] = useState<InventoryItem[]>([])
 
+  // const addRow = () => {
+  //   const newItem: InventoryItem = {
+  //     id: items.length + 1,
+  //     code: product.code,
+  //     name: product.name,
+  //     unit: product.unit,
+  //     quantity: product.quantity,
+  //     price: product.price,
+  //     value: product.quantity * product.price,
+  //     notes: product.notes,
+  //   }
+  //   // Thêm newItem vào mảng items
+  //   setItems([...items, newItem])
+  // }
+
   const addRow = () => {
     const newItem: InventoryItem = {
       id: items.length + 1,
@@ -31,17 +46,41 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
       value: product.quantity * product.price,
       notes: product.notes,
     }
-    // In ra console.log các giá trị dùng để thêm dòng mới
-    console.log("Adding row with values:", newItem)
-    // Thêm newItem vào mảng items
-    setItems([...items, newItem])
+    // Check if a row with the same code already exists
+    const existingIndex = items.findIndex(item => item.code === newItem.code);
+  
+    if (existingIndex !== -1) {
+      // If a duplicate is found, remove the previous one and add the new one
+      const updatedItems = items.filter(item => item.code !== newItem.code);
+      updatedItems.push(newItem); // Add the new item at the end
+      // Ensure the items are in sequential order
+      setItems(reindexItems(updatedItems)); // Update state with the reindexed array
+    } else {
+      // If no duplicate is found, simply add the new row
+      setItems(prevItems => {
+        const updatedItems = [...prevItems, newItem];
+        return reindexItems(updatedItems); // Return reindexed items
+      });
+    }
   }
 
   const deleteRow = (id: number) => {
     const newItems = items.filter(item => item.id !== id)
-    // Cập nhật lại số thứ tự sau khi xóa
-    setItems(newItems.map((item, index) => ({ ...item, id: index + 1 })))
+    
+    // // Cập nhật lại số thứ tự sau khi xóa
+    // setItems(newItems.map((item, index) => ({ ...item, id: index + 1 })))
+
+    // Reindex the remaining items to ensure sequential order
+    setItems(reindexItems(newItems)); // Update the state with reindexed items
   }
+
+  // Reindex function to ensure IDs are sequential
+  const reindexItems = (items: InventoryItem[]): InventoryItem[] => {
+    return items.map((item, index) => ({
+      ...item,
+      id: index + 1, // Reassign ID to be sequential starting from 1
+    }));
+  };
 
   const clearRows = () => {
     setItems([])
