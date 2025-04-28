@@ -2,6 +2,7 @@
 
 import { MainNav } from "@/components/main-nav"
 import { TabNav } from "@/components/tab-nav"
+import RightBar from "@/components/rightBarComponent"; // Import component RightBar
 
 export default function Home() {
   // Không cần import Bootstrap JS ở đây vì đã được import trong layout.tsx
@@ -23,6 +24,10 @@ export default function Home() {
           <TabNav />
         </div>
       </div>
+
+      {/* Right Bar (added component) */}
+      <RightBar />
+
       <footer className="border-top py-3">
         <div className="container d-flex justify-content-between align-items-center">
           <p className="mb-0 text-muted small">© 2025 Tuan An Group. All Rights Reserved.</p>
