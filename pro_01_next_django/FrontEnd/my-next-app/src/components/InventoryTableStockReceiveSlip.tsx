@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Popup from "./errorPopupCoponent"; // Assuming PopupComponent.tsx is in the same folder
 
 interface InventoryItem {
   id: number
@@ -19,14 +20,21 @@ interface InventoryTableStockReceiveSlipProps {
 
 export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockReceiveSlipProps) {
   const [items, setItems] = useState<InventoryItem[]>([])
-
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const addRow = () => {
+    // // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
+    // if (!product.code || product.quantity === 0) {
+    //   // Show an alert or handle the error message
+    //   alert("Lỗi: Mã hàng không được trống và Số lượng phải lớn hơn 0.");
+    //   return; // Stop the function from continuing, thus preventing row addition
+    // }
     // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
     if (!product.code || product.quantity === 0) {
-      // Show an alert or handle the error message
-      alert("Lỗi: Mã hàng không được trống và Số lượng phải lớn hơn 0.");
+      setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0.");
       return; // Stop the function from continuing, thus preventing row addition
     }
+    // Reset error message if input is valid
+    setErrorMessage(null);
     // Create a new InventoryItem based on the provided product
     const newItem: InventoryItem = {
       id: items.length + 1,
@@ -238,6 +246,8 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
           </table>
         </div>
       </div>
+      {/* Error Popup */}
+      <Popup message={errorMessage} onClose={() => setErrorMessage(null)} />
     </div>
   )
 }
