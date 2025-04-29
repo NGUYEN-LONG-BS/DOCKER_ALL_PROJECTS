@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import PopupFadeout from "./popups/errorPopupComponentTypeFadeOut";
+import PopupFadeout from "../popups/errorPopupComponentTypeFadeOut";
 // import Popup from "./errorPopupComponentTypeClickOK";
 
 interface InventoryItem {

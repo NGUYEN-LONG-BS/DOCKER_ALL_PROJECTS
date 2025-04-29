@@ -1,6 +1,6 @@
 "use client"
 
-import { MainNav } from "@/components/main-nav"
+import { MainNav } from "@/components/inventoryManagement/main-nav"
 import { TabNav } from "@/components/tab-nav"
 import RightBar from "@/components/rightBarNotification/rightBarComponent";
 import LeftBar from "@/components/leftBarNavigator/leftBarComponent"; 

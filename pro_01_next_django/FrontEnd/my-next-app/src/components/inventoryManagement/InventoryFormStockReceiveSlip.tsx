@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { DateComponent } from "../date-component"
-import { DocumentNumberComponent } from "../document-number-component"
-import { SupplierComponent } from "../ObjectSupplierComponent"
-import { ProductComponent } from "../ObjectProductComponent"
-import { InventoryTableStockReceiveSlip } from "../InventoryTableStockReceiveSlip"
-import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip"
+import { DateComponent } from "../date/date-component"
+import { DocumentNumberComponent } from "../documentNumber/document-number-component"
+import { SupplierComponent } from "./ObjectSupplierComponent"
+import { ProductComponent } from "./ObjectProductComponent"
+import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip"
+import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {

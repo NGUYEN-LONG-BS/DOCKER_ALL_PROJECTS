@@ -1,11 +1,11 @@
 "use client"
 
-import { DateComponent } from "../date-component"
-import { DocumentNumberComponent } from "../document-number-component"
-import { ClientComponent } from "../ObjectClientComponent"
-import { ProductComponent } from "../ObjectProductComponent"
-import { InventoryTableStockIssuesSlip } from "../InventoryTableStockIssuesSlip"
-import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip"
+import { DateComponent } from "../date/date-component"
+import { DocumentNumberComponent } from "../documentNumber/document-number-component"
+import { ClientComponent } from "./ObjectClientComponent"
+import { ProductComponent } from "./ObjectProductComponent"
+import { InventoryTableStockIssuesSlip } from "./InventoryTableStockIssuesSlip"
+import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 
 export function InventoryFormStockIssuesSlip() {
   return (
