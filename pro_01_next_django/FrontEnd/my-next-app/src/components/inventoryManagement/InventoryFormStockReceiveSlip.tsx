@@ -45,6 +45,22 @@ export function InventoryFormStockReceiveSlip() {
   });
   const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([]);
 
+  // Cập nhật giá trị kho
+  const handleWarehouseChange = (newWarehouse: string) => {
+    setInventoryNote((prevState) => ({
+      ...prevState,
+      selectedWarehouse: newWarehouse,
+    }));
+  };
+
+  // Cập nhật ghi chú
+  const handleNotesChange = (newNotes: string) => {
+    setInventoryNote((prevState) => ({
+      ...prevState,
+      notesOfSlip: newNotes,
+    }));
+  };
+
   // Hàm cập nhật thông tin ngày tháng từ DateComponent
   const handleDateChange = (newDate: string) => {
     setDate(newDate);
@@ -58,17 +74,6 @@ export function InventoryFormStockReceiveSlip() {
   // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
   const handleSupplierChange = (newSupplier: string) => {
     setSupplier(newSupplier);
-  };
-
-  // Hàm cập nhật thông tin ghi chú từ InventoryNoteOfStockReceiveSlip
-  const handleSlipNoteChange = (newNotes: string, newWarehouse: string) => {
-    console.log("Component Form:");
-    console.log("newNotes:", newNotes);
-    console.log("newWarehouse:", newWarehouse);
-    setInventoryNote({
-      selectedWarehouse: newWarehouse,  // Cập nhật kho mới
-      notesOfSlip: newNotes,            // Cập nhật ghi chú mới
-    });
   };
 
   // Hàm cập nhật bảng thông tin tồn kho
@@ -113,8 +118,8 @@ export function InventoryFormStockReceiveSlip() {
             <InventoryNoteOfStockReceiveSlip
             selectedWarehouse={inventoryNote.selectedWarehouse}  // Truyền giá trị kho vào đây
             notesOfSlip={inventoryNote.notesOfSlip}              // Truyền ghi chú vào đây
-            onWarehouseChange={(newWarehouse) => handleSlipNoteChange(newWarehouse, inventoryNote.notesOfSlip)}  // Callback thay đổi kho
-            onNotesChange={(newNotes) => handleSlipNoteChange(inventoryNote.selectedWarehouse, newNotes)}        // Callback thay đổi ghi chú
+            onWarehouseChange={handleWarehouseChange}  // Callback thay đổi kho
+            onNotesChange={handleNotesChange}        // Callback thay đổi ghi chú
           />
           </div>
           <div className="col-md-6">
