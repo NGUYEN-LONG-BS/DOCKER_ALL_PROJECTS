@@ -2,54 +2,65 @@
 
 import { useState } from 'react';
 
-const mockWarehouses = ['Kho A', 'Kho B', 'Kho C']; // Danh sách kho mẫu
+// Danh sách kho mẫu
+const mockWarehouses = ['Kho A', 'Kho B', 'Kho C'];
 
-const InventoryNoteOfStockReceiveSlip = () => {
-  const [selectedWarehouse, setSelectedWarehouse] = useState('Kho A');
-  const [notes, setNotes] = useState('');
+// Định nghĩa interface cho props của InventoryNoteOfStockReceiveSlip
+interface InventoryNoteOfStockReceiveSlipProps {
+  selectedWarehouse: string;        // Giá trị kho đã chọn
+  notesOfSlip: string;                    // Giá trị ghi chú
+  onWarehouseChange: (newWarehouse: string) => void;  // Hàm callback khi kho thay đổi
+  onNotesChange: (newNotes: string) => void;          // Hàm callback khi ghi chú thay đổi
+}
 
+const InventoryNoteOfStockReceiveSlip = ({
+  selectedWarehouse,
+  notesOfSlip,
+  onWarehouseChange,
+  onNotesChange,
+}: InventoryNoteOfStockReceiveSlipProps) => {
+  // Hàm xử lý khi kho thay đổi
   const handleWarehouseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedWarehouse(event.target.value);
+    onWarehouseChange(event.target.value); // Truyền giá trị kho về component cha
   };
 
+  // Hàm xử lý khi ghi chú thay đổi
   const handleNotesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNotes(event.target.value);
+    onNotesChange(event.target.value); // Truyền giá trị ghi chú về component cha
   };
 
   return (
-    
     <div className="card-body py-2">
-        <div className="row g-1">
-            {/* Dropdown for kho */}
-            <div className="col-md-3">
-                <select
-                className="form-control"
-                id="Product-warehouse"
-                value={selectedWarehouse}
-                onChange={handleWarehouseChange}
-                >
-                {mockWarehouses.map((warehouse, index) => (
-                    <option key={index} value={warehouse}>
-                    {warehouse}
-                    </option>
-                ))}
-                </select>
-            </div>
-
-            {/* Notes input */}
-            <div className="col-md-9">
-                <input
-                type="text"
-                className="form-control"
-                id="Product-notes"
-                placeholder="thông tin thêm"
-                value={notes}
-                onChange={handleNotesChange}
-                />
-            </div>
+      <div className="row g-1">
+        {/* Dropdown cho kho */}
+        <div className="col-md-3">
+          <select
+            className="form-control"
+            id="Product-warehouse"
+            value={selectedWarehouse}
+            onChange={handleWarehouseChange}
+          >
+            {mockWarehouses.map((warehouse, index) => (
+              <option key={index} value={warehouse}>
+                {warehouse}
+              </option>
+            ))}
+          </select>
         </div>
+
+        {/* Input cho ghi chú */}
+        <div className="col-md-9">
+          <input
+            type="text"
+            className="form-control"
+            id="Product-notes"
+            placeholder="thông tin thêm"
+            value={notesOfSlip}
+            onChange={handleNotesChange}
+          />
+        </div>
+      </div>
     </div>
-    
   );
 };
 
