@@ -128,20 +128,6 @@ def get_json_data(request):
 # Save inventory
 # ==============================================================================
 
-# from rest_framework.views import APIView
-# from rest_framework.response import Response
-# from rest_framework import status
-# from .serializers import InventoryFormSerializer
-
-# class SaveInventoryView(APIView):
-#     def post(self, request, *args, **kwargs):
-#         serializer = InventoryFormSerializer(data=request.data)
-#         if serializer.is_valid():
-#             # Xử lý dữ liệu ở đây, ví dụ lưu vào database
-#             # Bạn có thể tạo model và lưu dữ liệu vào database
-#             return Response({"message": "Data saved successfully"}, status=status.HTTP_201_CREATED)
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 from rest_framework import generics
 from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .serializers import InventoryStockReceivedIssuedReturnedSerializer
@@ -149,3 +135,21 @@ from .serializers import InventoryStockReceivedIssuedReturnedSerializer
 class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
     queryset = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
     serializer_class = InventoryStockReceivedIssuedReturnedSerializer
+    
+    # Override create method to handle multiple objects in a single request
+    def create(self, request, *args, **kwargs):
+        # Check if the request body contains a list of objects
+        if isinstance(request.data, list):
+            # If it's a list, we need to serialize each item
+            serializer = self.get_serializer(data=request.data, many=True)
+        else:
+            # Otherwise, we process it as a single object
+            serializer = self.get_serializer(data=request.data)
+
+        # Validate the data
+        if serializer.is_valid():
+            # Save and return response
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
