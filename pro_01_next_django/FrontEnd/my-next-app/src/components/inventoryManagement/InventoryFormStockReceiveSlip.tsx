@@ -140,7 +140,7 @@ export function InventoryFormStockReceiveSlip() {
       <div className="card-body">
         <div className="row g-3">
           <div className="col-md-6">
-            <DateComponent />
+            <DateComponent onDateChange={handleDateChange}/>
           </div>
           <div className="col-md-6">
             <DocumentNumberComponent />
