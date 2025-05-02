@@ -19,8 +19,8 @@ interface InventoryItemExport {
   notes: string;
 }
 
-// Tạo interface riêng cho InventoryNote
-interface InventoryNote {
+// Tạo interface riêng cho SlipNote
+interface SlipNote {
   selectedWarehouse: string;
   notesOfSlip: string;
 }
@@ -29,25 +29,60 @@ interface InventoryFormState {
   date: string;
   documentNumber: string;
   supplier: string;
-  notesOfSlip: InventoryNote;
+  notesOfSlip: SlipNote;
   inventoryTable: InventoryItemExport[];
 }
 
+// Define the Supplier interface
+interface Supplier {
+  code: string;
+  name: string;
+  taxId: string;
+  address: string;
+}
+
 export function InventoryFormStockReceiveSlip() {
-  // State quản lý các thông tin từ các component con
-  const [date, setDate] = useState<string>("");
-  const [documentNumber, setDocumentNumber] = useState<string>("");
-  const [supplier, setSupplier] = useState<string>("");
-  // Sử dụng InventoryNote interface để lưu trữ kho và ghi chú
-  const [inventoryNote, setInventoryNote] = useState<InventoryNote>({
-    selectedWarehouse: 'Kho A',  // Giá trị kho mặc định
-    notesOfSlip: '',             // Ghi chú mặc định
+
+  // State for all components
+  const [date, setDate] = useState<string>('');
+  const [documentNumber, setDocumentNumber] = useState<string>('');
+  // Sử dụng SlipNote interface để lưu trữ kho và ghi chú
+  const [slipNote, setSlipNote] = useState<SlipNote>({
+    selectedWarehouse: 'Kho A',
+    notesOfSlip: '',
   });
-  const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([]);
+  const [supplier, setSupplier] = useState<Supplier>({
+    code: '',
+    name: '',
+    taxId: '',
+    address: '',
+  });
+  const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([
+    { id: 1, 
+      code: '', 
+      name: '', 
+      unit: '', 
+      quantity: 0, 
+      price: 0, 
+      notes: '' },
+  ]);
+
+  // Handle the save button click
+  const handleSave = () => {
+    const data = {
+      date: date,
+      documentNumber: documentNumber,
+      supplier: supplier,
+      slipNote: slipNote,
+      inventoryTable: inventoryTable,
+    };
+
+    console.log(JSON.stringify(data, null, 2)); // Log the data as a formatted JSON string
+  };
 
   // Cập nhật giá trị kho
   const handleWarehouseChange = (newWarehouse: string) => {
-    setInventoryNote((prevState) => ({
+    setSlipNote((prevState) => ({
       ...prevState,
       selectedWarehouse: newWarehouse,
     }));
@@ -55,7 +90,7 @@ export function InventoryFormStockReceiveSlip() {
 
   // Cập nhật ghi chú
   const handleNotesChange = (newNotes: string) => {
-    setInventoryNote((prevState) => ({
+    setSlipNote((prevState) => ({
       ...prevState,
       notesOfSlip: newNotes,
     }));
@@ -72,7 +107,7 @@ export function InventoryFormStockReceiveSlip() {
   };
 
   // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
-  const handleSupplierChange = (newSupplier: string) => {
+  const handleSupplierChange = (newSupplier: Supplier) => {
     setSupplier(newSupplier);
   };
 
@@ -116,8 +151,8 @@ export function InventoryFormStockReceiveSlip() {
           <div className="col-md-6">
             <SupplierComponent />
             <InventoryNoteOfStockReceiveSlip
-            selectedWarehouse={inventoryNote.selectedWarehouse}  // Truyền giá trị kho vào đây
-            notesOfSlip={inventoryNote.notesOfSlip}              // Truyền ghi chú vào đây
+            selectedWarehouse={slipNote.selectedWarehouse}  // Truyền giá trị kho vào đây
+            notesOfSlip={slipNote.notesOfSlip}              // Truyền ghi chú vào đây
             onWarehouseChange={handleWarehouseChange}  // Callback thay đổi kho
             onNotesChange={handleNotesChange}        // Callback thay đổi ghi chú
           />
@@ -140,7 +175,7 @@ export function InventoryFormStockReceiveSlip() {
           <button type="button" className="btn btn-outline-secondary">
             Print
           </button>
-          <button type="button" className="btn btn-outline-secondary">
+          <button type="button" className="btn btn-outline-secondary" onClick={handleSave}>
             Save
           </button>
           <button type="button" className="btn btn-primary">

@@ -24,17 +24,6 @@ interface ProductComponentProps {
   onProductChange?: (ProductProps: InventoryItemExport) => void
 }
 
-// const mockProducts: ProductData[] = [
-//   { code: "HH-01A-001", name: "Mặt hàng A1", unit: "cái" },
-//   { code: "HH-01A-002", name: "Mặt hàng A2", unit: "chiếc" },
-//   { code: "HH-01A-003", name: "Mặt hàng A3", unit: "thùng" },
-//   { code: "HH-01A-004", name: "Mặt hàng A4", unit: "bộ" },
-//   { code: "HH-01A-005", name: "Mặt hàng A5", unit: "kg" },
-//   { code: "HH-01A-006", name: "Mặt hàng A6", unit: "m" },
-//   { code: "HH-01A-007", name: "Mặt hàng A7", unit: "lít" },
-//   { code: "HH-01A-008", name: "Mặt hàng A8", unit: "hộp" },
-// ]
-
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
   // State variables to manage Product data, search input, and filtered Products
   const [Product, setProduct] = useState<ProductData>({
@@ -141,7 +130,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Close the dropdown if a click occurs outside the wrapper
   const handleClickOutside = (event: MouseEvent) => {
-    console.log("handleClickOutside:")
     if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
       setShowDropdown(false) // Close the dropdown
     }
