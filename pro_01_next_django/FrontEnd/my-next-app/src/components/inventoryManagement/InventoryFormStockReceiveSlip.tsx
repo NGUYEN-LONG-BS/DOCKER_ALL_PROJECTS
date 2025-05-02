@@ -48,8 +48,8 @@ export function InventoryFormStockReceiveSlip() {
   const [documentNumber, setDocumentNumber] = useState<string>('');
   // Sử dụng SlipNote interface để lưu trữ kho và ghi chú
   const [slipNote, setSlipNote] = useState<SlipNote>({
-    selectedWarehouse: 'Kho A',
-    notesOfSlip: '',
+    selectedWarehouse: 'Kho A',   // Fallback to 'Kho A' if no value is passed
+    notesOfSlip: '',              // Fallback to 'No notes' if no value is passed
   });
   const [supplier, setSupplier] = useState<Supplier>({
     code: '',
@@ -69,6 +69,7 @@ export function InventoryFormStockReceiveSlip() {
 
   // Handle the save button click
   const handleSave = () => {
+    
     const data = {
       date: date,
       documentNumber: documentNumber,
