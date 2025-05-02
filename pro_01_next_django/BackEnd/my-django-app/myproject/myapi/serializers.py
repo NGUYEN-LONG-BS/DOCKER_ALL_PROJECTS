@@ -20,3 +20,27 @@ class TBInventoryCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = TB_INVENTORY_CATEGORIES
         fields = ['ma_hang', 'ten_hang', 'dvt']
+        
+# ==============================================================================
+# Save inventory
+# ==============================================================================
+
+class InventoryItemSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    code = serializers.CharField()
+    name = serializers.CharField()
+    unit = serializers.CharField()
+    quantity = serializers.IntegerField()
+    price = serializers.FloatField()
+    notes = serializers.CharField()
+
+class SlipNoteSerializer(serializers.Serializer):
+    selectedWarehouse = serializers.CharField()
+    notesOfSlip = serializers.CharField()
+
+class InventoryFormSerializer(serializers.Serializer):
+    date = serializers.DateField()
+    documentNumber = serializers.CharField()
+    supplier = serializers.CharField()
+    slipNote = SlipNoteSerializer()
+    inventoryTable = InventoryItemSerializer(many=True)

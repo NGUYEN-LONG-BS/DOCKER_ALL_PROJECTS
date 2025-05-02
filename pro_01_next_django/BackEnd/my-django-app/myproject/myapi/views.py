@@ -123,3 +123,21 @@ def get_json_data(request):
         return JsonResponse({"error": "Invalid JSON format"}, status=400)
     except UnicodeDecodeError:
         return JsonResponse({"error": "Unicode decoding error in file"}, status=400)
+
+# ==============================================================================
+# Save inventory
+# ==============================================================================
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import InventoryFormSerializer
+
+class SaveInventoryView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = InventoryFormSerializer(data=request.data)
+        if serializer.is_valid():
+            # Xử lý dữ liệu ở đây, ví dụ lưu vào database
+            # Bạn có thể tạo model và lưu dữ liệu vào database
+            return Response({"message": "Data saved successfully"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,5 +1,6 @@
 "use client";
 
+import axios from 'axios';
 import { useState } from "react";
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component";
@@ -44,7 +45,11 @@ interface Supplier {
 export function InventoryFormStockReceiveSlip() {
 
   // State for all components
-  const [date, setDate] = useState<string>('');
+  // const [date, setDate] = useState<string>('');
+  const [date, setDate] = useState<string>(() => {
+    const today = new Date().toISOString().split('T')[0];
+    return today;
+  });
   const [documentNumber, setDocumentNumber] = useState<string>('');
   // Sử dụng SlipNote interface để lưu trữ kho và ghi chú
   const [slipNote, setSlipNote] = useState<SlipNote>({
@@ -68,8 +73,20 @@ export function InventoryFormStockReceiveSlip() {
   ]);
 
   // Handle the save button click
-  const handleSave = () => {
+  // const handleSave = () => {
     
+  //   const data = {
+  //     date: date,
+  //     documentNumber: documentNumber,
+  //     supplier: supplier,
+  //     slipNote: slipNote,
+  //     inventoryTable: inventoryTable,
+  //   };
+
+  //   console.log(JSON.stringify(data, null, 2)); // Log the data as a formatted JSON string
+  // };
+
+  const handleSave = async () => {
     const data = {
       date: date,
       documentNumber: documentNumber,
@@ -77,8 +94,18 @@ export function InventoryFormStockReceiveSlip() {
       slipNote: slipNote,
       inventoryTable: inventoryTable,
     };
-
-    console.log(JSON.stringify(data, null, 2)); // Log the data as a formatted JSON string
+  
+    try {
+      const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      console.log('Data saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving data:', error);
+    }
   };
 
   // Cập nhật giá trị kho
@@ -141,7 +168,7 @@ export function InventoryFormStockReceiveSlip() {
       <div className="card-body">
         <div className="row g-3">
           <div className="col-md-6">
-            <DateComponent onDateChange={handleDateChange}/>
+            <DateComponent initialDate={date} onDateChange={handleDateChange}/>
           </div>
           <div className="col-md-6">
             <DocumentNumberComponent />

@@ -5,17 +5,22 @@ import { useState, useEffect } from 'react';
 // DateComponent now accepts an onDateChange prop
 interface DateComponentProps {
   onDateChange: (newDate: string) => void; // Callback to update the date
+  initialDate?: string; // new optional prop
 }
 
-export function DateComponent({ onDateChange }: DateComponentProps) {
+export function DateComponent({ onDateChange, initialDate }: DateComponentProps) {
   // Initialize the current date to today's date in YYYY-MM-DD format
   const [currentDate, setCurrentDate] = useState<string>('');
 
   useEffect(() => {
     // Set the default date as today's date in YYYY-MM-DD format
-    const today = new Date().toISOString().split('T')[0];
+    const today = initialDate || new Date().toISOString().split('T')[0];
     setCurrentDate(today);
-  }, []); // Runs only once when the component is mounted
+    // onDateChange(today); // ensure parent gets initial value
+    if (typeof onDateChange === 'function') {
+      onDateChange(today); // avoid runtime error
+    }
+  }, [initialDate]); // Runs only once when the component is mounted
 
   // Update the date when the user selects a new one
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
