@@ -8,6 +8,7 @@ import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
+import PopupFadeout from "../popups/errorPopupComponentTypeFadeOut";
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -45,7 +46,7 @@ interface Supplier {
 export function InventoryFormStockReceiveSlip() {
 
   // State for all components
-  // const [date, setDate] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [date, setDate] = useState<string>(() => {
     const today = new Date().toISOString().split('T')[0];
     return today;
@@ -86,27 +87,77 @@ export function InventoryFormStockReceiveSlip() {
   //   console.log(JSON.stringify(data, null, 2)); // Log the data as a formatted JSON string
   // };
 
+
+  // const handleSave = async () => {
+  //   const data = {
+  //     date: date,
+  //     documentNumber: documentNumber,
+  //     supplier: supplier,
+  //     slipNote: slipNote,
+  //     inventoryTable: inventoryTable,
+  //   };
+    
+  //   console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
+
+  //   try {
+  //     const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+  //       headers: {
+  //         'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
+  //       },
+  //     });
+  
+  //     // console.log('Data saved successfully:', response.data);
+  //     setErrorMessage('Data saved successfully:');
+  //   } catch (error) {
+  //     // console.error('Error saving data:', error);
+  //     setErrorMessage('Error saving data');
+  //   }
+  // };
+
   const handleSave = async () => {
+    // Prepare data with the correct structure
     const data = {
       date: date,
-      documentNumber: documentNumber,
-      supplier: supplier,
-      slipNote: slipNote,
-      inventoryTable: inventoryTable,
+      so_phieu: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
+      id_nhan_vien: 'EMP001234',  // Replace with actual employee code (max 10 characters)
+      xoa_sua: 'insert',  // Replace with actual action (insert/update)
+      phan_loai_nhap_xuat_hoan: 'receipt',  // Replace with appropriate category
+      ma_doi_tuong: supplier.code || "DEFAULT_SUPPLIER_CODE",  // Ensure this is not empty
+      ngay_tren_phieu: date,  // Date should be provided
+      so_phieu_de_nghi: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
+      thong_tin_them: slipNote.notesOfSlip || "No additional notes",  // Default if empty
+      stt_dong: 1,  // Default or dynamically calculated
+      ma_kho_nhan: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
+      ma_kho_xuat: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
+      inventory_items: inventoryTable.map(item => ({
+        ma_hang: item.code || "DEFAULT_ITEM_CODE",  // Ensure item code is not empty
+        ten_hang: item.name || "DEFAULT_ITEM_NAME",  // Default if empty
+        don_vi_tinh: item.unit || "unit",  // Default if empty
+        so_luong: item.quantity > 0 ? item.quantity : 1,  // Ensure quantity is valid (set to 1 if invalid)
+        don_gia: item.price > 0 ? item.price : 1,  // Ensure price is valid (set to 1 if invalid)
+        thanh_tien: (item.quantity > 0 && item.price > 0) ? item.quantity * item.price : 0,  // Calculate thanh_tien, default to 0 if invalid
+        ghi_chu_sp: item.notes || "No notes",  // Default if empty
+      }))
     };
-  
+
+    console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
+
     try {
       const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
         },
       });
-      
-      console.log('Data saved successfully:', response.data);
+
+      // console.log('Data saved successfully:', response.data);
+      setErrorMessage('Data saved successfully');
     } catch (error) {
-      console.error('Error saving data:', error);
+      // console.error('Error saving data:', error);
+      setErrorMessage('Error saving data');
     }
-  };
+};
+
+  
 
   // Cập nhật giá trị kho
   const handleWarehouseChange = (newWarehouse: string) => {
@@ -211,6 +262,8 @@ export function InventoryFormStockReceiveSlip() {
           </button>
         </div>
       </div>
+      {/* Error Popup */}
+      <PopupFadeout message={errorMessage} onClose={() => setErrorMessage(null)} />
     </div>
   )
 }

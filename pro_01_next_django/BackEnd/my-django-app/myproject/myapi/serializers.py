@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import FormSubmission, LoginInfo, TB_INVENTORY_CATEGORIES
+from .models import FormSubmission, LoginInfo, TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 
 class FormSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,22 +25,27 @@ class TBInventoryCategoriesSerializer(serializers.ModelSerializer):
 # Save inventory
 # ==============================================================================
 
-class InventoryItemSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    code = serializers.CharField()
-    name = serializers.CharField()
-    unit = serializers.CharField()
-    quantity = serializers.IntegerField()
-    price = serializers.FloatField()
-    notes = serializers.CharField()
+class InventoryStockReceivedIssuedReturnedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+        fields = '__all__'  # Lấy tất cả các trường trong model
 
-class SlipNoteSerializer(serializers.Serializer):
-    selectedWarehouse = serializers.CharField()
-    notesOfSlip = serializers.CharField()
+# class InventoryItemSerializer(serializers.Serializer):
+#     id = serializers.IntegerField()
+#     code = serializers.CharField()
+#     name = serializers.CharField()
+#     unit = serializers.CharField()
+#     quantity = serializers.IntegerField()
+#     price = serializers.FloatField()
+#     notes = serializers.CharField()
 
-class InventoryFormSerializer(serializers.Serializer):
-    date = serializers.DateField()
-    documentNumber = serializers.CharField()
-    supplier = serializers.CharField()
-    slipNote = SlipNoteSerializer()
-    inventoryTable = InventoryItemSerializer(many=True)
+# class SlipNoteSerializer(serializers.Serializer):
+#     selectedWarehouse = serializers.CharField()
+#     notesOfSlip = serializers.CharField()
+
+# class InventoryFormSerializer(serializers.Serializer):
+#     date = serializers.DateField()
+#     documentNumber = serializers.CharField()
+#     supplier = serializers.CharField()
+#     slipNote = SlipNoteSerializer()
+#     inventoryTable = InventoryItemSerializer(many=True)

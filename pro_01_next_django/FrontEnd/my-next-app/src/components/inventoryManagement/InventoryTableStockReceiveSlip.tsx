@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOut";
-// import Popup from "./errorPopupComponentTypeClickOK";
 
 interface InventoryItem {
   id: number
@@ -23,12 +22,6 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
   const [items, setItems] = useState<InventoryItem[]>([])
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const addRow = () => {
-    // // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
-    // if (!product.code || product.quantity === 0) {
-    //   // Show an alert or handle the error message
-    //   alert("Lỗi: Mã hàng không được trống và Số lượng phải lớn hơn 0.");
-    //   return; // Stop the function from continuing, thus preventing row addition
-    // }
     // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
     if (!product.code || product.quantity === 0) {
       setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0.");
