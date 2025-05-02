@@ -16,7 +16,7 @@ urlpatterns = [
     path('get-json-data/', get_json_data, name='get-json-data'),
     # path('get-json-data/<str:file_path>/', get_json_data, name='get-json-data'),
     
-    path('api/save-inventory/', SaveInventoryView.as_view(), name='save-inventory'),
+    path('save-inventory/', SaveInventoryView.as_view(), name='save-inventory'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development
