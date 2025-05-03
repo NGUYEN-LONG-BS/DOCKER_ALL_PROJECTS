@@ -150,10 +150,10 @@ export function InventoryFormStockReceiveSlip() {
       });
 
       // console.log('Data saved successfully:', response.data);
-      setErrorMessage('Data saved successfully');
+      setErrorMessage('Lưu thành công!');
     } catch (error) {
       // console.error('Error saving data:', error);
-      setErrorMessage('Error saving data');
+      setErrorMessage('Gửi thông tin thất bại!');
     }
 };
 
