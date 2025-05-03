@@ -17,7 +17,7 @@ const SuccessPopupTypeFadeOut: React.FC<PopupProps> = ({ message, onClose }) => 
       const timer = setTimeout(() => {
         setIsVisible(false); // Hide the popup after 2 seconds
         onClose(); // Call onClose to reset the success message
-      }, 2000); // 2000ms = 2 seconds
+      }, 3000); // 3000ms = 3 seconds
 
       return () => clearTimeout(timer); // Clean up timer when the component is unmounted or message changes
     }
