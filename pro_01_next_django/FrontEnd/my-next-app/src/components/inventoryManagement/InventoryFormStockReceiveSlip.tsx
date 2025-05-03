@@ -75,47 +75,6 @@ export function InventoryFormStockReceiveSlip() {
       notes: '' },
   ]);
 
-  // Handle the save button click
-  // const handleSave = () => {
-    
-  //   const data = {
-  //     date: date,
-  //     documentNumber: documentNumber,
-  //     supplier: supplier,
-  //     slipNote: slipNote,
-  //     inventoryTable: inventoryTable,
-  //   };
-
-  //   console.log(JSON.stringify(data, null, 2)); // Log the data as a formatted JSON string
-  // };
-
-
-  // const handleSave = async () => {
-  //   const data = {
-  //     date: date,
-  //     documentNumber: documentNumber,
-  //     supplier: supplier,
-  //     slipNote: slipNote,
-  //     inventoryTable: inventoryTable,
-  //   };
-    
-  //   console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
-
-  //   try {
-  //     const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
-  //       headers: {
-  //         'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
-  //       },
-  //     });
-  
-  //     // console.log('Data saved successfully:', response.data);
-  //     setErrorMessage('Data saved successfully:');
-  //   } catch (error) {
-  //     // console.error('Error saving data:', error);
-  //     setErrorMessage('Error saving data');
-  //   }
-  // };
-
     const handleSave = async () => {
       // Prepare data with the correct structure
       const data = {

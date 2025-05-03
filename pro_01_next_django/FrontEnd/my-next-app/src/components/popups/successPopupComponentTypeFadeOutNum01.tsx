@@ -13,9 +13,8 @@ const SuccessPopupTypeFadeOut: React.FC<PopupProps> = ({ message, onClose }) => 
   useEffect(() => {
     if (message) {
       setIsVisible(true); // Show the popup
-      // After 2 seconds, start fading out
       const timer = setTimeout(() => {
-        setIsVisible(false); // Hide the popup after 2 seconds
+        setIsVisible(false); // Hide the popup
         onClose(); // Call onClose to reset the success message
       }, 3000); // 3000ms = 3 seconds
 

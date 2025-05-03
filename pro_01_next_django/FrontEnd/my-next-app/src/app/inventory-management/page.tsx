@@ -4,9 +4,14 @@ import { MainNav } from "@/components/mainNav/mainNavMaterialProcurementDepartur
 import { TabNav } from "@/components/inventoryManagement/tab-nav"
 import RightBar from "@/components/rightBarNotification/rightBarComponent";
 import LeftBar from "@/components/leftBarNavigator/leftBarComponent"; 
+// import { useState } from "react";
+// import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNum01";
+// import ErrorPopup from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 
 export default function Home() {
-  // Không cần import Bootstrap JS ở đây vì đã được import trong layout.tsx
+  // const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  // const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <header className="sticky-top border-bottom bg-white">
@@ -29,6 +34,16 @@ export default function Home() {
       {/* Side Bar */}
       <RightBar />
       <LeftBar />
+
+      {/* Show success message when needed */}
+      {/* {successMessage && (
+        <SuccessPopup message={successMessage} onClose={() => setSuccessMessage(null)} />
+      )} */}
+
+      {/* Show success message when needed */}
+      {/* {successMessage && (
+        <ErrorPopup message={errorMessage} onClose={() => setErrorMessage(null)} />
+      )} */}
 
       <footer className="border-top py-3">
         <div className="container d-flex justify-content-between align-items-center">
