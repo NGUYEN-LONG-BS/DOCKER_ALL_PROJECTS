@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component";
+import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip";
@@ -280,11 +281,14 @@ export function InventoryFormStockReceiveSlip() {
       </div>
       <div className="card-body">
         <div className="row g-3">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <DateComponent initialDate={date} onDateChange={handleDateChange}/>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <DocumentNumberComponent />
+          </div>
+          <div className="col-md-4">
+            <DocumentRequestNumberComponent />
           </div>
         </div>
 
