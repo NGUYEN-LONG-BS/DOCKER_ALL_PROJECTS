@@ -157,7 +157,47 @@ export function InventoryFormStockReceiveSlip() {
     }
 };
 
-  
+const handleDownload = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/download-import-template/', {
+      responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+    });
+
+    // Tạo một URL tạm thời cho file blob
+    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+    
+    // Tạo một element <a> để tải file
+    const link = document.createElement('a');
+    link.href = fileURL;
+    link.setAttribute('download', 'Import_template.xlsx');  // Tên file khi tải xuống
+    document.body.appendChild(link);
+    link.click();  // Mô phỏng nhấp chuột để tải file xuống
+    document.body.removeChild(link);  // Xóa element sau khi tải xong
+  } catch (error) {
+    console.error('Error downloading the file:', error);
+  }
+};
+
+const handlePrint = async () => {
+  try {
+    const response = await axios.get('http://localhost:8000/api/download-print-template/', {
+      responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+    });
+
+    // Tạo một URL tạm thời cho file blob
+    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+    
+    // Tạo một element <a> để tải file
+    const link = document.createElement('a');
+    link.href = fileURL;
+    link.setAttribute('download', 'Print_template.xlsx');  // Tên file khi tải xuống
+    document.body.appendChild(link);
+    link.click();  // Mô phỏng nhấp chuột để tải file xuống
+    document.body.removeChild(link);  // Xóa element sau khi tải xong
+  } catch (error) {
+    console.error('Error downloading the file:', error);
+  }
+};
 
   // Cập nhật giá trị kho
   const handleWarehouseChange = (newWarehouse: string) => {
@@ -245,19 +285,19 @@ export function InventoryFormStockReceiveSlip() {
         <InventoryTableStockReceiveSlip product={selectedProduct} />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
-          <button type="button" className="btn btn-outline-secondary">
+          <button type="button" className="btn btn-outline-secondary" onClick={handleDownload}>
             Template
           </button>
           <button type="button" className="btn btn-outline-secondary">
-            Get file
+            Import the data file
           </button>
-          <button type="button" className="btn btn-outline-secondary">
+          <button type="button" className="btn btn-outline-secondary" onClick={handlePrint}>
             Print
           </button>
-          <button type="button" className="btn btn-outline-secondary" onClick={handleSave}>
+          <button type="button" className="btn btn-primary" onClick={handleSave}>
             Save
           </button>
-          <button type="button" className="btn btn-primary">
+          <button type="button" className="btn btn-outline-secondary">
             Update
           </button>
         </div>

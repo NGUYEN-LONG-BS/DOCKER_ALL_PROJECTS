@@ -2,7 +2,7 @@ from django.urls import path
 from .views import FormSubmissionView, LoginInfoListView, TBInventoryCategoriesView
 # from .views import SaveInventoryView
 from .views import InventoryStockReceivedIssuedReturnedView
-from .views import get_json_data
+from .views import get_json_data, download_file_IMPORT_TEMPLATE, download_file_PRINT_TEMPLATE
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -18,6 +18,8 @@ urlpatterns = [
     # path('get-json-data/<str:file_path>/', get_json_data, name='get-json-data'),
     
     path('save-inventory/', InventoryStockReceivedIssuedReturnedView.as_view(), name='save-inventory'),
+    path('download-import-template/', download_file_IMPORT_TEMPLATE, name='download_file'),
+    path('download-print-template/', download_file_PRINT_TEMPLATE, name='download_file'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development

@@ -153,3 +153,35 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# ==============================================================================
+# Download file
+# ==============================================================================
+# myproject/views.py
+from django.http import FileResponse, HttpResponseNotFound
+from django.conf import settings
+import os
+
+def download_file_PRINT_TEMPLATE(request):
+    # Đường dẫn tới file Excel
+    file_path = os.path.join(settings.BASE_DIR, 'static/templates/download/PRINT_TEMPLATE.xlsx')
+    
+    # Kiểm tra nếu file tồn tại
+    if os.path.exists(file_path):
+        # Trả về file cho người dùng
+        return FileResponse(open(file_path, 'rb'), as_attachment=True, filename='PRINT_TEMPLATE.xlsx')
+    else:
+        # Nếu file không tồn tại, trả về lỗi 404
+        return HttpResponseNotFound("File not found")
+
+def download_file_IMPORT_TEMPLATE(request):
+    # Đường dẫn tới file Excel
+    file_path = os.path.join(settings.BASE_DIR, 'static/templates/download/IMPORT_TEMPLATE.xlsx')
+    
+    # Kiểm tra nếu file tồn tại
+    if os.path.exists(file_path):
+        # Trả về file cho người dùng
+        return FileResponse(open(file_path, 'rb'), as_attachment=True, filename='IMPORT_TEMPLATE.xlsx')
+    else:
+        # Nếu file không tồn tại, trả về lỗi 404
+        return HttpResponseNotFound("File not found")
