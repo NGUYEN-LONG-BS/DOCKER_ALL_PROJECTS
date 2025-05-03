@@ -1,7 +1,7 @@
 "use client";
-
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useState } from "react";
+
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
@@ -9,6 +9,7 @@ import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
+import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -47,6 +48,7 @@ export function InventoryFormStockReceiveSlip() {
 
   // State for all components
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [date, setDate] = useState<string>(() => {
     const today = new Date().toISOString().split('T')[0];
     return today;
@@ -204,40 +206,60 @@ export function InventoryFormStockReceiveSlip() {
   };
 
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);  // State để lưu trữ file được chọn
+  // State for all components
+  const [selectedFile, setSelectedFile] = useState<File | null>(null); // State to store the selected file
 
   // Hàm xử lý khi người dùng chọn file
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("starting");
     if (event.target.files) {
-      setSelectedFile(event.target.files[0]);  // Lưu trữ file được chọn
+      const file = event.target.files[0]; // Lấy file được chọn
+      if (file) {
+        console.log("File selected:", file.name);
+        setSelectedFile(file); // Lưu trữ file được chọn vào state
+        setErrorMessage(""); // Xóa thông báo lỗi (nếu có)
+      } else {
+        setErrorMessage("No file selected"); // Thông báo nếu không có file
+      }
     }
+    console.log("ending");
   };
 
   // Hàm xử lý khi người dùng click vào nút "Import the data file"
   const handleImportFile = async () => {
     if (!selectedFile) {
-      setErrorMessage('Please select a file to import');
+      setErrorMessage("Please select a file to import");
       return;
     }
 
     // Tạo form data để gửi file qua API
     const formData = new FormData();
-    formData.append('file', selectedFile);  // Gửi file với key 'file'
+    formData.append("file", selectedFile); // Gửi file với key 'file'
+    console.log("Sending file:"); // Kiểm tra dữ liệu trước khi gửi
 
     try {
-      const response = await axios.post('http://localhost:8000/api/import-data/', formData, {
+      const response = await axios.post("http://localhost:8000/api/import-data/", formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Cần set content-type là multipart/form-data để gửi file
+          "Content-Type": "multipart/form-data", // Cần set content-type là multipart/form-data để gửi file
         },
       });
 
-      console.log('File imported successfully:', response.data);
-      setErrorMessage('File imported successfully!');
+      console.log("File imported successfully:", response.data);
+      setSuccessMessage("File imported successfully!");
     } catch (error) {
-      console.error('Error importing file:', error);
-      setErrorMessage('Error importing file');
+      console.error("Error importing file:", error);
+      setErrorMessage("Error importing file");
     }
+
+    console.log("kết thúc");
   };
+  
+  // Use useEffect to trigger file import after selectedFile is updated
+  useEffect(() => {
+    if (selectedFile) {
+      handleImportFile(); // Gọi hàm xử lý upload file ngay khi file được chọn
+    }
+  }, [selectedFile]); // This will run when selectedFile changes
 
 
   // Cập nhật giá trị kho
@@ -357,6 +379,8 @@ export function InventoryFormStockReceiveSlip() {
       </div>
       {/* Error Popup */}
       <PopupFadeout message={errorMessage} onClose={() => setErrorMessage(null)} />
+      {/* Success Popup */}
+      <SuccessPopup message={successMessage} onClose={() => setSuccessMessage(null)} />
     </div>
   )
 }

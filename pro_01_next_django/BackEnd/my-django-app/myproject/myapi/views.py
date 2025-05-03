@@ -196,37 +196,43 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+import os
+from django.conf import settings
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 @api_view(['POST'])
 def import_data(request):
+    print("Bắt đầu lưu file")
+
     # Lấy file từ request
     file = request.FILES.get('file')
     
     if not file:
         return Response({'error': 'No file uploaded'}, status=400)
-    
-    # Đảm bảo thư mục static/template/upload tồn tại
-    upload_dir = os.path.join(settings.BASE_DIR, 'static/template/upload')
+
+    # Đảm bảo thư mục static/templates/upload tồn tại
+    upload_dir = os.path.join(settings.BASE_DIR, 'static/templates/upload')
     if not os.path.exists(upload_dir):
         os.makedirs(upload_dir)
+        print(f"Thư mục {upload_dir} đã được tạo.")
 
-    # Lưu file vào thư mục upload
-    file_path = os.path.join(upload_dir, file.name)  # Đặt tên file bằng tên của file tải lên
+    # Đặt tên file và kiểm tra tên file để đảm bảo không có ký tự đặc biệt
+    file_name = file.name
+    file_path = os.path.join(upload_dir, file_name)
+
     try:
-        # Lưu file vào thư mục
+        # Lưu file vào thư mục upload
         with open(file_path, 'wb') as f:
             for chunk in file.chunks():
                 f.write(chunk)
+        
+        # In ra file path để kiểm tra
+        print(f"File đã được lưu tại {file_path}")
 
-        # Sau khi lưu thành công, bạn có thể xử lý dữ liệu từ file nếu cần
-        # Ví dụ, dùng pandas để đọc file Excel (nếu cần)
-        import pandas as pd
-        try:
-            df = pd.read_excel(file_path)  # Đọc file Excel sau khi lưu
-            # Xử lý dữ liệu từ DataFrame...
-            return JsonResponse({'message': 'File imported and saved successfully'}, status=200)
-        except Exception as e:
-            return JsonResponse({'error': f'Error reading the Excel file: {str(e)}'}, status=400)
-
+        return Response({'message': 'File uploaded and saved successfully'}, status=200)
+    
     except Exception as e:
-        return JsonResponse({'error': f'Error saving file: {str(e)}'}, status=500)
-
+        # Xử lý lỗi khi lưu file
+        print(f"Lỗi khi lưu file: {str(e)}")
+        return Response({'error': f'Error saving file: {str(e)}'}, status=500)

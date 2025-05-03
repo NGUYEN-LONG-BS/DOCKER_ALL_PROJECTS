@@ -20,7 +20,7 @@ urlpatterns = [
     path('save-inventory/', InventoryStockReceivedIssuedReturnedView.as_view(), name='save-inventory'),
     path('download-import-template/', download_file_IMPORT_TEMPLATE, name='download_file'),
     path('download-print-template/', download_file_PRINT_TEMPLATE, name='download_file'),
-    path('import_data/', import_data, name='import_data'),
+    path('import-data/', import_data, name='import_data'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development
