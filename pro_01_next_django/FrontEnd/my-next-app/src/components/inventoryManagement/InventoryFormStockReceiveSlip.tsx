@@ -114,94 +114,131 @@ export function InventoryFormStockReceiveSlip() {
   //   }
   // };
 
-  const handleSave = async () => {
-    // Prepare data with the correct structure
-    const data = {
-      date: date,
-      so_phieu: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
-      id_nhan_vien: 'EMP001234',  // Replace with actual employee code (max 10 characters)
-      xoa_sua: 'insert',  // Replace with actual action (insert/update)
-      phan_loai_nhap_xuat_hoan: 'receipt',  // Replace with appropriate category
-      ma_doi_tuong: supplier.code || "DEFAULT_SUPPLIER_CODE",  // Ensure this is not empty
-      ngay_tren_phieu: date,  // Date should be provided
-      so_phieu_de_nghi: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
-      thong_tin_them: slipNote.notesOfSlip || "No additional notes",  // Default if empty
-      stt_dong: 1,  // Default or dynamically calculated
-      ma_kho_nhan: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
-      ma_kho_xuat: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
-      inventory_items: inventoryTable.map(item => ({
-        ma_hang: item.code || "DEFAULT_ITEM_CODE",  // Ensure item code is not empty
-        ten_hang: item.name || "DEFAULT_ITEM_NAME",  // Default if empty
-        don_vi_tinh: item.unit || "unit",  // Default if empty
-        so_luong: item.quantity > 0 ? item.quantity : 1,  // Ensure quantity is valid (set to 1 if invalid)
-        don_gia: item.price > 0 ? item.price : 1,  // Ensure price is valid (set to 1 if invalid)
-        thanh_tien: (item.quantity > 0 && item.price > 0) ? item.quantity * item.price : 0,  // Calculate thanh_tien, default to 0 if invalid
-        ghi_chu_sp: item.notes || "No notes",  // Default if empty
-      }))
-    };
+    const handleSave = async () => {
+      // Prepare data with the correct structure
+      const data = {
+        date: date,
+        so_phieu: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
+        id_nhan_vien: 'EMP001234',  // Replace with actual employee code (max 10 characters)
+        xoa_sua: 'insert',  // Replace with actual action (insert/update)
+        phan_loai_nhap_xuat_hoan: 'receipt',  // Replace with appropriate category
+        ma_doi_tuong: supplier.code || "DEFAULT_SUPPLIER_CODE",  // Ensure this is not empty
+        ngay_tren_phieu: date,  // Date should be provided
+        so_phieu_de_nghi: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
+        thong_tin_them: slipNote.notesOfSlip || "No additional notes",  // Default if empty
+        stt_dong: 1,  // Default or dynamically calculated
+        ma_kho_nhan: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
+        ma_kho_xuat: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
+        inventory_items: inventoryTable.map(item => ({
+          ma_hang: item.code || "DEFAULT_ITEM_CODE",  // Ensure item code is not empty
+          ten_hang: item.name || "DEFAULT_ITEM_NAME",  // Default if empty
+          don_vi_tinh: item.unit || "unit",  // Default if empty
+          so_luong: item.quantity > 0 ? item.quantity : 1,  // Ensure quantity is valid (set to 1 if invalid)
+          don_gia: item.price > 0 ? item.price : 1,  // Ensure price is valid (set to 1 if invalid)
+          thanh_tien: (item.quantity > 0 && item.price > 0) ? item.quantity * item.price : 0,  // Calculate thanh_tien, default to 0 if invalid
+          ghi_chu_sp: item.notes || "No notes",  // Default if empty
+        }))
+      };
 
-    console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
+      console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
+
+      try {
+        const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+          headers: {
+            'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
+          },
+        });
+
+        // console.log('Data saved successfully:', response.data);
+        setErrorMessage('Lưu thành công!');
+      } catch (error) {
+        // console.error('Error saving data:', error);
+        setErrorMessage('Gửi thông tin thất bại!');
+      }
+  };
+
+  const handleTemplateClick = async () => {
+    // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
+    // Bước 2: tiến hành download file
+    try {
+      const response = await axios.get('http://localhost:8000/api/download-import-template/', {
+        responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+      });
+
+      // Tạo một URL tạm thời cho file blob
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      
+      // Tạo một element <a> để tải file
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', 'Import_template.xlsx');  // Tên file khi tải xuống
+      document.body.appendChild(link);
+      link.click();  // Mô phỏng nhấp chuột để tải file xuống
+      document.body.removeChild(link);  // Xóa element sau khi tải xong
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+    }
+  };
+
+  const handlePrintClick = async () => {
+    // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
+    // Bước 2: tiến hành download file
+    try {
+      const response = await axios.get('http://localhost:8000/api/download-print-template/', {
+        responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+      });
+
+      // Tạo một URL tạm thời cho file blob
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      
+      // Tạo một element <a> để tải file
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', 'Print_template.xlsx');  // Tên file khi tải xuống
+      document.body.appendChild(link);
+      link.click();  // Mô phỏng nhấp chuột để tải file xuống
+      document.body.removeChild(link);  // Xóa element sau khi tải xong
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+    }
+  };
+
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);  // State để lưu trữ file được chọn
+
+  // Hàm xử lý khi người dùng chọn file
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setSelectedFile(event.target.files[0]);  // Lưu trữ file được chọn
+    }
+  };
+
+  // Hàm xử lý khi người dùng click vào nút "Import the data file"
+  const handleImportFile = async () => {
+    if (!selectedFile) {
+      setErrorMessage('Please select a file to import');
+      return;
+    }
+
+    // Tạo form data để gửi file qua API
+    const formData = new FormData();
+    formData.append('file', selectedFile);  // Gửi file với key 'file'
 
     try {
-      const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+      const response = await axios.post('http://localhost:8000/api/import-data/', formData, {
         headers: {
-          'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
+          'Content-Type': 'multipart/form-data', // Cần set content-type là multipart/form-data để gửi file
         },
       });
 
-      // console.log('Data saved successfully:', response.data);
-      setErrorMessage('Lưu thành công!');
+      console.log('File imported successfully:', response.data);
+      setErrorMessage('File imported successfully!');
     } catch (error) {
-      // console.error('Error saving data:', error);
-      setErrorMessage('Gửi thông tin thất bại!');
+      console.error('Error importing file:', error);
+      setErrorMessage('Error importing file');
     }
-};
+  };
 
-const handleTemplateClick = async () => {
-  // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
-  // Bước 2: tiến hành download file
-  try {
-    const response = await axios.get('http://localhost:8000/api/download-import-template/', {
-      responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
-    });
-
-    // Tạo một URL tạm thời cho file blob
-    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-    
-    // Tạo một element <a> để tải file
-    const link = document.createElement('a');
-    link.href = fileURL;
-    link.setAttribute('download', 'Import_template.xlsx');  // Tên file khi tải xuống
-    document.body.appendChild(link);
-    link.click();  // Mô phỏng nhấp chuột để tải file xuống
-    document.body.removeChild(link);  // Xóa element sau khi tải xong
-  } catch (error) {
-    console.error('Error downloading the file:', error);
-  }
-};
-
-const handlePrintClick = async () => {
-  // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
-  // Bước 2: tiến hành download file
-  try {
-    const response = await axios.get('http://localhost:8000/api/download-print-template/', {
-      responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
-    });
-
-    // Tạo một URL tạm thời cho file blob
-    const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-    
-    // Tạo một element <a> để tải file
-    const link = document.createElement('a');
-    link.href = fileURL;
-    link.setAttribute('download', 'Print_template.xlsx');  // Tên file khi tải xuống
-    document.body.appendChild(link);
-    link.click();  // Mô phỏng nhấp chuột để tải file xuống
-    document.body.removeChild(link);  // Xóa element sau khi tải xong
-  } catch (error) {
-    console.error('Error downloading the file:', error);
-  }
-};
 
   // Cập nhật giá trị kho
   const handleWarehouseChange = (newWarehouse: string) => {
@@ -292,7 +329,19 @@ const handlePrintClick = async () => {
           <button type="button" className="btn btn-outline-secondary" onClick={handleTemplateClick}>
             Template
           </button>
-          <button type="button" className="btn btn-outline-secondary">
+          {/* Thêm input file để người dùng chọn file */}
+          <input 
+            type="file" 
+            accept=".xlsx,.xls" // Chỉ cho phép chọn file Excel
+            onChange={handleFileChange}
+            style={{ display: 'none' }} // Ẩn input file đi, để nút bên dưới làm việc
+            id="import-file-input"
+          />
+          <button 
+            type="button" 
+            className="btn btn-outline-secondary"
+            onClick={() => document.getElementById('import-file-input')?.click()} // Tự động mở cửa sổ chọn file khi nhấn nút
+          >
             Import the data file
           </button>
           <button type="button" className="btn btn-outline-secondary" onClick={handlePrintClick}>

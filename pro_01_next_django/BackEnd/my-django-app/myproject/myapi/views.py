@@ -185,3 +185,48 @@ def download_file_IMPORT_TEMPLATE(request):
     else:
         # Nếu file không tồn tại, trả về lỗi 404
         return HttpResponseNotFound("File not found")
+
+# ==============================================================================
+# Upload file
+# ==============================================================================
+
+import os
+from django.conf import settings
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+@api_view(['POST'])
+def import_data(request):
+    # Lấy file từ request
+    file = request.FILES.get('file')
+    
+    if not file:
+        return Response({'error': 'No file uploaded'}, status=400)
+    
+    # Đảm bảo thư mục static/template/upload tồn tại
+    upload_dir = os.path.join(settings.BASE_DIR, 'static/template/upload')
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+
+    # Lưu file vào thư mục upload
+    file_path = os.path.join(upload_dir, file.name)  # Đặt tên file bằng tên của file tải lên
+    try:
+        # Lưu file vào thư mục
+        with open(file_path, 'wb') as f:
+            for chunk in file.chunks():
+                f.write(chunk)
+
+        # Sau khi lưu thành công, bạn có thể xử lý dữ liệu từ file nếu cần
+        # Ví dụ, dùng pandas để đọc file Excel (nếu cần)
+        import pandas as pd
+        try:
+            df = pd.read_excel(file_path)  # Đọc file Excel sau khi lưu
+            # Xử lý dữ liệu từ DataFrame...
+            return JsonResponse({'message': 'File imported and saved successfully'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': f'Error reading the Excel file: {str(e)}'}, status=400)
+
+    except Exception as e:
+        return JsonResponse({'error': f'Error saving file: {str(e)}'}, status=500)
+
