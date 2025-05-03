@@ -157,7 +157,9 @@ export function InventoryFormStockReceiveSlip() {
     }
 };
 
-const handleDownload = async () => {
+const handleTemplateClick = async () => {
+  // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
+  // Bước 2: tiến hành download file
   try {
     const response = await axios.get('http://localhost:8000/api/download-import-template/', {
       responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
@@ -178,7 +180,9 @@ const handleDownload = async () => {
   }
 };
 
-const handlePrint = async () => {
+const handlePrintClick = async () => {
+  // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
+  // Bước 2: tiến hành download file
   try {
     const response = await axios.get('http://localhost:8000/api/download-print-template/', {
       responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
@@ -285,13 +289,13 @@ const handlePrint = async () => {
         <InventoryTableStockReceiveSlip product={selectedProduct} />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
-          <button type="button" className="btn btn-outline-secondary" onClick={handleDownload}>
+          <button type="button" className="btn btn-outline-secondary" onClick={handleTemplateClick}>
             Template
           </button>
           <button type="button" className="btn btn-outline-secondary">
             Import the data file
           </button>
-          <button type="button" className="btn btn-outline-secondary" onClick={handlePrint}>
+          <button type="button" className="btn btn-outline-secondary" onClick={handlePrintClick}>
             Print
           </button>
           <button type="button" className="btn btn-primary" onClick={handleSave}>
