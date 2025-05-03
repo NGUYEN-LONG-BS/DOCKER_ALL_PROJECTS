@@ -12,6 +12,7 @@ import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
+
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
   id: number;
@@ -54,8 +55,8 @@ export function InventoryFormStockReceiveSlip() {
     const today = new Date().toISOString().split('T')[0];
     return today;
   });
-  const [documentNumber, setDocumentNumber] = useState<string>('');
-  // Sử dụng SlipNote interface để lưu trữ kho và ghi chú
+  const [documentNumber, setDocumentNumber] = useState<string>('TB-PNK-250001');
+  const [documentRequestNumber, setDocumentRequestNumber] = useState<string>('TB-DNNK-250001');
   const [slipNote, setSlipNote] = useState<SlipNote>({
     selectedWarehouse: 'Kho A',   // Fallback to 'Kho A' if no value is passed
     notesOfSlip: '',              // Fallback to 'No notes' if no value is passed
@@ -75,30 +76,34 @@ export function InventoryFormStockReceiveSlip() {
       price: 0, 
       notes: '' },
   ]);
+  // Hàm cập nhật bảng thông tin tồn kho
+  const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
+    setInventoryTable(newInventoryItems);
+  };
 
     const handleSave = async () => {
       // Prepare data with the correct structure
       const data = {
         date: date,
-        so_phieu: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
-        id_nhan_vien: 'EMP001234',  // Replace with actual employee code (max 10 characters)
-        xoa_sua: 'insert',  // Replace with actual action (insert/update)
-        phan_loai_nhap_xuat_hoan: 'receipt',  // Replace with appropriate category
-        ma_doi_tuong: supplier.code || "DEFAULT_SUPPLIER_CODE",  // Ensure this is not empty
+        so_phieu: documentNumber,  // Ensure this is not empty
+        id_nhan_vien: 'NV01',  // Replace with actual employee code (max 10 characters)
+        xoa_sua: 'new',   // new / updated / deleted
+        phan_loai_nhap_xuat_hoan: 'receipt',  // receipt/ issue
+        ma_doi_tuong: supplier.code,  // Ensure this is not empty
         ngay_tren_phieu: date,  // Date should be provided
-        so_phieu_de_nghi: documentNumber || "DEFAULT_DOC_NUMBER",  // Ensure this is not empty
-        thong_tin_them: slipNote.notesOfSlip || "No additional notes",  // Default if empty
+        so_phieu_de_nghi: documentRequestNumber,  // Ensure this is not empty
+        thong_tin_them: slipNote.notesOfSlip,  // Default if empty
         stt_dong: 1,  // Default or dynamically calculated
-        ma_kho_nhan: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
-        ma_kho_xuat: slipNote.selectedWarehouse || "DEFAULT_WAREHOUSE",  // Ensure this is not empty
+        ma_kho_nhan: slipNote.selectedWarehouse,  // Ensure this is not empty
+        ma_kho_xuat: '',  // Ensure this is not empty
         inventory_items: inventoryTable.map(item => ({
-          ma_hang: item.code || "DEFAULT_ITEM_CODE",  // Ensure item code is not empty
-          ten_hang: item.name || "DEFAULT_ITEM_NAME",  // Default if empty
-          don_vi_tinh: item.unit || "unit",  // Default if empty
+          ma_hang: item.code,  // Ensure item code is not empty
+          ten_hang: item.name,  // Default if empty
+          don_vi_tinh: item.unit,  // Default if empty
           so_luong: item.quantity > 0 ? item.quantity : 1,  // Ensure quantity is valid (set to 1 if invalid)
           don_gia: item.price > 0 ? item.price : 1,  // Ensure price is valid (set to 1 if invalid)
           thanh_tien: (item.quantity > 0 && item.price > 0) ? item.quantity * item.price : 0,  // Calculate thanh_tien, default to 0 if invalid
-          ghi_chu_sp: item.notes || "No notes",  // Default if empty
+          ghi_chu_sp: item.notes,  // Default if empty
         }))
       };
 
@@ -253,11 +258,6 @@ export function InventoryFormStockReceiveSlip() {
     setSupplier(newSupplier);
   };
 
-  // Hàm cập nhật bảng thông tin tồn kho
-  const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
-    setInventoryTable(newInventoryItems);
-  };
-
   // Cập nhật state để lưu trữ thông tin sản phẩm với kiểu InventoryItemExport
   const [selectedProduct, setSelectedProduct] = useState<InventoryItemExport>({
     id: Date.now(), // Tạo id tạm thời
@@ -285,10 +285,14 @@ export function InventoryFormStockReceiveSlip() {
             <DateComponent initialDate={date} onDateChange={handleDateChange}/>
           </div>
           <div className="col-md-4">
-            <DocumentNumberComponent />
+            <DocumentNumberComponent 
+            documentNumber={documentNumber}
+            setDocumentNumber={setDocumentNumber}/>
           </div>
           <div className="col-md-4">
-            <DocumentRequestNumberComponent />
+            <DocumentRequestNumberComponent 
+            documentNumber={documentRequestNumber}
+            setDocumentNumber={setDocumentRequestNumber}/>
           </div>
         </div>
 
@@ -308,7 +312,10 @@ export function InventoryFormStockReceiveSlip() {
         </div>
 
         {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
-        <InventoryTableStockReceiveSlip product={selectedProduct} />
+        <InventoryTableStockReceiveSlip 
+        product={selectedProduct} 
+        onInventoryTableChange={handleInventoryTableChange}
+        />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
           <button type="button" className="btn btn-outline-secondary" onClick={handleTemplateClick}>

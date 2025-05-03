@@ -4,12 +4,11 @@ import { useState } from "react"
 import { RefreshCw } from "lucide-react"
 
 interface DocumentNumberProps {
-  defaultNumber?: string
+  documentNumber: string
+  setDocumentNumber: (value: string) => void
 }
 
-export function DocumentNumberComponent({ defaultNumber = "TB-PNK-250006" }: DocumentNumberProps) {
-  const [documentNumber, setDocumentNumber] = useState(defaultNumber)
-
+export function DocumentNumberComponent({ documentNumber, setDocumentNumber }: DocumentNumberProps) {
   const generateNewNumber = () => {
     // Tạo số chứng từ mới với định dạng TB-PNK-XXXXXX
     const randomNum = Math.floor(100000 + Math.random() * 900000)

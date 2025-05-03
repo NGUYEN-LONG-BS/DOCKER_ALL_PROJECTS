@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
@@ -16,11 +16,13 @@ interface InventoryItem {
 
 interface InventoryTableStockReceiveSlipProps {
   product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string }
+  onInventoryTableChange: (newItems: InventoryItem[]) => void; // Callback to notify parent about changes
 }
 
-export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockReceiveSlipProps) {
+export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
   const [items, setItems] = useState<InventoryItem[]>([])
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  
   const addRow = () => {
     // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
     if (!product.code || product.quantity === 0) {
@@ -40,6 +42,11 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
       value: product.quantity * product.price,
       notes: product.notes,
     }
+
+    const updatedItems = [...items, newItem];
+    setItems(updatedItems);
+    onInventoryTableChange(updatedItems); // Notify parent about changes
+    
     // Check if a row with the same code already exists
     const existingIndex = items.findIndex(item => item.code === newItem.code);
   
@@ -49,6 +56,7 @@ export function InventoryTableStockReceiveSlip({ product }: InventoryTableStockR
       updatedItems.push(newItem); // Add the new item at the end
       // Ensure the items are in sequential order
       setItems(reindexItems(updatedItems)); // Update state with the reindexed array
+      onInventoryTableChange(updatedItems); // Notify parent about changes
     } else {
       // If no duplicate is found, simply add the new row
       setItems(prevItems => {
