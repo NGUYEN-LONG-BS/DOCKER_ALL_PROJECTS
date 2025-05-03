@@ -43,10 +43,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       notes: product.notes,
     }
 
-    const updatedItems = [...items, newItem];
-    setItems(updatedItems);
-    onInventoryTableChange(updatedItems); // Notify parent about changes
-    
     // Check if a row with the same code already exists
     const existingIndex = items.findIndex(item => item.code === newItem.code);
   
@@ -61,7 +57,9 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       // If no duplicate is found, simply add the new row
       setItems(prevItems => {
         const updatedItems = [...prevItems, newItem];
-        return reindexItems(updatedItems); // Return reindexed items
+        const reindexedItems = reindexItems(updatedItems); // Reindex items
+        onInventoryTableChange(reindexedItems); // Notify parent about changes
+        return reindexedItems; // Return reindexed items
       });
     }
   }
