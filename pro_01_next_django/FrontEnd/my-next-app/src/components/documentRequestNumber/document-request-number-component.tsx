@@ -17,15 +17,15 @@ export function DocumentRequestNumberComponent({ defaultNumber = "TB-DNNK-250006
   }
 
   return (
-    <div className="d-flex align-items-center" style={{ height: "40px" }}>
-      <label htmlFor="document-number" className="form-label me-2 mb-0" style={{ whiteSpace: 'nowrap' }}>
+    <div className="d-flex align-items-center justify-content-center" style={{ height: "20px" }}>
+      <label htmlFor="document-request-number" className="form-label me-2 mb-0" style={{ whiteSpace: 'nowrap' }}>
         Số đề nghị:
       </label>
       <div className="input-group" style={{ maxWidth: "200px" }}>
         <input
           type="text"
           className="form-control text-center"
-          id="document-number"
+          id="document-request-number"
           value={documentNumber}
           onChange={(e) => setDocumentNumber(e.target.value)}
         />

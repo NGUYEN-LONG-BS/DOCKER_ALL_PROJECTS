@@ -18,7 +18,7 @@ export function DocumentNumberComponent({ defaultNumber = "TB-PNK-250006" }: Doc
 
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: "20px" }}>
-      <label htmlFor="document-number" className="form-label me-2 text-end" style={{ width: "100px" }}>
+      <label htmlFor="document-number" className="form-label me-2 mb-0" style={{ whiteSpace: 'nowrap' }}>
         Số chứng từ:
       </label>
       <div className="input-group" style={{ maxWidth: "200px" }}>

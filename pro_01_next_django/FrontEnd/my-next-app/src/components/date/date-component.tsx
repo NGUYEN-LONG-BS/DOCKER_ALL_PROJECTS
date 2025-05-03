@@ -31,7 +31,7 @@ export function DateComponent({ onDateChange, initialDate }: DateComponentProps)
 
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: '20px' }}>
-      <label htmlFor="date" className="form-label me-2 text-end" style={{ width: '80px' }}>
+      <label htmlFor="date" className="form-label me-2 mb-0" style={{ whiteSpace: 'nowrap' }}>
         Ngày:
       </label>
       <input
