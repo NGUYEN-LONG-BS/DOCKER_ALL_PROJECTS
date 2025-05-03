@@ -8,7 +8,7 @@ import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
-import PopupFadeout from "../popups/errorPopupComponentTypeFadeOut";
+import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
