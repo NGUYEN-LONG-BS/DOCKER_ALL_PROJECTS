@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { InventoryFormStockReceiveSlip } from "./InventoryFormStockReceiveSlip"
 import { InventoryFormStockIssuesSlip } from "./InventoryFormStockIssuesSlip"
+import { InventoryCategoryTab } from "./InventoryCategoryTab03Form"
 import { InventoryLogStockReceiveSlip } from "./InventoryLogStockReceiveSlip"
 
 export function TabNav() {
@@ -79,16 +80,7 @@ export function TabNav() {
           <InventoryFormStockIssuesSlip />
         </div>
         <div className={`tab-pane fade ${activeTab === "tao-moi-ma-hang" ? "show active" : ""}`} role="tabpanel">
-          <div className="card mt-3">
-            <div className="card-header text-center">
-              <h5 className="card-title mb-0">TẠO MỚI MÃ HÀNG</h5>
-            </div>
-            <div className="card-body">
-              <div className="d-flex align-items-center justify-content-center" style={{ height: "250px" }}>
-                <span className="text-muted">Nội dung tạo mới mã hàng sẽ được hiển thị ở đây</span>
-              </div>
-            </div>
-          </div>
+          <InventoryCategoryTab />
         </div>
         <div className={`tab-pane fade ${activeTab === "nhat-ky-nhap-kho" ? "show active" : ""}`} role="tabpanel">
           <InventoryLogStockReceiveSlip />

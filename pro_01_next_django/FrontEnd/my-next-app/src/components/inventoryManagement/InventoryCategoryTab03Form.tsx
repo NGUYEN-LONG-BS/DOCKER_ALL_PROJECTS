@@ -46,7 +46,7 @@ interface Supplier {
   address: string;
 }
 
-export function InventoryLogStockReceiveSlip() {
+export function InventoryCategoryTab() {
 
   // State for all components
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -188,7 +188,7 @@ export function InventoryLogStockReceiveSlip() {
   return (
     <div className="card mt-3">
       <div className="card-header text-center">
-        <h5 className="card-title mb-0">NHẬT KÝ NHẬP KHO</h5>
+        <h5 className="card-title mb-0">TẠO MỚI MÃ HÀNG</h5>
       </div>
       <div className="card-body">
         <div className="row g-3">
