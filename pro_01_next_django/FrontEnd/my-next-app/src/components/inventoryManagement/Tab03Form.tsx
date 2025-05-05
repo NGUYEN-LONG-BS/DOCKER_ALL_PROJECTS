@@ -12,6 +12,9 @@ import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
+import Table_inventory_category from '@/components/table_inventory_category';
+import Inventory_category_post from '@/components/inventoryManagement/inventory_category_post';
+
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -191,43 +194,9 @@ export function InventoryCategoryTab() {
         <h5 className="card-title mb-0">TẠO MỚI MÃ HÀNG</h5>
       </div>
       <div className="card-body">
-        <div className="row g-3">
-          <div className="col-md-4">
-            <DateComponent initialDate={date} onDateChange={handleDateChange}/>
-          </div>
-          <div className="col-md-4">
-            <DocumentNumberComponent 
-            documentNumber={documentNumber}
-            setDocumentNumber={setDocumentNumber}/>
-          </div>
-          <div className="col-md-4">
-            <DocumentRequestNumberComponent 
-            documentNumber={documentRequestNumber}
-            setDocumentNumber={setDocumentRequestNumber}/>
-          </div>
-        </div>
-
-        <div className="row g-3 mt-1">
-          <div className="col-md-6">
-            <SupplierComponent />
-            <InventoryNoteOfStockReceiveSlip
-            selectedWarehouse={slipNote.selectedWarehouse}  // Truyền giá trị kho vào đây
-            notesOfSlip={slipNote.notesOfSlip}              // Truyền ghi chú vào đây
-            onWarehouseChange={handleWarehouseChange}  // Callback thay đổi kho
-            onNotesChange={handleNotesChange}        // Callback thay đổi ghi chú
-          />
-          </div>
-          <div className="col-md-6">
-            <ProductComponent onProductChange={handleProductChange} />
-          </div>
-        </div>
-
-        {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
-        <InventoryTableStockReceiveSlip 
-        product={selectedProduct} 
-        onInventoryTableChange={handleInventoryTableChange}
-        />
-
+        <Inventory_category_post/>
+        <Table_inventory_category />
+        
         <div className="d-flex justify-content-end gap-2 mt-3">          
           <button type="button" className="btn btn-outline-secondary">
             ALl data
