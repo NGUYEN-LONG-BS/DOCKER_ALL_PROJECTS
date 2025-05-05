@@ -7,7 +7,7 @@ import { DocumentNumberComponent } from "../documentNumber/document-number-compo
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
-import { InventoryTableStockReceiveSlip } from "./InventoryTableStockReceiveSlip";
+import { InventoryTableStockReceiveSlip } from "./InventoryTableLogStockReceiveSlip";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
@@ -46,7 +46,7 @@ interface Supplier {
   address: string;
 }
 
-export function InventoryFormStockReceiveSlip() {
+export function InventoryLogStockReceiveSlip() {
 
   // State for all components
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -276,7 +276,7 @@ export function InventoryFormStockReceiveSlip() {
   return (
     <div className="card mt-3">
       <div className="card-header text-center">
-        <h5 className="card-title mb-0">PHIẾU NHẬP KHO</h5>
+        <h5 className="card-title mb-0">NHẬT KÝ NHẬP KHO</h5>
       </div>
       <div className="card-body">
         <div className="row g-3">
