@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Định nghĩa kiểu dữ liệu cho form
 interface InventoryFormData {
