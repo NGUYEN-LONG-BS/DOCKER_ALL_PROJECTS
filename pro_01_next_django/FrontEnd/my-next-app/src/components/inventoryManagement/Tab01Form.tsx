@@ -7,7 +7,7 @@ import { DocumentNumberComponent } from "../documentNumber/document-number-compo
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
-import { InventoryTableStockReceiveSlip } from "./InventoryTableLogStockReceiveSlip";
+import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
@@ -46,7 +46,7 @@ interface Supplier {
   address: string;
 }
 
-export function InventoryCategoryTab() {
+export function InventoryFormStockReceiveSlip() {
 
   // State for all components
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -81,7 +81,95 @@ export function InventoryCategoryTab() {
     setInventoryTable(newInventoryItems);
   };
 
-  
+    const handleSave = async () => {
+      // Prepare data with the correct structure
+      const data = inventoryTable.map(item => ({
+        date: date,
+        so_phieu: documentNumber,  // Ensure this is not empty
+        id_nhan_vien: 'NV01',  // Replace with actual employee code (max 10 characters)
+        xoa_sua: 'new',   // new / updated / deleted
+        phan_loai_nhap_xuat_hoan: 'receipt',  // receipt/ issue
+        ma_doi_tuong: supplier.code || 'madoituong',  // Ensure this is not empty
+        ngay_tren_phieu: date,  // Date should be provided
+        so_phieu_de_nghi: documentRequestNumber,  // Ensure this is not empty
+        thong_tin_them: slipNote.notesOfSlip,  // Default if empty
+        ma_kho_nhan: slipNote.selectedWarehouse || '.',  // Ensure this is not empty
+        ma_kho_xuat: '.',  // Ensure this is not empty
+        stt_dong: 1,  // Default or dynamically calculated
+        ma_hang: item.code,  // Ensure item code is not empty
+        ten_hang: item.name,  // Default if empty
+        don_vi_tinh: item.unit,  // Default if empty
+        so_luong: item.quantity > 0 ? item.quantity : 1,  // Ensure quantity is valid (set to 1 if invalid)
+        don_gia: item.price > 0 ? item.price : 1,  // Ensure price is valid (set to 1 if invalid)
+        thanh_tien: (item.quantity > 0 && item.price > 0) ? item.quantity * item.price : 0,  // Calculate thanh_tien, default to 0 if invalid
+        ghi_chu_sp: item.notes,  // Default if empty
+        
+      }));
+
+      console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
+
+      try {
+        const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+          headers: {
+            'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
+          },
+        });
+
+        // console.log('Data saved successfully:', response.data);
+        setErrorMessage('Lưu thành công!');
+      } catch (error) {
+        // console.error('Error saving data:', error);
+        setErrorMessage('Gửi thông tin thất bại!');
+      }
+  };
+
+  const handleTemplateClick = async () => {
+    // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
+    // Bước 2: tiến hành download file
+    try {
+      const response = await axios.get('http://localhost:8000/api/download-import-template/', {
+        responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+      });
+
+      // Tạo một URL tạm thời cho file blob
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      
+      // Tạo một element <a> để tải file
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', 'Import_template.xlsx');  // Tên file khi tải xuống
+      document.body.appendChild(link);
+      link.click();  // Mô phỏng nhấp chuột để tải file xuống
+      document.body.removeChild(link);  // Xóa element sau khi tải xong
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+    }
+  };
+
+  const handlePrintClick = async () => {
+    // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
+    // Bước 2: tiến hành download file
+    try {
+      const response = await axios.get('http://localhost:8000/api/download-print-template/', {
+        responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+      });
+
+      // Tạo một URL tạm thời cho file blob
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      
+      // Tạo một element <a> để tải file
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', 'Print_template.xlsx');  // Tên file khi tải xuống
+      document.body.appendChild(link);
+      link.click();  // Mô phỏng nhấp chuột để tải file xuống
+      document.body.removeChild(link);  // Xóa element sau khi tải xong
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+    }
+  };
+
+
   // State for all components
   const [selectedFile, setSelectedFile] = useState<File | null>(null); // State to store the selected file
 
@@ -188,7 +276,7 @@ export function InventoryCategoryTab() {
   return (
     <div className="card mt-3">
       <div className="card-header text-center">
-        <h5 className="card-title mb-0">TẠO MỚI MÃ HÀNG</h5>
+        <h5 className="card-title mb-0">PHIẾU NHẬP KHO</h5>
       </div>
       <div className="card-body">
         <div className="row g-3">
@@ -228,15 +316,33 @@ export function InventoryCategoryTab() {
         onInventoryTableChange={handleInventoryTableChange}
         />
 
-        <div className="d-flex justify-content-end gap-2 mt-3">          
-          <button type="button" className="btn btn-outline-secondary">
-            ALl data
+        <div className="d-flex justify-content-end gap-2 mt-3">
+          <button type="button" className="btn btn-outline-secondary" onClick={handleTemplateClick}>
+            Template
+          </button>
+          {/* Thêm input file để người dùng chọn file */}
+          <input 
+            type="file" 
+            accept=".xlsx,.xls" // Chỉ cho phép chọn file Excel
+            onChange={handleFileChange}
+            style={{ display: 'none' }} // Ẩn input file đi, để nút bên dưới làm việc
+            id="import-file-input"
+          />
+          <button 
+            type="button" 
+            className="btn btn-outline-secondary"
+            onClick={() => document.getElementById('import-file-input')?.click()} // Tự động mở cửa sổ chọn file khi nhấn nút
+          >
+            Import the data file
+          </button>
+          <button type="button" className="btn btn-outline-secondary" onClick={handlePrintClick}>
+            Print
+          </button>
+          <button type="button" className="btn btn-primary" onClick={handleSave}>
+            Save
           </button>
           <button type="button" className="btn btn-outline-secondary">
-            Export data
-          </button>
-          <button type="button" className="btn btn-primary">
-            Edit
+            Update
           </button>
         </div>
       </div>

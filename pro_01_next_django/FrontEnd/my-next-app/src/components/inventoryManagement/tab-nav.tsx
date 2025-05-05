@@ -1,9 +1,9 @@
 "use client"
 import { useState } from "react"
-import { InventoryFormStockReceiveSlip } from "./InventoryFormStockReceiveSlip"
-import { InventoryFormStockIssuesSlip } from "./InventoryFormStockIssuesSlip"
-import { InventoryCategoryTab } from "./InventoryCategoryTab03Form"
-import { InventoryLogStockReceiveSlip } from "./InventoryLogStockReceiveSlip"
+import { InventoryFormStockReceiveSlip } from "./Tab01Form"
+import { InventoryFormStockIssuesSlip } from "./Tab02Form"
+import { InventoryCategoryTab } from "./Tab03Form"
+import { InventoryLogStockReceiveSlip } from "./Tab04Form"
 
 export function TabNav() {
   const [activeTab, setActiveTab] = useState("nhap-kho")

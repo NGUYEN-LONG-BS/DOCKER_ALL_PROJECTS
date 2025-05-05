@@ -7,7 +7,7 @@ import { DocumentNumberComponent } from "../documentNumber/document-number-compo
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
-import { InventoryTableStockReceiveSlip } from "./InventoryTableLogStockReceiveSlip";
+import { InventoryTableStockReceiveSlip } from "./Tab04Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";

@@ -4,7 +4,7 @@ import { DateComponent } from "../date/date-component"
 import { DocumentNumberComponent } from "../documentNumber/document-number-component"
 import { ClientComponent } from "./ObjectClientComponent"
 import { ProductComponent } from "./ObjectProductComponent"
-import { InventoryTableStockIssuesSlip } from "./InventoryTableStockIssuesSlip"
+import { InventoryTableStockIssuesSlip } from "./Tab02Table"
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 
 export function InventoryFormStockIssuesSlip() {

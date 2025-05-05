@@ -108,14 +108,9 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
             <thead>
               <tr>
                 <th style={{ width: "50px" }}>STT</th>
-                <th>Số phiếu</th>
-                <th>Ngày</th>
-                <th>Số đề nghị</th>
-                <th>Mã đối tượng</th>
-                <th>Tên đối tượng</th>
                 <th>Mã hàng</th>
                 <th>Tên hàng</th>
-                <th>Kho</th>
+                <th>Đvt</th>
               </tr>
             </thead>
             <tbody>
