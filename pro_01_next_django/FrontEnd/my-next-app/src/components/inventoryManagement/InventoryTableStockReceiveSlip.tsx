@@ -1,26 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 
 interface InventoryItem {
-  id: number
-  code: string
-  name: string
-  unit: string
-  quantity: number
-  price: number
-  value: number
-  notes: string
+  id: number;
+  code: string;
+  name: string;
+  unit: string;
+  quantity: number;
+  price: number;
+  value: number;
+  notes: string;
 }
 
 interface InventoryTableStockReceiveSlipProps {
-  product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string }
+  product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string };
   onInventoryTableChange: (newItems: InventoryItem[]) => void; // Callback to notify parent about changes
 }
 
 export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
-  const [items, setItems] = useState<InventoryItem[]>([])
+  const [items, setItems] = useState<InventoryItem[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   
   const addRow = () => {
@@ -41,7 +41,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       price: product.price,
       value: product.quantity * product.price,
       notes: product.notes,
-    }
+    };
 
     // Check if a row with the same code already exists
     const existingIndex = items.findIndex(item => item.code === newItem.code);
@@ -51,7 +51,8 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       const updatedItems = items.filter(item => item.code !== newItem.code);
       updatedItems.push(newItem); // Add the new item at the end
       // Ensure the items are in sequential order
-      setItems(reindexItems(updatedItems)); // Update state with the reindexed array
+      const reindexedItems = reindexItems(updatedItems);
+      setItems(reindexedItems);
       onInventoryTableChange(updatedItems); // Notify parent about changes
     } else {
       // If no duplicate is found, simply add the new row
@@ -62,7 +63,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
         return reindexedItems; // Return reindexed items
       });
     }
-  }
+  };
 
   const deleteRow = (id: number) => {
     const newItems = items.filter(item => item.id !== id)
@@ -82,6 +83,13 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   const clearRows = () => {
     setItems([]);
     };
+  
+    // Use useEffect to update the state after the render is done
+  useEffect(() => {
+    if (items.length > 0) {
+      onInventoryTableChange(items);  // Notify parent after items are updated
+    }
+  }, [items]);  // Trigger when items change
 
   return (
     <div className="mt-3">
