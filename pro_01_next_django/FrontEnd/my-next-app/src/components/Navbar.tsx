@@ -1,6 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Thêm phần Bootstrap JS
 
 const Navbar = () => {
   return (
@@ -73,13 +75,14 @@ const Navbar = () => {
               >
                 Test link
               </a>
-              <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item" href="#">Action</Link></li>
-                <li><Link className="dropdown-item" href="#">Another action</Link></li>
+              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><Link className="dropdown-item" href="/inventory-management">test inventory V0</Link></li>
+                <li><Link className="dropdown-item" href="/bpvattu/inventory">test trang thêm mã hàng</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><Link className="dropdown-item" href="#">Something else here</Link></li>
               </ul>
             </li>
+
           </ul>
         </div>
       </div>
