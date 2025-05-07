@@ -50,18 +50,6 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" href="/users">Login</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/add-item">test add item</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/form">test form</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/bpvattu/inventory">test trang thêm mã hàng</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/inventory-management">test inventory V0</Link>
-            </li>
 
             {/* Dropdown */}
             <li className="nav-item dropdown">
@@ -78,6 +66,8 @@ const Navbar = () => {
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><Link className="dropdown-item" href="/inventory-management">test inventory V0</Link></li>
                 <li><Link className="dropdown-item" href="/bpvattu/inventory">test trang thêm mã hàng</Link></li>
+                <li><Link className="dropdown-item" href="/form">test form</Link></li>
+                <li><Link className="dropdown-item" href="/add-item">test add item</Link></li>
                 <li><hr className="dropdown-divider" /></li>
                 <li><Link className="dropdown-item" href="#">Something else here</Link></li>
               </ul>
