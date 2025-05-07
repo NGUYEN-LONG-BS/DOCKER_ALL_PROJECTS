@@ -4,6 +4,9 @@ import "bootstrap/dist/css/bootstrap.min.css"; // Nhập Bootstrap 5
 import global_style from "@/styles/globals.module.css"; // Nếu bạn có thêm CSS tùy chỉnh
 import style_01 from "@/styles/style_01.module.css"; // Nếu bạn có thêm CSS tùy chỉnh
 
+import { Provider } from 'react-redux';
+import store from '../store'; // Đảm bảo đường dẫn đúng tới Redux store
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,14 +28,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <Provider store={store}> {/* Bao quanh toàn bộ ứng dụng với Redux Provider */}
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          {children}
+        </body>
+      </html>
+    </Provider>
   );
 }
-
-
