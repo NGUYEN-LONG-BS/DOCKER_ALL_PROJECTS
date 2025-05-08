@@ -65,6 +65,7 @@ const Navbar = () => {
               </a>
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><Link className="dropdown-item" href="/inventory-management">test inventory V0</Link></li>
+                <li><Link className="dropdown-item" href="/inventory-management-with_reDux_ToolKit">test inventory with reDux</Link></li>
                 <li><Link className="dropdown-item" href="/bpvattu/inventory">test trang thêm mã hàng</Link></li>
                 <li><Link className="dropdown-item" href="/form">test form</Link></li>
                 <li><Link className="dropdown-item" href="/add-item">test add item</Link></li>
