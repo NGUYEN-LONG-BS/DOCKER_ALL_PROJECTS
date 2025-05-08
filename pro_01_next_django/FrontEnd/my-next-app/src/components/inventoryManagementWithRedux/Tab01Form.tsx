@@ -1,10 +1,11 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-import { DateComponent } from "../date/date-component";
-import { DocumentNumberComponent } from "../documentNumber/document-number-component";
-import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
+import { DateComponent } from "../date/date-component-with-rkt";
+import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
+import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-with-rkt";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
@@ -12,6 +13,19 @@ import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
+import {
+  setDate,
+  setDocumentNumber,
+  setDocumentRequestNumber,
+  setSlipNote,
+  setSupplier,
+  setInventoryTable,
+  setSelectedProduct,
+  setErrorMessage,
+  setSuccessMessage,
+  setSelectedFile,
+} from '../../store/inventorySlice';
+import { RootState } from '../../store';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -30,14 +44,6 @@ interface SlipNote {
   notesOfSlip: string;
 }
 
-interface InventoryFormState {
-  date: string;
-  documentNumber: string;
-  supplier: string;
-  notesOfSlip: SlipNote;
-  inventoryTable: InventoryItemExport[];
-}
-
 // Define the Supplier interface
 interface Supplier {
   code: string;
@@ -47,230 +53,170 @@ interface Supplier {
 }
 
 export function InventoryFormStockReceiveSlip() {
+  const dispatch = useDispatch();
+  const {
+    date,
+    documentNumber,
+    documentRequestNumber,
+    slipNote,
+    supplier,
+    inventoryTable,
+    selectedProduct,
+    errorMessage,
+    successMessage,
+    selectedFile,
+  } = useSelector((state: RootState) => state.inventory);
 
-  // State for all components
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-  const [date, setDate] = useState<string>(() => {
-    const today = new Date().toISOString().split('T')[0];
-    return today;
-  });
-  const [documentNumber, setDocumentNumber] = useState<string>('TB-PNK-250001');
-  const [documentRequestNumber, setDocumentRequestNumber] = useState<string>('TB-DNNK-250001');
-  const [slipNote, setSlipNote] = useState<SlipNote>({
-    selectedWarehouse: 'Kho A',   // Fallback to 'Kho A' if no value is passed
-    notesOfSlip: '',              // Fallback to 'No notes' if no value is passed
-  });
-  const [supplier, setSupplier] = useState<Supplier>({
-    code: '',
-    name: '',
-    taxId: '',
-    address: '',
-  });
-  const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([
-    { id: 1, 
-      code: '', 
-      name: '', 
-      unit: '', 
-      quantity: 0, 
-      price: 0, 
-      notes: '' },
-  ]);
   // Hàm cập nhật bảng thông tin tồn kho
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
-    setInventoryTable(newInventoryItems);
+    dispatch(setInventoryTable(newInventoryItems));
   };
 
-    const handleSave = async () => {
-      // Prepare data with the correct structure
-      const data = inventoryTable.map(item => ({
-        date: date,
-        so_phieu: documentNumber,  // Ensure this is not empty
-        id_nhan_vien: 'NV01',  // Replace with actual employee code (max 10 characters)
-        xoa_sua: 'new',   // new / updated / deleted
-        phan_loai_nhap_xuat_hoan: 'receipt',  // receipt/ issue
-        ma_doi_tuong: supplier.code || 'madoituong',  // Ensure this is not empty
-        ngay_tren_phieu: date,  // Date should be provided
-        so_phieu_de_nghi: documentRequestNumber,  // Ensure this is not empty
-        thong_tin_them: slipNote.notesOfSlip,  // Default if empty
-        ma_kho_nhan: slipNote.selectedWarehouse || '.',  // Ensure this is not empty
-        ma_kho_xuat: '.',  // Ensure this is not empty
-        stt_dong: 1,  // Default or dynamically calculated
-        ma_hang: item.code,  // Ensure item code is not empty
-        ten_hang: item.name,  // Default if empty
-        don_vi_tinh: item.unit,  // Default if empty
-        so_luong: item.quantity > 0 ? item.quantity : 1,  // Ensure quantity is valid (set to 1 if invalid)
-        don_gia: item.price > 0 ? item.price : 1,  // Ensure price is valid (set to 1 if invalid)
-        thanh_tien: (item.quantity > 0 && item.price > 0) ? item.quantity * item.price : 0,  // Calculate thanh_tien, default to 0 if invalid
-        ghi_chu_sp: item.notes,  // Default if empty
-        
-      }));
+  const handleSave = async () => {
+    const data = inventoryTable.map((item) => ({
+      date,
+      so_phieu: documentNumber,
+      id_nhan_vien: 'NV01',
+      xoa_sua: 'new',
+      phan_loai_nhap_xuat_hoan: 'receipt',
+      ma_doi_tuong: supplier.code || 'madoituong',
+      ngay_tren_phieu: date,
+      so_phieu_de_nghi: documentRequestNumber,
+      thong_tin_them: slipNote.notesOfSlip,
+      ma_kho_nhan: slipNote.selectedWarehouse || '.',
+      ma_kho_xuat: '.',
+      stt_dong: 1,
+      ma_hang: item.code,
+      ten_hang: item.name,
+      don_vi_tinh: item.unit,
+      so_luong: item.quantity > 0 ? item.quantity : 1,
+      don_gia: item.price > 0 ? item.price : 1,
+      thanh_tien: item.quantity > 0 && item.price > 0 ? item.quantity * item.price : 0,
+      ghi_chu_sp: item.notes,
+    }));
 
-      console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
+    console.log('Sending data:', JSON.stringify(data, null, 2));
 
-      try {
-        const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
-          headers: {
-            'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
-          },
-        });
-
-        // console.log('Data saved successfully:', response.data);
-        setErrorMessage('Lưu thành công!');
-      } catch (error) {
-        // console.error('Error saving data:', error);
-        setErrorMessage('Gửi thông tin thất bại!');
-      }
+    try {
+      const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      dispatch(setSuccessMessage('Lưu thành công!'));
+    } catch (error) {
+      dispatch(setErrorMessage('Gửi thông tin thất bại!'));
+    }
   };
 
   const handleTemplateClick = async () => {
-    // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
-    // Bước 2: tiến hành download file
     try {
       const response = await axios.get('http://localhost:8000/api/download-import-template/', {
-        responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+        responseType: 'blob',
       });
-
-      // Tạo một URL tạm thời cho file blob
       const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-      
-      // Tạo một element <a> để tải file
       const link = document.createElement('a');
       link.href = fileURL;
-      link.setAttribute('download', 'Import_template.xlsx');  // Tên file khi tải xuống
+      link.setAttribute('download', 'Import_template.xlsx');
       document.body.appendChild(link);
-      link.click();  // Mô phỏng nhấp chuột để tải file xuống
-      document.body.removeChild(link);  // Xóa element sau khi tải xong
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error('Error downloading the file:', error);
     }
   };
 
   const handlePrintClick = async () => {
-    // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
-    // Bước 2: tiến hành download file
     try {
       const response = await axios.get('http://localhost:8000/api/download-print-template/', {
-        responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
+        responseType: 'blob',
       });
-
-      // Tạo một URL tạm thời cho file blob
       const fileURL = window.URL.createObjectURL(new Blob([response.data]));
-      
-      // Tạo một element <a> để tải file
       const link = document.createElement('a');
       link.href = fileURL;
-      link.setAttribute('download', 'Print_template.xlsx');  // Tên file khi tải xuống
+      link.setAttribute('download', 'Print_template.xlsx');
       document.body.appendChild(link);
-      link.click();  // Mô phỏng nhấp chuột để tải file xuống
-      document.body.removeChild(link);  // Xóa element sau khi tải xong
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error('Error downloading the file:', error);
     }
   };
 
-
-  // State for all components
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // State to store the selected file
-
-  // Hàm xử lý khi người dùng chọn file
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("starting");
     if (event.target.files) {
-      const file = event.target.files[0]; // Lấy file được chọn
+      const file = event.target.files[0];
       if (file) {
-        console.log("File selected:", file.name);
-        setSelectedFile(file); // Lưu trữ file được chọn vào state
-        setErrorMessage(""); // Xóa thông báo lỗi (nếu có)
+        console.log('File selected:', file.name);
+        dispatch(setSelectedFile(file));
+        dispatch(setErrorMessage(''));
       } else {
-        setErrorMessage("No file selected"); // Thông báo nếu không có file
+        dispatch(setErrorMessage('No file selected'));
       }
     }
-    console.log("ending");
   };
 
-  // Hàm xử lý khi người dùng click vào nút "Import the data file"
   const handleImportFile = async () => {
     if (!selectedFile) {
-      setErrorMessage("Please select a file to import");
+      dispatch(setErrorMessage('Please select a file to import'));
       return;
     }
 
-    // Tạo form data để gửi file qua API
     const formData = new FormData();
-    formData.append("file", selectedFile); // Gửi file với key 'file'
-    console.log("Sending file:"); // Kiểm tra dữ liệu trước khi gửi
+    formData.append('file', selectedFile);
 
     try {
-      const response = await axios.post("http://localhost:8000/api/import-data/", formData, {
+      const response = await axios.post('http://localhost:8000/api/import-data/', formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Cần set content-type là multipart/form-data để gửi file
+          'Content-Type': 'multipart/form-data',
         },
       });
-
-      console.log("File imported successfully:", response.data);
-      setSuccessMessage("File imported successfully!");
+      console.log('File imported successfully:', response.data);
+      dispatch(setSuccessMessage('File imported successfully!'));
     } catch (error) {
-      console.error("Error importing file:", error);
-      setErrorMessage("Error importing file");
+      console.error('Error importing file:', error);
+      dispatch(setErrorMessage('Error importing file'));
     }
-
-    console.log("kết thúc");
   };
-  
-  // Use useEffect to trigger file import after selectedFile is updated
-  useEffect(() => {
-    if (selectedFile) {
-      handleImportFile(); // Gọi hàm xử lý upload file ngay khi file được chọn
-    }
-  }, [selectedFile]); // This will run when selectedFile changes
-
 
   // Cập nhật giá trị kho
   const handleWarehouseChange = (newWarehouse: string) => {
-    setSlipNote((prevState) => ({
-      ...prevState,
-      selectedWarehouse: newWarehouse,
-    }));
+    dispatch(
+      setSlipNote({
+        ...slipNote,
+        selectedWarehouse: newWarehouse,
+      })
+    );
   };
 
   // Cập nhật ghi chú
   const handleNotesChange = (newNotes: string) => {
-    setSlipNote((prevState) => ({
-      ...prevState,
-      notesOfSlip: newNotes,
-    }));
+    dispatch(
+      setSlipNote({
+        ...slipNote,
+        notesOfSlip: newNotes,
+      })
+    );
   };
 
   // Hàm cập nhật thông tin ngày tháng từ DateComponent
   const handleDateChange = (newDate: string) => {
-    setDate(newDate);
+    dispatch(setDate(newDate));
   };
 
   // Hàm cập nhật thông tin số tài liệu từ DocumentNumberComponent
   const handleDocumentNumberChange = (newDocumentNumber: string) => {
-    setDocumentNumber(newDocumentNumber);
+    dispatch(setDocumentNumber(newDocumentNumber));
   };
 
   // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
   const handleSupplierChange = (newSupplier: Supplier) => {
-    setSupplier(newSupplier);
+    dispatch(setSupplier(newSupplier));
   };
-
-  // Cập nhật state để lưu trữ thông tin sản phẩm với kiểu InventoryItemExport
-  const [selectedProduct, setSelectedProduct] = useState<InventoryItemExport>({
-    id: Date.now(), // Tạo id tạm thời
-    code: '',
-    name: '',
-    unit: '',
-    quantity: 0,
-    price: 0,
-    notes: '',
-  });
 
   // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: InventoryItemExport) => {
-    setSelectedProduct(product); // Cập nhật thông tin sản phẩm đã chọn
+    dispatch(setSelectedProduct(product));
   };
 
   return (
@@ -281,57 +227,55 @@ export function InventoryFormStockReceiveSlip() {
       <div className="card-body">
         <div className="row g-3">
           <div className="col-md-4">
-            <DateComponent initialDate={date} onDateChange={handleDateChange}/>
+            <DateComponent initialDate={date} onDateChange={handleDateChange} />
           </div>
           <div className="col-md-4">
-            <DocumentNumberComponent 
-            documentNumber={documentNumber}
-            setDocumentNumber={setDocumentNumber}/>
+            <DocumentNumberComponent
+              documentNumber={documentNumber}
+            />
           </div>
           <div className="col-md-4">
-            <DocumentRequestNumberComponent 
-            documentNumber={documentRequestNumber}
-            setDocumentNumber={setDocumentRequestNumber}/>
+            <DocumentRequestNumberComponent
+              documentNumber={documentRequestNumber}
+            />
           </div>
         </div>
 
         <div className="row g-3 mt-1">
           <div className="col-md-6">
-            <SupplierComponent />
+            <SupplierComponent onSupplierChange={handleSupplierChange} />
             <InventoryNoteOfStockReceiveSlip
-            selectedWarehouse={slipNote.selectedWarehouse}  // Truyền giá trị kho vào đây
-            notesOfSlip={slipNote.notesOfSlip}              // Truyền ghi chú vào đây
-            onWarehouseChange={handleWarehouseChange}  // Callback thay đổi kho
-            onNotesChange={handleNotesChange}        // Callback thay đổi ghi chú
-          />
+              selectedWarehouse={slipNote.selectedWarehouse}
+              notesOfSlip={slipNote.notesOfSlip}
+              onWarehouseChange={handleWarehouseChange}
+              onNotesChange={handleNotesChange}
+            />
           </div>
           <div className="col-md-6">
             <ProductComponent onProductChange={handleProductChange} />
           </div>
         </div>
 
-        {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
-        <InventoryTableStockReceiveSlip 
-        product={selectedProduct} 
-        onInventoryTableChange={handleInventoryTableChange}
+        <InventoryTableStockReceiveSlip
+          product={selectedProduct}
+          onInventoryTableChange={handleInventoryTableChange}
         />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
           <button type="button" className="btn btn-outline-secondary" onClick={handleTemplateClick}>
             Template
           </button>
-          {/* Thêm input file để người dùng chọn file */}
-          <input 
-            type="file" 
-            accept=".xlsx,.xls" // Chỉ cho phép chọn file Excel
+          <input
+            type="file"
+            accept=".xlsx,.xls"
             onChange={handleFileChange}
-            style={{ display: 'none' }} // Ẩn input file đi, để nút bên dưới làm việc
+            style={{ display: 'none' }}
             id="import-file-input"
           />
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="btn btn-outline-secondary"
-            onClick={() => document.getElementById('import-file-input')?.click()} // Tự động mở cửa sổ chọn file khi nhấn nút
+            onClick={() => document.getElementById('import-file-input')?.click()}
           >
             Import the data file
           </button>
@@ -346,10 +290,8 @@ export function InventoryFormStockReceiveSlip() {
           </button>
         </div>
       </div>
-      {/* Error Popup */}
-      <PopupFadeout message={errorMessage} onClose={() => setErrorMessage(null)} />
-      {/* Success Popup */}
-      <SuccessPopup message={successMessage} onClose={() => setSuccessMessage(null)} />
+      <PopupFadeout message={errorMessage} onClose={() => dispatch(setErrorMessage(null))} />
+      <SuccessPopup message={successMessage} onClose={() => dispatch(setSuccessMessage(null))} />
     </div>
-  )
+  );
 }
