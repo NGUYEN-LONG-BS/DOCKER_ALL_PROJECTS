@@ -1,44 +1,40 @@
 'use client';
 
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setSlipNote } from '../../store/inventorySlice';  // Import actions từ đúng slice
-import { RootState } from '../../store';  // Để truy cập Redux store
+// ❌ Không cần thiết nếu không dùng state hoặc effect
+// import { useState, useEffect } from 'react';
 
 // Danh sách kho mẫu
 const mockWarehouses = ['Kho A', 'Kho B', 'Kho C'];
 
 // Định nghĩa interface cho props của InventoryNoteOfStockReceiveSlip
 interface InventoryNoteOfStockReceiveSlipProps {
+  selectedWarehouse: string;        // Giá trị kho đã chọn
+  notesOfSlip: string;                    // Giá trị ghi chú
   onWarehouseChange?: (newWarehouse: string) => void;  // Hàm callback khi kho thay đổi
   onNotesChange?: (newNotes: string) => void;          // Hàm callback khi ghi chú thay đổi
 }
 
 const InventoryNoteOfStockReceiveSlip = ({
+  selectedWarehouse,
+  notesOfSlip,
   onWarehouseChange,
   onNotesChange,
 }: InventoryNoteOfStockReceiveSlipProps) => {
-  const dispatch = useDispatch();
-
-  // Lấy giá trị từ Redux store
-  const selectedWarehouse = useSelector((state: RootState) => state.inventory.slipNote.selectedWarehouse);
-  const notesOfSlip = useSelector((state: RootState) => state.inventory.slipNote.notesOfSlip);
-
   // Hàm xử lý khi kho thay đổi
   const handleWarehouseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newWarehouse = event.target.value;
-    dispatch(setSlipNote({ selectedWarehouse: newWarehouse, notesOfSlip }));  // Cập nhật Redux store với kho mới
+    // onWarehouseChange(event.target.value); // Truyền giá trị kho về component cha
+    const value = event.target.value;
     if (typeof onWarehouseChange === 'function') {
-      onWarehouseChange(newWarehouse);  // Thông báo về component cha nếu cần
+      onWarehouseChange(value);
     }
   };
 
   // Hàm xử lý khi ghi chú thay đổi
   const handleNotesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newNotes = event.target.value;
-    dispatch(setSlipNote({ selectedWarehouse, notesOfSlip: newNotes }));  // Cập nhật Redux store với ghi chú mới
+    // onNotesChange(event.target.value); // Truyền giá trị ghi chú về component cha
+    const value = event.target.value;
     if (typeof onNotesChange === 'function') {
-      onNotesChange(newNotes);  // Thông báo về component cha nếu cần
+      onNotesChange(value);
     }
   };
 

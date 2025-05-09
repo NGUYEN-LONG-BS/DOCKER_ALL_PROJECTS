@@ -179,25 +179,25 @@ export function InventoryFormStockReceiveSlip() {
     }
   };
 
-  // Cập nhật giá trị kho
-  const handleWarehouseChange = (newWarehouse: string) => {
-    dispatch(
-      setSlipNote({
-        ...slipNote,
-        selectedWarehouse: newWarehouse,
-      })
-    );
-  };
+  // // Cập nhật giá trị kho
+  // const handleWarehouseChange = (newWarehouse: string) => {
+  //   dispatch(
+  //     setSlipNote({
+  //       ...slipNote,
+  //       selectedWarehouse: newWarehouse,
+  //     })
+  //   );
+  // };
 
-  // Cập nhật ghi chú
-  const handleNotesChange = (newNotes: string) => {
-    dispatch(
-      setSlipNote({
-        ...slipNote,
-        notesOfSlip: newNotes,
-      })
-    );
-  };
+  // // Cập nhật ghi chú
+  // const handleNotesChange = (newNotes: string) => {
+  //   dispatch(
+  //     setSlipNote({
+  //       ...slipNote,
+  //       notesOfSlip: newNotes,
+  //     })
+  //   );
+  // };
 
   // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
   const handleSupplierChange = (newSupplier: Supplier) => {
@@ -230,12 +230,13 @@ export function InventoryFormStockReceiveSlip() {
         <div className="row g-3 mt-1">
           <div className="col-md-6">
             <SupplierComponent onSupplierChange={handleSupplierChange} />
-            <InventoryNoteOfStockReceiveSlip
+            {/* <InventoryNoteOfStockReceiveSlip
               selectedWarehouse={slipNote.selectedWarehouse}
               notesOfSlip={slipNote.notesOfSlip}
               onWarehouseChange={handleWarehouseChange}
               onNotesChange={handleNotesChange}
-            />
+            /> */}
+            <InventoryNoteOfStockReceiveSlip/>
           </div>
           <div className="col-md-6">
             <ProductComponent onProductChange={handleProductChange} />
