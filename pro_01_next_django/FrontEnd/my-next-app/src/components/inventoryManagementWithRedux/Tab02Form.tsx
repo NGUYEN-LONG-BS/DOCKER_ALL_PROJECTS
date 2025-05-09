@@ -3,7 +3,7 @@
 import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
 import { ClientComponent } from "./ObjectClientComponent"
-import ProductComponent from "./ObjectProductComponent";
+import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockIssuesSlip } from "./Tab02Table"
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 

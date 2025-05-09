@@ -1,110 +1,158 @@
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import {
-  setSearchText,
-  setFilteredProducts,
-  setShowDropdown,
-  setLoading,
-  setProduct,
-  setInventoryItem,
-  updateInventoryItem,
-} from '../../store/productSlice';
+"use client";
 
-// Define the ProductData interface
-interface ProductData {
+import { useEffect, useRef } from "react";
+import {
+  fetchProducts,
+  filterProducts,
+  selectProduct,
+  setSearchText,
+  setShowDropdown,
+  setHighlightedIndex,
+  setQuantity,
+  setUnitPrice,
+  setNotes,
+} from "../../features/product/productSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+
+interface InventoryItemExport {
+  id: number;
   code: string;
   name: string;
   unit: string;
+  quantity: number;
+  price: number;
+  notes: string;
 }
 
-const ProductComponent = () => {
-  const dispatch = useDispatch();
+interface ProductComponentProps {
+  onProductChange?: (ProductProps: InventoryItemExport) => void;
+}
+
+export function ProductComponent({ onProductChange }: ProductComponentProps) {
+  const dispatch = useAppDispatch();
   const {
+    Product,
     searchText,
     filteredProducts,
     showDropdown,
     loading,
-    product,
+    quantity,
+    unitPrice,
+    value,
+    notes,
+    highlightedIndex,
+    mockProducts,
     inventoryItem,
-  } = useSelector((state: RootState) => state.product);
+  } = useAppSelector((state) => state.product);
 
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/get-inventory-categories/');
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-      const data = await response.json();
-      const products = data.map((item: { ma_hang: string, ten_hang: string, dvt: string }) => ({
-        code: item.ma_hang,
-        name: item.ten_hang,
-        unit: item.dvt,
-      }));
-      dispatch(setFilteredProducts(products));
-    } catch (error) {
-      console.error('Error fetching data:', error);
+  // Fetch data on component mount
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  // Debounce logic for filtering
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const handleFilter = (text: string) => {
+    dispatch(setSearchText(text));
+    if (debounceTimeout.current) {
+      clearTimeout(debounceTimeout.current);
+    }
+    debounceTimeout.current = setTimeout(() => {
+      dispatch(filterProducts(text));
+    }, 300);
+  };
+
+  // Handle product selection
+  const handleSelectProduct = (selectedItem: typeof Product) => {
+    dispatch(selectProduct(selectedItem));
+    if (onProductChange) {
+      onProductChange(inventoryItem);
+    }
+  };
+
+  // Handle outside click to close dropdown
+  const handleClickOutside = (event: MouseEvent) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+      dispatch(setShowDropdown(false));
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, [dispatch]);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const handleFilter = (text: string) => {
-    dispatch(setSearchText(text));
-
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowDown") {
+      dispatch(setHighlightedIndex(Math.min(filteredProducts.length - 1, highlightedIndex + 1)));
     }
-
-    debounceTimeout.current = setTimeout(() => {
-      dispatch(setLoading(true));
-      const filtered = filteredProducts.filter(
-        (product) =>
-          product.code.toLowerCase().includes(text.toLowerCase()) ||
-          product.name.toLowerCase().includes(text.toLowerCase())
-      );
-      dispatch(setFilteredProducts(filtered));
-      dispatch(setLoading(false));
-      dispatch(setShowDropdown(true));
-    }, 300);
+    if (e.key === "ArrowUp") {
+      dispatch(setHighlightedIndex(Math.max(0, highlightedIndex - 1)));
+    }
+    if (e.key === "Enter" && highlightedIndex >= 0) {
+      handleSelectProduct(filteredProducts[highlightedIndex]);
+    }
   };
 
-  const handleSelectProduct = (selectedItem: ProductData) => {
-    dispatch(setProduct(selectedItem));
-    dispatch(setSearchText(selectedItem.code));
-    dispatch(setFilteredProducts([]));
-    dispatch(setShowDropdown(false));
-
-    dispatch(updateInventoryItem({ quantity: 0, price: 0, notes: '' }));
+  // Show dropdown on focus
+  const handleFocusProductCode = () => {
+    dispatch(setShowDropdown(true));
   };
 
+  // Auto-scroll to highlighted item
+  useEffect(() => {
+    if (highlightedIndex >= 0 && dropdownRef.current) {
+      const highlightedElement = dropdownRef.current.children[highlightedIndex] as HTMLElement;
+      if (highlightedElement) {
+        highlightedElement.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+        });
+      }
+    }
+  }, [highlightedIndex]);
+
+  // Handle quantity change
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    dispatch(updateInventoryItem({ quantity: parseFloat(value.replace(/\./g, '')) || 0 }));
+    dispatch(setQuantity(value));
+    if (onProductChange) {
+      const updatedProduct = { ...inventoryItem, quantity: parseFloat(value.replace(/\./g, "")) || 0 };
+      onProductChange(updatedProduct);
+    }
   };
 
+  // Handle unit price change
   const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    dispatch(updateInventoryItem({ price: parseFloat(value.replace(/\./g, '')) || 0 }));
+    dispatch(setUnitPrice(value));
+    if (onProductChange) {
+      const updatedProduct = { ...inventoryItem, price: parseFloat(value.replace(/\./g, "")) || 0 };
+      onProductChange(updatedProduct);
+    }
   };
 
+  // Handle notes change
   const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    dispatch(updateInventoryItem({ notes: value }));
+    dispatch(setNotes(value));
+    if (onProductChange) {
+      const updatedProduct = { ...inventoryItem, notes: value };
+      onProductChange(updatedProduct);
+    }
   };
 
   return (
     <div className="card" ref={wrapperRef}>
       <div className="card-body py-2">
         <div className="mb-1 position-relative">
-          <div className="d-flex align-items-center gap-2" style={{ marginBottom: '0px' }}>
-            <label htmlFor="Product-code" className="form-label mb-0" style={{ width: '120px', whiteSpace: 'nowrap' }}>
+          <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
+            <label htmlFor="Product-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }}>
               Sản phẩm
             </label>
             <input
@@ -114,14 +162,17 @@ const ProductComponent = () => {
               placeholder="Search here"
               value={searchText}
               onChange={(e) => handleFilter(e.target.value)}
+              onKeyDown={handleKeyDown}
+              onFocus={handleFocusProductCode}
+              style={{ width: "150px" }}
             />
             <input
               type="text"
               className="form-control flex-grow-1"
               id="Product-name"
               placeholder="tên hàng"
-              value={product.name}
-              onChange={(e) => dispatch(setProduct({ ...product, name: e.target.value }))}
+              value={Product?.name}
+              readOnly
             />
           </div>
 
@@ -131,10 +182,11 @@ const ProductComponent = () => {
               ref={dropdownRef}
               style={{
                 zIndex: 1000,
-                width: 'calc(100% - 50px)',
-                marginLeft: '100px',
-                maxHeight: '200px',
-                overflowY: 'auto',
+                width: "calc(100% - 50px)",
+                marginLeft: "100px",
+                maxHeight: "200px",
+                overflowY: "auto",
+                gridTemplateColumns: "2fr 3fr 1fr",
               }}
             >
               {loading ? (
@@ -143,50 +195,63 @@ const ProductComponent = () => {
                 filteredProducts.map((s, index) => (
                   <li
                     key={s.code}
-                    className="list-group-item list-group-item-action"
-                    style={{ cursor: 'pointer', fontSize: '0.9rem' }}
+                    className={`list-group-item list-group-item-action ${index === highlightedIndex ? 'bg-info' : ''}`}
+                    style={{ cursor: "pointer", fontSize: "0.9rem" }}
                     onClick={() => handleSelectProduct(s)}
                   >
-                    <div>
-                      <span>{s.code}</span> - <span>{s.name}</span> - <span>{s.unit}</span>
+                    <div style={{ display: "grid", gridTemplateColumns: "2fr 3fr 1fr", gap: "10px" }}>
+                      <div><span>{s.code}</span></div>
+                      <div><span>{s.name}</span></div>
+                      <div><span>{s.unit}</span></div>
                     </div>
                   </li>
                 ))
+              )}
+              {filteredProducts.length === 0 && !loading && (
+                <li className="list-group-item text-muted">Vui lòng gợi ý thông tin</li>
               )}
             </ul>
           )}
         </div>
 
         <div className="row mb-1 g-1">
+          <div className="col-md-2">
+            <input
+              type="text"
+              className="form-control"
+              id="Product-unit"
+              placeholder="đvt"
+              value={Product?.unit}
+              readOnly
+            />
+          </div>
           <div className="col-md-3">
             <input
               type="text"
               className="form-control"
               id="quantity"
               placeholder="số lượng"
-              value={inventoryItem.quantity || ''}
+              value={quantity}
               onChange={handleQuantityChange}
             />
           </div>
-
           <div className="col-md-3">
             <input
               type="text"
               className="form-control"
               id="unitPrice"
               placeholder="đơn giá"
-              value={inventoryItem.price || ''}
+              value={unitPrice}
               onChange={handleUnitPriceChange}
             />
           </div>
-
-          <div className="col-md-3">
+          <div className="col-md-4">
             <input
               type="text"
               className="form-control"
               id="value"
               placeholder="giá trị"
-              value={(inventoryItem.quantity * inventoryItem.price).toString()}
+              value={value}
               readOnly
             />
           </div>
@@ -199,7 +264,7 @@ const ProductComponent = () => {
               className="form-control"
               id="Product-notes"
               placeholder="ghi chú sản phẩm"
-              value={inventoryItem.notes}
+              value={notes}
               onChange={handleNotesChange}
             />
           </div>
@@ -207,6 +272,4 @@ const ProductComponent = () => {
       </div>
     </div>
   );
-};
-
-export default ProductComponent;
+}
