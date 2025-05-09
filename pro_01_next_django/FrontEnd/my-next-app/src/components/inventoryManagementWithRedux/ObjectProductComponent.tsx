@@ -57,6 +57,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleFilter = (text: string) => {
+    console.log(text)
     dispatch(setSearchText(text));
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);

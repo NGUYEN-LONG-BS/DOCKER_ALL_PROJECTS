@@ -58,6 +58,8 @@ export const fetchProducts = createAsyncThunk(
         throw new Error('Failed to fetch data');
       }
       const data = await response.json();
+      // Console log dữ liệu từ API
+      console.log("Data fetched from API: ", data);
       return data.map((item: { ma_hang: string; ten_hang: string; dvt: string }) => ({
         code: item.ma_hang,
         name: item.ten_hang,
@@ -75,6 +77,7 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     setSearchText: (state, action: PayloadAction<string>) => {
+      console.log("setSearchText", action.payload)
       state.searchText = action.payload;
     },
     setFilteredProducts: (state, action: PayloadAction<ProductData[]>) => {
