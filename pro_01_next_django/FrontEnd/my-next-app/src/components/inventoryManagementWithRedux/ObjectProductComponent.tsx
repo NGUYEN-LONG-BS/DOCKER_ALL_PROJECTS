@@ -12,7 +12,7 @@ import {
   setUnitPrice,
   setNotes,
 } from "../../features/product/productSlice";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
 interface InventoryItemExport {
   id: number;
