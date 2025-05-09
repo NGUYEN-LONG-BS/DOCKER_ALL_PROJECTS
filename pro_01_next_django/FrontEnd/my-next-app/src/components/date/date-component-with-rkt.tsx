@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setDate } from '../../store/inventorySlice';
 import { RootState } from '../../store';
@@ -32,6 +32,11 @@ export function DateComponent({ onDateChange, initialDate }: DateComponentProps)
       onDateChange(newDate); // Notify parent if callback exists
     }
   };
+
+  // useEffect to log the date when it changes
+  useEffect(() => {
+    console.log('Date changed:', currentDate); // Log to console when date changes
+  }, [currentDate]); // The effect will run every time currentDate changes
 
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: '20px' }}>

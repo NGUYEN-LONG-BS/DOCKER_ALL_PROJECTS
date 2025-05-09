@@ -199,16 +199,6 @@ export function InventoryFormStockReceiveSlip() {
     );
   };
 
-  // Hàm cập nhật thông tin ngày tháng từ DateComponent
-  const handleDateChange = (newDate: string) => {
-    dispatch(setDate(newDate));
-  };
-
-  // Hàm cập nhật thông tin số tài liệu từ DocumentNumberComponent
-  const handleDocumentNumberChange = (newDocumentNumber: string) => {
-    dispatch(setDocumentNumber(newDocumentNumber));
-  };
-
   // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
   const handleSupplierChange = (newSupplier: Supplier) => {
     dispatch(setSupplier(newSupplier));
@@ -227,17 +217,13 @@ export function InventoryFormStockReceiveSlip() {
       <div className="card-body">
         <div className="row g-3">
           <div className="col-md-4">
-            <DateComponent initialDate={date} onDateChange={handleDateChange} />
+            <DateComponent/>
           </div>
           <div className="col-md-4">
-            <DocumentNumberComponent
-              documentNumber={documentNumber}
-            />
+            <DocumentNumberComponent/>
           </div>
           <div className="col-md-4">
-            <DocumentRequestNumberComponent
-              documentNumber={documentRequestNumber}
-            />
+            <DocumentRequestNumberComponent/>
           </div>
         </div>
 
