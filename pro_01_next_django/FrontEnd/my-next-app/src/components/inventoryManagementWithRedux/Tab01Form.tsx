@@ -7,7 +7,7 @@ import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-with-rkt";
 import { SupplierComponent } from "./ObjectSupplierComponent";
-import { ProductComponent } from "./ObjectProductComponent";
+import ProductComponent from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
@@ -179,26 +179,6 @@ export function InventoryFormStockReceiveSlip() {
     }
   };
 
-  // // Cập nhật giá trị kho
-  // const handleWarehouseChange = (newWarehouse: string) => {
-  //   dispatch(
-  //     setSlipNote({
-  //       ...slipNote,
-  //       selectedWarehouse: newWarehouse,
-  //     })
-  //   );
-  // };
-
-  // // Cập nhật ghi chú
-  // const handleNotesChange = (newNotes: string) => {
-  //   dispatch(
-  //     setSlipNote({
-  //       ...slipNote,
-  //       notesOfSlip: newNotes,
-  //     })
-  //   );
-  // };
-
   // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
   const handleSupplierChange = (newSupplier: Supplier) => {
     dispatch(setSupplier(newSupplier));
@@ -239,7 +219,7 @@ export function InventoryFormStockReceiveSlip() {
             <InventoryNoteOfStockReceiveSlip/>
           </div>
           <div className="col-md-6">
-            <ProductComponent onProductChange={handleProductChange} />
+            <ProductComponent/>
           </div>
         </div>
 

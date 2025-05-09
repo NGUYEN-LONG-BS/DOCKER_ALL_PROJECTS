@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import inventoryReducer from './inventorySlice';
+import productSlice from './productSlice';
 import myReducer from './slices/mySlice'; // Adjust path if needed
 
 export const store = configureStore({
   reducer: {
     inventory: inventoryReducer,
+    product: productSlice,
+
     myFeature: myReducer, // For mySlice
   },
 });

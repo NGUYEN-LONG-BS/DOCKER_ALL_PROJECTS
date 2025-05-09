@@ -90,7 +90,6 @@ const inventorySlice = createSlice({
     setSlipNote(state, action: PayloadAction<SlipNote>) {
       state.slipNote = action.payload;
     },
-
     setSupplier(state, action: PayloadAction<Supplier>) {
       state.supplier = action.payload;
     },
