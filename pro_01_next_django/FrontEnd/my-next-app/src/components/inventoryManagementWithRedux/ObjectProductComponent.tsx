@@ -179,6 +179,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="Product-code"
               placeholder="Search here"
+              autoComplete="off"
               value={searchText}
               onChange={(e) => handleFilter(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -190,6 +191,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control flex-grow-1"
               id="Product-name"
               placeholder="tên hàng"
+              autoComplete="off"
               value={Product?.name}
               readOnly
             />
@@ -243,6 +245,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="Product-unit"
               placeholder="đvt"
+              autoComplete="off"
               value={Product?.unit}
               readOnly
             />
@@ -253,6 +256,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="quantity"
               placeholder="số lượng"
+              autoComplete="off"
               value={quantity}
               onChange={handleQuantityChange}
             />
@@ -263,6 +267,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="unitPrice"
               placeholder="đơn giá"
+              autoComplete="off"
               value={unitPrice}
               onChange={handleUnitPriceChange}
             />
@@ -273,6 +278,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="value"
               placeholder="giá trị"
+              autoComplete="off"
               value={value}
               readOnly
             />
@@ -287,6 +293,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               className="form-control"
               id="Product-notes"
               placeholder="ghi chú sản phẩm"
+              autoComplete="off"
               value={notes}
               onChange={handleNotesChange}
             />

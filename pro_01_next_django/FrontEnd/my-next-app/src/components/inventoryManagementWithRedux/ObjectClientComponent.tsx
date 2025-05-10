@@ -143,6 +143,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
               className="form-control"
               id="Client-code"
               placeholder="Search here"
+              autoComplete="off"
               value={searchText}
               onChange={(e) => handleFilter(e.target.value)} // Filter Clients when input changes
               onKeyDown={handleKeyDown} // Handle keyboard navigation
@@ -155,6 +156,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
               className="form-control flex-grow-1"
               id="Client-name"
               placeholder="tên đối tượng"
+              autoComplete="off"
               value={Client.name}
               onChange={(e) => handleChange("name", e.target.value)} // Update Client name
             />
@@ -205,6 +207,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
             className="form-control"
             id="Client-tax"
             placeholder="mst"
+            autoComplete="off"
             value={Client.taxId}
             onChange={(e) => handleChange("taxId", e.target.value)} // Update Client tax ID
             style={{ width: "170px" }}
@@ -215,6 +218,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
             className="form-control flex-grow-1"
             id="Client-address"
             placeholder="địa chỉ"
+            autoComplete="off"
             value={Client.address}
             onChange={(e) => handleChange("address", e.target.value)} // Update Client address
           />

@@ -143,6 +143,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               className="form-control"
               id="supplier-code"
               placeholder="Search here"
+              autoComplete="off"
               value={searchText}
               onChange={(e) => handleFilter(e.target.value)} // Filter suppliers when input changes
               onKeyDown={handleKeyDown} // Handle keyboard navigation
@@ -155,6 +156,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               className="form-control flex-grow-1"
               id="supplier-name"
               placeholder="tên đối tượng"
+              autoComplete="off"
               value={supplier.name}
               onChange={(e) => handleChange("name", e.target.value)} // Update supplier name
             />
@@ -206,6 +208,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
             className="form-control"
             id="supplier-tax"
             placeholder="mst"
+            autoComplete="off"
             value={supplier.taxId}
             onChange={(e) => handleChange("taxId", e.target.value)} // Update supplier tax ID
             style={{ width: "170px" }}
@@ -216,6 +219,7 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
             className="form-control flex-grow-1"
             id="supplier-address"
             placeholder="địa chỉ"
+            autoComplete="off"
             value={supplier.address}
             onChange={(e) => handleChange("address", e.target.value)} // Update supplier address
           />
