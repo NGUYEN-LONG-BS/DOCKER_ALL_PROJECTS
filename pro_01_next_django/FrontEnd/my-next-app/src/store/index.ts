@@ -1,17 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
-import inventoryReducer from './inventorySlice';
-import productSlice from './productSlice';
-import myReducer from './slices/mySlice'; // Adjust path if needed
-
-export const store = configureStore({
-  reducer: {
-    inventory: inventoryReducer,
-    product: productSlice,
-
-    myFeature: myReducer, // For mySlice
-  },
-});
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-
+// src/store/index.ts
+// 1 file index.ts trong src/store/ chỉ để export lại store và các hooks.
+export { store } from './store'; // Export store từ file store.ts
+export { useAppDispatch, useAppSelector } from './hooks'; // Export custom hooks từ file hooks.ts
