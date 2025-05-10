@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setDocumentRequestNumber } from "../../store/inventorySlice";
+import { setDocumentRequestNumber } from "../../features/formReceiptSlip/inventorySlice";
 import { RootState } from "../../store";
 import { RefreshCw } from "lucide-react";
 

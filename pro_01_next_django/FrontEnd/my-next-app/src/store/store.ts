@@ -1,7 +1,7 @@
 // src/store/store.ts
 // 1 file store.ts để cấu hình toàn bộ Redux store và khai báo các RootState, AppDispatch.
 import { configureStore } from '@reduxjs/toolkit';
-import inventoryReducer from './inventorySlice';
+import inventoryReducer from '../features/formReceiptSlip/inventorySlice';
 import productReducer from '../features/product/productSlice';
 import myReducer from './slices/mySlice'; // Adjust path if needed
 

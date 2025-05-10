@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDate } from '../../store/inventorySlice';
+import { setDate } from '../../features/formReceiptSlip/inventorySlice';
 import { RootState } from '../../store';
 
 // Define props interface for DateComponent
