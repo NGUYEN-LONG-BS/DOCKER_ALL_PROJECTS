@@ -1,6 +1,8 @@
-"use client";
+"use client"; // Cần thiết với Next.js khi dùng trong client-side component
 
+// Import React hook
 import { useEffect, useRef } from "react";
+// Import các action từ Redux slice quản lý sản phẩm
 import {
   fetchProducts,
   filterProducts,
@@ -12,8 +14,10 @@ import {
   setUnitPrice,
   setNotes,
 } from "../../features/product/productSlice";
+// Custom hooks đã được typed sẵn từ store
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 
+// Kiểu dữ liệu sản phẩm xuất kho
 interface InventoryItemExport {
   id: number;
   code: string;
@@ -24,12 +28,14 @@ interface InventoryItemExport {
   notes: string;
 }
 
+// Props truyền vào component để callback khi dữ liệu sản phẩm thay đổi
 interface ProductComponentProps {
   onProductChange?: (ProductProps: InventoryItemExport) => void;
 }
 
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const dispatch = useAppDispatch();
+  // Lấy state từ Redux
   const {
     Product,
     searchText,
@@ -45,49 +51,60 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     inventoryItem,
   } = useAppSelector((state) => state.product);
 
+  // Ref để theo dõi click bên ngoài và dropdown
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
 
-  // Fetch data on component mount
+  // Fetch danh sách sản phẩm khi component được mount
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  // Debounce logic for filtering
+  // Timeout để debounce người dùng gõ: người dùng gõ liên tục thì khoan tìm, ngừng gõ mới tìm
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  // Hàm xử lý khi người dùng nhập vào ô tìm kiếm sản phẩm
   const handleFilter = (text: string) => {
-    console.log(text)
+    // Cập nhật state tìm kiếm trong Redux Store
     dispatch(setSearchText(text));
+
+    // Nếu đang có timeout từ lần nhập trước, thì clear để tránh gọi API/lọc nhiều lần
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
+
+    // Tạo timeout mới (debounce) để chỉ lọc sau khi người dùng ngừng gõ 300ms
     debounceTimeout.current = setTimeout(() => {
+      // Gửi action để lọc sản phẩm theo text
       dispatch(filterProducts(text));
     }, 300);
   };
 
-  // Handle product selection
+  // Hàm xử lý khi người dùng chọn một sản phẩm từ danh sách
   const handleSelectProduct = (selectedItem: typeof Product) => {
+    // Gửi action để cập nhật sản phẩm đã chọn vào Redux Store
     dispatch(selectProduct(selectedItem));
+
+    // Nếu có hàm callback từ component cha, gọi callback và truyền inventoryItem (dữ liệu sản phẩm)
     if (onProductChange) {
       onProductChange(inventoryItem);
     }
   };
 
-  // Handle outside click to close dropdown
+  // Đóng dropdown khi click bên ngoài component
   const handleClickOutside = (event: MouseEvent) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
       dispatch(setShowDropdown(false));
     }
   };
 
+  // Thêm và gỡ sự kiện click bên ngoài component
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle keyboard navigation
+  // Xử lý điều hướng bằng phím (lên, xuống, enter)
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowDown") {
       dispatch(setHighlightedIndex(Math.min(filteredProducts.length - 1, highlightedIndex + 1)));
@@ -100,12 +117,12 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   };
 
-  // Show dropdown on focus
+  // Hiển thị dropdown khi người dùng focus ô tìm kiếm
   const handleFocusProductCode = () => {
     dispatch(setShowDropdown(true));
   };
 
-  // Auto-scroll to highlighted item
+  // Auto scroll tới item đang được highlight
   useEffect(() => {
     if (highlightedIndex >= 0 && dropdownRef.current) {
       const highlightedElement = dropdownRef.current.children[highlightedIndex] as HTMLElement;
@@ -118,7 +135,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   }, [highlightedIndex]);
 
-  // Handle quantity change
+  // Xử lý thay đổi số lượng
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setQuantity(value));
@@ -128,7 +145,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   };
 
-  // Handle unit price change
+  // Xử lý thay đổi đơn giá
   const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setUnitPrice(value));
@@ -138,7 +155,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   };
 
-  // Handle notes change
+  // Xử lý thay đổi ghi chú
   const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setNotes(value));
@@ -151,6 +168,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   return (
     <div className="card" ref={wrapperRef}>
       <div className="card-body py-2">
+        {/* Dòng nhập sản phẩm */}
         <div className="mb-1 position-relative">
           <div className="d-flex align-items-center gap-2" style={{ marginBottom: "0px" }}>
             <label htmlFor="Product-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }}>
@@ -177,6 +195,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
             />
           </div>
 
+          {/* Dropdown danh sách sản phẩm gợi ý */}
           {showDropdown && (
             <ul
               className="list-group position-absolute mt-1 shadow"
@@ -208,6 +227,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                   </li>
                 ))
               )}
+              {/* Trường hợp không tìm thấy sản phẩm */}
               {filteredProducts.length === 0 && !loading && (
                 <li className="list-group-item text-muted">Vui lòng gợi ý thông tin</li>
               )}
@@ -215,6 +235,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
           )}
         </div>
 
+        {/* Dòng nhập thông tin sản phẩm */}
         <div className="row mb-1 g-1">
           <div className="col-md-2">
             <input
@@ -258,6 +279,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
           </div>
         </div>
 
+        {/* Ghi chú sản phẩm */}
         <div className="row mb-1">
           <div className="col-md-12">
             <input
