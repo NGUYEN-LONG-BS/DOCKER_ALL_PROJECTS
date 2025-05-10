@@ -24,7 +24,7 @@ import {
   setErrorMessage,
   setSuccessMessage,
   setSelectedFile,
-} from '../../features/formReceiptSlip/inventorySlice';
+} from '../../features/formReceiptSlip/formReceiptSlipSlice';
 import { RootState } from '../../store';
 
 // Định nghĩa InventoryItemExport interface

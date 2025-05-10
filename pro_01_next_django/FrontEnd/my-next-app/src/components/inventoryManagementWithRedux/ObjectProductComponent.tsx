@@ -13,7 +13,7 @@ import {
   setQuantity,
   setUnitPrice,
   setNotes,
-} from "../../features/product/productSlice";
+} from "../../features/objectProductComponent/objectProductComponentSlice";
 // Custom hooks đã được typed sẵn từ store
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 

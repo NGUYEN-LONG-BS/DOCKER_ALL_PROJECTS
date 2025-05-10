@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSlipNote } from '../../features/formReceiptSlip/inventorySlice';  // Import actions từ đúng slice
+import { setSlipNote } from '../../features/formReceiptSlip/formReceiptSlipSlice';  // Import actions từ đúng slice
 import { RootState } from '../../store';  // Để truy cập Redux store
 
 // Danh sách kho mẫu
