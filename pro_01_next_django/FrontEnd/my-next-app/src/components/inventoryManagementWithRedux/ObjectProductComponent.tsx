@@ -51,6 +51,37 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     inventoryItem,
   } = useAppSelector((state) => state.product);
 
+  // In ra toàn bộ state khi component render hoặc khi state thay đổi
+  useEffect(() => {
+    console.log("Current Product State:", {
+      Product,
+      searchText,
+      filteredProducts,
+      showDropdown,
+      loading,
+      quantity,
+      unitPrice,
+      value,
+      notes,
+      highlightedIndex,
+      mockProducts,
+      inventoryItem,
+    });
+  }, [
+    Product,
+    searchText,
+    filteredProducts,
+    showDropdown,
+    loading,
+    quantity,
+    unitPrice,
+    value,
+    notes,
+    highlightedIndex,
+    mockProducts,
+    inventoryItem,
+  ]);
+
   // Ref để theo dõi click bên ngoài và dropdown
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
