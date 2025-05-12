@@ -1,7 +1,6 @@
 // src/components/inventoryManagementWithRedux/Tab01Form.tsx
 "use client";
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
   setDate,
@@ -30,7 +29,6 @@ import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
-// Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
   id: number;
   code: string;
@@ -42,13 +40,11 @@ interface InventoryItemExport {
   notes: string;
 }
 
-// Tạo interface riêng cho SlipNote
 interface SlipNote {
   selectedWarehouse: string;
   notesOfSlip: string;
 }
 
-// Define the Supplier interface
 interface Supplier {
   code: string;
   name: string;
@@ -72,15 +68,15 @@ export function InventoryFormStockReceiveSlip() {
     loading,
   } = useAppSelector((state: RootState) => state.inventory);
 
-  // Hàm cập nhật bảng thông tin tồn kho
+  // Debug selectedProduct
   useEffect(() => {
-      console.log('Tab01Form - Selected Product:', selectedProduct);
-    }, [selectedProduct]);
+    console.log('Tab01Form - Selected Product:', selectedProduct);
+  }, [selectedProduct]);
+
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
   };
 
-  // Handle save action
   const handleSave = () => {
     const data = inventoryTable.map((item) => ({
       date,
@@ -103,19 +99,16 @@ export function InventoryFormStockReceiveSlip() {
       thanh_tien: item.value,
       ghi_chu_sp: item.notes,
     }));
-
     dispatch(saveInventory(data));
-      };
+  };
 
-  // Handle template download
   const handleTemplateClick = () => {
-      dispatch(downloadImportTemplate());
-    };
+    dispatch(downloadImportTemplate());
+  };
 
-  // Handle print template download
-    const handlePrintClick = () => {
-      dispatch(downloadPrintTemplate());
-    };
+  const handlePrintClick = () => {
+    dispatch(downloadPrintTemplate());
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -130,7 +123,6 @@ export function InventoryFormStockReceiveSlip() {
     }
   };
 
-  // Handle file import
   const handleImportFile = () => {
     if (!selectedFile) {
       dispatch(setErrorMessage('Please select a file to import'));
@@ -139,12 +131,10 @@ export function InventoryFormStockReceiveSlip() {
     dispatch(importFile(selectedFile));
   };
 
-  // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
   const handleSupplierChange = (newSupplier: Supplier) => {
     dispatch(setSupplier(newSupplier));
   };
 
-  // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: InventoryItemExport) => {
     console.log('Tab01Form - Received product from ProductComponent:', product);
     dispatch(setSelectedProduct(product));
@@ -167,29 +157,26 @@ export function InventoryFormStockReceiveSlip() {
             <DocumentRequestNumberComponent />
           </div>
         </div>
-
         <div className="row g-3 mt-1">
           <div className="col-md-6">
             <SupplierComponent onSupplierChange={handleSupplierChange} />
             <InventoryNoteOfStockReceiveSlip />
           </div>
           <div className="col-md-6">
-            <ProductComponent />
+            <ProductComponent onProductChange={handleProductChange} />
           </div>
         </div>
-
         <InventoryTableStockReceiveSlip
           product={selectedProduct}
           onInventoryTableChange={handleInventoryTableChange}
         />
-
         <div className="d-flex justify-content-end gap-2 mt-3">
           <button 
             type="button" 
             className="btn btn-outline-secondary" 
             onClick={handleTemplateClick}
             disabled={loading}
-            >
+          >
             Template
           </button>
           <input
@@ -216,10 +203,10 @@ export function InventoryFormStockReceiveSlip() {
             Import
           </button>
           <button 
-          type="button" 
-          className="btn btn-outline-secondary" 
-          onClick={handlePrintClick}
-          disabled={loading}
+            type="button" 
+            className="btn btn-outline-secondary" 
+            onClick={handlePrintClick}
+            disabled={loading}
           >
             Print
           </button>
@@ -228,7 +215,7 @@ export function InventoryFormStockReceiveSlip() {
             className="btn btn-primary" 
             onClick={handleSave}
             disabled={loading}
-            >
+          >
             Save
           </button>
           <button type="button" className="btn btn-outline-secondary" disabled={loading}>

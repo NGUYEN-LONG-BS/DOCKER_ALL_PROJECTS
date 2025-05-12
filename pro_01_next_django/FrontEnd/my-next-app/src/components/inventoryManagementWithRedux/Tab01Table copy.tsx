@@ -9,21 +9,20 @@ import {
   updateItem,
   setErrorMessage,
 } from '@/features/objectProductComponent/objectProductComponentSlice';
-import { InventoryItemExport } from '@/features/objectProductComponent/objectProductComponentSlice'; // Nhập interface
+import { InventoryItemExport } from '@/features/objectProductComponent/objectProductComponentSlice';
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 
 interface InventoryTableStockReceiveSlipProps {
   product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string };
-  onInventoryTableChange: (newItems: InventoryItemExport[]) => void; // Callback to notify parent about changes
+  onInventoryTableChange: (newItems: InventoryItemExport[]) => void;
 }
 
 export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
   const { items, errorMessage } = useAppSelector((state) => state.product);
   const selectedProduct = useAppSelector((state) => state.inventory.selectedProduct);
-  
+
   const addRow = () => {
-    // In dữ liệu đang kiểm tra
     console.log('Validation Data for Add Row:', {
       code: product.code,
       quantity: product.quantity,
@@ -31,14 +30,11 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       reduxSelectedProduct: selectedProduct, // So sánh với state.inventory.selectedProduct
     });
 
-    // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
     if (!product.code || product.quantity === 0) {
       dispatch(setErrorMessage('Mã hàng không được trống và Số lượng phải lớn hơn 0.'));
-      return; // Stop the function from continuing, thus preventing row addition
+      return;
     }
-    // Reset error message if input is valid
     dispatch(setErrorMessage(null));
-    // Create a new InventoryItem based on the provided product
     const newItem: InventoryItemExport = {
       id: items.length + 1,
       code: product.code,
@@ -49,22 +45,17 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       value: product.quantity * product.price,
       notes: product.notes,
     };
-
-    // Dispatch action để thêm item
     dispatch(addItem(newItem));
-    // Gọi callback để thông báo parent
     onInventoryTableChange([...items, newItem]);
   };
 
   const deleteRow = (id: number) => {
     dispatch(deleteItem(id));
-    // Gọi callback sau khi xóa
     onInventoryTableChange(items.filter((item) => item.id !== id));
   };
 
   const clearRows = () => {
     dispatch(clearItems());
-    // Gọi callback sau khi xóa tất cả
     onInventoryTableChange([]);
   };
 
@@ -78,7 +69,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
           Clear Rows
         </button>
       </div>
-
       <div className="border rounded">
         <div className="table-container">
           <table className="table table-bordered table-hover mb-0">
@@ -152,7 +142,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter') {
-                            e.preventDefault(); // Ngăn Enter kích hoạt addRow
+                            e.preventDefault();
                           }
                         }}
                         style={{ width: "80px" }}
@@ -186,7 +176,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                       <input
                         type="number"
                         className="form-control form-control-sm"
-                        value={item.value} // Hiển thị giá trị tính toán
+                        value={item.value}
                         readOnly
                         style={{ width: "100px" }}
                       />
@@ -208,7 +198,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                       />
                     </td>
                     <td>
-                      {/* Thêm button xóa với icon dấu "X" */}
                       <button
                         type="button"
                         className="btn btn-danger btn-sm position-relative"
@@ -220,8 +209,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                           height: "30px",
                         }}
                       >
-                        <span className="fw-bold">X</span> {/* Dấu X */}
-                        {/* Hiển thị chữ "Delete" khi hover */}
+                        <span className="fw-bold">X</span>
                         <span
                           className="position-absolute top-100 start-50 translate-middle-x"
                           style={{
@@ -249,7 +237,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
           </table>
         </div>
       </div>
-      {/* Error Popup */}
       <PopupFadeout message={errorMessage} onClose={() => dispatch(setErrorMessage(null))} />
     </div>
   );

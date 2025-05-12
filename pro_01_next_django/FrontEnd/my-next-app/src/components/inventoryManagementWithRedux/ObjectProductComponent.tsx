@@ -54,7 +54,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // In ra toàn bộ state khi component render hoặc khi state thay đổi
   useEffect(() => {
-    console.log("Current Product State:", {
+    console.log("ProductComponent State:", {
       Product,
       quantity,
       unitPrice,
@@ -105,7 +105,17 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
     // Nếu có hàm callback từ component cha, gọi callback và truyền inventoryItem (dữ liệu sản phẩm)
     if (onProductChange) {
-      onProductChange({ ...inventoryItem, code: selectedItem.code, name: selectedItem.name, unit: selectedItem.unit });
+      const updatedProduct = {
+        id: inventoryItem.id || Date.now(),
+        code: selectedItem.code,
+        name: selectedItem.name,
+        unit: selectedItem.unit,
+        quantity: inventoryItem.quantity || 0,
+        price: inventoryItem.price || 0,
+        notes: inventoryItem.notes || "",
+      };
+      console.log("Sending product to onProductChange (select):", updatedProduct);
+      onProductChange(updatedProduct);
     }
   };
 
@@ -157,8 +167,12 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setQuantity(value));
-    if (onProductChange && inventoryItem.code) { // Chỉ gọi nếu đã chọn sản phẩm
-      const updatedProduct = { ...inventoryItem, quantity: parseFloat(value.replace(/\./g, "")) || 0 };
+    if (onProductChange) {
+      const updatedProduct = {
+        ...inventoryItem,
+        quantity: parseFloat(value.replace(/\./g, "")) || 0,
+      };
+      console.log("Sending product to onProductChange (quantity):", updatedProduct);
       onProductChange(updatedProduct);
     }
   };
@@ -167,8 +181,12 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setUnitPrice(value));
-    if (onProductChange && inventoryItem.code) {
-      const updatedProduct = { ...inventoryItem, price: parseFloat(value.replace(/\./g, "")) || 0 };
+    if (onProductChange) {
+      const updatedProduct = {
+        ...inventoryItem,
+        price: parseFloat(value.replace(/\./g, "")) || 0,
+      };
+      console.log("Sending product to onProductChange (price):", updatedProduct);
       onProductChange(updatedProduct);
     }
   };
@@ -177,8 +195,12 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setNotes(value));
-    if (onProductChange && inventoryItem.code) {
-      const updatedProduct = { ...inventoryItem, notes: value };
+    if (onProductChange) {
+      const updatedProduct = {
+        ...inventoryItem,
+        notes: value,
+      };
+      console.log("Sending product to onProductChange (notes):", updatedProduct);
       onProductChange(updatedProduct);
     }
   };
