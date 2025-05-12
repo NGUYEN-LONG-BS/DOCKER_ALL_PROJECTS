@@ -28,7 +28,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       return; // Stop the function from continuing, thus preventing row addition
     }
     // Reset error message if input is valid
-    setErrorMessage(null);
+    dispatch(setErrorMessage(null));
     // Create a new InventoryItem based on the provided product
     const newItem: InventoryItemExport = {
       id: items.length + 1,
