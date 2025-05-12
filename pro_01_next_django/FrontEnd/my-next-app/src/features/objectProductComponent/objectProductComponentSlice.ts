@@ -1,27 +1,29 @@
+// src/features/objectProductComponent/objectProductComponentSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 // ==== 1. Định nghĩa kiểu dữ liệu ====
 
 // Dữ liệu sản phẩm cơ bản
-interface ProductData {
+export interface ProductData {
   code: string;
   name: string;
   unit: string;
 }
 
 // Dữ liệu sản phẩm trong phiếu xuất/nhập kho
-interface InventoryItemExport {
+export interface InventoryItemExport {
   id: number;
   code: string;
   name: string;
   unit: string;
   quantity: number;
   price: number;
+  value: number; // Thêm trường value
   notes: string;
 }
 
 // Trạng thái tổng cho slice
-interface ProductState {
+export interface ProductState {
   Product: ProductData;
   inventoryItem: InventoryItemExport;
   searchText: string;
@@ -34,12 +36,14 @@ interface ProductState {
   notes: string;
   mockProducts: ProductData[]; // Dữ liệu giả để lọc
   highlightedIndex: number; // Dùng cho navigation bằng phím
+  items: InventoryItemExport[]; // Thêm danh sách items
+  errorMessage: string | null; // Thêm thông báo lỗi
 }
 
 // ==== 2. Khởi tạo state ban đầu ====
 const initialState: ProductState = {
   Product: { code: '', name: '', unit: '' },
-  inventoryItem: { id: 0, code: '', name: '', unit: '', quantity: 0, price: 0, notes: '' },
+  inventoryItem: { id: 0, code: '', name: '', unit: '', quantity: 0, price: 0, value: 0, notes: '' },
   searchText: '',
   filteredProducts: [],
   showDropdown: false,
@@ -50,6 +54,8 @@ const initialState: ProductState = {
   notes: '',
   mockProducts: [],
   highlightedIndex: -1,
+  items: [], // Khởi tạo danh sách items rỗng
+  errorMessage: null, // Khởi tạo lỗi là null
 };
 
 // ==== 3. AsyncThunk gọi API lấy danh sách sản phẩm ====
@@ -70,8 +76,8 @@ export const fetchProducts = createAsyncThunk(
       // Chuyển dữ liệu phản hồi từ JSON thành object JavaScript
       const data = await response.json();
 
-      // In ra console để kiểm tra dữ liệu nhận được từ API
-      console.log("Data fetched from API: ", data);
+      // // In ra console để kiểm tra dữ liệu nhận được từ API
+      // console.log("Data fetched from API: ", data);
 
       // Chuyển đổi dữ liệu từ dạng gốc sang dạng phù hợp với frontend:
       // ma_hang → code, ten_hang → name, dvt → unit
@@ -170,10 +176,53 @@ const productSlice = createSlice({
         unit: action.payload.unit,
         quantity: 0,
         price: 0,
+        value: 0, // Thêm value
         notes: '',
       };
     },
+    // Reducer mới cho bảng
+        addItem: (state, action: PayloadAction<InventoryItemExport>) => {
+          const newItem = { ...action.payload, id: state.items.length + 1 };
+          const existingIndex = state.items.findIndex((item) => item.code === newItem.code);
+          if (existingIndex !== -1) {
+            // Thay thế item trùng code
+            state.items = [
+              ...state.items.slice(0, existingIndex),
+              newItem,
+              ...state.items.slice(existingIndex + 1),
+            ].map((item, index) => ({ ...item, id: index + 1 }));
+          } else {
+            // Thêm item mới
+            state.items = [...state.items, newItem].map((item, index) => ({
+              ...item,
+              id: index + 1,
+            }));
+          }
+          state.errorMessage = null;
+        },
+        deleteItem: (state, action: PayloadAction<number>) => {
+          state.items = state.items
+            .filter((item) => item.id !== action.payload)
+            .map((item, index) => ({ ...item, id: index + 1 }));
+        },
+        clearItems: (state) => {
+          state.items = [];
+        },
+        updateItem: (state, action: PayloadAction<{ id: number; field: keyof InventoryItemExport; value: any }>) => {
+          const { id, field, value } = action.payload;
+          const itemIndex = state.items.findIndex((item) => item.id === id);
+          if (itemIndex !== -1) {
+            state.items[itemIndex] = { ...state.items[itemIndex], [field]: value };
+            if (field === 'quantity' || field === 'price') {
+              state.items[itemIndex].value = state.items[itemIndex].quantity * state.items[itemIndex].price;
+            }
+          }
+        },
+        setErrorMessage: (state, action: PayloadAction<string | null>) => {
+          state.errorMessage = action.payload;
+        },
   },
+  
   // ==== 5. Xử lý kết quả trả về từ fetchProducts ====
   extraReducers: (builder) => {
     builder
@@ -209,6 +258,11 @@ export const {
   setHighlightedIndex,
   filterProducts,
   selectProduct,
+  addItem,
+  deleteItem,
+  clearItems,
+  updateItem,
+  setErrorMessage,
 } = productSlice.actions;
 
 // ==== 8. Export reducer để dùng trong store ====

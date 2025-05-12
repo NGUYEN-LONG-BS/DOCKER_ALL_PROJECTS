@@ -39,6 +39,16 @@ interface InventoryState {
   loading: boolean; // Added for async operations
 }
 
+interface FinalDataReceiptSlipExport {
+  id: number;
+  code: string;
+  name: string;
+  unit: string;
+  quantity: number;
+  price: number;
+  notes: string;
+}
+
 const initialState: InventoryState = {
   date: new Date().toISOString().split('T')[0],
   documentNumber: 'TB-PNK-250001',
