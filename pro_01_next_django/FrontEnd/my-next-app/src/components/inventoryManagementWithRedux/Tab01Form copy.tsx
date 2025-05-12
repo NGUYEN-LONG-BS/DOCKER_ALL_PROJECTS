@@ -4,10 +4,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
-  setDate,
-  setDocumentNumber,
-  setDocumentRequestNumber,
-  setSlipNote,
   setInventoryTable,
   setSupplier,
   setSelectedProduct,
@@ -21,17 +17,17 @@ import {
 } from '../../features/formReceiptSlip/formReceiptSlipSlice';
 import { RootState } from '../../store/store';
 
-import { DateComponent } from "../date/date-component-with-rkt";
-import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
-import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-with-rkt";
-import { SupplierComponent } from "./ObjectSupplierComponent";
-import { ProductComponent } from "./ObjectProductComponent";
-import { InventoryTableStockReceiveSlip } from "./Tab01Table";
-import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
-import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
-import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
+import { DateComponent } from '../date/date-component-with-rkt';
+import { DocumentNumberComponent } from '../documentNumber/document-number-component-with-rkt';
+import { DocumentRequestNumberComponent } from '../documentRequestNumber/document-request-number-component-with-rkt';
+import { SupplierComponent } from './ObjectSupplierComponent';
+import { ProductComponent } from './ObjectProductComponent';
+import { InventoryTableStockReceiveSlip } from './Tab01Table';
+import InventoryNoteOfStockReceiveSlip from './InventoryNoteOfStockReceiveSlip';
+import PopupFadeout from '../popups/errorPopupComponentTypeFadeOutNum01';
+import SuccessPopup from '../popups/successPopupComponentTypeFadeOutNum01';
 
-// Định nghĩa InventoryItemExport interface
+// Define interfaces (unchanged)
 interface InventoryItemExport {
   id: number;
   code: string;
@@ -42,13 +38,11 @@ interface InventoryItemExport {
   notes: string;
 }
 
-// Tạo interface riêng cho SlipNote
 interface SlipNote {
   selectedWarehouse: string;
   notesOfSlip: string;
 }
 
-// Define the Supplier interface
 interface Supplier {
   code: string;
   name: string;
@@ -72,7 +66,7 @@ export function InventoryFormStockReceiveSlip() {
     loading,
   } = useAppSelector((state: RootState) => state.inventory);
 
-  // Hàm cập nhật bảng thông tin tồn kho
+  // Handle inventory table updates
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
   };
@@ -102,23 +96,23 @@ export function InventoryFormStockReceiveSlip() {
     }));
 
     dispatch(saveInventory(data));
-      };
+  };
 
   // Handle template download
   const handleTemplateClick = () => {
-      dispatch(downloadImportTemplate());
-    };
+    dispatch(downloadImportTemplate());
+  };
 
   // Handle print template download
-    const handlePrintClick = () => {
-      dispatch(downloadPrintTemplate());
-    };
+  const handlePrintClick = () => {
+    dispatch(downloadPrintTemplate());
+  };
 
+  // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
       if (file) {
-        console.log('File selected:', file.name);
         dispatch(setSelectedFile(file));
         dispatch(setErrorMessage(''));
       } else {
@@ -136,12 +130,12 @@ export function InventoryFormStockReceiveSlip() {
     dispatch(importFile(selectedFile));
   };
 
-  // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
+  // Handle supplier updates
   const handleSupplierChange = (newSupplier: Supplier) => {
     dispatch(setSupplier(newSupplier));
   };
 
-  // Hàm xử lý khi sản phẩm thay đổi
+  // Handle product updates
   const handleProductChange = (product: InventoryItemExport) => {
     dispatch(setSelectedProduct(product));
   };
@@ -180,12 +174,12 @@ export function InventoryFormStockReceiveSlip() {
         />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
-          <button 
-            type="button" 
-            className="btn btn-outline-secondary" 
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
             onClick={handleTemplateClick}
             disabled={loading}
-            >
+          >
             Template
           </button>
           <input
@@ -211,20 +205,20 @@ export function InventoryFormStockReceiveSlip() {
           >
             Import
           </button>
-          <button 
-          type="button" 
-          className="btn btn-outline-secondary" 
-          onClick={handlePrintClick}
-          disabled={loading}
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={handlePrintClick}
+            disabled={loading}
           >
             Print
           </button>
-          <button 
-            type="button" 
-            className="btn btn-primary" 
+          <button
+            type="button"
+            className="btn btn-primary"
             onClick={handleSave}
             disabled={loading}
-            >
+          >
             Save
           </button>
           <button type="button" className="btn btn-outline-secondary" disabled={loading}>

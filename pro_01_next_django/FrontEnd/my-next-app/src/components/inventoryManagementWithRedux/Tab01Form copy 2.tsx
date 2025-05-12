@@ -1,25 +1,7 @@
-// src/components/inventoryManagementWithRedux/Tab01Form.tsx
 "use client";
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-  setDate,
-  setDocumentNumber,
-  setDocumentRequestNumber,
-  setSlipNote,
-  setInventoryTable,
-  setSupplier,
-  setSelectedProduct,
-  setSelectedFile,
-  setErrorMessage,
-  setSuccessMessage,
-  saveInventory,
-  downloadImportTemplate,
-  downloadPrintTemplate,
-  importFile,
-} from '../../features/formReceiptSlip/formReceiptSlipSlice';
-import { RootState } from '../../store/store';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
@@ -30,6 +12,20 @@ import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
+
+import {
+  setDate,
+  setDocumentNumber,
+  setDocumentRequestNumber,
+  setSlipNote,
+  setSupplier,
+  setInventoryTable,
+  setSelectedProduct,
+  setErrorMessage,
+  setSuccessMessage,
+  setSelectedFile,
+} from '../../features/formReceiptSlip/formReceiptSlipSlice';
+import { RootState } from '../../store/store';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -57,7 +53,7 @@ interface Supplier {
 }
 
 export function InventoryFormStockReceiveSlip() {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const {
     date,
     documentNumber,
@@ -69,16 +65,14 @@ export function InventoryFormStockReceiveSlip() {
     errorMessage,
     successMessage,
     selectedFile,
-    loading,
-  } = useAppSelector((state: RootState) => state.inventory);
+  } = useSelector((state: RootState) => state.inventory);
 
   // Hàm cập nhật bảng thông tin tồn kho
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
   };
 
-  // Handle save action
-  const handleSave = () => {
+  const handleSave = async () => {
     const data = inventoryTable.map((item) => ({
       date,
       so_phieu: documentNumber,
@@ -101,18 +95,53 @@ export function InventoryFormStockReceiveSlip() {
       ghi_chu_sp: item.notes,
     }));
 
-    dispatch(saveInventory(data));
-      };
+    console.log('Sending data:', JSON.stringify(data, null, 2));
 
-  // Handle template download
-  const handleTemplateClick = () => {
-      dispatch(downloadImportTemplate());
-    };
+    try {
+      const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      dispatch(setSuccessMessage('Lưu thành công!'));
+    } catch (error) {
+      dispatch(setErrorMessage('Gửi thông tin thất bại!'));
+    }
+  };
 
-  // Handle print template download
-    const handlePrintClick = () => {
-      dispatch(downloadPrintTemplate());
-    };
+  const handleTemplateClick = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/download-import-template/', {
+        responseType: 'blob',
+      });
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', 'Import_template.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+    }
+  };
+
+  const handlePrintClick = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/download-print-template/', {
+        responseType: 'blob',
+      });
+      const fileURL = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = fileURL;
+      link.setAttribute('download', 'Print_template.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error('Error downloading the file:', error);
+    }
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -127,13 +156,27 @@ export function InventoryFormStockReceiveSlip() {
     }
   };
 
-  // Handle file import
-  const handleImportFile = () => {
+  const handleImportFile = async () => {
     if (!selectedFile) {
       dispatch(setErrorMessage('Please select a file to import'));
       return;
     }
-    dispatch(importFile(selectedFile));
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/import-data/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('File imported successfully:', response.data);
+      dispatch(setSuccessMessage('File imported successfully!'));
+    } catch (error) {
+      console.error('Error importing file:', error);
+      dispatch(setErrorMessage('Error importing file'));
+    }
   };
 
   // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
@@ -154,23 +197,29 @@ export function InventoryFormStockReceiveSlip() {
       <div className="card-body">
         <div className="row g-3">
           <div className="col-md-4">
-            <DateComponent />
+            <DateComponent/>
           </div>
           <div className="col-md-4">
-            <DocumentNumberComponent />
+            <DocumentNumberComponent/>
           </div>
           <div className="col-md-4">
-            <DocumentRequestNumberComponent />
+            <DocumentRequestNumberComponent/>
           </div>
         </div>
 
         <div className="row g-3 mt-1">
           <div className="col-md-6">
             <SupplierComponent onSupplierChange={handleSupplierChange} />
-            <InventoryNoteOfStockReceiveSlip />
+            {/* <InventoryNoteOfStockReceiveSlip
+              selectedWarehouse={slipNote.selectedWarehouse}
+              notesOfSlip={slipNote.notesOfSlip}
+              onWarehouseChange={handleWarehouseChange}
+              onNotesChange={handleNotesChange}
+            /> */}
+            <InventoryNoteOfStockReceiveSlip/>
           </div>
           <div className="col-md-6">
-            <ProductComponent />
+            <ProductComponent/>
           </div>
         </div>
 
@@ -180,12 +229,7 @@ export function InventoryFormStockReceiveSlip() {
         />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
-          <button 
-            type="button" 
-            className="btn btn-outline-secondary" 
-            onClick={handleTemplateClick}
-            disabled={loading}
-            >
+          <button type="button" className="btn btn-outline-secondary" onClick={handleTemplateClick}>
             Template
           </button>
           <input
@@ -199,35 +243,16 @@ export function InventoryFormStockReceiveSlip() {
             type="button"
             className="btn btn-outline-secondary"
             onClick={() => document.getElementById('import-file-input')?.click()}
-            disabled={loading}
           >
             Import the data file
           </button>
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={handleImportFile}
-            disabled={loading || !selectedFile}
-          >
-            Import
-          </button>
-          <button 
-          type="button" 
-          className="btn btn-outline-secondary" 
-          onClick={handlePrintClick}
-          disabled={loading}
-          >
+          <button type="button" className="btn btn-outline-secondary" onClick={handlePrintClick}>
             Print
           </button>
-          <button 
-            type="button" 
-            className="btn btn-primary" 
-            onClick={handleSave}
-            disabled={loading}
-            >
+          <button type="button" className="btn btn-primary" onClick={handleSave}>
             Save
           </button>
-          <button type="button" className="btn btn-outline-secondary" disabled={loading}>
+          <button type="button" className="btn btn-outline-secondary">
             Update
           </button>
         </div>
