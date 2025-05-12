@@ -3,14 +3,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import inventoryReducer from '../features/formReceiptSlip/formReceiptSlipSlice';
 import productReducer from '../features/objectProductComponent/objectProductComponentSlice';
-import myReducer from './slices/mySlice'; // Adjust path if needed
+
 
 // Cấu hình store với tất cả các reducer
 export const store = configureStore({
   reducer: {
     inventory: inventoryReducer,
     product: productReducer,
-    myFeature: myReducer, // For mySlice
+    
   },
 });
 
