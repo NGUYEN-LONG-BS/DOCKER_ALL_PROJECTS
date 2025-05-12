@@ -20,7 +20,6 @@ import {
   importFile,
 } from '../../features/formReceiptSlip/formReceiptSlipSlice';
 import { RootState } from '../../store/store';
-
 import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-with-rkt";
@@ -39,6 +38,7 @@ interface InventoryItemExport {
   unit: string;
   quantity: number;
   price: number;
+  value: number;
   notes: string;
 }
 
@@ -97,7 +97,7 @@ export function InventoryFormStockReceiveSlip() {
       don_vi_tinh: item.unit,
       so_luong: item.quantity > 0 ? item.quantity : 1,
       don_gia: item.price > 0 ? item.price : 1,
-      thanh_tien: item.quantity > 0 && item.price > 0 ? item.quantity * item.price : 0,
+      thanh_tien: item.value,
       ghi_chu_sp: item.notes,
     }));
 

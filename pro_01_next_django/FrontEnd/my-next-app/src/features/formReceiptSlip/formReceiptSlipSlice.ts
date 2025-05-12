@@ -10,6 +10,7 @@ interface InventoryItemExport {
   unit: string;
   quantity: number;
   price: number;
+  value: number; // Thêm value
   notes: string;
 }
 
@@ -71,6 +72,7 @@ const initialState: InventoryState = {
       unit: '',
       quantity: 0,
       price: 0,
+      value: 0,
       notes: '',
     },
   ],
@@ -81,6 +83,7 @@ const initialState: InventoryState = {
     unit: '',
     quantity: 0,
     price: 0,
+    value: 0,
     notes: '',
   },
   errorMessage: null,
@@ -212,10 +215,10 @@ const inventorySlice = createSlice({
         .addCase(saveInventory.rejected, (state, action) => {
           state.loading = false;
           state.errorMessage = action.payload as string;
-        });
+        })
   
       // Download Import Template
-      builder
+      
         .addCase(downloadImportTemplate.fulfilled, (state, action) => {
           const fileURL = window.URL.createObjectURL(new Blob([action.payload]));
           const link = document.createElement('a');
@@ -227,10 +230,9 @@ const inventorySlice = createSlice({
         })
         .addCase(downloadImportTemplate.rejected, (state, action) => {
           state.errorMessage = action.payload as string;
-        });
+        })
   
       // Download Print Template
-      builder
         .addCase(downloadPrintTemplate.fulfilled, (state, action) => {
           const fileURL = window.URL.createObjectURL(new Blob([action.payload]));
           const link = document.createElement('a');
@@ -242,10 +244,9 @@ const inventorySlice = createSlice({
         })
         .addCase(downloadPrintTemplate.rejected, (state, action) => {
           state.errorMessage = action.payload as string;
-        });
+        })
   
       // Import File
-      builder
         .addCase(importFile.pending, (state) => {
           state.loading = true;
           state.errorMessage = null;

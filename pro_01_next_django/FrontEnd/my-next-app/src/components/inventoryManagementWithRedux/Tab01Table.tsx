@@ -129,11 +129,22 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         type="number"
                         className="form-control form-control-sm"
                         value={item.quantity}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          const newQuantity = Number(e.target.value);
+                          if (newQuantity < 0) return;
                           dispatch(
-                            updateItem({ id: item.id, field: 'quantity', value: Number(e.target.value) })
-                          )
-                        }
+                            updateItem({ id: item.id, field: 'quantity', value: newQuantity })
+                          );
+                          const updatedItems = items.map((it) =>
+                            it.id === item.id ? { ...it, quantity: newQuantity, value: newQuantity * it.price } : it
+                          );
+                          onInventoryTableChange(updatedItems);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault(); // Ngăn Enter kích hoạt addRow
+                          }
+                        }}
                         style={{ width: "80px" }}
                       />
                     </td>
@@ -142,11 +153,22 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         type="number"
                         className="form-control form-control-sm"
                         value={item.price}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          const newPrice = Number(e.target.value);
+                          if (newPrice < 0) return;
                           dispatch(
-                            updateItem({ id: item.id, field: 'price', value: Number(e.target.value) })
-                          )
-                        }
+                            updateItem({ id: item.id, field: 'price', value: newPrice })
+                          );
+                          const updatedItems = items.map((it) =>
+                            it.id === item.id ? { ...it, price: newPrice, value: it.quantity * newPrice } : it
+                          );
+                          onInventoryTableChange(updatedItems);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                          }
+                        }}
                         style={{ width: "100px" }}
                       />
                     </td>
@@ -168,6 +190,11 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         onChange={(e) =>
                           dispatch(updateItem({ id: item.id, field: 'notes', value: e.target.value }))
                         }
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                          }
+                        }}
                       />
                     </td>
                     <td>
@@ -213,7 +240,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
         </div>
       </div>
       {/* Error Popup */}
-      <PopupFadeout message={errorMessage} onClose={() => setErrorMessage(null)} />
+      <PopupFadeout message={errorMessage} onClose={() => dispatch(setErrorMessage(null))} />
     </div>
   )
 }
