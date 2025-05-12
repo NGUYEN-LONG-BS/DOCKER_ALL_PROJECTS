@@ -25,7 +25,7 @@ import {
   setSuccessMessage,
   setSelectedFile,
 } from '../../features/formReceiptSlip/formReceiptSlipSlice';
-import { RootState } from '../../store';
+import { RootState } from '../../store/store';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {

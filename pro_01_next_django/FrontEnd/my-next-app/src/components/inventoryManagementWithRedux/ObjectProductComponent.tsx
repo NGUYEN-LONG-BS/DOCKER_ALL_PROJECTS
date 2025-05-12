@@ -55,30 +55,18 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   useEffect(() => {
     console.log("Current Product State:", {
       Product,
-      searchText,
-      filteredProducts,
-      showDropdown,
-      loading,
       quantity,
       unitPrice,
       value,
       notes,
-      highlightedIndex,
-      mockProducts,
       inventoryItem,
     });
   }, [
     Product,
-    searchText,
-    filteredProducts,
-    showDropdown,
-    loading,
     quantity,
     unitPrice,
     value,
     notes,
-    highlightedIndex,
-    mockProducts,
     inventoryItem,
   ]);
 
