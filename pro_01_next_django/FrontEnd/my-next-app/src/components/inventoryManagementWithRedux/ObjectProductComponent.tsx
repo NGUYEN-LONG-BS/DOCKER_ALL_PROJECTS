@@ -14,7 +14,7 @@ import {
   setQuantity,
   setUnitPrice,
   setNotes,
-} from "../../features/objectProductComponent/objectProductComponentSlice";
+} from "../../features/formReceiptSlip/objectProductComponentSlice";
 // Custom hooks đã được typed sẵn từ store
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 

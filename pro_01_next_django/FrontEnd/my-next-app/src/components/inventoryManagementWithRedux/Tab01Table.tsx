@@ -8,8 +8,8 @@ import {
   clearItems,
   updateItem,
   setErrorMessage,
-} from '@/features/objectProductComponent/objectProductComponentSlice';
-import { InventoryItemExport } from '@/features/objectProductComponent/objectProductComponentSlice';
+} from '@/features/formReceiptSlip/objectProductComponentSlice';
+import { InventoryItemExport } from '@/features/formReceiptSlip/objectProductComponentSlice';
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 
 interface InventoryTableStockReceiveSlipProps {
