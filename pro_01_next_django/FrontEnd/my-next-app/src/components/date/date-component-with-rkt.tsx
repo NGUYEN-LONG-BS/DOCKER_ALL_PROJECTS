@@ -1,9 +1,10 @@
+// src/components/date/date-component-with-rkt.tsx
 'use client';
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDate } from '../../features/formReceiptSlip/formReceiptSlipSlice';
-import { RootState } from '../../store';
+import { setDate } from '../../features/formReceiptSlip/dateSlice';
+import { RootState } from '../../store/store';
 
 // Define props interface for DateComponent
 interface DateComponentProps {
@@ -14,15 +15,17 @@ interface DateComponentProps {
 export function DateComponent({ onDateChange, initialDate }: DateComponentProps) {
   const dispatch = useDispatch();
   // Retrieve date from Redux store with fallback to today's date
-  const currentDate = useSelector((state: RootState) => state.inventory?.date) || new Date().toISOString().split('T')[0];
+  const currentDate = useSelector((state: RootState) => state.date.date) || new Date().toISOString().split('T')[0];
 
   // Sync initialDate with Redux store if provided and different
-  if (initialDate && currentDate !== initialDate) {
-    dispatch(setDate(initialDate));
-    if (typeof onDateChange === 'function') {
-      onDateChange(initialDate); // Notify parent if callback exists
-    }
-  }
+  React.useEffect(() => {
+      if (initialDate && currentDate !== initialDate) {
+        dispatch(setDate(initialDate));
+        if (typeof onDateChange === 'function') {
+          onDateChange(initialDate); // Notify parent if callback exists
+        }
+      }
+  }, [initialDate, currentDate, dispatch, onDateChange]);
 
   // Handle date input change
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {

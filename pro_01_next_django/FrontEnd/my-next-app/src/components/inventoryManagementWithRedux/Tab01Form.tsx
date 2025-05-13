@@ -1,15 +1,15 @@
 // src/components/inventoryManagementWithRedux/Tab01Form.tsx
 "use client";
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+
+import React, { useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { setDate } from "../../features/formReceiptSlip/dateSlice";
+import { setDocumentNumber } from "../../features/formReceiptSlip/documentNumberSlice";
+import { setDocumentRequestNumber } from "../../features/formReceiptSlip/documentRequestNumberSlice";
+import { setSupplier } from "../../features/formReceiptSlip/supplierSlice";
 import {
-  setDate,
-  setDocumentNumber,
-  setDocumentRequestNumber,
   setSlipNote,
   setInventoryTable,
-  setSupplier,
   setSelectedProduct,
   setSelectedFile,
   setErrorMessage,
@@ -18,8 +18,8 @@ import {
   downloadImportTemplate,
   downloadPrintTemplate,
   importFile,
-} from '../../features/formReceiptSlip/formReceiptSlipSlice';
-import { RootState } from '../../store/store';
+} from "../../features/formReceiptSlip/formReceiptSlipSlice";
+import { RootState } from "../../store/store";
 import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-with-rkt";
@@ -58,23 +58,17 @@ interface Supplier {
 
 export function InventoryFormStockReceiveSlip() {
   const dispatch = useAppDispatch();
-  const {
-    date,
-    documentNumber,
-    documentRequestNumber,
-    slipNote,
-    supplier,
-    inventoryTable,
-    selectedProduct,
-    errorMessage,
-    successMessage,
-    selectedFile,
-    loading,
-  } = useAppSelector((state: RootState) => state.inventory);
+    // Select state from different slices
+    const date = useAppSelector((state: RootState) => state.date.date);
+    const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
+    const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
+    const supplier = useAppSelector((state: RootState) => state.supplier.supplier);
+    const { slipNote, inventoryTable, selectedProduct, errorMessage, successMessage, selectedFile, loading 
+    } = useAppSelector((state: RootState) => state.inventory);
 
   // Hàm cập nhật bảng thông tin tồn kho
   useEffect(() => {
-      console.log('Tab01Form - Selected Product:', selectedProduct);
+      console.log("Tab01Form - Selected Product:", selectedProduct);
     }, [selectedProduct]);
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
@@ -85,15 +79,15 @@ export function InventoryFormStockReceiveSlip() {
     const data = inventoryTable.map((item) => ({
       date,
       so_phieu: documentNumber,
-      id_nhan_vien: 'NV01',
-      xoa_sua: 'new',
-      phan_loai_nhap_xuat_hoan: 'receipt',
-      ma_doi_tuong: supplier.code || 'madoituong',
+      id_nhan_vien: "NV01",
+      xoa_sua: "new",
+      phan_loai_nhap_xuat_hoan: "receipt",
+      ma_doi_tuong: supplier.code || "madoituong",
       ngay_tren_phieu: date,
       so_phieu_de_nghi: documentRequestNumber,
       thong_tin_them: slipNote.notesOfSlip,
-      ma_kho_nhan: slipNote.selectedWarehouse || '.',
-      ma_kho_xuat: '.',
+      ma_kho_nhan: slipNote.selectedWarehouse || ".",
+      ma_kho_xuat: ".",
       stt_dong: 1,
       ma_hang: item.code,
       ten_hang: item.name,
@@ -121,11 +115,11 @@ export function InventoryFormStockReceiveSlip() {
     if (event.target.files) {
       const file = event.target.files[0];
       if (file) {
-        console.log('File selected:', file.name);
+        console.log("File selected:", file.name);
         dispatch(setSelectedFile(file));
-        dispatch(setErrorMessage(''));
+        dispatch(setErrorMessage(""));
       } else {
-        dispatch(setErrorMessage('No file selected'));
+        dispatch(setErrorMessage("No file selected"));
       }
     }
   };

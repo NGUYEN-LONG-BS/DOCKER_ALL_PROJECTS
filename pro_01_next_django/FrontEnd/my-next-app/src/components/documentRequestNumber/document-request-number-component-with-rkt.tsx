@@ -2,8 +2,8 @@
 
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setDocumentRequestNumber } from "../../features/formReceiptSlip/formReceiptSlipSlice";
-import { RootState } from "../../store";
+import { setDocumentRequestNumber } from "../../features/formReceiptSlip/documentRequestNumberSlice";
+import { RootState } from "../../store/store";
 import { RefreshCw } from "lucide-react";
 
 // Define props interface (documentNumber is optional, as it's now from Redux)
@@ -15,7 +15,7 @@ export function DocumentRequestNumberComponent({ documentNumber: propDocumentNum
   const dispatch = useDispatch();
   // Retrieve documentRequestNumber from Redux store with fallback
   const documentRequestNumber =
-    useSelector((state: RootState) => state.inventory?.documentRequestNumber) ||
+    useSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber) ||
     propDocumentNumber ||
     "TB-DNNK-250001";
 

@@ -1,16 +1,20 @@
-"use client"
+// src/components/inventoryManagementWithRedux/ObjectSupplierComponent.tsx
+"use client";
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setSupplier } from "../../features/formReceiptSlip/supplierSlice"; // Import from supplierSlice
+import { RootState } from "../../store/store";
 
 interface SupplierData {
-  code: string
-  name: string
-  taxId: string
-  address: string
+  code: string;
+  name: string;
+  taxId: string;
+  address: string;
 }
 
 interface SupplierComponentProps {
-  onSupplierChange?: (supplier: SupplierData) => void
+  onSupplierChange?: (supplier: SupplierData) => void;
 }
 
 const mockSuppliers: SupplierData[] = [
@@ -22,119 +26,121 @@ const mockSuppliers: SupplierData[] = [
   { code: "SUP006", name: "Công ty B", taxId: "0987654321", address: "TP.HCM" },
   { code: "SUP007", name: "Công ty C", taxId: "0456123789-001", address: "Đà Nẵng" },
   { code: "SUP008", name: "Nhà máy D", taxId: "0654789321-002", address: "Cần Thơ" },
-]
+];
 
 export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) {
-  // State variables to manage supplier data, search input, and filtered suppliers
-  const [supplier, setSupplier] = useState<SupplierData>({
-    code: "",
-    name: "",
-    taxId: "",
-    address: "",
-  })
-  const [searchText, setSearchText] = useState("") // The search text entered by the user
-  const [filteredSuppliers, setFilteredSuppliers] = useState<SupplierData[]>([]) // Filtered list of suppliers based on search text
-  const [showDropdown, setShowDropdown] = useState(false) // Flag to toggle dropdown visibility
-  const [loading, setLoading] = useState(false) // Loading state to show spinner when filtering
+  const dispatch = useDispatch();
+  // Retrieve supplier from Redux store
+  const supplier = useSelector((state: RootState) => state.supplier.supplier);
+  
+  // Local state for UI concerns
+  const [searchText, setSearchText] = useState(supplier.code); // Initialize with supplier code from Redux
+  const [filteredSuppliers, setFilteredSuppliers] = useState<SupplierData[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
 
-  const wrapperRef = useRef<HTMLDivElement>(null) // Reference to the wrapper for outside click detection
-  const dropdownRef = useRef<HTMLUListElement>(null) // Reference to the dropdown list for scroll control
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLUListElement>(null);
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Debounce logic to delay the filter operation after user stops typing
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null)
+  // Sync searchText with supplier.code when supplier changes
+  useEffect(() => {
+    setSearchText(supplier.code);
+  }, [supplier.code]);
 
-  // Filter function that is triggered when user types in the search box
+  // Filter suppliers based on search input
   const handleFilter = (text: string) => {
-    setSearchText(text)
+    setSearchText(text);
     if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current) // Clear the previous timeout
+      clearTimeout(debounceTimeout.current);
     }
 
     debounceTimeout.current = setTimeout(() => {
-      setLoading(true) // Show loading spinner while filtering
+      setLoading(true);
       const filtered = mockSuppliers.filter(
-        s =>
-          s.code.toLowerCase().includes(text.toLowerCase()) || // Filter by code
-          s.name.toLowerCase().includes(text.toLowerCase()) || // Filter by name
-          s.taxId.toLowerCase().includes(text.toLowerCase()) // Filter by tax ID
-      )
-      setFilteredSuppliers(filtered) // Set the filtered list of suppliers
-      setLoading(false) // Hide loading spinner after filtering
-      setShowDropdown(true) // Show the dropdown when there are filtered results
-    }, 300) // Delay the filter action by 300ms
-  }
+        (s) =>
+          s.code.toLowerCase().includes(text.toLowerCase()) ||
+          s.name.toLowerCase().includes(text.toLowerCase()) ||
+          s.taxId.toLowerCase().includes(text.toLowerCase())
+      );
+      setFilteredSuppliers(filtered);
+      setLoading(false);
+      setShowDropdown(true);
+    }, 300);
+  };
 
-  // Handle selection of a supplier from the dropdown
+  // Handle supplier selection
   const handleSelectSupplier = (s: SupplierData) => {
-    setSupplier(s) // Set the selected supplier in the state
-    setSearchText(s.code) // Set the search text to the supplier's code
-    setFilteredSuppliers([]) // Clear the filtered suppliers list
-    setShowDropdown(false) // Hide the dropdown after selection
-    if (onSupplierChange) onSupplierChange(s) // Trigger the callback if provided
-  }
+    dispatch(setSupplier(s)); // Update Redux store
+    setSearchText(s.code);
+    setFilteredSuppliers([]);
+    setShowDropdown(false);
+    setHighlightedIndex(-1);
+    if (onSupplierChange) onSupplierChange(s);
+  };
 
-  // Close the dropdown if a click occurs outside the wrapper
+  // Handle changes to supplier fields (name, taxId, address)
+    const handleChange = (field: keyof SupplierData, value: string) => {
+      const updatedSupplier = { ...supplier, [field]: value };
+      dispatch(setSupplier(updatedSupplier)); // Update Redux store
+      if (onSupplierChange) onSupplierChange(updatedSupplier);
+    };
+
+  // Close dropdown on outside click
   const handleClickOutside = (event: MouseEvent) => {
     if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
-      setShowDropdown(false) // Close the dropdown
+      setShowDropdown(false);
+      setHighlightedIndex(-1);
     }
-  }
+  };
 
-  // UseEffect to listen for outside click events to close the dropdown
+  // Add/remove outside click listener
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside) // Clean up on component unmount
-  }, [])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  // Function to handle changes in the other fields (name, taxId, address)
-  const handleChange = (field: keyof SupplierData, value: string) => {
-    const updatedSupplier = { ...supplier, [field]: value }
-    setSupplier(updatedSupplier) // Update the supplier state
-    if (onSupplierChange) {
-      onSupplierChange(updatedSupplier) // Trigger the callback if provided
-    }
-  }
-
-  // Keyboard navigation logic: navigate through the dropdown using arrow keys
-  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1)
-
-  // Handle keyboard events for arrow keys and enter
+  // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowDown") {
-      setHighlightedIndex(prev => Math.min(filteredSuppliers.length - 1, prev + 1)) // Move down the list
+      e.preventDefault(); // Prevent cursor movement in input
+      setHighlightedIndex((prev) => Math.min(filteredSuppliers.length - 1, prev + 1));
     }
     if (e.key === "ArrowUp") {
-      setHighlightedIndex(prev => Math.max(0, prev - 1)) // Move up the list
+      e.preventDefault(); // Prevent cursor movement in input
+      setHighlightedIndex((prev) => Math.max(-1, prev - 1));
     }
     if (e.key === "Enter" && highlightedIndex >= 0) {
-      handleSelectSupplier(filteredSuppliers[highlightedIndex]) // Select the highlighted supplier on Enter
+      e.preventDefault(); // Prevent form submission
+      handleSelectSupplier(filteredSuppliers[highlightedIndex]);
     }
-  }
+  };
 
-  // Show the dropdown when the input is focused (clicking the input shows the dropdown)
+  // Show dropdown on input focus
   const handleFocus = () => {
-    setShowDropdown(true) // Show the dropdown when the input field is focused
-  }
+    setShowDropdown(true);
+  };
 
-  // Auto-scroll to the highlighted item when it changes
+  // Auto-scroll to highlighted item
   useEffect(() => {
     if (highlightedIndex >= 0 && dropdownRef.current) {
-      const highlightedElement = dropdownRef.current.children[highlightedIndex] as HTMLElement
+      const highlightedElement = dropdownRef.current.children[highlightedIndex] as HTMLElement;
       if (highlightedElement) {
         highlightedElement.scrollIntoView({
-          behavior: "smooth", // Smooth scrolling to the highlighted item
-          block: "nearest",  // Align the item to the nearest edge
-        })
+          behavior: "smooth",
+          block: "nearest",
+        });
       }
     }
-  }, [highlightedIndex]) // Trigger this effect when the highlighted index changes
+  }, [highlightedIndex]);
 
   return (
     <div className="card" ref={wrapperRef}>
       <div className="card-body py-2">
         <div className="mb-1 position-relative">
           <div className="d-flex align-items-center gap-1" style={{ marginBottom: "0px" }}>
-            <label htmlFor="supplier-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
+            <label htmlFor="supplier-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }}>
               Nhà cung cấp
             </label>
             {/* Mã nhà cung cấp input */}
@@ -158,14 +164,14 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
               placeholder="tên đối tượng"
               autoComplete="off"
               value={supplier.name}
-              onChange={(e) => handleChange("name", e.target.value)} // Update supplier name
+              onChange={(e) => handleChange("name", e.target.value)}
             />
           </div>
 
           {showDropdown && (
             <ul
               className="list-group position-absolute mt-1 shadow"
-              ref={dropdownRef} // Reference to the dropdown for auto-scrolling
+              ref={dropdownRef}
               style={{
                 zIndex: 1000,
                 width: "calc(100% - 0px)",
@@ -186,7 +192,9 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
                     onClick={() => handleSelectSupplier(s)} // Select item on click
                   >
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr 1fr 3fr", gap: "10px" }}>
-                      <div><strong>{s.code}</strong></div>
+                      <div>
+                        <strong>{s.code}</strong>
+                      </div>
                       <div>{s.name}</div>
                       <div>{s.taxId}</div>
                       <div>{s.address}</div>

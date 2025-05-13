@@ -169,63 +169,59 @@ const inventorySlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-      // Save Inventory
-      builder
-        .addCase(saveInventory.pending, (state) => {
-          state.loading = true;
-          state.errorMessage = null;
-          state.successMessage = null;
-        })
-        .addCase(saveInventory.fulfilled, (state) => {
-          state.loading = false;
-          state.successMessage = 'Lưu thành công!';
-        })
-        .addCase(saveInventory.rejected, (state, action) => {
-          state.loading = false;
-          state.errorMessage = action.payload as string;
-        })
-      // Download Import Template
-        .addCase(downloadImportTemplate.fulfilled, (state, action) => {
-          const fileURL = window.URL.createObjectURL(new Blob([action.payload]));
-          const link = document.createElement('a');
-          link.href = fileURL;
-          link.setAttribute('download', 'Import_template.xlsx');
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        })
-        .addCase(downloadImportTemplate.rejected, (state, action) => {
-          state.errorMessage = action.payload as string;
-        })
-      // Download Print Template
-        .addCase(downloadPrintTemplate.fulfilled, (state, action) => {
-          const fileURL = window.URL.createObjectURL(new Blob([action.payload]));
-          const link = document.createElement('a');
-          link.href = fileURL;
-          link.setAttribute('download', 'Print_template.xlsx');
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        })
-        .addCase(downloadPrintTemplate.rejected, (state, action) => {
-          state.errorMessage = action.payload as string;
-        })
-      // Import File
-        .addCase(importFile.pending, (state) => {
-          state.loading = true;
-          state.errorMessage = null;
-          state.successMessage = null;
-        })
-        .addCase(importFile.fulfilled, (state) => {
-          state.loading = false;
-          state.successMessage = 'File imported successfully!';
-          state.selectedFile = null;
-        })
-        .addCase(importFile.rejected, (state, action) => {
-          state.loading = false;
-          state.errorMessage = action.payload as string;
-        });
-    },
+    builder
+      .addCase(saveInventory.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null;
+        state.successMessage = null;
+      })
+      .addCase(saveInventory.fulfilled, (state) => {
+        state.loading = false;
+        state.successMessage = 'Lưu thành công!';
+      })
+      .addCase(saveInventory.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload as string;
+      })
+      .addCase(downloadImportTemplate.fulfilled, (state, action) => {
+        const fileURL = window.URL.createObjectURL(new Blob([action.payload]));
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.setAttribute('download', 'Import_template.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .addCase(downloadImportTemplate.rejected, (state, action) => {
+        state.errorMessage = action.payload as string;
+      })
+      .addCase(downloadPrintTemplate.fulfilled, (state, action) => {
+        const fileURL = window.URL.createObjectURL(new Blob([action.payload]));
+        const link = document.createElement('a');
+        link.href = fileURL;
+        link.setAttribute('download', 'Print_template.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .addCase(downloadPrintTemplate.rejected, (state, action) => {
+        state.errorMessage = action.payload as string;
+      })
+      .addCase(importFile.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null;
+        state.successMessage = null;
+      })
+      .addCase(importFile.fulfilled, (state) => {
+        state.loading = false;
+        state.successMessage = 'File imported successfully!';
+        state.selectedFile = null;
+      })
+      .addCase(importFile.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload as string;
+      });
+  },
 });
 
 export const {

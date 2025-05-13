@@ -1,9 +1,10 @@
+// src/components/documentNumber/document-number-component-with-rkt.tsx
 "use client";
 
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setDocumentNumber } from "../../features/formReceiptSlip/formReceiptSlipSlice";
-import { RootState } from "../../store";
+import { setDocumentNumber } from "../../features/formReceiptSlip/documentNumberSlice";
+import { RootState } from "../../store/store";
 import { RefreshCw } from "lucide-react";
 
 // Define props interface (documentNumber is optional, as it's now from Redux)
@@ -14,7 +15,7 @@ interface DocumentNumberProps {
 export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: DocumentNumberProps) {
   const dispatch = useDispatch();
   // Retrieve documentNumber from Redux store with fallback
-  const documentNumber = useSelector((state: RootState) => state.inventory?.documentNumber) || propDocumentNumber || "TB-PNK-250001";
+  const documentNumber = useSelector((state: RootState) => state.documentNumber.documentNumber) || propDocumentNumber || "TB-PNK-250001";
 
   // Generate a new document number
   const generateNewNumber = () => {
