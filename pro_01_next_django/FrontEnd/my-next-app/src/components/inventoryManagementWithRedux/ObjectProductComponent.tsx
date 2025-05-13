@@ -56,14 +56,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   // In ra toàn bộ state khi component render hoặc khi state thay đổi
   useEffect(() => {
     console.log("ProductComponent State:", {
-      Product,
-      quantity,
-      unitPrice,
-      value,
-      notes,
       inventoryItem,
     });
-  }, [Product, quantity, unitPrice, value, notes, inventoryItem]);
+  }, [inventoryItem]);
 
   // Ref để theo dõi click bên ngoài và dropdown
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -81,12 +76,10 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const handleFilter = (text: string) => {
     // Cập nhật state tìm kiếm trong Redux Store
     dispatch(setSearchText(text));
-
     // Nếu đang có timeout từ lần nhập trước, thì clear để tránh gọi API/lọc nhiều lần
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
-
     // Tạo timeout mới (debounce) để chỉ lọc sau khi người dùng ngừng gõ 300ms
     debounceTimeout.current = setTimeout(() => {
       // Gửi action để lọc sản phẩm theo text
@@ -98,7 +91,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const handleSelectProduct = (selectedItem: typeof Product) => {
     // Gửi action để cập nhật sản phẩm đã chọn vào Redux Store
     dispatch(selectProduct(selectedItem));
-
     // Nếu có hàm callback từ component cha, gọi callback và truyền inventoryItem (dữ liệu sản phẩm)
     if (onProductChange) {
       // Use setTimeout to ensure inventoryItem is updated after state change
@@ -190,6 +182,11 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   };
 
+  // Debug clicks on the dropdown container
+  const handleDropdownClick = (e: React.MouseEvent<HTMLUListElement>) => {
+    console.log("Dropdown container clicked, target:", e.target);
+  };
+
   return (
     <div className="card" ref={wrapperRef}>
       <div className="card-body py-2">
@@ -235,6 +232,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                 overflowY: "auto",
                 gridTemplateColumns: "2fr 3fr 1fr",
               }}
+              onClick={handleDropdownClick}
             >
               {loading ? (
                 <li className="list-group-item text-center">Đang tải...</li>
@@ -244,11 +242,18 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                     key={s.code}
                     className={`list-group-item list-group-item-action ${index === highlightedIndex ? "bg-info" : ""}`}
                     style={{ cursor: "pointer", fontSize: "0.9rem" }}
-                    onClick={() => {
+                    // onClick={() => {
+                    //   console.log("Dropdown item clicked:", s);
+                    //   handleSelectProduct(s);
+                    // }}
+                    // onMouseDown={(e) => e.preventDefault()} // Prevent input blur
+
+                    onClick={(e) => {
+                      e.stopPropagation();
                       console.log("Dropdown item clicked:", s);
                       handleSelectProduct(s);
                     }}
-                    onMouseDown={(e) => e.preventDefault()} // Prevent input blur
+                    // Removed onMouseDown to test if it’s causing issues
                   >
                     <div style={{ display: "grid", gridTemplateColumns: "2fr 3fr 1fr", gap: "10px" }}>
                       <div><span>{s.code}</span></div>
@@ -275,7 +280,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               id="Product-unit"
               placeholder="đvt"
               autoComplete="off"
-              value={Product?.unit || ''}
+              value={Product?.unit || ""}
               readOnly
             />
           </div>
@@ -289,7 +294,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               value={quantity}
               onChange={handleQuantityChange}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === "Enter") {
                   e.preventDefault();
                 }
               }}
@@ -305,7 +310,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               value={unitPrice}
               onChange={handleUnitPriceChange}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === "Enter") {
                   e.preventDefault();
                 }
               }}
@@ -336,7 +341,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               value={notes}
               onChange={handleNotesChange}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {
+                if (e.key === "Enter") {
                   e.preventDefault();
                 }
               }}
