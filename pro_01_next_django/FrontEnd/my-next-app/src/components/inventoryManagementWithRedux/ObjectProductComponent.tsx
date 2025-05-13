@@ -49,7 +49,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     value,
     notes,
     highlightedIndex,
-    mockProducts,
+    // mockProducts,
     inventoryItem,
   } = useAppSelector((state) => state.product);
 
