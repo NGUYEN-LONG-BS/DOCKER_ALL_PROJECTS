@@ -49,7 +49,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     value,
     notes,
     highlightedIndex,
-    // mockProducts,
     inventoryItem,
   } = useAppSelector((state) => state.product);
 
@@ -116,8 +115,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Thêm và gỡ sự kiện click bên ngoài component
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   // Xử lý điều hướng bằng phím (lên, xuống, enter)
@@ -182,11 +181,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   };
 
-  // Debug clicks on the dropdown container
-  const handleDropdownClick = (e: React.MouseEvent<HTMLUListElement>) => {
-    console.log("Dropdown container clicked, target:", e.target);
-  };
-
   return (
     <div className="card" ref={wrapperRef}>
       <div className="card-body py-2">
@@ -232,7 +226,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                 overflowY: "auto",
                 gridTemplateColumns: "2fr 3fr 1fr",
               }}
-              onClick={handleDropdownClick}
+              // onClick={handleDropdownClick}
+              onClick={(e) => console.log("Dropdown container clicked, target:", e.target)}
             >
               {loading ? (
                 <li className="list-group-item text-center">Đang tải...</li>
@@ -242,16 +237,10 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                     key={s.code}
                     className={`list-group-item list-group-item-action ${index === highlightedIndex ? "bg-info" : ""}`}
                     style={{ cursor: "pointer", fontSize: "0.9rem" }}
-                    // onClick={() => {
-                    //   console.log("Dropdown item clicked:", s);
-                    //   handleSelectProduct(s);
-                    // }}
-                    // onMouseDown={(e) => e.preventDefault()} // Prevent input blur
-
                     onClick={(e) => {
-                      e.stopPropagation();
                       console.log("Dropdown item clicked:", s);
                       handleSelectProduct(s);
+                      dispatch(setShowDropdown(false));
                     }}
                     // Removed onMouseDown to test if it’s causing issues
                   >
