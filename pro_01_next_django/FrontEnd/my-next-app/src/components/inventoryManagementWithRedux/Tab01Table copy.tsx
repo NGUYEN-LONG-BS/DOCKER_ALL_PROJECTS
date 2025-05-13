@@ -13,50 +13,92 @@ import { InventoryItemExport } from '@/features/objectProductComponent/objectPro
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 
 interface InventoryTableStockReceiveSlipProps {
-  product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string };
+  product: InventoryItemExport; // Fix prop type to match InventoryItemExport
   onInventoryTableChange: (newItems: InventoryItemExport[]) => void;
 }
 
 export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
   const { items, errorMessage } = useAppSelector((state) => state.product);
-  const selectedProduct = useAppSelector((state) => state.inventory.selectedProduct);
+
+  // Log props and state for debugging
+  console.log("InventoryTableStockReceiveSlip - Props and State:", { product, items });
+
+  // Validate items to prevent rendering invalid objects
+  const validItems = items.filter(
+    (item): item is InventoryItemExport =>
+      item &&
+      typeof item === "object" &&
+      "id" in item &&
+      "code" in item &&
+      "name" in item &&
+      "unit" in item &&
+      "quantity" in item &&
+      "price" in item &&
+      "value" in item &&
+      "notes" in item
+  );
 
   const addRow = () => {
-    console.log('Validation Data for Add Row:', {
-      code: product.code,
-      quantity: product.quantity,
-      fullProduct: product,
-      reduxSelectedProduct: selectedProduct, // So sánh với state.inventory.selectedProduct
-    });
+    console.log("Validation Data for Add Row:", { product });
 
-    if (!product.code || product.quantity === 0) {
-      dispatch(setErrorMessage('Mã hàng không được trống và Số lượng phải lớn hơn 0.'));
+    // Validate product prop
+    if (!product.code || product.quantity <= 0) {
+      dispatch(setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0."));
       return;
     }
+
+    // Reset error message
     dispatch(setErrorMessage(null));
+
+    // Create new item
     const newItem: InventoryItemExport = {
-      id: items.length + 1,
-      code: product.code,
-      name: product.name,
-      unit: product.unit,
-      quantity: product.quantity,
-      price: product.price,
-      value: product.quantity * product.price,
-      notes: product.notes,
+      id: validItems.length + 1,
+      code: product.code || "",
+      name: product.name || "",
+      unit: product.unit || "",
+      quantity: product.quantity || 0,
+      price: product.price || 0,
+      value: (product.quantity || 0) * (product.price || 0),
+      notes: product.notes || "",
     };
+
+    // Dispatch action to add item
     dispatch(addItem(newItem));
-    onInventoryTableChange([...items, newItem]);
+
+    // Update parent with new items
+    const updatedItems = [...validItems, newItem];
+    onInventoryTableChange(updatedItems);
   };
 
   const deleteRow = (id: number) => {
     dispatch(deleteItem(id));
-    onInventoryTableChange(items.filter((item) => item.id !== id));
+    const updatedItems = validItems.filter((item) => item.id !== id);
+    onInventoryTableChange(updatedItems);
   };
 
   const clearRows = () => {
     dispatch(clearItems());
     onInventoryTableChange([]);
+  };
+
+  const handleUpdateItem = (id: number, field: keyof InventoryItemExport, value: string | number) => {
+    dispatch(updateItem({ id, field, value }));
+
+    const updatedItems = validItems.map((item) =>
+      item.id === id
+        ? {
+            ...item,
+            [field]: value,
+            value:
+              field === "quantity" || field === "price"
+                ? (field === "quantity" ? Number(value) : item.quantity) *
+                  (field === "price" ? Number(value) : item.price)
+                : item.value,
+          }
+        : item
+    );
+    onInventoryTableChange(updatedItems);
   };
 
   return (
@@ -69,6 +111,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
           Clear Rows
         </button>
       </div>
+
       <div className="border rounded">
         <div className="table-container">
           <table className="table table-bordered table-hover mb-0">
@@ -86,8 +129,8 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
               </tr>
             </thead>
             <tbody>
-              {items.length > 0 ? (
-                items.map((item, index) => (
+              {validItems.length > 0 ? (
+                validItems.map((item) => (
                   <tr key={item.id}>
                     <td>{item.id}</td>
                     <td>
@@ -96,9 +139,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         placeholder="Mã hàng"
                         value={item.code}
-                        onChange={(e) =>
-                          dispatch(updateItem({ id: item.id, field: 'code', value: e.target.value }))
-                        }
+                        onChange={(e) => handleUpdateItem(item.id, "code", e.target.value)}
                       />
                     </td>
                     <td>
@@ -107,9 +148,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         placeholder="Tên mặt hàng"
                         value={item.name}
-                        onChange={(e) =>
-                          dispatch(updateItem({ id: item.id, field: 'name', value: e.target.value }))
-                        }
+                        onChange={(e) => handleUpdateItem(item.id, "name", e.target.value)}
                       />
                     </td>
                     <td>
@@ -118,9 +157,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         placeholder="Đvt"
                         value={item.unit}
-                        onChange={(e) =>
-                          dispatch(updateItem({ id: item.id, field: 'unit', value: e.target.value }))
-                        }
+                        onChange={(e) => handleUpdateItem(item.id, "unit", e.target.value)}
                         style={{ width: "60px" }}
                       />
                     </td>
@@ -132,16 +169,10 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         onChange={(e) => {
                           const newQuantity = Number(e.target.value);
                           if (newQuantity < 0) return;
-                          dispatch(
-                            updateItem({ id: item.id, field: 'quantity', value: newQuantity })
-                          );
-                          const updatedItems = items.map((it) =>
-                            it.id === item.id ? { ...it, quantity: newQuantity, value: newQuantity * it.price } : it
-                          );
-                          onInventoryTableChange(updatedItems);
+                          handleUpdateItem(item.id, "quantity", newQuantity);
                         }}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                           }
                         }}
@@ -156,16 +187,10 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         onChange={(e) => {
                           const newPrice = Number(e.target.value);
                           if (newPrice < 0) return;
-                          dispatch(
-                            updateItem({ id: item.id, field: 'price', value: newPrice })
-                          );
-                          const updatedItems = items.map((it) =>
-                            it.id === item.id ? { ...it, price: newPrice, value: it.quantity * newPrice } : it
-                          );
-                          onInventoryTableChange(updatedItems);
+                          handleUpdateItem(item.id, "price", newPrice);
                         }}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                           }
                         }}
@@ -187,11 +212,9 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         placeholder="Ghi chú"
                         value={item.notes}
-                        onChange={(e) =>
-                          dispatch(updateItem({ id: item.id, field: 'notes', value: e.target.value }))
-                        }
+                        onChange={(e) => handleUpdateItem(item.id, "notes", e.target.value)}
                         onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
+                          if (e.key === "Enter") {
                             e.preventDefault();
                           }
                         }}

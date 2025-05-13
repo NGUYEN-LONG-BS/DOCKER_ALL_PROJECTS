@@ -11,8 +11,8 @@ const mockWarehouses = ['Kho A', 'Kho B', 'Kho C'];
 
 // Định nghĩa interface cho props của InventoryNoteOfStockReceiveSlip
 interface InventoryNoteOfStockReceiveSlipProps {
-  onWarehouseChange?: (newWarehouse: string) => void;  // Hàm callback khi kho thay đổi
-  onNotesChange?: (newNotes: string) => void;          // Hàm callback khi ghi chú thay đổi
+  onWarehouseChange?: (newWarehouse: string) => void; // Hàm callback khi kho thay đổi
+  onNotesChange?: (newNotes: string) => void; // Hàm callback khi ghi chú thay đổi
 }
 
 const InventoryNoteOfStockReceiveSlip = ({

@@ -14,13 +14,7 @@ interface InventoryItemExport {
   notes: string;
 }
 
-interface SlipNote {
-  selectedWarehouse: string;
-  notesOfSlip: string;
-}
-
 interface InventoryState {
-  slipNote: SlipNote;
   inventoryTable: InventoryItemExport[];
   selectedProduct: InventoryItemExport;
   errorMessage: string | null;
@@ -40,10 +34,6 @@ interface FinalDataReceiptSlipExport {
 }
 
 const initialState: InventoryState = {
-  slipNote: {
-    selectedWarehouse: 'Kho A',
-    notesOfSlip: '',
-  },
   inventoryTable: [
     {
       id: 1,
@@ -149,9 +139,6 @@ const inventorySlice = createSlice({
   name: 'inventory',
   initialState,
   reducers: {
-    setSlipNote(state, action: PayloadAction<SlipNote>) {
-      state.slipNote = action.payload;
-    },
     setInventoryTable(state, action: PayloadAction<InventoryItemExport[]>) {
       state.inventoryTable = action.payload;
     },
@@ -225,7 +212,6 @@ const inventorySlice = createSlice({
 });
 
 export const {
-  setSlipNote,
   setInventoryTable,
   setSelectedProduct,
   setErrorMessage,

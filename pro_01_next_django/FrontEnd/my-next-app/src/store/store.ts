@@ -7,6 +7,7 @@ import dateReducer from '../features/formReceiptSlip/dateSlice';
 import documentNumberReducer from '../features/formReceiptSlip/documentNumberSlice';
 import documentRequestNumberReducer from '../features/formReceiptSlip/documentRequestNumberSlice';
 import supplierReducer from '../features/formReceiptSlip/supplierSlice';
+import slipNoteReducer from '../features/formReceiptSlip/slipNoteSlice';
 
 // Cấu hình store với tất cả các reducer
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     documentNumber: documentNumberReducer,
     documentRequestNumber: documentRequestNumberReducer,
     supplier: supplierReducer,
+    slipNote: slipNoteReducer,
   },
 });
 

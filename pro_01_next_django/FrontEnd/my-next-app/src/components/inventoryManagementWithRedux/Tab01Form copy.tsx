@@ -29,7 +29,7 @@ import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
-// Định nghĩa InventoryItemExport interface
+// Define interfaces
 interface InventoryItemExport {
   id: number;
   code: string;
@@ -50,28 +50,30 @@ interface Supplier {
 
 export function InventoryFormStockReceiveSlip() {
   const dispatch = useAppDispatch();
-    // Select state from different slices
-    const date = useAppSelector((state: RootState) => state.date.date);
-    const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
-    const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
-    const supplier = useAppSelector((state: RootState) => state.supplier.supplier);
-    const slipNote = useAppSelector((state: RootState) => state.slipNote.slipNote);
-    const { inventoryTable, selectedProduct, errorMessage, successMessage, selectedFile, loading } = useAppSelector(
-      (state: RootState) => state.inventory
-    );
-    const productItems = useAppSelector((state: RootState) => state.product.items);
-    
-      // Sync inventoryTable with product.items
-      useEffect(() => {
-        if (JSON.stringify(inventoryTable) !== JSON.stringify(productItems)) {
-          dispatch(setInventoryTable(productItems));
-        }
-      }, [dispatch, productItems, inventoryTable]);
-    
-      // Log selected product for debugging
+  // Select state from different slices
+  const date = useAppSelector((state: RootState) => state.date.date);
+  const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
+  const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
+  const supplier = useAppSelector((state: RootState) => state.supplier.supplier);
+  const slipNote = useAppSelector((state: RootState) => state.slipNote.slipNote);
+  const { inventoryTable, selectedProduct, errorMessage, successMessage, selectedFile, loading } = useAppSelector(
+    (state: RootState) => state.inventory
+  );
+  const productItems = useAppSelector((state: RootState) => state.product.items);
+
+  // Sync inventoryTable with product.items
   useEffect(() => {
-      console.log("Tab01Form - Selected Product:", selectedProduct);
-    }, [selectedProduct]);
+    if (JSON.stringify(inventoryTable) !== JSON.stringify(productItems)) {
+      dispatch(setInventoryTable(productItems));
+    }
+  }, [dispatch, productItems, inventoryTable]);
+
+  // Log selected product for debugging
+  useEffect(() => {
+    console.log("Tab01Form - Selected Product:", selectedProduct);
+  }, [selectedProduct]);
+
+  // Handle inventory table updates
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
   };
@@ -95,8 +97,8 @@ export function InventoryFormStockReceiveSlip() {
       console.warn("inventoryTable is empty or invalid:", inventoryTable);
       dispatch(setErrorMessage("No inventory items to save"));
       return;
-        }
-    
+    }
+
     const data = inventoryTable.map((item, index) => {
       if (!item || typeof item !== "object") {
         console.warn(`Invalid item at index ${index}:`, item);
@@ -124,22 +126,24 @@ export function InventoryFormStockReceiveSlip() {
         ghi_chu_sp: item.notes || "",
       };
     });
+
     // Log the mapped data for debugging
     console.log("Tab01Form - Data to save:", data);
 
     dispatch(saveInventory(data));
-      };
+  };
 
   // Handle template download
   const handleTemplateClick = () => {
-      dispatch(downloadImportTemplate());
-    };
+    dispatch(downloadImportTemplate());
+  };
 
   // Handle print template download
-    const handlePrintClick = () => {
-      dispatch(downloadPrintTemplate());
-    };
+  const handlePrintClick = () => {
+    dispatch(downloadPrintTemplate());
+  };
 
+  // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
@@ -162,12 +166,12 @@ export function InventoryFormStockReceiveSlip() {
     dispatch(importFile(selectedFile));
   };
 
-  // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
+  // Handle supplier updates from SupplierComponent
   const handleSupplierChange = (newSupplier: Supplier) => {
     dispatch(setSupplier(newSupplier));
   };
 
-  // Hàm xử lý khi sản phẩm thay đổi
+  // Handle product updates from ProductComponent
   const handleProductChange = (product: InventoryItemExport) => {
     console.log("Tab01Form - Received product from ProductComponent:", product);
     dispatch(setSelectedProduct(product));
@@ -197,7 +201,7 @@ export function InventoryFormStockReceiveSlip() {
             <InventoryNoteOfStockReceiveSlip />
           </div>
           <div className="col-md-6">
-            <ProductComponent />
+            <ProductComponent onProductChange={handleProductChange} />
           </div>
         </div>
 
@@ -207,12 +211,12 @@ export function InventoryFormStockReceiveSlip() {
         />
 
         <div className="d-flex justify-content-end gap-2 mt-3">
-          <button 
-            type="button" 
-            className="btn btn-outline-secondary" 
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
             onClick={handleTemplateClick}
             disabled={loading}
-            >
+          >
             Template
           </button>
           <input
@@ -238,20 +242,15 @@ export function InventoryFormStockReceiveSlip() {
           >
             Import
           </button>
-          <button 
-          type="button" 
-          className="btn btn-outline-secondary" 
-          onClick={handlePrintClick}
-          disabled={loading}
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={handlePrintClick}
+            disabled={loading}
           >
             Print
           </button>
-          <button 
-            type="button" 
-            className="btn btn-primary" 
-            onClick={handleSave}
-            disabled={loading}
-            >
+          <button type="button" className="btn btn-primary" onClick={handleSave} disabled={loading}>
             Save
           </button>
           <button type="button" className="btn btn-outline-secondary" disabled={loading}>
