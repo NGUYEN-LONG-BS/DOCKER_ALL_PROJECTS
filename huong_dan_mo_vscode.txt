@@ -5,6 +5,9 @@ step 03: (venv) C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-d
 Chạy server
 step 04: PS C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG\tuan_an_group> python manage.py runserver
 
+Quay lại code cũ
+git checkout de9a8225f7239ffa9c1bea147fa8c65031df4171 -- .
+
 Tạo các bảng trong cơ sở dữ liệu
 python manage.py makemigrations your_app_name --empty
 python manage.py makemigrations
