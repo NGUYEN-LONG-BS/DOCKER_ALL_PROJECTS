@@ -1,7 +1,6 @@
 // src/components/Tab01Table.tsx
 "use client";
 
-import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from '@/store';
 import {
   addItem,
@@ -23,11 +22,9 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   const { items, errorMessage } = useAppSelector((state) => state.inventoryTable);
 
   // Log props và state để debug
-  useEffect(() => {
-    console.log("InventoryTableStockReceiveSlip - Props and State:", { product, items });
-  }, [product, items]);
+  console.log("InventoryTableStockReceiveSlip - Props and State:", { product, items });
 
-  // Validate items để tránh render dữ liệu không hợp lệ
+  // Validate items để đảm bảo dữ liệu hợp lệ
   const validItems = items.filter(
     (item): item is InventoryItemExport =>
       item &&
@@ -43,22 +40,26 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   );
 
   const addRow = () => {
-    console.log("Validation Data for Add Row:", { product });
+    console.log("Add Row - Product:", { product });
 
-    // Kiểm tra dữ liệu product
-    if (!product.code || !product.name || !product.unit || product.quantity <= 0) {
-      dispatch(setErrorMessage("Mã hàng, Tên hàng, Đơn vị tính không được trống và Số lượng phải lớn hơn 0."));
-      return;
-    }
+    // Tạo mục hàng mới từ prop product
+    const newItem: InventoryItemExport = {
+      id: 0, // ID sẽ được tạo trong slice
+      code: product.code || "",
+      name: product.name || "",
+      unit: product.unit || "",
+      quantity: product.quantity || 0,
+      price: product.price || 0,
+      value: (product.quantity || 0) * (product.price || 0),
+      notes: product.notes || "",
+    };
 
-    // Reset thông báo lỗi
-    dispatch(setErrorMessage(null));
+    // Gửi action để thêm mục hàng
+    dispatch(addItem(newItem));
 
-    // Gửi action để thêm item
-    dispatch(addItem(product));
-
-    // Cập nhật component cha với danh sách items mới từ Redux
-    onInventoryTableChange([...items, product]);
+    // Cập nhật component cha với danh sách mới
+    // Lưu ý: items sẽ được cập nhật sau khi action được xử lý, nên ta lấy validItems hiện tại
+    onInventoryTableChange([...validItems, newItem]);
   };
 
   const deleteRow = (id: number) => {
@@ -74,7 +75,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
 
   const handleUpdateItem = (id: number, field: keyof InventoryItemExport, value: string | number) => {
     dispatch(updateItem({ id, field, value }));
-
     const updatedItems = validItems.map((item) =>
       item.id === id
         ? {

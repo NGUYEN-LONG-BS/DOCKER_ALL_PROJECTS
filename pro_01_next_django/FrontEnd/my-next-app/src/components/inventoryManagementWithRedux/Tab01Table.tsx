@@ -8,8 +8,8 @@ import {
   clearItems,
   updateItem,
   setErrorMessage,
-} from '@/features/formReceiptSlip/objectProductComponentSlice';
-import { InventoryItemExport } from '@/features/formReceiptSlip/objectProductComponentSlice';
+} from '@/features/formReceiptSlip/inventoryTableSlice';
+import { InventoryItemExport } from '@/features/formReceiptSlip/inventoryTableSlice';
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 
 interface InventoryTableStockReceiveSlipProps {
@@ -19,7 +19,7 @@ interface InventoryTableStockReceiveSlipProps {
 
 export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
-  const { items, errorMessage } = useAppSelector((state) => state.product);
+  const { items, errorMessage } = useAppSelector((state) => state.inventoryTable);
   
   // Log props and state for debugging
   console.log("InventoryTableStockReceiveSlip - Props and State:", { product, items });
@@ -40,20 +40,11 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   );
   
   const addRow = () => {
-    console.log("Validation Data for Add Row:", { product });
+    console.log("Add Row - Product:", { product });
 
-    // Validate product prop
-    if (!product.code || product.quantity <= 0) {
-      dispatch(setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0."));
-      return;
-    }
-    
-    // Reset error message
-    dispatch(setErrorMessage(null));
-
-    // Create new item
+    // Tạo mục hàng mới từ prop product
     const newItem: InventoryItemExport = {
-      id: validItems.length + 1,
+      id: 0, // ID sẽ được tạo trong slice
       code: product.code || "",
       name: product.name || "",
       unit: product.unit || "",
@@ -67,8 +58,8 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
     dispatch(addItem(newItem));
 
     // Update parent with new items
-    const updatedItems = [...validItems, newItem];
-    onInventoryTableChange(updatedItems);
+    // Lưu ý: items sẽ được cập nhật sau khi action được xử lý, nên ta lấy validItems hiện tại
+    onInventoryTableChange([...validItems, newItem]);
   };
 
   const deleteRow = (id: number) => {
@@ -84,7 +75,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
 
   const handleUpdateItem = (id: number, field: keyof InventoryItemExport, value: string | number) => {
     dispatch(updateItem({ id, field, value }));
-
     const updatedItems = validItems.map((item) =>
       item.id === id
         ? {
