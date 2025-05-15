@@ -237,7 +237,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                     key={s.code}
                     className={`list-group-item list-group-item-action ${index === highlightedIndex ? "bg-info" : ""}`}
                     style={{ cursor: "pointer", fontSize: "0.9rem" }}
-                    onClick={(e) => {
+                    onClick={() => {
                       console.log("Dropdown item clicked:", s);
                       handleSelectProduct(s);
                       dispatch(setShowDropdown(false));
