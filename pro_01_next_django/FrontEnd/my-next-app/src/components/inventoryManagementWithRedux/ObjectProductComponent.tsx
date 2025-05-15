@@ -62,6 +62,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   // Ref để theo dõi click bên ngoài và dropdown
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // Fetch danh sách sản phẩm khi component được mount
   useEffect(() => {
@@ -106,7 +107,9 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       wrapperRef.current &&
       !wrapperRef.current.contains(event.target as Node) &&
       dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
+      !dropdownRef.current.contains(event.target as Node) &&
+      inputRef.current &&
+      !inputRef.current.contains(event.target as Node) // Không đóng nếu click vào input
     ) {
       console.log("Closing dropdown due to click outside");
       dispatch(setShowDropdown(false));
