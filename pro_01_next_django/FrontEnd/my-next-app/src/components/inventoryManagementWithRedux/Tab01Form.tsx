@@ -70,10 +70,11 @@ export function InventoryFormStockReceiveSlip() {
     }
   }, [dispatch, productItems, inventoryTable]);
     
-  // Log selected product for debugging
-  useEffect(() => {
-      console.log("Tab01Form - Selected Product:", selectedProduct);
-    }, [selectedProduct]);
+  // // Log selected product for debugging
+  // useEffect(() => {
+  //     console.log("Tab01Form - Selected Product:", selectedProduct);
+  //   }, [selectedProduct]);
+
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
   };

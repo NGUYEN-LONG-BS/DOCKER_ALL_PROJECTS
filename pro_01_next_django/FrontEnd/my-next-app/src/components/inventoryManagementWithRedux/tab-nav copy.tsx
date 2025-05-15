@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setActiveTab, TAB_NAMES } from "@/features/formReceiptSlip/tabNavSlice";
+import { setActiveTab, TAB_NAMES } from "@/features/tabNav/tabNavSlice";
 import { resetProductState } from "@/features/formReceiptSlip/objectProductComponentSlice";
 import { InventoryFormStockReceiveSlip } from "./Tab01Form";
 import { InventoryFormStockIssuesSlip } from "./Tab02Form";
@@ -12,11 +12,11 @@ import { InventoryLogStockReceiveSlip } from "./Tab04Form";
 export function TabNav() {
   const dispatch = useAppDispatch();
   const activeTab = useAppSelector((state) => state.tabNav.activeTab);
-  
+
   // Reset trạng thái của ProductComponent khi tab thay đổi
   useEffect(() => {
     dispatch(resetProductState());
-    // console.log("Reset ProductComponent state due to tab change:", activeTab);
+    console.log("Reset ProductComponent state due to tab change:", activeTab);
   }, [dispatch, activeTab]);
 
   return (

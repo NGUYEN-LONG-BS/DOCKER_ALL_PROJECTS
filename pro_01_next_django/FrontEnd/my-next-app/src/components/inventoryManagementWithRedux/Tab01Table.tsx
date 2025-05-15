@@ -21,8 +21,8 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   const dispatch = useAppDispatch();
   const { items, errorMessage } = useAppSelector((state) => state.inventoryTable);
   
-  // Log props and state for debugging
-  console.log("InventoryTableStockReceiveSlip - Props and State:", { product, items });
+  // // Log props and state for debugging
+  // console.log("InventoryTableStockReceiveSlip - Props and State:", { product, items });
 
   // Validate items to prevent rendering invalid objects
   const validItems = items.filter(
