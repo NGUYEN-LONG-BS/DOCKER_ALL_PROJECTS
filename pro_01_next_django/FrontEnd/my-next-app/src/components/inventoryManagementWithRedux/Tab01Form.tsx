@@ -62,7 +62,22 @@ export function InventoryFormStockReceiveSlip() {
   );
   const productItems = useAppSelector((state: RootState) => state.product.items);
   const tableItems = useAppSelector((state: RootState) => state.inventoryTable.items);
-  
+  const inventoryItem = useAppSelector((state: RootState) => state.product.inventoryItem); // Lấy inventoryItem
+
+  // Đồng bộ selectedProduct với inventoryItem
+  useEffect(() => {
+    if (
+      inventoryItem.code &&
+      (selectedProduct.code !== inventoryItem.code ||
+        selectedProduct.quantity !== inventoryItem.quantity ||
+        selectedProduct.price !== inventoryItem.price ||
+        selectedProduct.notes !== inventoryItem.notes)
+    ) {
+      console.log("Syncing selectedProduct with inventoryItem:", inventoryItem);
+      dispatch(setSelectedProduct(inventoryItem));
+    }
+  }, [dispatch, inventoryItem, selectedProduct]);
+
   // Sync inventoryTable with product.items
   useEffect(() => {
     if (JSON.stringify(inventoryTable) !== JSON.stringify(productItems)) {
@@ -200,7 +215,7 @@ export function InventoryFormStockReceiveSlip() {
             <InventoryNoteOfStockReceiveSlip />
           </div>
           <div className="col-md-6">
-            <ProductComponent />
+            <ProductComponent onProductChange={handleProductChange} />
           </div>
         </div>
 
