@@ -18,6 +18,7 @@ import {
   downloadPrintTemplate,
   importFile,
 } from "../../features/formReceiptSlip/formReceiptSlipSlice";
+import { setItems } from "../../features/formReceiptSlip/inventoryTableSlice";
 import { RootState } from "../../store/store";
 import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
@@ -50,25 +51,26 @@ interface Supplier {
 
 export function InventoryFormStockReceiveSlip() {
   const dispatch = useAppDispatch();
-    // Select state from different slices
-    const date = useAppSelector((state: RootState) => state.date.date);
-    const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
-    const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
-    const supplier = useAppSelector((state: RootState) => state.supplier.supplier);
-    const slipNote = useAppSelector((state: RootState) => state.slipNote.slipNote);
-    const { inventoryTable, selectedProduct, errorMessage, successMessage, selectedFile, loading } = useAppSelector(
-      (state: RootState) => state.inventory
-    );
-    const productItems = useAppSelector((state: RootState) => state.product.items);
+  // Select state from different slices
+  const date = useAppSelector((state: RootState) => state.date.date);
+  const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
+  const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
+  const supplier = useAppSelector((state: RootState) => state.supplier.supplier);
+  const slipNote = useAppSelector((state: RootState) => state.slipNote.slipNote);
+  const { inventoryTable, selectedProduct, errorMessage, successMessage, selectedFile, loading } = useAppSelector(
+    (state: RootState) => state.inventory
+  );
+  const productItems = useAppSelector((state: RootState) => state.product.items);
+  const tableItems = useAppSelector((state: RootState) => state.inventoryTable.items);
+  
+  // Sync inventoryTable with product.items
+  useEffect(() => {
+    if (JSON.stringify(inventoryTable) !== JSON.stringify(productItems)) {
+      dispatch(setInventoryTable(productItems));
+    }
+  }, [dispatch, productItems, inventoryTable]);
     
-      // Sync inventoryTable with product.items
-      useEffect(() => {
-        if (JSON.stringify(inventoryTable) !== JSON.stringify(productItems)) {
-          dispatch(setInventoryTable(productItems));
-        }
-      }, [dispatch, productItems, inventoryTable]);
-    
-      // Log selected product for debugging
+  // Log selected product for debugging
   useEffect(() => {
       console.log("Tab01Form - Selected Product:", selectedProduct);
     }, [selectedProduct]);
@@ -86,7 +88,7 @@ export function InventoryFormStockReceiveSlip() {
       SupplierComponent: { supplier },
       InventoryNoteOfStockReceiveSlip: { slipNote },
       ProductComponent: { selectedProduct },
-      InventoryTableStockReceiveSlip: { inventoryTable, productItems },
+      InventoryTableStockReceiveSlip: { inventoryTable, tableItems },
       FormStates: { selectedFile: selectedFile ? selectedFile.name : null, loading },
     });
 

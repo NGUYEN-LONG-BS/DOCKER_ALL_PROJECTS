@@ -1,5 +1,6 @@
 // src/features/inventoryTable/inventoryTableSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch, RootState } from '../../store/store';
 
 export interface InventoryItemExport {
   id: number;
@@ -65,9 +66,19 @@ const inventoryTableSlice = createSlice({
     setErrorMessage: (state, action: PayloadAction<string | null>) => {
       state.errorMessage = action.payload;
     },
+    setItems(state, action: PayloadAction<InventoryItemExport[]>) {
+          state.items = action.payload;
+        },
   },
 });
 
-export const { addItem, deleteItem, clearItems, updateItem, setErrorMessage } = inventoryTableSlice.actions;
+export const { 
+  addItem, 
+  deleteItem, 
+  clearItems, 
+  updateItem, 
+  setErrorMessage,
+  setItems,
+} = inventoryTableSlice.actions;
 
 export default inventoryTableSlice.reducer;

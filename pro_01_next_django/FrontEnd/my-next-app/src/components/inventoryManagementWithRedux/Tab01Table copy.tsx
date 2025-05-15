@@ -1,4 +1,3 @@
-// src/components/Tab01Table.tsx
 "use client";
 
 import { useAppDispatch, useAppSelector } from '@/store';
@@ -221,7 +220,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                       />
                     </td>
                     <td>
-                      {/* Thêm button xóa với icon dấu "X" */}
                       <button
                         type="button"
                         className="btn btn-danger btn-sm position-relative"
@@ -261,7 +259,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
           </table>
         </div>
       </div>
-      {/* Error Popup */}
       <PopupFadeout message={errorMessage} onClose={() => dispatch(setErrorMessage(null))} />
     </div>
   );
