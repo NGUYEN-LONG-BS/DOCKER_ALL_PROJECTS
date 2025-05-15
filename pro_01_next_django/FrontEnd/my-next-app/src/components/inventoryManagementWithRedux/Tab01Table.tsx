@@ -1,7 +1,7 @@
 // src/components/Tab01Table.tsx
 "use client";
 
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   addItem,
   deleteItem,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   addItem,
   deleteItem,

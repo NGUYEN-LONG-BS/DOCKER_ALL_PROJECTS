@@ -16,7 +16,7 @@ import {
   setNotes,
 } from "../../features/formReceiptSlip/objectProductComponentSlice";
 // Custom hooks đã được typed sẵn từ store
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
 // Kiểu dữ liệu sản phẩm xuất kho
 interface InventoryItemExport {

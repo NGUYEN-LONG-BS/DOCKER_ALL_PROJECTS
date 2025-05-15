@@ -1,6 +1,6 @@
 // src/store/store.ts
-// 1 file store.ts để cấu hình toàn bộ Redux store và khai báo các RootState, AppDispatch.
 import { configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import inventoryReducer from '../features/formReceiptSlip/formReceiptSlipSlice';
 import productReducer from '../features/formReceiptSlip/objectProductComponentSlice';
 import inventoryTableReducer from '../features/formReceiptSlip/inventoryTableSlice';
@@ -27,3 +27,9 @@ export const store = configureStore({
 // Tạo type RootState và AppDispatch cho Redux Toolkit
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
+// Custom hook cho dispatch với type an toàn
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+// Custom hook cho selector với type an toàn
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
