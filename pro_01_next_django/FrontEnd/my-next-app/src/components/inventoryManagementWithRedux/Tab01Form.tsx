@@ -113,8 +113,8 @@ export function InventoryFormStockReceiveSlip() {
     });
 
     // Validate inventoryTable
-    if (!inventoryTable || !Array.isArray(inventoryTable) || inventoryTable.length === 0) {
-      console.warn("inventoryTable is empty or invalid:", inventoryTable);
+    if (!tableItems || !Array.isArray(tableItems) || tableItems.length === 0) {
+      console.warn("inventoryTable is empty or invalid:", tableItems);
       dispatch(setErrorMessage("No inventory items to save"));
       return;
         }
@@ -124,7 +124,7 @@ export function InventoryFormStockReceiveSlip() {
     // Chuyển đổi date thành định dạng ISO (chỉ lấy phần ngày)
     const formattedDate = date ? new Date(date).toISOString().split('T')[0] + 'T00:00:00Z' : currentDate;
 
-    const data = inventoryTable.map((item, index) => {
+    const data = tableItems.map((item, index) => {
       if (!item || typeof item !== "object") {
         console.warn(`Invalid item at index ${index}:`, item);
         return {};
@@ -155,22 +155,6 @@ export function InventoryFormStockReceiveSlip() {
     console.log("Tab01Form - Data to save:", data);
 
     dispatch(saveInventory(data));
-
-    // console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
-
-    // try {
-    //   const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
-    //     headers: {
-    //       'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
-    //     },
-    //   });
-
-    //   // console.log('Data saved successfully:', response.data);
-    //   setErrorMessage('Lưu thành công!');
-    // } catch (error) {
-    //   // console.error('Error saving data:', error);
-    //   setErrorMessage('Gửi thông tin thất bại!');
-    // }
   };
 
   // Handle template download
