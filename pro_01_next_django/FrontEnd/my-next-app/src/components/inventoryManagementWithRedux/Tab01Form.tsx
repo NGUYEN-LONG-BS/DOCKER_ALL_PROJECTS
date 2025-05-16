@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useEffect } from "react";
+import axios from 'axios';
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { setDate } from "../../features/formReceiptSlip/dateSlice";
 import { setDocumentNumber } from "../../features/formReceiptSlip/documentNumberSlice";
@@ -95,7 +96,10 @@ export function InventoryFormStockReceiveSlip() {
   };
 
   // Handle save action
-  const handleSave = () => {
+  const handleSave = async () => {
+    // Log state của bảng (items từ inventoryTableSlice)
+    console.log("Tab01Form - Inventory Table State on Save:", tableItems);
+
     // Log all states of child components
     console.log("Tab01Form - States on Save:", {
       DateComponent: { date },
@@ -115,6 +119,11 @@ export function InventoryFormStockReceiveSlip() {
       return;
         }
     
+    // Tạo ngày hiện tại ở định dạng ISO
+    const currentDate = new Date().toISOString();
+    // Chuyển đổi date thành định dạng ISO (chỉ lấy phần ngày)
+    const formattedDate = date ? new Date(date).toISOString().split('T')[0] + 'T00:00:00Z' : currentDate;
+
     const data = inventoryTable.map((item, index) => {
       if (!item || typeof item !== "object") {
         console.warn(`Invalid item at index ${index}:`, item);
@@ -146,7 +155,23 @@ export function InventoryFormStockReceiveSlip() {
     console.log("Tab01Form - Data to save:", data);
 
     dispatch(saveInventory(data));
-      };
+
+    // console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
+
+    // try {
+    //   const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+    //     headers: {
+    //       'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
+    //     },
+    //   });
+
+    //   // console.log('Data saved successfully:', response.data);
+    //   setErrorMessage('Lưu thành công!');
+    // } catch (error) {
+    //   // console.error('Error saving data:', error);
+    //   setErrorMessage('Gửi thông tin thất bại!');
+    // }
+  };
 
   // Handle template download
   const handleTemplateClick = () => {
