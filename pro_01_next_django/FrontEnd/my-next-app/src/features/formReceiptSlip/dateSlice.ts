@@ -1,5 +1,6 @@
 // src/features/formReceiptSlip/dateSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DATE_SELECTED_ACTION } from '@/actions/dateTimeActions';
 
 interface DateState {
   date: string;
@@ -10,7 +11,7 @@ const initialState: DateState = {
 };
 
 const dateSlice = createSlice({
-  name: 'date',
+  name: DATE_SELECTED_ACTION,
   initialState,
   reducers: {
     setDate(state, action: PayloadAction<string>) {
