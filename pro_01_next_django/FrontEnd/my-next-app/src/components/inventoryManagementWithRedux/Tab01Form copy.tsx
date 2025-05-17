@@ -30,9 +30,8 @@ import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
-import { CHECK_SO_PHIEU_ENDPOINT } from "@/config/api"; // Nhập endpoint mới
+import { API_CHECK_SO_PHIEU_ENDPOINT } from '@/api/api';
 
-// Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
   id: number;
   code: string;
@@ -88,12 +87,8 @@ export function InventoryFormStockReceiveSlip() {
     dispatch(setInventoryTable(newInventoryItems));
   };
 
-  // Handle save action
   const handleSave = async () => {
-    // Log state của bảng
     console.log("Tab01Form - Inventory Table State on Save:", tableItems);
-
-    // Log all states of child components
     console.log("Tab01Form - States on Save:", {
       DateComponent: { date },
       DocumentNumberComponent: { documentNumber },
@@ -105,36 +100,40 @@ export function InventoryFormStockReceiveSlip() {
       FormStates: { selectedFile: selectedFile ? selectedFile.name : null, loading },
     });
 
-    // Validate documentNumber
     if (!documentNumber) {
       dispatch(setErrorMessage("Vui lòng nhập số phiếu"));
       return;
     }
 
-    // Validate inventoryTable
     if (!tableItems || !Array.isArray(tableItems) || tableItems.length === 0) {
       console.warn("inventoryTable is empty or invalid:", tableItems);
       dispatch(setErrorMessage("Không có sản phẩm nào để lưu"));
       return;
     }
 
-    // Kiểm tra số phiếu qua API
     try {
-      const response = await axios.get(`${CHECK_SO_PHIEU_ENDPOINT}?so_phieu=${encodeURIComponent(documentNumber)}`, {
+      const myApi = `${API_CHECK_SO_PHIEU_ENDPOINT}?so_phieu=${encodeURIComponent(documentNumber)}`;
+      console.log("myApi:", myApi);
+      const response = await axios.get(myApi, {
         headers: { 'Content-Type': 'application/json' },
       });
 
+      console.log("API response:", response.data); // Log để kiểm tra dữ liệu trả về
       if (response.data.existed) {
         dispatch(setErrorMessage("Số phiếu đã tồn tại. Vui lòng chọn số phiếu khác."));
         return;
       }
     } catch (error: any) {
-      console.error("Lỗi khi kiểm tra số phiếu:", error);
+      console.error("Lỗi khi kiểm tra số phiếu:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.response?.headers,
+      });
       dispatch(setErrorMessage("Không thể kiểm tra số phiếu. Vui lòng thử lại."));
       return;
     }
 
-    // Nếu số phiếu chưa tồn tại, tiếp tục lưu
     const currentDate = new Date().toISOString();
     const formattedDate = date ? new Date(date).toISOString().split('T')[0] + 'T00:00:00Z' : currentDate;
 

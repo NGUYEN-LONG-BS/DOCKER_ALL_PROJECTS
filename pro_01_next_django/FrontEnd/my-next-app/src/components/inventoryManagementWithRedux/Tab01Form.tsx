@@ -140,9 +140,15 @@ export function InventoryFormStockReceiveSlip() {
       }
     } catch (error: any) {
       console.error("Lỗi khi kiểm tra số phiếu:", error);
+      console.error("Lỗi khi kiểm tra số phiếu:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        headers: error.response?.headers,
+      });
       dispatch(setErrorMessage("Không thể kiểm tra số phiếu. Vui lòng thử lại."));
       return;
-        }
+    }
     
     // Tạo ngày hiện tại ở định dạng ISO
     const currentDate = new Date().toISOString();
