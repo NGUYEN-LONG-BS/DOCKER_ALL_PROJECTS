@@ -272,23 +272,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-
-# class CheckSoPhieuExistView(APIView):
-
-#     def get(self, request, format=None):
-#         # Lấy số phiếu từ query parameters
-#         so_phieu = request.query_params.get('so_phieu', None)
-
-#         if not so_phieu:
-#             return Response({'error': 'Số phiếu không được cung cấp'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         # Kiểm tra xem số phiếu đã tồn tại trong cơ sở dữ liệu chưa
-#         exists = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.filter(so_phieu=so_phieu).exists()
-
-#         if exists:
-#             return Response({'existed': True}, status=status.HTTP_200_OK)
-#         else:
-#             return Response({'existed': False}, status=status.HTTP_404_NOT_FOUND)
         
 class CheckSoPhieuExistView(APIView):
     def get(self, request, format=None):
@@ -307,4 +290,25 @@ class CheckSoPhieuExistView(APIView):
         # Trả về kết quả với status 200, bất kể số phiếu tồn tại hay không
         return Response({'existed': exists}, status=status.HTTP_200_OK)
 
+# ==============================================================================
+# List inventory stock
+# ==============================================================================
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .serializers import InventoryStockSerializer
+
+class InventoryStockListView(APIView):
+    def get(self, request, format=None):
+        # Lấy tất cả bản ghi từ model
+        inventory_items = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
+        # Serialize dữ liệu, truyền index cho mỗi bản ghi
+        serialized_data = []
+        for index, item in enumerate(inventory_items):
+            serializer = InventoryStockSerializer(item, context={'index': index})
+            serialized_data.append(serializer.data)
+        # Trả về response với status 200
+        return Response(serialized_data, status=status.HTTP_200_OK)
 

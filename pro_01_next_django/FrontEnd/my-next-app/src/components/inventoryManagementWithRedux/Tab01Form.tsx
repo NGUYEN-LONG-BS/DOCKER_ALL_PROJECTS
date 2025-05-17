@@ -101,17 +101,17 @@ export function InventoryFormStockReceiveSlip() {
     // Log state của bảng (items từ inventoryTableSlice)
     console.log("Tab01Form - Inventory Table State on Save:", tableItems);
 
-    // Log all states of child components
-    console.log("Tab01Form - States on Save:", {
-      DateComponent: { date },
-      DocumentNumberComponent: { documentNumber },
-      DocumentRequestNumberComponent: { documentRequestNumber },
-      SupplierComponent: { supplier },
-      InventoryNoteOfStockReceiveSlip: { slipNote },
-      ProductComponent: { selectedProduct },
-      InventoryTableStockReceiveSlip: { inventoryTable, tableItems },
-      FormStates: { selectedFile: selectedFile ? selectedFile.name : null, loading },
-    });
+    // // Log all states of child components
+    // console.log("Tab01Form - States on Save:", {
+    //   DateComponent: { date },
+    //   DocumentNumberComponent: { documentNumber },
+    //   DocumentRequestNumberComponent: { documentRequestNumber },
+    //   SupplierComponent: { supplier },
+    //   InventoryNoteOfStockReceiveSlip: { slipNote },
+    //   ProductComponent: { selectedProduct },
+    //   InventoryTableStockReceiveSlip: { inventoryTable, tableItems },
+    //   FormStates: { selectedFile: selectedFile ? selectedFile.name : null, loading },
+    // });
 
     // Validate documentNumber
     if (!documentNumber) {
@@ -119,10 +119,22 @@ export function InventoryFormStockReceiveSlip() {
       return;
     }
 
+    // Kiểm tra documentRequestNumber (so_phieu_de_nghi)
+    if (!documentRequestNumber || documentRequestNumber.trim() === "") {
+      dispatch(setErrorMessage("Vui lòng nhập số phiếu đề nghị"));
+      return;
+    }
+
+    // Kiểm tra ma_doi_tuong (supplier.code)
+    if (!supplier.code || supplier.code.trim() === "") {
+      dispatch(setErrorMessage("Vui lòng nhập mã đối tượng (nhà cung cấp)"));
+      return;
+    }
+
     // Validate inventoryTable
     if (!tableItems || !Array.isArray(tableItems) || tableItems.length === 0) {
       console.warn("inventoryTable is empty or invalid:", tableItems);
-      dispatch(setErrorMessage("No inventory items to save"));
+      dispatch(setErrorMessage("Vui lòng thêm một sản phẩm vào bảng"));
       return;
     }
 
@@ -166,7 +178,7 @@ export function InventoryFormStockReceiveSlip() {
         id_nhan_vien: "NV01",
         xoa_sua: "new",
         phan_loai_nhap_xuat_hoan: "receipt",
-        ma_doi_tuong: supplier.code || "madoituong",
+        ma_doi_tuong: supplier.code || "",
         ngay_tren_phieu: date,
         so_phieu_de_nghi: documentRequestNumber,
         thong_tin_them: slipNote.notesOfSlip,

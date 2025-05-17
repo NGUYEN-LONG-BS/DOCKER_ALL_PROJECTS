@@ -30,22 +30,30 @@ class InventoryStockReceivedIssuedReturnedSerializer(serializers.ModelSerializer
         model = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
         fields = '__all__'  # Lấy tất cả các trường trong model
 
-# class InventoryItemSerializer(serializers.Serializer):
-#     id = serializers.IntegerField()
-#     code = serializers.CharField()
-#     name = serializers.CharField()
-#     unit = serializers.CharField()
-#     quantity = serializers.IntegerField()
-#     price = serializers.FloatField()
-#     notes = serializers.CharField()
+# ==============================================================================
+# log of inventory stock
+# ==============================================================================
 
-# class SlipNoteSerializer(serializers.Serializer):
-#     selectedWarehouse = serializers.CharField()
-#     notesOfSlip = serializers.CharField()
+# your_app/serializers.py
+from rest_framework import serializers
+from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 
-# class InventoryFormSerializer(serializers.Serializer):
-#     date = serializers.DateField()
-#     documentNumber = serializers.CharField()
-#     supplier = serializers.CharField()
-#     slipNote = SlipNoteSerializer()
-#     inventoryTable = InventoryItemSerializer(many=True)
+class InventoryStockSerializer(serializers.ModelSerializer):
+    STT = serializers.SerializerMethodField()  # Thêm trường STT động
+
+    def get_STT(self, obj):
+        # Lấy index từ context và cộng 1 để bắt đầu từ 1
+        return self.context['index'] + 1
+
+    class Meta:
+        model = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+        fields = [
+            'STT',
+            'so_phieu',
+            'ngay_tren_phieu',
+            'so_phieu_de_nghi',
+            'ma_doi_tuong',
+            'ma_hang',
+            'so_luong',
+            'ma_kho_nhan',
+        ]

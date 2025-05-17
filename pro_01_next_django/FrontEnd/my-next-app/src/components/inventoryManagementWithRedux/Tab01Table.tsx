@@ -228,9 +228,12 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         onClick={() => deleteRow(item.id)}
                         style={{
                           borderRadius: "50%",
-                          padding: "5px 10px",
                           width: "30px",
                           height: "30px",
+                          display: "flex", // Thêm flex để căn giữa
+                          alignItems: "center", // Căn giữa theo chiều dọc
+                          justifyContent: "center", // Căn giữa theo chiều ngang
+                          padding: 0, // Bỏ padding để dấu "X" không bị lệch
                         }}
                       >
                         <span className="fw-bold">X</span>
