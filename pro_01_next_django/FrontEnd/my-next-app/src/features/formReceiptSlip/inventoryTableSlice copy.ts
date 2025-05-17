@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../../store/store';
 import axios from 'axios';
-import { API_CHECK_INVENTORY_CODE_EXIST } from '@/api/api';
+import { API_CHECK_MA_HANG_ENDPOINT } from '@/api/api';
 
 export interface InventoryItemExport {
   id: number;
@@ -32,15 +32,6 @@ const inventoryTableSlice = createSlice({
     addItem: (state, action: PayloadAction<InventoryItemExport>) => {
       const newItem = { ...action.payload, id: state.items.length + 1 };
       state.items.push(newItem); // Thêm trực tiếp vào state sau khi kiểm tra
-
-      // Kiểm tra trùng mã hàng
-      const existingIndex = state.items.findIndex((item) => item.code === newItem.code);
-      if (existingIndex !== -1) {
-        // Thay thế mục hàng cũ nếu trùng mã
-        state.items[existingIndex] = newItem;
-      } else {
-        state.items.push(newItem);
-      }
       state.errorMessage = null;
     },
     deleteItem: (state, action: PayloadAction<number>) => {
@@ -50,9 +41,9 @@ const inventoryTableSlice = createSlice({
       state.items = [];
     },
     updateItem: (
-          state,
-          action: PayloadAction<{ id: number; field: keyof InventoryItemExport; value: string | number }>
-        ) => {
+      state,
+      action: PayloadAction<{ id: number; field: keyof InventoryItemExport; value: string | number }>
+    ) => {
       const { id, field, value } = action.payload;
       const itemIndex = state.items.findIndex((item) => item.id === id);
       if (itemIndex !== -1) {
@@ -66,8 +57,8 @@ const inventoryTableSlice = createSlice({
       state.errorMessage = action.payload;
     },
     setItems(state, action: PayloadAction<InventoryItemExport[]>) {
-          state.items = action.payload;
-        },
+      state.items = action.payload;
+    },
   },
 });
 
@@ -80,10 +71,18 @@ export const addItemWithValidation = (item: InventoryItemExport) => {
       return;
     }
 
+    // Kiểm tra trùng mã hàng
+    const state = (store.getState as () => RootState)();
+    const existingIndex = state.inventoryTable.items.findIndex((existing) => existing.code === item.code);
+    if (existingIndex !== -1) {
+      dispatch(setErrorMessage(`Mã hàng ${item.code} đã tồn tại trong bảng.`));
+      return;
+    }
+
     // Kiểm tra ma_hang qua API
     try {
       const response = await axios.get(
-        `${API_CHECK_INVENTORY_CODE_EXIST}?ma_hang=${encodeURIComponent(item.code)}`,
+        `${API_CHECK_MA_HANG_ENDPOINT}?ma_hang=${encodeURIComponent(item.code)}`,
         { headers: { 'Content-Type': 'application/json' } }
       );
 
@@ -101,11 +100,11 @@ export const addItemWithValidation = (item: InventoryItemExport) => {
   };
 };
 
-export const { 
-  addItem, 
-  deleteItem, 
-  clearItems, 
-  updateItem, 
+export const {
+  addItem,
+  deleteItem,
+  clearItems,
+  updateItem,
   setErrorMessage,
   setItems,
 } = inventoryTableSlice.actions;

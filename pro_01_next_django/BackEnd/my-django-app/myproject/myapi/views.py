@@ -276,18 +276,35 @@ from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 class CheckSoPhieuExistView(APIView):
     def get(self, request, format=None):
         # Lấy số phiếu từ query parameters
-        so_phieu = request.query_params.get('so_phieu', None)
+        value_to_search = request.query_params.get('so_phieu', None)
 
-        if not so_phieu:
+        if not value_to_search:
             return Response(
                 {'error': 'Số phiếu không được cung cấp'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         # Kiểm tra xem số phiếu đã tồn tại trong cơ sở dữ liệu chưa
-        exists = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.filter(so_phieu=so_phieu).exists()
+        exists = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.filter(so_phieu=value_to_search).exists()
 
         # Trả về kết quả với status 200, bất kể số phiếu tồn tại hay không
+        return Response({'existed': exists}, status=status.HTTP_200_OK)
+    
+class CheckMaHangExistView(APIView):
+    def get(self, request, format=None):
+        # Lấy giá trị cần tìm từ query parameters
+        value_to_search = request.query_params.get('ma_hang', None)
+
+        if not value_to_search:
+            return Response(
+                {'error': 'Mã hàng không được cung cấp'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Kiểm tra xem giá trị có tồn tại trong cột ma_hang của bảng không
+        exists = TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=value_to_search).exists()
+
+        # Trả về kết quả với status 200
         return Response({'existed': exists}, status=status.HTTP_200_OK)
 
 # ==============================================================================

@@ -5,7 +5,7 @@ from .views import InventoryStockReceivedIssuedReturnedView
 from .views import get_json_data, download_file_IMPORT_TEMPLATE, download_file_PRINT_TEMPLATE, import_data
 from .views import MaxSoPhieuView
 from .views import CheckSoPhieuExistView
-from .views import InventoryStockListView
+from .views import InventoryStockListView, CheckMaHangExistView
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -28,6 +28,7 @@ urlpatterns = [
     path('new-number-slip-pnk/', MaxSoPhieuView.as_view(), name='new-number-slip-pnk'),
     path('check-so-phieu/', CheckSoPhieuExistView.as_view(), name='check-so-phieu'),
     path('inventory-stock/', InventoryStockListView.as_view(), name='inventory_stock_list'),
+    path('check-ma-hang/', CheckMaHangExistView.as_view(), name='check_ma_hang'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development

@@ -1,13 +1,15 @@
 // src/components/Tab01Table.tsx
 "use client";
 
+import { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
-  addItem,
+  addItemWithValidation,
   deleteItem,
   clearItems,
   updateItem,
   setErrorMessage,
+  setItems,
 } from '@/features/formReceiptSlip/inventoryTableSlice';
 import { InventoryItemExport } from '@/features/formReceiptSlip/inventoryTableSlice';
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
@@ -20,12 +22,10 @@ interface InventoryTableStockReceiveSlipProps {
 export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
   const { items, errorMessage } = useAppSelector((state) => state.inventoryTable);
-  
-  // // Log props and state for debugging
-  // console.log("InventoryTableStockReceiveSlip - Props and State:", { product, items });
 
   // Validate items to prevent rendering invalid objects
-  const validItems = items.filter(
+  const validItems = useMemo(() => {
+    return items.filter(
     (item): item is InventoryItemExport =>
       item &&
       typeof item === "object" &&
@@ -38,18 +38,10 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       "value" in item &&
       "notes" in item
   );
-  
+    }, [items]);
+
   const addRow = () => {
     console.log("Validation Data for Add Row:", { product });
-
-    // Validate product prop
-    if (!product.code || product.quantity <= 0) {
-      dispatch(setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0."));
-      return;
-    }
-    
-    // Reset error message
-    dispatch(setErrorMessage(null));
 
     // Create new item
     const newItem: InventoryItemExport = {
@@ -63,28 +55,27 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
       notes: product.notes || "",
     };
 
-    // Dispatch action to add item
-    dispatch(addItem(newItem));
-
-    // Update parent with new items
-    const updatedItems = [...validItems, newItem];
-    onInventoryTableChange(updatedItems);
+    // Dispatch action to add item with validation
+    dispatch(addItemWithValidation(newItem));
+    // Notify parent (no store update)
+    onInventoryTableChange([...validItems, newItem]);
   };
 
   const deleteRow = (id: number) => {
     dispatch(deleteItem(id));
     const updatedItems = validItems.filter((item) => item.id !== id);
+    dispatch(setItems(updatedItems));
     onInventoryTableChange(updatedItems);
   };
 
   const clearRows = () => {
     dispatch(clearItems());
+    dispatch(setItems([]));
     onInventoryTableChange([]);
   };
 
   const handleUpdateItem = (id: number, field: keyof InventoryItemExport, value: string | number) => {
     dispatch(updateItem({ id, field, value }));
-
     const updatedItems = validItems.map((item) =>
       item.id === id
         ? {
@@ -98,6 +89,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
           }
         : item
     );
+    dispatch(setItems(updatedItems));
     onInventoryTableChange(updatedItems);
   };
 
@@ -139,7 +131,9 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         placeholder="Mã hàng"
                         value={item.code}
-                        onChange={(e) => handleUpdateItem(item.id, "code", e.target.value)}
+                        readOnly // Ngăn chỉnh sửa
+                        style={{ backgroundColor: "#c0c7cf" }} // Tùy chọn: đổi màu nền để phân biệt
+                        // onChange={(e) => handleUpdateItem(item.id, "code", e.target.value)}
                       />
                     </td>
                     <td>
