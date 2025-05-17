@@ -2,33 +2,25 @@
 "use client";
 
 import React from "react";
-import { useAppSelector, useAppDispatch } from "../../store/store";
+import { useAppSelector, useAppDispatch } from "../../store/store"; // Sử dụng useAppDispatch, useAppSelector
 import { setDocumentNumber, fetchNewDocumentNumber } from "../../features/formReceiptSlip/documentNumberSlice";
-import { RootState } from "../../store/store";
 import { RefreshCw } from "lucide-react";
 
-// Define props interface (documentNumber is optional, as it's now from Redux)
 interface DocumentNumberProps {
-  documentNumber?: string; // Optional, as state is managed by Redux
+  documentNumber?: string;
 }
 
 export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: DocumentNumberProps) {
-  const dispatch = useAppDispatch();
-  // Retrieve documentNumber from Redux store with fallback
-  const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber) || propDocumentNumber || "TB-PNK-250001";
-  const loading = useAppSelector((state: RootState) => state.documentNumber.loading);
+  const dispatch = useAppDispatch(); // Sử dụng useAppDispatch thay vì useDispatch
+  const documentNumber = useAppSelector((state) => state.documentNumber.documentNumber) || propDocumentNumber || "TB-PNK-250001";
+  const loading = useAppSelector((state) => state.documentNumber.loading);
 
-  // Generate a new document number
   const generateNewNumber = () => {
-    // const randomNum = Math.floor(100000 + Math.random() * 900000);
-    // const newNumber = `TB-PNK-${randomNum}`;
-    // dispatch(setDocumentNumber(newNumber)); // Update Redux store
-    dispatch(fetchNewDocumentNumber());
+    dispatch(fetchNewDocumentNumber()); // TypeScript sẽ nhận diện đúng
   };
 
-  // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setDocumentNumber(e.target.value)); // Update Redux store
+    dispatch(setDocumentNumber(e.target.value));
   };
 
   return (

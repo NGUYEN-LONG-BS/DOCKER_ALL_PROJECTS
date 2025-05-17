@@ -1,6 +1,6 @@
 // src/features/formReceiptSlip/documentNumberSlice.ts
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { API_new_number_slip_pnk } from '@/api/api';
+import { NEW_NUMBER_SLIP_ENDPOINT } from '@/config/api';
 import { DOCUMENT_NUMBER_SELECTED_ACTION } from '@/actions/documentNumberActions';
 
 interface DocumentNumberState {
@@ -20,7 +20,7 @@ export const fetchNewDocumentNumber = createAsyncThunk(
   'documentNumber/fetchNewDocumentNumber',
   async (_, { dispatch }) => {
     try {
-      const response = await fetch(API_new_number_slip_pnk, {
+      const response = await fetch(NEW_NUMBER_SLIP_ENDPOINT, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -43,20 +43,20 @@ const documentNumberSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-      builder
-        .addCase(fetchNewDocumentNumber.pending, (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-        .addCase(fetchNewDocumentNumber.fulfilled, (state, action) => {
-          state.loading = false;
-          state.documentNumber = action.payload;
-        })
-        .addCase(fetchNewDocumentNumber.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.error.message || 'Failed to fetch new number';
-        });
-    },
+    builder
+      .addCase(fetchNewDocumentNumber.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchNewDocumentNumber.fulfilled, (state, action) => {
+        state.loading = false;
+        state.documentNumber = action.payload;
+      })
+      .addCase(fetchNewDocumentNumber.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch new number';
+      });
+  },
 });
 
 export const { setDocumentNumber } = documentNumberSlice.actions;
