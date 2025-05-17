@@ -28,8 +28,7 @@ export const fetchNewDocumentNumber = createAsyncThunk(
       const data = await response.json();
       return data.new_number_slip;
     } catch (error) {
-      const randomNum = Math.floor(100000 + Math.random() * 900000);
-      return `TB-PNK-${randomNum}`;
+      return `TB-PNK-${currentYear}0001`;
     }
   }
 );

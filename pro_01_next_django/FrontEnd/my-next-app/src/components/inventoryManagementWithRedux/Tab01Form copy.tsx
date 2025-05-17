@@ -30,7 +30,7 @@ import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
-import { API_CHECK_SO_PHIEU_ENDPOINT } from '@/api/api';
+import { CHECK_SO_PHIEU_ENDPOINT } from "@/config/api"; // Nhập endpoint mới
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -53,7 +53,6 @@ interface Supplier {
 
 export function InventoryFormStockReceiveSlip() {
   const dispatch = useAppDispatch();
-  // Select state from different slices
   const date = useAppSelector((state: RootState) => state.date.date);
   const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
   const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
@@ -64,9 +63,8 @@ export function InventoryFormStockReceiveSlip() {
   );
   const productItems = useAppSelector((state: RootState) => state.product.items);
   const tableItems = useAppSelector((state: RootState) => state.inventoryTable.items);
-  const inventoryItem = useAppSelector((state: RootState) => state.product.inventoryItem); // Lấy inventoryItem
+  const inventoryItem = useAppSelector((state: RootState) => state.product.inventoryItem);
 
-  // Đồng bộ selectedProduct với inventoryItem
   useEffect(() => {
     if (
       inventoryItem.code &&
@@ -80,17 +78,11 @@ export function InventoryFormStockReceiveSlip() {
     }
   }, [dispatch, inventoryItem, selectedProduct]);
 
-  // Sync inventoryTable with product.items
   useEffect(() => {
     if (JSON.stringify(inventoryTable) !== JSON.stringify(productItems)) {
       dispatch(setInventoryTable(productItems));
     }
   }, [dispatch, productItems, inventoryTable]);
-    
-  // // Log selected product for debugging
-  // useEffect(() => {
-  //     console.log("Tab01Form - Selected Product:", selectedProduct);
-  //   }, [selectedProduct]);
 
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
@@ -98,7 +90,7 @@ export function InventoryFormStockReceiveSlip() {
 
   // Handle save action
   const handleSave = async () => {
-    // Log state của bảng (items từ inventoryTableSlice)
+    // Log state của bảng
     console.log("Tab01Form - Inventory Table State on Save:", tableItems);
 
     // Log all states of child components
@@ -122,15 +114,13 @@ export function InventoryFormStockReceiveSlip() {
     // Validate inventoryTable
     if (!tableItems || !Array.isArray(tableItems) || tableItems.length === 0) {
       console.warn("inventoryTable is empty or invalid:", tableItems);
-      dispatch(setErrorMessage("No inventory items to save"));
+      dispatch(setErrorMessage("Không có sản phẩm nào để lưu"));
       return;
     }
 
     // Kiểm tra số phiếu qua API
     try {
-      const myApi = `${API_CHECK_SO_PHIEU_ENDPOINT}?so_phieu=${encodeURIComponent(documentNumber)}`;
-      console.log("myApi:", myApi);
-      const response = await axios.get(myApi, {
+      const response = await axios.get(`${CHECK_SO_PHIEU_ENDPOINT}?so_phieu=${encodeURIComponent(documentNumber)}`, {
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -142,11 +132,10 @@ export function InventoryFormStockReceiveSlip() {
       console.error("Lỗi khi kiểm tra số phiếu:", error);
       dispatch(setErrorMessage("Không thể kiểm tra số phiếu. Vui lòng thử lại."));
       return;
-        }
-    
-    // Tạo ngày hiện tại ở định dạng ISO
+    }
+
+    // Nếu số phiếu chưa tồn tại, tiếp tục lưu
     const currentDate = new Date().toISOString();
-    // Chuyển đổi date thành định dạng ISO (chỉ lấy phần ngày)
     const formattedDate = date ? new Date(date).toISOString().split('T')[0] + 'T00:00:00Z' : currentDate;
 
     const data = tableItems.map((item, index) => {
@@ -176,21 +165,18 @@ export function InventoryFormStockReceiveSlip() {
         ghi_chu_sp: item.notes || "",
       };
     });
-    // Log the mapped data for debugging
-    console.log("Tab01Form - Data to save:", data);
 
+    console.log("Tab01Form - Data to save:", data);
     dispatch(saveInventory(data));
   };
 
-  // Handle template download
   const handleTemplateClick = () => {
-      dispatch(downloadImportTemplate());
-    };
+    dispatch(downloadImportTemplate());
+  };
 
-  // Handle print template download
-    const handlePrintClick = () => {
-      dispatch(downloadPrintTemplate());
-    };
+  const handlePrintClick = () => {
+    dispatch(downloadPrintTemplate());
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -200,26 +186,23 @@ export function InventoryFormStockReceiveSlip() {
         dispatch(setSelectedFile(file));
         dispatch(setErrorMessage(""));
       } else {
-        dispatch(setErrorMessage("No file selected"));
+        dispatch(setErrorMessage("Không có tệp nào được chọn"));
       }
     }
   };
 
-  // Handle file import
   const handleImportFile = () => {
     if (!selectedFile) {
-      dispatch(setErrorMessage("Please select a file to import"));
+      dispatch(setErrorMessage("Vui lòng chọn tệp để nhập"));
       return;
     }
     dispatch(importFile(selectedFile));
   };
 
-  // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
   const handleSupplierChange = (newSupplier: Supplier) => {
     dispatch(setSupplier(newSupplier));
   };
 
-  // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: InventoryItemExport) => {
     console.log("Tab01Form - Received product from ProductComponent:", product);
     dispatch(setSelectedProduct(product));
@@ -264,7 +247,7 @@ export function InventoryFormStockReceiveSlip() {
             className="btn btn-outline-secondary" 
             onClick={handleTemplateClick}
             disabled={loading}
-            >
+          >
             Template
           </button>
           <input
@@ -280,7 +263,7 @@ export function InventoryFormStockReceiveSlip() {
             onClick={() => document.getElementById("import-file-input")?.click()}
             disabled={loading}
           >
-            Import the data file
+            Chọn tệp dữ liệu
           </button>
           <button
             type="button"
@@ -288,26 +271,26 @@ export function InventoryFormStockReceiveSlip() {
             onClick={handleImportFile}
             disabled={loading || !selectedFile}
           >
-            Import
+            Nhập
           </button>
           <button 
-          type="button" 
-          className="btn btn-outline-secondary" 
-          onClick={handlePrintClick}
-          disabled={loading}
+            type="button" 
+            className="btn btn-outline-secondary" 
+            onClick={handlePrintClick}
+            disabled={loading}
           >
-            Print
+            In
           </button>
           <button 
             type="button" 
             className="btn btn-primary" 
             onClick={handleSave}
             disabled={loading}
-            >
-            Save
+          >
+            Lưu
           </button>
           <button type="button" className="btn btn-outline-secondary" disabled={loading}>
-            Update
+            Cập nhật
           </button>
         </div>
       </div>
