@@ -71,7 +71,7 @@ const inventoryTableSlice = createSlice({
   },
 });
 
-// Action creator bất đồng bộ để kiểm tra ma_hang trước khi thêm
+// Action creator bất đồng bộ để kiểm tra ma_hang trước khi thêm vào bảng
 export const addItemWithValidation = (item: InventoryItemExport) => {
   return async (dispatch: AppDispatch) => {
     // Kiểm tra mã hàng và số lượng
