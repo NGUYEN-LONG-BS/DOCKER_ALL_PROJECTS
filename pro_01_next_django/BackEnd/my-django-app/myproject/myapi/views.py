@@ -86,24 +86,6 @@ class TBInventoryCategoriesView(ListAPIView):
 #========================================================================================================================
 #========================================================================================================================
 #========================================================================================================================
-
-# def get_json_data(request, file_path: str):
-#     json_file_path = os.path.join(settings.BASE_DIR, 'static', 'templates', 'json', file_path)
-#     print(json_file_path)
-#     try:
-#         # Mở và đọc file JSON với mã hóa UTF-8
-#         with open(json_file_path, 'r', encoding='utf-8') as file:
-#             data = json.load(file)
-        
-#         # Trả dữ liệu dưới dạng JSON
-#         return JsonResponse(data, safe=False)
-    
-#     except FileNotFoundError:
-#         return JsonResponse({"error": "File not found"}, status=404)
-#     except json.JSONDecodeError:
-#         return JsonResponse({"error": "Invalid JSON format"}, status=400)
-#     except UnicodeDecodeError:
-#         return JsonResponse({"error": "Unicode decoding error in file"}, status=400)
     
 def get_json_data(request):
     # Đường dẫn đến file JSON trong thư mục static/templates/json
@@ -236,3 +218,50 @@ def import_data(request):
         # Xử lý lỗi khi lưu file
         print(f"Lỗi khi lưu file: {str(e)}")
         return Response({'error': f'Error saving file: {str(e)}'}, status=500)
+
+
+# ==============================================================================
+# Get max number of slip
+# ==============================================================================
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+
+class MaxSoPhieuView(APIView):
+
+    def get(self, request, format=None):
+        # Lấy tất cả các số phiếu từ bảng
+        phieu_list = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
+        
+        # Danh sách chứa các số phiếu và 6 số cuối của chúng
+        max_phieu = None
+        max_last_six = -1  # Giá trị ban đầu thấp nhất để so sánh
+
+        for phieu in phieu_list:
+            # Trích xuất 6 ký tự cuối và chuyển thành số
+            last_six_digits = phieu.so_phieu[-6:]
+
+            try:
+                # So sánh các số cuối cùng (chuyển sang kiểu số nguyên để so sánh)
+                last_six_number = int(last_six_digits)
+                
+                if last_six_number > max_last_six:
+                    max_last_six = last_six_number
+                    max_phieu = phieu.so_phieu
+            except ValueError:
+                continue  # Nếu không thể chuyển thành số thì bỏ qua
+
+        if max_phieu:
+            # Tăng số cuối lên 1
+            max_last_six += 1
+            
+            # Tạo số phiếu mới
+            new_number_slip = f"{max_phieu[:-6]}{max_last_six:06d}"
+            
+            # Trả về số phiếu moi
+            return Response({'new_number_slip': new_number_slip}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Không có số phiếu nào'}, status=status.HTTP_404_NOT_FOUND)
+

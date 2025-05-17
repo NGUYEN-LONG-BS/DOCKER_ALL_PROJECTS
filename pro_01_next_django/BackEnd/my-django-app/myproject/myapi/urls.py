@@ -3,6 +3,7 @@ from .views import FormSubmissionView, LoginInfoListView, TBInventoryCategoriesV
 # from .views import SaveInventoryView
 from .views import InventoryStockReceivedIssuedReturnedView
 from .views import get_json_data, download_file_IMPORT_TEMPLATE, download_file_PRINT_TEMPLATE, import_data
+from .views import MaxSoPhieuView
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
@@ -21,6 +22,8 @@ urlpatterns = [
     path('download-import-template/', download_file_IMPORT_TEMPLATE, name='download_file'),
     path('download-print-template/', download_file_PRINT_TEMPLATE, name='download_file'),
     path('import-data/', import_data, name='import_data'),
+    
+    path('new-number-slip-pnk/', MaxSoPhieuView.as_view(), name='new-number-slip-pnk'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development
