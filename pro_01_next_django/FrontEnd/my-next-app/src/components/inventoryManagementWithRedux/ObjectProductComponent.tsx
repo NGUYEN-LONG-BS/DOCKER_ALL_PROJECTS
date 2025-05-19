@@ -88,20 +88,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   };
 
   // Hàm xử lý khi người dùng chọn một sản phẩm từ danh sách
-  // const handleSelectProduct = (selectedItem: typeof Product) => {
-  //   // Gửi action để cập nhật sản phẩm đã chọn vào Redux Store
-  //   dispatch(selectProduct(selectedItem));
-  //   // Nếu có hàm callback từ component cha, gọi callback và truyền inventoryItem (dữ liệu sản phẩm)
-  //   if (onProductChange) {
-  //     // Use setTimeout to ensure inventoryItem is updated after state change
-  //     setTimeout(() => {
-  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
-  //       console.log("Sending product to onProductChange (select):", latestInventoryItem);
-  //       onProductChange(latestInventoryItem);
-  //     }, 0);
-  //   }
-  // };
-
   const handleSelectProduct = (selectedItem: typeof Product) => {
     // Gửi action để cập nhật sản phẩm đã chọn vào Redux Store
     dispatch(selectProduct(selectedItem));
@@ -167,18 +153,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   }, [highlightedIndex]);
 
   // Xử lý thay đổi số lượng
-  // const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   dispatch(setQuantity(value));
-  //   if (onProductChange) {
-  //     setTimeout(() => {
-  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
-  //       console.log("Sending product to onProductChange (quantity):", latestInventoryItem);
-  //       onProductChange(latestInventoryItem);
-  //     }, 0);
-  //   }
-  // };
-
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setQuantity(value));
@@ -190,18 +164,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   };
 
   // Xử lý thay đổi đơn giá
-  // const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   dispatch(setUnitPrice(value));
-  //   if (onProductChange) {
-  //     setTimeout(() => {
-  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
-  //       console.log("Sending product to onProductChange (price):", latestInventoryItem);
-  //       onProductChange(latestInventoryItem);
-  //     }, 0);
-  //   }
-  // };
-
   const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setUnitPrice(value));
@@ -211,19 +173,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       onProductChange(inventoryItem);
     }
   };
-
-  // Xử lý thay đổi ghi chú
-  // const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   dispatch(setNotes(value));
-  //   if (onProductChange) {
-  //     setTimeout(() => {
-  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
-  //       console.log("Sending product to onProductChange (notes):", latestInventoryItem);
-  //       onProductChange(latestInventoryItem);
-  //     }, 0);
-  //   }
-  // };
 
   // Xử lý thay đổi ghi chú
   const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
