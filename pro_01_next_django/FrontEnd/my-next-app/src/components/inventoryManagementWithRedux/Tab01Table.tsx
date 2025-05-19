@@ -86,8 +86,9 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   const deleteRow = (id: number) => {
     dispatch(deleteItem(id));
     const updatedItems = validItems.filter((item) => item.id !== id);
-    dispatch(setItems(updatedItems));
-    onInventoryTableChange(updatedItems);
+    const reindexedItems = reindexItems(updatedItems); // Reindex items after deletion
+    dispatch(setItems(reindexedItems));
+    onInventoryTableChange(reindexedItems);
   };
 
   // Reindex function to ensure IDs are sequential
