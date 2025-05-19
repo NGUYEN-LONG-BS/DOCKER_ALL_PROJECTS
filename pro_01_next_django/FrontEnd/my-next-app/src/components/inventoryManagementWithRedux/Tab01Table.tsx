@@ -144,7 +144,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         value={item.name}
                         readOnly // Ngăn chỉnh sửa
                         style={{ backgroundColor: "#c0c7cf" }}
-                        onChange={(e) => handleUpdateItem(item.id, "name", e.target.value)}
+                        // onChange={(e) => handleUpdateItem(item.id, "name", e.target.value)}
                       />
                     </td>
                     <td>
