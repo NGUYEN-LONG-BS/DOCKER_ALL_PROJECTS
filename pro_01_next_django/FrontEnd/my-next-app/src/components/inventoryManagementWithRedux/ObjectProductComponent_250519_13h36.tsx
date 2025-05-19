@@ -1,3 +1,4 @@
+// src/components/inventoryManagementWithRedux/ObjectProductComponent.tsx
 "use client";
 
 // Import React hook
@@ -34,33 +35,6 @@ interface ProductComponentProps {
   onProductChange?: (ProductProps: InventoryItemExport) => void;
 }
 
-// Hàm tiện ích để định dạng số (123,123,122 hoặc 13,123,122.13)
-const formatNumberInput = (value: string): string => {
-  if (!value) return "";
-  // Loại bỏ các ký tự không phải số hoặc dấu chấm
-  const cleanValue = value.replace(/[^0-9.]/g, "");
-  const parts = cleanValue.split(".");
-  let integerPart = parts[0];
-  const decimalPart = parts[1] || "";
-
-  // Định dạng phần nguyên
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  // Nếu có phần thập phân, giữ tối đa 2 chữ số
-  if (decimalPart) {
-    return `${integerPart}.${decimalPart.slice(0, 2)}`;
-  }
-  return integerPart;
-};
-
-// Hàm chuyển đổi giá trị định dạng thành số thực
-const parseFormattedNumber = (value: string): number => {
-  if (!value) return 0;
-  // Loại bỏ dấu phẩy và giữ dấu chấm
-  const cleanValue = value.replace(/,/g, "");
-  return parseFloat(cleanValue) || 0;
-};
-
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const dispatch = useAppDispatch();
   // Lấy state từ Redux
@@ -85,14 +59,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     });
   }, [inventoryItem]);
 
-  // Gọi onProductChange khi inventoryItem thay đổi
-  useEffect(() => {
-    if (onProductChange && inventoryItem.code) {
-      console.log("inventoryItem changed, sending to onProductChange:", inventoryItem);
-      onProductChange(inventoryItem);
-    }
-  }, [inventoryItem, onProductChange]);
-
   // Ref để theo dõi click bên ngoài và dropdown
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
@@ -108,18 +74,43 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Hàm xử lý khi người dùng nhập vào ô tìm kiếm sản phẩm
   const handleFilter = (text: string) => {
+    // Cập nhật state tìm kiếm trong Redux Store
     dispatch(setSearchText(text));
+    // Nếu đang có timeout từ lần nhập trước, thì clear để tránh gọi API/lọc nhiều lần
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }
+    // Tạo timeout mới (debounce) để chỉ lọc sau khi người dùng ngừng gõ 300ms
     debounceTimeout.current = setTimeout(() => {
+      // Gửi action để lọc sản phẩm theo text
       dispatch(filterProducts(text));
     }, 300);
   };
 
   // Hàm xử lý khi người dùng chọn một sản phẩm từ danh sách
+  // const handleSelectProduct = (selectedItem: typeof Product) => {
+  //   // Gửi action để cập nhật sản phẩm đã chọn vào Redux Store
+  //   dispatch(selectProduct(selectedItem));
+  //   // Nếu có hàm callback từ component cha, gọi callback và truyền inventoryItem (dữ liệu sản phẩm)
+  //   if (onProductChange) {
+  //     // Use setTimeout to ensure inventoryItem is updated after state change
+  //     setTimeout(() => {
+  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
+  //       console.log("Sending product to onProductChange (select):", latestInventoryItem);
+  //       onProductChange(latestInventoryItem);
+  //     }, 0);
+  //   }
+  // };
+
   const handleSelectProduct = (selectedItem: typeof Product) => {
+    // Gửi action để cập nhật sản phẩm đã chọn vào Redux Store
     dispatch(selectProduct(selectedItem));
+    // Nếu có hàm callback từ component cha, gọi callback và truyền inventoryItem
+    if (onProductChange) {
+      // Sử dụng inventoryItem từ state hiện tại
+      console.log("Sending product to onProductChange (select):", inventoryItem);
+      onProductChange(inventoryItem);
+    }
   };
 
   // Đóng dropdown khi click bên ngoài component
@@ -130,7 +121,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target as Node) &&
       inputRef.current &&
-      !inputRef.current.contains(event.target as Node)
+      !inputRef.current.contains(event.target as Node) // Không đóng nếu click vào input
     ) {
       console.log("Closing dropdown due to click outside");
       dispatch(setShowDropdown(false));
@@ -152,7 +143,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       dispatch(setHighlightedIndex(Math.max(0, highlightedIndex - 1)));
     }
     if (e.key === "Enter" && highlightedIndex >= 0) {
-      console.log("Enter key pressed, selecting:", fixedProducts[highlightedIndex]);
+      console.log("Enter key pressed, selecting:", filteredProducts[highlightedIndex]);
       handleSelectProduct(filteredProducts[highlightedIndex]);
     }
   };
@@ -176,23 +167,73 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   }, [highlightedIndex]);
 
   // Xử lý thay đổi số lượng
+  // const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   dispatch(setQuantity(value));
+  //   if (onProductChange) {
+  //     setTimeout(() => {
+  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
+  //       console.log("Sending product to onProductChange (quantity):", latestInventoryItem);
+  //       onProductChange(latestInventoryItem);
+  //     }, 0);
+  //   }
+  // };
+
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value;
-    const formattedValue = formatNumberInput(rawValue);
-    dispatch(setQuantity(formattedValue));
+    const value = e.target.value;
+    dispatch(setQuantity(value));
+    if (onProductChange) {
+      // Sử dụng inventoryItem từ state hiện tại
+      console.log("Sending product to onProductChange (quantity):", inventoryItem);
+      onProductChange(inventoryItem);
+    }
   };
 
   // Xử lý thay đổi đơn giá
+  // const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   dispatch(setUnitPrice(value));
+  //   if (onProductChange) {
+  //     setTimeout(() => {
+  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
+  //       console.log("Sending product to onProductChange (price):", latestInventoryItem);
+  //       onProductChange(latestInventoryItem);
+  //     }, 0);
+  //   }
+  // };
+
   const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawValue = e.target.value;
-    const formattedValue = formatNumberInput(rawValue);
-    dispatch(setUnitPrice(formattedValue));
+    const value = e.target.value;
+    dispatch(setUnitPrice(value));
+    if (onProductChange) {
+      // Sử dụng inventoryItem từ state hiện tại
+      console.log("Sending product to onProductChange (price):", inventoryItem);
+      onProductChange(inventoryItem);
+    }
   };
+
+  // Xử lý thay đổi ghi chú
+  // const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = e.target.value;
+  //   dispatch(setNotes(value));
+  //   if (onProductChange) {
+  //     setTimeout(() => {
+  //       const latestInventoryItem = useAppSelector((state) => state.product.inventoryItem);
+  //       console.log("Sending product to onProductChange (notes):", latestInventoryItem);
+  //       onProductChange(latestInventoryItem);
+  //     }, 0);
+  //   }
+  // };
 
   // Xử lý thay đổi ghi chú
   const handleNotesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(setNotes(value));
+    if (onProductChange) {
+      // Sử dụng inventoryItem từ state hiện tại
+      console.log("Sending product to onProductChange (notes):", inventoryItem);
+      onProductChange(inventoryItem);
+    }
   };
 
   return (
@@ -240,6 +281,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                 overflowY: "auto",
                 gridTemplateColumns: "2fr 3fr 1fr",
               }}
+              // onClick={handleDropdownClick}
               onClick={(e) => console.log("Dropdown container clicked, target:", e.target)}
             >
               {loading ? (
@@ -255,6 +297,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
                       handleSelectProduct(s);
                       dispatch(setShowDropdown(false));
                     }}
+                    // Removed onMouseDown to test if it’s causing issues
                   >
                     <div style={{ display: "grid", gridTemplateColumns: "2fr 3fr 1fr", gap: "10px" }}>
                       <div><span>{s.code}</span></div>
