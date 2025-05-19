@@ -132,7 +132,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         placeholder="Mã hàng"
                         value={item.code}
                         readOnly // Ngăn chỉnh sửa
-                        style={{ backgroundColor: "#c0c7cf" }} // Tùy chọn: đổi màu nền để phân biệt
+                        style={{ backgroundColor: "#c0c7cf" }}
                         // onChange={(e) => handleUpdateItem(item.id, "code", e.target.value)}
                       />
                     </td>
@@ -142,6 +142,8 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         placeholder="Tên mặt hàng"
                         value={item.name}
+                        readOnly // Ngăn chỉnh sửa
+                        style={{ backgroundColor: "#c0c7cf" }}
                         onChange={(e) => handleUpdateItem(item.id, "name", e.target.value)}
                       />
                     </td>
@@ -151,8 +153,10 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         placeholder="Đvt"
                         value={item.unit}
-                        onChange={(e) => handleUpdateItem(item.id, "unit", e.target.value)}
-                        style={{ width: "60px" }}
+                        readOnly // Ngăn chỉnh sửa
+                        style={{ backgroundColor: "#c0c7cf", width: "60px"}}
+                        // onChange={(e) => handleUpdateItem(item.id, "unit", e.target.value)}
+                        // style={{ width: "60px" }}
                       />
                     </td>
                     <td>
