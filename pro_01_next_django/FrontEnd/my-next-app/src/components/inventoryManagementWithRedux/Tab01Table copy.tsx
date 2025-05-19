@@ -26,19 +26,19 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   // Validate items to prevent rendering invalid objects
   const validItems = useMemo(() => {
     return items.filter(
-    (item): item is InventoryItemExport =>
-      item &&
-      typeof item === "object" &&
-      "id" in item &&
-      "code" in item &&
-      "name" in item &&
-      "unit" in item &&
-      "quantity" in item &&
-      "price" in item &&
-      "value" in item &&
-      "notes" in item
-  );
-    }, [items]);
+      (item): item is InventoryItemExport =>
+        item &&
+        typeof item === "object" &&
+        "id" in item &&
+        "code" in item &&
+        "name" in item &&
+        "unit" in item &&
+        "quantity" in item &&
+        "price" in item &&
+        "value" in item &&
+        "notes" in item
+    );
+  }, [items]);
 
   const addRow = () => {
     console.log("Validation Data for Add Row:", { product });
