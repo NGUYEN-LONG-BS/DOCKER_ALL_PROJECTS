@@ -35,6 +35,17 @@ interface ProductComponentProps {
   onProductChange?: (ProductProps: InventoryItemExport) => void;
 }
 
+// Hàm định dạng số với dấu phân cách hàng nghìn và phần thập phân
+const formatNumber = (value: string | number): string => {
+  if (!value && value !== 0) return "";
+  const num = parseFloat(value.toString().replace(/,/g, ""));
+  if (isNaN(num)) return "";
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: Number.isInteger(num) ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).replace(/\.00$/, ""); // Loại bỏ .00 nếu là số nguyên
+};
+
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const dispatch = useAppDispatch();
   // Lấy state từ Redux
@@ -154,7 +165,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Xử lý thay đổi số lượng
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/,/g, ""); // Loại bỏ dấu phẩy khi người dùng nhập
     dispatch(setQuantity(value));
     if (onProductChange) {
       // Sử dụng inventoryItem từ state hiện tại
@@ -163,13 +174,33 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     }
   };
 
+  // Xử lý blur cho số lượng
+    const handleQuantityBlur = () => {
+      const formattedValue = formatNumber(quantity);
+      dispatch(setQuantity(formattedValue));
+      if (onProductChange) {
+      console.log("Sending product to onProductChange (quantity blur):", inventoryItem);
+      onProductChange(inventoryItem);
+    }
+    };
+
   // Xử lý thay đổi đơn giá
   const handleUnitPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(/,/g, ""); // Loại bỏ dấu phẩy khi người dùng nhập
     dispatch(setUnitPrice(value));
     if (onProductChange) {
       // Sử dụng inventoryItem từ state hiện tại
       console.log("Sending product to onProductChange (price):", inventoryItem);
+      onProductChange(inventoryItem);
+    }
+  };
+
+  // Xử lý blur cho đơn giá
+  const handleUnitPriceBlur = () => {
+    const formattedValue = formatNumber(unitPrice);
+    dispatch(setUnitPrice(formattedValue));
+    if (onProductChange) {
+      console.log("Sending product to onProductChange (price blur):", inventoryItem);
       onProductChange(inventoryItem);
     }
   };
@@ -205,6 +236,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               onKeyDown={handleKeyDown}
               onFocus={handleFocusProductCode}
               style={{ width: "150px" }}
+              ref={inputRef}
             />
             <input
               type="text"
@@ -286,6 +318,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               autoComplete="off"
               value={quantity}
               onChange={handleQuantityChange}
+              onBlur={handleQuantityBlur}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -302,6 +335,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
               autoComplete="off"
               value={unitPrice}
               onChange={handleUnitPriceChange}
+              onBlur={handleUnitPriceBlur}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();

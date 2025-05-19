@@ -127,18 +127,20 @@ const productSlice = createSlice({
     // Cập nhật số lượng và tính lại thành tiền
     setQuantity: (state, action: PayloadAction<string>) => {
       state.quantity = action.payload;
-      const qty = parseFloat(action.payload.replace(/\./g, '')) || 0;
+      const qty = parseFloat(action.payload.replace(/,/g, "")) || 0;
       state.inventoryItem.quantity = qty;
       state.inventoryItem.value = qty * state.inventoryItem.price;
       state.value = formatNumber(state.inventoryItem.value.toString());
+      
     },
     // Cập nhật đơn giá và tính lại thành tiền
     setUnitPrice: (state, action: PayloadAction<string>) => {
       state.unitPrice = action.payload;
-      const price = parseFloat(action.payload.replace(/\./g, '')) || 0;
+      const price = parseFloat(action.payload.replace(/,/g, "")) || 0;
       state.inventoryItem.price = price;
       state.inventoryItem.value = state.inventoryItem.quantity * price;
       state.value = formatNumber(state.inventoryItem.value.toString());
+      
     },
     // Ghi chú cho sản phẩm
     setNotes: (state, action: PayloadAction<string>) => {
@@ -258,9 +260,15 @@ const productSlice = createSlice({
   },
 });
 
-// ==== 6. Hàm tiện ích để định dạng số thành 'x.xxx' ====
+// ==== 6. Hàm tiện ích để định dạng số thành 'x,xxx,xxx' hoặc 'x,xxx,xxx.xx' ====
 const formatNumber = (value: string): string => {
-  return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  if (!value && value !== "0") return "";
+  const num = parseFloat(value.replace(/,/g, ""));
+  if (isNaN(num)) return "";
+  return num.toLocaleString("en-US", {
+    minimumFractionDigits: Number.isInteger(num) ? 0 : 2,
+    maximumFractionDigits: 2,
+  }).replace(/\.00$/, ""); // Loại bỏ .00 nếu là số nguyên
 };
 
 // ==== 7. Export các action ====
