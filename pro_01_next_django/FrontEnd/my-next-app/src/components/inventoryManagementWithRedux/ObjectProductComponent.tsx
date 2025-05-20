@@ -17,6 +17,7 @@ import {
 } from "../../features/formReceiptSlip/objectProductComponentSlice";
 // Custom hooks đã được typed sẵn từ store
 import { useAppDispatch, useAppSelector } from "@/store/store";
+import * as Utils from '@/utils';
 
 // Kiểu dữ liệu sản phẩm xuất kho
 interface InventoryItemExport {
@@ -34,17 +35,6 @@ interface InventoryItemExport {
 interface ProductComponentProps {
   onProductChange?: (ProductProps: InventoryItemExport) => void;
 }
-
-// Hàm định dạng số với dấu phân cách hàng nghìn và phần thập phân
-const formatNumber = (value: string | number): string => {
-  if (!value && value !== 0) return "";
-  const num = parseFloat(value.toString().replace(/,/g, ""));
-  if (isNaN(num)) return "";
-  return num.toLocaleString("en-US", {
-    minimumFractionDigits: Number.isInteger(num) ? 0 : 2,
-    maximumFractionDigits: 2,
-  }).replace(/\.00$/, ""); // Loại bỏ .00 nếu là số nguyên
-};
 
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const dispatch = useAppDispatch();
@@ -176,7 +166,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Xử lý blur cho số lượng
     const handleQuantityBlur = () => {
-      const formattedValue = formatNumber(quantity);
+      const formattedValue = Utils.formatNumber(quantity);
       dispatch(setQuantity(formattedValue));
       if (onProductChange) {
       console.log("Sending product to onProductChange (quantity blur):", inventoryItem);
@@ -197,7 +187,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
 
   // Xử lý blur cho đơn giá
   const handleUnitPriceBlur = () => {
-    const formattedValue = formatNumber(unitPrice);
+    const formattedValue = Utils.formatNumber(unitPrice);
     dispatch(setUnitPrice(formattedValue));
     if (onProductChange) {
       console.log("Sending product to onProductChange (price blur):", inventoryItem);
