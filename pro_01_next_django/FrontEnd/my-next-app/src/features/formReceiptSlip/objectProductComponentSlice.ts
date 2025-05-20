@@ -1,5 +1,6 @@
 // src/features/objectProductComponent/objectProductComponentSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import * as Utils from '@/utils';
 
 // ==== 1. Định nghĩa kiểu dữ liệu ====
 
@@ -130,7 +131,7 @@ const productSlice = createSlice({
       const qty = parseFloat(action.payload.replace(/,/g, "")) || 0;
       state.inventoryItem.quantity = qty;
       state.inventoryItem.value = qty * state.inventoryItem.price;
-      state.value = formatNumber(state.inventoryItem.value.toString());
+      state.value = Utils.formatNumber(state.inventoryItem.value.toString());
       
     },
     // Cập nhật đơn giá và tính lại thành tiền
@@ -139,7 +140,7 @@ const productSlice = createSlice({
       const price = parseFloat(action.payload.replace(/,/g, "")) || 0;
       state.inventoryItem.price = price;
       state.inventoryItem.value = state.inventoryItem.quantity * price;
-      state.value = formatNumber(state.inventoryItem.value.toString());
+      state.value = Utils.formatNumber(state.inventoryItem.value.toString());
       
     },
     // Ghi chú cho sản phẩm
@@ -259,17 +260,6 @@ const productSlice = createSlice({
       });
   },
 });
-
-// ==== 6. Hàm tiện ích để định dạng số thành 'x,xxx,xxx' hoặc 'x,xxx,xxx.xx' ====
-const formatNumber = (value: string): string => {
-  if (!value && value !== "0") return "";
-  const num = parseFloat(value.replace(/,/g, ""));
-  if (isNaN(num)) return "";
-  return num.toLocaleString("en-US", {
-    minimumFractionDigits: Number.isInteger(num) ? 0 : 2,
-    maximumFractionDigits: 2,
-  }).replace(/\.00$/, ""); // Loại bỏ .00 nếu là số nguyên
-};
 
 // ==== 7. Export các action ====
 export const {
