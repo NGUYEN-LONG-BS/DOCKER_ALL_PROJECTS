@@ -186,76 +186,76 @@ const productSlice = createSlice({
       };
     },
     // Reducer mới cho bảng
-        addItem: (state, action: PayloadAction<InventoryItemExport>) => {
-          const newItem = { ...action.payload, id: state.items.length + 1 };
-          const existingIndex = state.items.findIndex((item) => item.code === newItem.code);
-          if (existingIndex !== -1) {
-            // Thay thế item trùng code
-            state.items = [
-              ...state.items.slice(0, existingIndex),
-              newItem,
-              ...state.items.slice(existingIndex + 1),
-            ].map((item, index) => ({ ...item, id: index + 1 }));
-          } else {
-            // Thêm item mới
-            state.items = [...state.items, newItem].map((item, index) => ({
-              ...item,
-              id: index + 1,
-            }));
-          }
-          state.errorMessage = null;
-        },
-        deleteItem: (state, action: PayloadAction<number>) => {
-          state.items = state.items
-            .filter((item) => item.id !== action.payload)
-            .map((item, index) => ({ ...item, id: index + 1 }));
-        },
-        clearItems: (state) => {
-          state.items = [];
-        },
-        updateItem: (state, action: PayloadAction<{ id: number; field: keyof InventoryItemExport; value: any }>) => {
-          const { id, field, value } = action.payload;
-          const itemIndex = state.items.findIndex((item) => item.id === id);
-          if (itemIndex !== -1) {
-            state.items[itemIndex] = { ...state.items[itemIndex], [field]: value };
-            if (field === 'quantity' || field === 'price') {
-              state.items[itemIndex].value = state.items[itemIndex].quantity * state.items[itemIndex].price;
-            }
-          }
-        },
-        setErrorMessage: (state, action: PayloadAction<string | null>) => {
-          state.errorMessage = action.payload;
-        },
-        resetProductState: (state) => {
-          state.Product = initialState.Product;
-          state.inventoryItem = initialState.inventoryItem;
-          state.searchText = initialState.searchText;
-          state.filteredProducts = initialState.filteredProducts;
-          state.showDropdown = initialState.showDropdown;
-          state.loading = initialState.loading;
-          state.quantity = initialState.quantity;
-          state.unitPrice = initialState.unitPrice;
-          state.value = initialState.value;
-          state.notes = initialState.notes;
-          // state.mockProducts = initialState.mockProducts;
-          state.highlightedIndex = initialState.highlightedIndex;
-          state.items = initialState.items;
-          state.errorMessage = initialState.errorMessage;
-        },
+    addItem: (state, action: PayloadAction<InventoryItemExport>) => {
+      const newItem = { ...action.payload, id: state.items.length + 1 };
+      const existingIndex = state.items.findIndex((item) => item.code === newItem.code);
+      if (existingIndex !== -1) {
+        // Thay thế item trùng code
+        state.items = [
+          ...state.items.slice(0, existingIndex),
+          newItem,
+          ...state.items.slice(existingIndex + 1),
+        ].map((item, index) => ({ ...item, id: index + 1 }));
+      } else {
+        // Thêm item mới
+        state.items = [...state.items, newItem].map((item, index) => ({
+          ...item,
+          id: index + 1,
+        }));
+      }
+      state.errorMessage = null;
+    },
+    deleteItem: (state, action: PayloadAction<number>) => {
+      state.items = state.items
+        .filter((item) => item.id !== action.payload)
+        .map((item, index) => ({ ...item, id: index + 1 }));
+    },
+    clearItems: (state) => {
+      state.items = [];
+    },
+    updateItem: (state, action: PayloadAction<{ id: number; field: keyof InventoryItemExport; value: any }>) => {
+      const { id, field, value } = action.payload;
+      const itemIndex = state.items.findIndex((item) => item.id === id);
+      if (itemIndex !== -1) {
+        state.items[itemIndex] = { ...state.items[itemIndex], [field]: value };
+        if (field === 'quantity' || field === 'price') {
+          state.items[itemIndex].value = state.items[itemIndex].quantity * state.items[itemIndex].price;
+        }
+      }
+    },
+    setErrorMessage: (state, action: PayloadAction<string | null>) => {
+      state.errorMessage = action.payload;
+    },
+    resetProductState: (state) => {
+      state.Product = initialState.Product;
+      state.inventoryItem = initialState.inventoryItem;
+      state.searchText = initialState.searchText;
+      state.filteredProducts = initialState.filteredProducts;
+      state.showDropdown = initialState.showDropdown;
+      state.loading = initialState.loading;
+      state.quantity = initialState.quantity;
+      state.unitPrice = initialState.unitPrice;
+      state.value = initialState.value;
+      state.notes = initialState.notes;
+      // state.mockProducts = initialState.mockProducts;
+      state.highlightedIndex = initialState.highlightedIndex;
+      state.items = initialState.items;
+      state.errorMessage = initialState.errorMessage;
+    },
   },
   
   // ==== 5. Xử lý kết quả trả về từ fetchProducts ====
   extraReducers: (builder) => {
     builder
       .addCase(fetchProducts.pending, (state) => {
-        state.loading = true;
+        state.loading = true; // Khi request đang thực hiện
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.mockProducts = action.payload;
+        state.mockProducts = action.payload;  // Lưu dữ liệu khi thành công
         state.loading = false;
       })
       .addCase(fetchProducts.rejected, (state) => {
-        state.loading = false;
+        state.loading = false;  // Xử lý lỗi
       });
   },
 });
