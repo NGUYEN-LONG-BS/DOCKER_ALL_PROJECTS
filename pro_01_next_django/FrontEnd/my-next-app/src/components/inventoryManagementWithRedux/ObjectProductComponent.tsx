@@ -53,13 +53,6 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     inventoryItem,
   } = useAppSelector((state) => state.product);
 
-  // In ra toàn bộ state khi component render hoặc khi state thay đổi
-  useEffect(() => {
-    console.log("ProductComponent State:", {
-      inventoryItem,
-    });
-  }, [inventoryItem]);
-
   // Ref để theo dõi click bên ngoài và dropdown
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
@@ -69,6 +62,13 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   useEffect(() => {
     dispatch(fetchProducts());
   }, [dispatch]);
+
+  // In ra toàn bộ state khi component render hoặc khi state thay đổi
+  useEffect(() => {
+    console.log("ProductComponent State:", {
+      inventoryItem,
+    });
+  }, [inventoryItem]);
 
   // Timeout để debounce người dùng gõ: người dùng gõ liên tục thì khoan tìm, ngừng gõ mới tìm
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);

@@ -163,7 +163,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         placeholder="Mã hàng"
                         value={item.code}
                         readOnly // Ngăn chỉnh sửa
-                        style={{ backgroundColor: "#c0c7cf" }}
+                        style={{ backgroundColor: "#c0c7cf", width: "120px" }}
                         // onChange={(e) => handleUpdateItem(item.id, "code", e.target.value)}
                       />
                     </td>
@@ -205,7 +205,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                             e.preventDefault();
                           }
                         }}
-                        style={{ width: "80px" }}
+                        style={{ width: "100px" }}
                       />
                     </td>
                     <td>
@@ -232,7 +232,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         className="form-control form-control-sm"
                         value={item.value}
                         readOnly
-                        style={{ width: "100px" }}
+                        style={{ width: "120px" }}
                       />
                     </td>
                     <td>
