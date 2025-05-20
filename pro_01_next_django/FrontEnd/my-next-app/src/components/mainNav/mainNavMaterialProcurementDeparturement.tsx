@@ -5,7 +5,7 @@ import Link from "next/link"
 const menuItems = [
   {
     label: "Home",
-    href: "/",
+    href: "/home",
   },
   {
     label: "Vật Tư",
