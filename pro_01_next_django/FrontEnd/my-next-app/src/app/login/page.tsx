@@ -7,6 +7,7 @@ import Image from "next/image" // Nhập Image từ Next.js để hiển thị h
 import Link from "next/link" // Nhập Link từ Next.js để điều hướng phía client
 import { useRouter } from "next/navigation" // Nhập useRouter để xử lý điều hướng
 import "bootstrap/dist/css/bootstrap.min.css" // Nhập CSS của Bootstrap để định dạng giao diện
+import { API_CHECK_LOGIN } from "@/api/api"
 
 // Định nghĩa component LoginPage
 export default function LoginPage() {
@@ -24,7 +25,7 @@ export default function LoginPage() {
   // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
   const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch("http://localhost:8000/api/check-login/", {
+      const response = await fetch(API_CHECK_LOGIN, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,10 +55,10 @@ export default function LoginPage() {
     e.preventDefault() // Ngăn chặn hành vi mặc định của form (tải lại trang)
     setError("")
     // In dữ liệu form ra console để kiểm tra
-    console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
+    // console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
 
     // Ghi log loginId và password
-    console.log("Login Info:", { loginId, password })
+    // console.log("Login Info:", { loginId, password })
 
     // Nếu ở chế độ đăng nhập, chuyển hướng đến trang inventory-management
     if (isLogin) {
@@ -73,7 +74,8 @@ export default function LoginPage() {
       }
     } else {
       // Xử lý đăng ký (chưa triển khai API đăng ký)
-      console.log("Đăng ký:", { name, loginId, password })
+      // console.log("Đăng ký:", { name, loginId, password })
+      console.log("Đăng ký")
       // Bạn có thể thêm logic gọi API đăng ký ở đây
     }
   }
