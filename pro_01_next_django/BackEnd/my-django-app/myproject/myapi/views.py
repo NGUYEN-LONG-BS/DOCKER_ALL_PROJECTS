@@ -329,3 +329,37 @@ class InventoryStockListView(APIView):
         # Trả về response với status 200
         return Response(serialized_data, status=status.HTTP_200_OK)
 
+
+# ==============================================================================
+# check login
+# ==============================================================================
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import LoginInfo
+import json
+
+@csrf_exempt
+def check_login(request):
+    if request.method == 'POST':
+        try:
+            # Lấy dữ liệu từ request body
+            data = json.loads(request.body)
+            login_id = data.get('login_id')
+            pass_field = data.get('pass_field')
+
+            # Kiểm tra xem login_id và pass_field có được cung cấp hay không
+            if not login_id or not pass_field:
+                return JsonResponse({'error': 'Vui lòng cung cấp login_id và pass_field'}, status=400)
+
+            # Kiểm tra trong database
+            exists = LoginInfo.objects.filter(login_id=login_id, pass_field=pass_field).exists()
+            
+            return JsonResponse({'result': exists}, status=200)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Dữ liệu JSON không hợp lệ'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)

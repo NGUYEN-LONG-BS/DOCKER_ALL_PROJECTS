@@ -26,6 +26,9 @@ export default function LoginPage() {
     // In dữ liệu form ra console để kiểm tra
     console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
 
+    // Ghi log loginId và password
+    console.log("Login Info:", { loginId, password })
+
     // Nếu ở chế độ đăng nhập, chuyển hướng đến trang inventory-management
     if (isLogin) {
       router.push("/inventory-management-with_reDux_ToolKit")

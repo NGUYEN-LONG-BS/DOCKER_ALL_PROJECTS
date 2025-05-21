@@ -12,15 +12,11 @@ export const metadata: Metadata = {
   description: "A beautiful login and subscribe interface",
 }
 
-export default function RootLayout({
+
+export default function LoginLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <html lang="en">
-      {/* Áp dụng className từ font Inter */}
-      <body className={inter.className}>{children}</body>
-    </html>
-  )
+  return <>{children}</> // Chỉ trả về children, không định nghĩa <html> hoặc <body>
 }

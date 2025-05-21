@@ -7,3 +7,5 @@ export const API_CHECK_SO_PHIEU_ENDPOINT = `${API_BASE_URL}/api/check-so-phieu/`
 export const API_INVENTORY_RECEIVED_LOG = `${API_BASE_URL}/api/inventory-stock/`;
 // Invenory category
 export const API_CHECK_INVENTORY_CODE_EXIST = `${API_BASE_URL}/api/check-ma-hang/`;
+// Login
+export const API_CHECK_LOGIN = `${API_BASE_URL}/api/check-login/`;
