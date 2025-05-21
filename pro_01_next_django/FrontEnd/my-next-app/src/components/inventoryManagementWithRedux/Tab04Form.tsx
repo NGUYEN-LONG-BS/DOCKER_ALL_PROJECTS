@@ -218,10 +218,10 @@ export function InventoryLogStockReceiveSlip() {
         </div>
 
         {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
-        <InventoryTableStockReceiveSlip 
+        {/* <InventoryTableStockReceiveSlip 
         product={selectedProduct} 
         onInventoryTableChange={handleInventoryTableChange}
-        />
+        /> */}
 
         <div className="d-flex justify-content-end gap-2 mt-3">          
           <button type="button" className="btn btn-outline-secondary">

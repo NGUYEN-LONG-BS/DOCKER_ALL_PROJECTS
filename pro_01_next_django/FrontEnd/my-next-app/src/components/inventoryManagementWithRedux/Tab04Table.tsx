@@ -4,102 +4,21 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchInventory,
-  addItem,
-  updateItem,
-  deleteItem,
-  clearItems,
-} from "@/features/formReceiptSlip/ReceiptLogTableSlice";
+
+} from "@/features/formReceiptLog/ReceiptLogTableSlice";
 import { RootState } from "@/store/store";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
+  
 
-interface InventoryItem {
-  id: number;
-  so_phieu: string;
-  ngay_tren_phieu: string;
-  so_phieu_de_nghi: string;
-  ma_doi_tuong: string;
-  ten_doi_tuong?: string;
-  ma_hang: string;
-  ten_hang?: string;
-  so_luong: number;
-  ma_kho_nhan: string;
-}
-
-interface InventoryTableStockReceiveSlipProps {
-  product: {
-    code: string;
-    name: string;
-    unit: string;
-    quantity: number;
-    price: number;
-    notes: string;
-  };
-  onInventoryTableChange: (newItems: InventoryItem[]) => void;
-}
-
-export function InventoryTableStockReceiveSlip({
-  product,
-  onInventoryTableChange,
-}: InventoryTableStockReceiveSlipProps) {
-  const dispatch = useDispatch();
-  const { items, status, error } = useSelector((state: RootState) => state.inventory);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  // Fetch inventory data on component mount
-  useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchInventory());
-    }
-  }, [status, dispatch]);
-
-  // Notify parent when items change
-  useEffect(() => {
-    if (items.length > 0) {
-      onInventoryTableChange(items);
-    }
-  }, [items, onInventoryTableChange]);
-
-  const addRow = () => {
-    // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
-    if (!product.code || product.quantity === 0) {
-      setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0.");
-      return;
-    }
-    setErrorMessage(null);
-
-    // Create a new InventoryItem based on the provided product
-    const newItem: InventoryItem = {
-      id: items.length + 1,
-      so_phieu: `TB-PNK-${Math.floor(100000 + Math.random() * 900000)}`, // Generate a random so_phieu
-      ngay_tren_phieu: new Date().toISOString(),
-      so_phieu_de_nghi: "TB-DNNK-250001", // Default value, adjust as needed
-      ma_doi_tuong: "SUP002", // Default value, adjust as needed
-      ten_doi_tuong: product.notes || "",
-      ma_hang: product.code,
-      ten_hang: product.name,
-      so_luong: product.quantity,
-      ma_kho_nhan: product.unit || "Kho A",
-    };
-
-    dispatch(addItem(newItem));
-  };
-
-  const deleteRow = (id: number) => {
-    dispatch(deleteItem(id));
-  };
-
-  const clearRows = () => {
-    dispatch(clearItems());
-    onInventoryTableChange([]);
-  };
+  
 
   return (
     <div className="mt-3">
       <div className="d-flex justify-content-center gap-2 mb-3">
-        <button type="button" className="btn btn-primary" onClick={addRow}>
+        <button type="button" className="btn btn-primary">
           Filter
         </button>
-        <button type="button" className="btn btn-outline-secondary" onClick={clearRows}>
+        <button type="button" className="btn btn-outline-secondary">
           Clear filter
         </button>
       </div>

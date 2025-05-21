@@ -11,8 +11,8 @@ import supplierReducer from '../features/formReceiptSlip/supplierSlice';
 import slipNoteReducer from '../features/formReceiptSlip/slipNoteSlice';
 import tabNavReducer from '../features/formReceiptSlip/tabNavSlice';
 // ReceiptLogTableSlice
-import ReceiptLogTableReducer from '../features/formReceiptSlip/ReceiptLogTableSlice';
-import formReducer from '../features/formReceiptSlip/formReceiptLogSlice';
+import ReceiptLogTableReducer from '../features/formReceiptLog/ReceiptLogTableSlice';
+import formReducer from '../features/formReceiptLog/formReceiptLogSlice';
 
 // Cấu hình store với tất cả các reducer
 export const store = configureStore({
