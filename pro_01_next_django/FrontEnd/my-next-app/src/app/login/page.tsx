@@ -16,13 +16,43 @@ export default function LoginPage() {
   const [password, setPassword] = useState("") // Lưu giá trị mật khẩu
   const [name, setName] = useState("") // Lưu giá trị họ tên (dùng khi đăng ký)
   const [showPassword, setShowPassword] = useState(false) // Quản lý trạng thái hiển thị/ẩn mật khẩu
+  const [error, setError] = useState("") // Lưu thông báo lỗi nếu đăng nhập thất bại
 
   // Khởi tạo router để điều hướng
   const router = useRouter()
 
+  // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
+  const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
+    try {
+      const response = await fetch("http://localhost:8000/api/check-login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          login_id: loginId,
+          pass_field: password,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Lỗi khi gọi API")
+      }
+
+      return data.result // Trả về true nếu thông tin đăng nhập hợp lệ, false nếu không
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "Đã có lỗi xảy ra. Vui lòng thử lại."
+      setError(errorMessage)
+      return false
+    }
+  }
+
   // Hàm xử lý khi submit form
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault() // Ngăn chặn hành vi mặc định của form (tải lại trang)
+    setError("")
     // In dữ liệu form ra console để kiểm tra
     console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
 
@@ -31,7 +61,20 @@ export default function LoginPage() {
 
     // Nếu ở chế độ đăng nhập, chuyển hướng đến trang inventory-management
     if (isLogin) {
-      router.push("/inventory-management-with_reDux_ToolKit")
+      // Kiểm tra thông tin đăng nhập
+      const isValid = await checkLogin(loginId, password)
+
+      if (isValid) {
+        // Nếu đăng nhập thành công, chuyển hướng đến trang inventory-management
+        router.push("/inventory-management-with_reDux_ToolKit")
+      } else {
+        // Nếu đăng nhập thất bại, hiển thị lỗi
+        setError("Tên đăng nhập hoặc mật khẩu không đúng.")
+      }
+    } else {
+      // Xử lý đăng ký (chưa triển khai API đăng ký)
+      console.log("Đăng ký:", { name, loginId, password })
+      // Bạn có thể thêm logic gọi API đăng ký ở đây
     }
   }
 
