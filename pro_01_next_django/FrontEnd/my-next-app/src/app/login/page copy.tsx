@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -19,7 +18,6 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission logic here
     console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
 
     if (isLogin) {
@@ -33,7 +31,7 @@ export default function LoginPage() {
         {/* Image Section */}
         <div className="col-md-6 d-none d-md-flex bg-primary p-0 position-relative">
           <Image
-            src="/images/loginVisual.jpg" //height=1080&width=1080
+            src="/images/loginVisual.jpg"
             alt="Login visual"
             fill
             style={{ objectFit: "cover" }}

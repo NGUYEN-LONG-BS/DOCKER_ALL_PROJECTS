@@ -79,6 +79,10 @@ const menuItems = [
     label: "Tiện ích",
     href: "#",
   },
+  {
+    label: "Logout",
+    href: "/login",
+  },
 ]
 
 export function MainNav({ className }: { className?: string }) {
