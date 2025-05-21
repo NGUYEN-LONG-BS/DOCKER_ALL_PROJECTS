@@ -199,7 +199,7 @@ export function InventoryCategoryTab() {
         
         <div className="d-flex justify-content-end gap-2 mt-3">          
           <button type="button" className="btn btn-outline-secondary">
-            ALl data
+            ALL data
           </button>
           <button type="button" className="btn btn-outline-secondary">
             Export data

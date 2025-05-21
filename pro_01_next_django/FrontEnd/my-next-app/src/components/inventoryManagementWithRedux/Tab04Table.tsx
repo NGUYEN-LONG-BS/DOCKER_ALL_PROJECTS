@@ -1,95 +1,97 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchInventory,
+  addItem,
+  updateItem,
+  deleteItem,
+  clearItems,
+} from "@/features/formReceiptSlip/ReceiptLogTableSlice";
+import { RootState } from "@/store/store";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 
 interface InventoryItem {
   id: number;
-  code: string;
-  name: string;
-  unit: string;
-  quantity: number;
-  price: number;
-  value: number;
-  notes: string;
+  so_phieu: string;
+  ngay_tren_phieu: string;
+  so_phieu_de_nghi: string;
+  ma_doi_tuong: string;
+  ten_doi_tuong?: string;
+  ma_hang: string;
+  ten_hang?: string;
+  so_luong: number;
+  ma_kho_nhan: string;
 }
 
 interface InventoryTableStockReceiveSlipProps {
-  product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string };
-  onInventoryTableChange: (newItems: InventoryItem[]) => void; // Callback to notify parent about changes
+  product: {
+    code: string;
+    name: string;
+    unit: string;
+    quantity: number;
+    price: number;
+    notes: string;
+  };
+  onInventoryTableChange: (newItems: InventoryItem[]) => void;
 }
 
-export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
-  const [items, setItems] = useState<InventoryItem[]>([]);
+export function InventoryTableStockReceiveSlip({
+  product,
+  onInventoryTableChange,
+}: InventoryTableStockReceiveSlipProps) {
+  const dispatch = useDispatch();
+  const { items, status, error } = useSelector((state: RootState) => state.inventory);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  
+
+  // Fetch inventory data on component mount
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchInventory());
+    }
+  }, [status, dispatch]);
+
+  // Notify parent when items change
+  useEffect(() => {
+    if (items.length > 0) {
+      onInventoryTableChange(items);
+    }
+  }, [items, onInventoryTableChange]);
+
   const addRow = () => {
     // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
     if (!product.code || product.quantity === 0) {
       setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0.");
-      return; // Stop the function from continuing, thus preventing row addition
+      return;
     }
-    // Reset error message if input is valid
     setErrorMessage(null);
+
     // Create a new InventoryItem based on the provided product
     const newItem: InventoryItem = {
       id: items.length + 1,
-      code: product.code,
-      name: product.name,
-      unit: product.unit,
-      quantity: product.quantity,
-      price: product.price,
-      value: product.quantity * product.price,
-      notes: product.notes,
+      so_phieu: `TB-PNK-${Math.floor(100000 + Math.random() * 900000)}`, // Generate a random so_phieu
+      ngay_tren_phieu: new Date().toISOString(),
+      so_phieu_de_nghi: "TB-DNNK-250001", // Default value, adjust as needed
+      ma_doi_tuong: "SUP002", // Default value, adjust as needed
+      ten_doi_tuong: product.notes || "",
+      ma_hang: product.code,
+      ten_hang: product.name,
+      so_luong: product.quantity,
+      ma_kho_nhan: product.unit || "Kho A",
     };
 
-    // Check if a row with the same code already exists
-    const existingIndex = items.findIndex(item => item.code === newItem.code);
-  
-    if (existingIndex !== -1) {
-      // If a duplicate is found, remove the previous one and add the new one
-      const updatedItems = items.filter(item => item.code !== newItem.code);
-      updatedItems.push(newItem); // Add the new item at the end
-      // Ensure the items are in sequential order
-      const reindexedItems = reindexItems(updatedItems);
-      setItems(reindexedItems);
-      onInventoryTableChange(updatedItems); // Notify parent about changes
-    } else {
-      // If no duplicate is found, simply add the new row
-      setItems(prevItems => {
-        const updatedItems = [...prevItems, newItem];
-        const reindexedItems = reindexItems(updatedItems); // Reindex items
-        onInventoryTableChange(reindexedItems); // Notify parent about changes
-        return reindexedItems; // Return reindexed items
-      });
-    }
+    dispatch(addItem(newItem));
   };
 
   const deleteRow = (id: number) => {
-    const newItems = items.filter(item => item.id !== id)
-
-    // Reindex the remaining items to ensure sequential order
-    setItems(reindexItems(newItems)); // Update the state with reindexed items
-  };
-
-  // Reindex function to ensure IDs are sequential
-  const reindexItems = (items: InventoryItem[]): InventoryItem[] => {
-    return items.map((item, index) => ({
-      ...item,
-      id: index + 1, // Reassign ID to be sequential starting from 1
-    }));
+    dispatch(deleteItem(id));
   };
 
   const clearRows = () => {
-    setItems([]);
-    };
-  
-    // Use useEffect to update the state after the render is done
-  useEffect(() => {
-    if (items.length > 0) {
-      onInventoryTableChange(items);  // Notify parent after items are updated
-    }
-  }, [items]);  // Trigger when items change
+    dispatch(clearItems());
+    onInventoryTableChange([]);
+  };
 
   return (
     <div className="mt-3">
@@ -114,12 +116,19 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                 <th>Mã đối tượng</th>
                 <th>Tên đối tượng</th>
                 <th>Mã hàng</th>
-                <th>Tên hàng</th>
+8                <th>Tên hàng</th>
                 <th>Kho</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {items.length > 0 ? (
+              {status === "loading" ? (
+                <tr>
+                  <td colSpan={10} className="text-center py-4">
+                    Loading...
+                  </td>
+                </tr>
+              ) : items.length > 0 ? (
                 items.map((item, index) => (
                   <tr key={item.id}>
                     <td>{item.id}</td>
@@ -127,94 +136,131 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                       <input
                         type="text"
                         className="form-control form-control-sm"
-                        placeholder="Mã hàng"
-                        value={item.code}
-                        onChange={(e) => {
-                          const newItems = [...items]
-                          newItems[index].code = e.target.value
-                          setItems(newItems)
-                        }}
+                        value={item.so_phieu}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "so_phieu",
+                              value: e.target.value,
+                            })
+                          )
+                        }
                       />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control form-control-sm"
-                        placeholder="Tên mặt hàng"
-                        value={item.name}
-                        onChange={(e) => {
-                          const newItems = [...items]
-                          newItems[index].name = e.target.value
-                          setItems(newItems)
-                        }}
+                        value={item.ngay_tren_phieu}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "ngay_tren_phieu",
+                              value: e.target.value,
+                            })
+                          )
+                        }
                       />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control form-control-sm"
-                        placeholder="Đvt"
-                        value={item.unit}
-                        onChange={(e) => {
-                          const newItems = [...items]
-                          newItems[index].unit = e.target.value
-                          setItems(newItems)
-                        }}
-                        style={{ width: "60px" }}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control form-control-sm"
-                        value={item.quantity}
-                        onChange={(e) => {
-                          const newItems = [...items]
-                          newItems[index].quantity = Number(e.target.value)
-                          newItems[index].value = newItems[index].quantity * newItems[index].price
-                          setItems(newItems)
-                        }}
-                        style={{ width: "80px" }}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control form-control-sm"
-                        value={item.price}
-                        onChange={(e) => {
-                          const newItems = [...items]
-                          newItems[index].price = Number(e.target.value)
-                          newItems[index].value = newItems[index].quantity * newItems[index].price
-                          setItems(newItems)
-                        }}
-                        style={{ width: "100px" }}
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control form-control-sm"
-                        value={item.value} // Hiển thị giá trị tính toán
-                        readOnly
-                        style={{ width: "100px" }}
+                        value={item.so_phieu_de_nghi}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "so_phieu_de_nghi",
+                              value: e.target.value,
+                            })
+                          )
+                        }
                       />
                     </td>
                     <td>
                       <input
                         type="text"
                         className="form-control form-control-sm"
-                        placeholder="Ghi chú"
-                        value={item.notes}
-                        onChange={(e) => {
-                          const newItems = [...items]
-                          newItems[index].notes = e.target.value
-                          setItems(newItems)
-                        }}
+                        value={item.ma_doi_tuong}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "ma_doi_tuong",
+                              value: e.target.value,
+                            })
+                          )
+                        }
                       />
                     </td>
                     <td>
-                      {/* Thêm button xóa với icon dấu "X" */}
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        value={item.ten_doi_tuong || ""}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "ten_doi_tuong",
+                              value: e.target.value,
+                            })
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        value={item.ma_hang}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "ma_hang",
+                              value: e.target.value,
+                            })
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        value={item.ten_hang || ""}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "ten_hang",
+                              value: e.target.value,
+                            })
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        value={item.ma_kho_nhan}
+                        onChange={(e) =>
+                          dispatch(
+                            updateItem({
+                              id: item.id,
+                              field: "ma_kho_nhan",
+                              value: e.target.value,
+                            })
+                          )
+                        }
+                      />
+                    </td>
+                    <td>
                       <button
                         type="button"
                         className="btn btn-danger btn-sm position-relative"
@@ -226,8 +272,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                           height: "30px",
                         }}
                       >
-                        <span className="fw-bold">X</span> {/* Dấu X */}
-                        {/* Hiển thị chữ "Delete" khi hover */}
+                        <span className="fw-bold">X</span>
                         <span
                           className="position-absolute top-100 start-50 translate-middle-x"
                           style={{
@@ -246,7 +291,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                 ))
               ) : (
                 <tr>
-                  <td colSpan={9} className="text-center py-4">
+                  <td colSpan={10} className="text-center py-4">
                     No data
                   </td>
                 </tr>
@@ -256,7 +301,7 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
         </div>
       </div>
       {/* Error Popup */}
-      <PopupFadeout message={errorMessage} onClose={() => setErrorMessage(null)} />
+      <PopupFadeout message={errorMessage || error} onClose={() => setErrorMessage(null)} />
     </div>
-  )
+  );
 }

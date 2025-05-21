@@ -10,6 +10,9 @@ import documentRequestNumberReducer from '../features/formReceiptSlip/documentRe
 import supplierReducer from '../features/formReceiptSlip/supplierSlice';
 import slipNoteReducer from '../features/formReceiptSlip/slipNoteSlice';
 import tabNavReducer from '../features/formReceiptSlip/tabNavSlice';
+// ReceiptLogTableSlice
+import ReceiptLogTableReducer from '../features/formReceiptSlip/ReceiptLogTableSlice';
+import formReducer from '../features/formReceiptSlip/formReceiptLogSlice';
 
 // Cấu hình store với tất cả các reducer
 export const store = configureStore({
@@ -23,6 +26,9 @@ export const store = configureStore({
     supplier: supplierReducer,
     slipNote: slipNoteReducer,
     tabNav: tabNavReducer,
+
+    ReceiptLogTable: ReceiptLogTableReducer,
+    form: formReducer,
   },
 });
 
