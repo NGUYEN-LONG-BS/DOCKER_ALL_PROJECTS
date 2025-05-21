@@ -1,55 +1,66 @@
+// Khai báo đây là Client Component để sử dụng các tính năng phía client như hooks
 "use client"
 
-import type React from "react"
+import type React from "react" // Nhập type React để định kiểu cho TypeScript
+import { useState } from "react" // Nhập useState để quản lý trạng thái
+import Image from "next/image" // Nhập Image từ Next.js để hiển thị hình ảnh tối ưu
+import Link from "next/link" // Nhập Link từ Next.js để điều hướng phía client
+import { useRouter } from "next/navigation" // Nhập useRouter để xử lý điều hướng
+import "bootstrap/dist/css/bootstrap.min.css" // Nhập CSS của Bootstrap để định dạng giao diện
 
-import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import "bootstrap/dist/css/bootstrap.min.css"
-
+// Định nghĩa component LoginPage
 export default function LoginPage() {
-  const [isLogin, setIsLogin] = useState(true)
-  const [loginId, setLoginId] = useState("")
-  const [password, setPassword] = useState("")
-  const [name, setName] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
+  // Khởi tạo trạng thái cho form
+  const [isLogin, setIsLogin] = useState(true) // Quản lý chế độ: true (đăng nhập), false (đăng ký)
+  const [loginId, setLoginId] = useState("") // Lưu giá trị tên đăng nhập hoặc email
+  const [password, setPassword] = useState("") // Lưu giá trị mật khẩu
+  const [name, setName] = useState("") // Lưu giá trị họ tên (dùng khi đăng ký)
+  const [showPassword, setShowPassword] = useState(false) // Quản lý trạng thái hiển thị/ẩn mật khẩu
 
+  // Khởi tạo router để điều hướng
   const router = useRouter()
 
+  // Hàm xử lý khi submit form
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Handle form submission logic here
+    e.preventDefault() // Ngăn chặn hành vi mặc định của form (tải lại trang)
+    // In dữ liệu form ra console để kiểm tra
     console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
 
+    // Nếu ở chế độ đăng nhập, chuyển hướng đến trang inventory-management
     if (isLogin) {
       router.push("/inventory-management-with_reDux_ToolKit")
     }
   }
 
   return (
+    // Container chính chiếm toàn bộ chiều cao màn hình
     <div className="container-fluid vh-100">
       <div className="row h-100">
-        {/* Image Section */}
+        {/* Phần hiển thị hình ảnh (chỉ hiển thị trên màn hình lớn hơn md) */}
         <div className="col-md-6 d-none d-md-flex bg-primary p-0 position-relative">
+          {/* Hình ảnh nền, sử dụng Next.js Image để tối ưu */}
           <Image
-            src="/images/loginVisual.jpg" //height=1080&width=1080
-            alt="Login visual"
-            fill
-            style={{ objectFit: "cover" }}
-            priority
+            src="/images/loginVisual.jpg" // Đường dẫn đến hình ảnh trong thư mục public
+            alt="Login visual" // Văn bản mô tả cho hình ảnh
+            fill // Chiếm toàn bộ không gian của div cha
+            style={{ objectFit: "cover" }} // Đảm bảo hình ảnh bao phủ toàn bộ khu vực
+            priority // Tải hình ảnh trước để ưu tiên hiển thị
           />
+          {/* Văn bản chào mừng nằm ở góc dưới */}
           <div className="position-absolute text-white p-5" style={{ bottom: 0, zIndex: 1 }}>
             <h2 className="fw-bold">Welcome to TUAN AN GROUP</h2>
             <p className="lead">Đồng Hành Cùng Thành Công Của Khách Hàng</p>
           </div>
+          {/* Lớp phủ tối để làm nổi bật văn bản */}
           <div className="position-absolute bg-dark w-100 h-100" style={{ opacity: 0.3 }}></div>
         </div>
 
-        {/* Form Section */}
+        {/* Phần form đăng nhập/đăng ký */}
         <div className="col-md-6 d-flex align-items-center justify-content-center">
+          {/* Card chứa form, có bóng và padding */}
           <div className="card border-0 shadow-sm p-4 w-100" style={{ maxWidth: "450px" }}>
             <div className="card-body">
+              {/* Tiêu đề và mô tả của form */}
               <div className="text-center mb-4">
                 <h1 className="h3 fw-bold">{isLogin ? "Login" : "Create Account"}</h1>
                 <p className="text-muted">
@@ -57,7 +68,9 @@ export default function LoginPage() {
                 </p>
               </div>
 
+              {/* Form xử lý đăng nhập hoặc đăng ký */}
               <form onSubmit={handleSubmit}>
+                {/* Trường nhập họ tên, chỉ hiển thị khi đăng ký */}
                 {!isLogin && (
                   <div className="mb-3">
                     <label htmlFor="name" className="form-label">
@@ -69,47 +82,51 @@ export default function LoginPage() {
                       id="name"
                       placeholder="Enter your name"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      onChange={(e) => setName(e.target.value)} // Cập nhật trạng thái name
                       required
                     />
                   </div>
                 )}
 
+                {/* Trường nhập tên đăng nhập hoặc email */}
                 <div className="mb-3">
                   <label htmlFor="loginId" className="form-label">
                     {isLogin ? "Username or Email" : "Email address"}
                   </label>
                   <input
-                    type={isLogin ? "text" : "email"}
+                    type={isLogin ? "text" : "email"} // text cho đăng nhập, email cho đăng ký
                     className="form-control"
                     id="loginId"
                     placeholder={isLogin ? "Enter your username or email" : "Enter your email"}
                     value={loginId}
-                    onChange={(e) => setLoginId(e.target.value)}
+                    onChange={(e) => setLoginId(e.target.value)} // Cập nhật trạng thái loginId
                     required
                   />
                 </div>
 
+                {/* Trường nhập mật khẩu */}
                 <div className="mb-4 position-relative">
                   <label htmlFor="password" className="form-label">
                     Password
                   </label>
                   <div className="input-group">
                     <input
-                      type={showPassword ? "text" : "password"}
+                      type={showPassword ? "text" : "password"} // Hiển thị hoặc ẩn mật khẩu
                       className="form-control"
                       id="password"
                       placeholder="Enter your password"
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => setPassword(e.target.value)} // Cập nhật trạng thái password
                       required
                     />
                     <button
                       className="btn btn-outline-secondary"
                       type="button"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() => setShowPassword(!showPassword)} // Chuyển đổi trạng thái showPassword
+                      // aria-label={showPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"} // Hỗ trợ trợ năng
                     >
                       {showPassword ? (
+                        // Biểu tượng "eye-slash" khi mật khẩu hiển thị
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
@@ -118,11 +135,15 @@ export default function LoginPage() {
                           className="bi bi-eye-slash"
                           viewBox="0 0 16 16"
                         >
+                          {/* Vẽ viền ngoài của mắt và một phần đường gạch chéo */}
                           <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z" />
+                          {/* Vẽ phần đồng tử và tương tác với đường gạch chéo */}
                           <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z" />
+                          {/* Hoàn thiện viền mắt và vẽ đường gạch chéo */}
                           <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z" />
                         </svg>
                       ) : (
+                        // Biểu tượng "eye" khi mật khẩu ẩn
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
@@ -131,7 +152,9 @@ export default function LoginPage() {
                           className="bi bi-eye"
                           viewBox="0 0 16 16"
                         >
+                          {/* Vẽ viền ngoài của mắt */}
                           <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                          {/* Vẽ đồng tử */}
                           <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                         </svg>
                       )}
@@ -139,6 +162,7 @@ export default function LoginPage() {
                   </div>
                 </div>
 
+                {/* Các tùy chọn bổ sung chỉ hiển thị ở chế độ đăng nhập */}
                 {isLogin && (
                   <div className="d-flex justify-content-between mb-4">
                     <div className="form-check">
@@ -153,10 +177,12 @@ export default function LoginPage() {
                   </div>
                 )}
 
+                {/* Nút submit form */}
                 <button type="submit" className="btn btn-primary w-100 py-2 mb-3">
                   {isLogin ? "Sign In" : "Create Account"}
                 </button>
 
+                {/* Liên kết chuyển đổi giữa đăng nhập và đăng ký */}
                 <div className="text-center">
                   <p>
                     {isLogin ? "Don't have an account? " : "Already have an account? "}
@@ -164,8 +190,8 @@ export default function LoginPage() {
                       href="#"
                       className="text-decoration-none"
                       onClick={(e) => {
-                        e.preventDefault()
-                        setIsLogin(!isLogin)
+                        e.preventDefault() // Ngăn tải lại trang
+                        setIsLogin(!isLogin) // Chuyển đổi chế độ đăng nhập/đăng ký
                       }}
                     >
                       {isLogin ? "Sign up" : "Sign in"}
@@ -174,14 +200,17 @@ export default function LoginPage() {
                 </div>
               </form>
 
+              {/* Dòng phân cách cho tùy chọn đăng nhập bằng mạng xã hội */}
               <div className="my-4 d-flex align-items-center">
                 <hr className="flex-grow-1" />
                 <span className="px-2 text-muted">or continue with</span>
                 <hr className="flex-grow-1" />
               </div>
 
+              {/* Nút đăng nhập bằng Google và Facebook */}
               <div className="d-grid gap-2">
                 <button className="btn btn-outline-secondary">
+                  {/* Biểu tượng Google */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -195,6 +224,7 @@ export default function LoginPage() {
                   Google
                 </button>
                 <button className="btn btn-outline-secondary">
+                  {/* Biểu tượng Facebook */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
