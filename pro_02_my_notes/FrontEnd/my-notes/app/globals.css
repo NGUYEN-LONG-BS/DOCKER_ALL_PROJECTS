@@ -1,19 +1,14 @@
-/* Custom styles to supplement Bootstrap */
+/* app/globals.css */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .hover-overlay:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
 }
 
 .hover-bg-light:hover {
   background-color: #f8f9fa;
-}
-
-/* Fix for Bootstrap dropdown menus */
-.dropdown-menu {
-  z-index: 1000;
-}
-
-/* Additional utility classes */
-.text-balance {
-  text-wrap: balance;
 }

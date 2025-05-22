@@ -1,15 +1,15 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import Script from "next/script"
-import "./globals.css"
+import type React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import Script from "next/script";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "LearnCode - Web Development Tutorials",
   description: "Learn web development, programming, and more with interactive tutorials and examples.",
-}
+};
 
 export default function RootLayout({
   children,
@@ -42,5 +42,5 @@ export default function RootLayout({
         />
       </body>
     </html>
-  )
+  );
 }
