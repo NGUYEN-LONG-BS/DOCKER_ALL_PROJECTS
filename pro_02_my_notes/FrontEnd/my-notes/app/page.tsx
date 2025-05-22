@@ -138,60 +138,16 @@ export default function HomePage() {
         {/* Secondary Navigation */}
         <div className="bg-dark text-white overflow-auto">
           <div className="container d-flex align-items-center py-2 gap-3" style={{ whiteSpace: "nowrap" }}>
-            <Link href="/html" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              HTML
-            </Link>
-            <Link href="/css" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              CSS
-            </Link>
-            <Link href="/javascript" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              JAVASCRIPT
-            </Link>
-            <Link href="/sql" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              SQL
-            </Link>
-            <Link href="/python" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              PYTHON
-            </Link>
-            <Link href="/java" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              JAVA
-            </Link>
-            <Link href="/php" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              PHP
-            </Link>
-            <Link href="/howto" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              HOW TO
-            </Link>
-            <Link href="/w3css" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              W3.CSS
-            </Link>
-            <Link href="/c" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              C
-            </Link>
-            <Link href="/cpp" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              C++
-            </Link>
-            <Link href="/csharp" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              C#
-            </Link>
             <Link href="/bootstrap" className="px-2 py-1 bg-success text-white text-decoration-none rounded">
               Vĩ mô
             </Link>
-            <Link href="/react" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              REACT
+            <Link href="/html" className="px-2 py-1 text-white text-decoration-none hover-overlay">
+              Nguyên lý kế toán
             </Link>
-            <Link href="/mysql" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              MYSQL
+            <Link href="/html" className="px-2 py-1 text-white text-decoration-none hover-overlay">
+              My projects
             </Link>
-            <Link href="/jquery" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              JQUERY
-            </Link>
-            <Link href="/excel" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              EXCEL
-            </Link>
-            <Link href="/xml" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-              XML
-            </Link>
+            
           </div>
         </div>
       </header>
