@@ -1,7 +1,7 @@
 export default function BootstrapPage() {
   return (
     <div className="container py-4 mx-auto" style={{ maxWidth: "900px" }}>
-      <h1 className="display-5 fw-bold mb-4">Bootstrap 5 Tutorial</h1>
+      <h1 className="display-5 fw-bold mb-4">Bootstrap 5 Tutorial componenets</h1>
 
       <div className="d-flex justify-content-between mb-4">
         <button className="btn btn-outline-secondary d-flex align-items-center gap-1">

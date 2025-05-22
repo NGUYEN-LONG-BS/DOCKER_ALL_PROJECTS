@@ -21,7 +21,7 @@ export default function HomePage() {
       <main className="flex-grow-1 d-flex">
         <Sidebar title="Kinh tế vĩ mô" links={sidebarLinks} />
         <Content
-          title="Bootstrap 5 Tutorial"
+          title="Bootstrap 5 Tutorial 12"
           description="Bootstrap 5 is the newest version of Bootstrap, which is the most popular HTML, CSS, and JavaScript framework for creating responsive, mobile-first websites."
         >
           <h2 className="fs-2 fw-bold mb-3">Try it Yourself Examples</h2>
