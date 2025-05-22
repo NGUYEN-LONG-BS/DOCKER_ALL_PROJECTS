@@ -175,7 +175,7 @@ export default function HomePage() {
               C#
             </Link>
             <Link href="/bootstrap" className="px-2 py-1 bg-success text-white text-decoration-none rounded">
-              BOOTSTRAP
+              Vĩ mô
             </Link>
             <Link href="/react" className="px-2 py-1 text-white text-decoration-none hover-overlay">
               REACT
@@ -201,54 +201,34 @@ export default function HomePage() {
         {/* Sidebar */}
         <aside className="border-end d-none d-md-block overflow-auto" style={{ width: "250px" }}>
           <div className="p-3 border-bottom">
-            <h2 className="fw-bold fs-5 mb-0">Bootstrap 5 Tutorial</h2>
+            <h2 className="fw-bold fs-5 mb-0">Kinh tế vĩ mô</h2>
           </div>
           <nav className="p-0">
             <Link href="/bootstrap/home" className="d-block px-3 py-2 bg-success text-white text-decoration-none">
-              BS5 HOME
+              Chính sách tài khoá
             </Link>
             <Link href="/bootstrap/get-started" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Get Started
+              Bộ ba bất khả thi
             </Link>
             <Link href="/bootstrap/containers" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Containers
+              Cơ chế tỷ giá
             </Link>
             <Link href="/bootstrap/grid" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Grid Basic
+              Vĩ mô tiền tệ
             </Link>
             <Link href="/bootstrap/typography" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Typography
+              Cung tiền
             </Link>
             <Link href="/bootstrap/colors" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Colors
+              Đường con lợi suất
             </Link>
             <Link href="/bootstrap/tables" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Tables
+              Công cụ điều hành tỷ giá
             </Link>
             <Link href="/bootstrap/images" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Images
+              Cơ chế điều hành lãi suất
             </Link>
-            <Link href="/bootstrap/jumbotron" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Jumbotron
-            </Link>
-            <Link href="/bootstrap/alerts" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Alerts
-            </Link>
-            <Link href="/bootstrap/buttons" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Buttons
-            </Link>
-            <Link href="/bootstrap/button-groups" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Button Groups
-            </Link>
-            <Link href="/bootstrap/badges" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Badges
-            </Link>
-            <Link href="/bootstrap/progress" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Progress Bars
-            </Link>
-            <Link href="/bootstrap/spinners" className="d-block px-3 py-2 text-decoration-none hover-bg-light">
-              BS5 Spinners
-            </Link>
+            
           </nav>
         </aside>
 
