@@ -7,14 +7,20 @@ export default function Header() {
       <div className="container d-flex align-items-center justify-content-between py-3">
         <div className="d-flex align-items-center gap-3">
           <Link href="/" className="d-flex align-items-center text-decoration-none">
-            <div
+            {/* <div
               className="position-relative bg-success d-flex align-items-center justify-content-center text-white fw-bold rounded"
               style={{ width: "40px", height: "40px" }}
             >
               <span className="fs-4">W</span>
               <span className="position-absolute top-0 end-0 fs-6">3</span>
+            </div> */}
+            <div
+              className="position-relative bg-success d-flex align-items-center justify-content-center text-white fw-bold rounded"
+              style={{ width: "40px", height: "40px" }}
+            >
+              <span className="fs-5">NL</span>
             </div>
-            <span className="fw-semibold ms-2 d-none d-sm-inline">LearnCode</span>
+            <span className="fw-semibold ms-2 d-none d-sm-inline">Learning</span>
           </Link>
 
           <nav className="d-none d-md-flex align-items-center">
