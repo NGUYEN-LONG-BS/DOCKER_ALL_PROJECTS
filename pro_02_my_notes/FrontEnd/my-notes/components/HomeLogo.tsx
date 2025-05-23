@@ -4,9 +4,9 @@ import { forwardRef } from "react";
 const HomeLogo = forwardRef<SVGSVGElement>((props, ref) => (
   <svg
     ref={ref}
-    width="100"
+    width="140"
     height="40"
-    viewBox="0 0 100 40"
+    viewBox="0 0 140 40"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
@@ -27,7 +27,7 @@ const HomeLogo = forwardRef<SVGSVGElement>((props, ref) => (
     <text
       x="48"
       y="20"
-      fontSize="16"
+      fontSize="20"
       fontWeight="600"
       fill="#155724"
       textAnchor="start"

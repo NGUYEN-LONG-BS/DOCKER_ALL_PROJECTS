@@ -1,6 +1,6 @@
 // components/Header.tsx
 import Link from "next/link";
-import HomeIcon from "./HomeIcon"; // Import SVG component
+import HomeLogo from "./HomeLogo"; // Import SVG component
 
 export default function Header() {
   return (
@@ -8,8 +8,7 @@ export default function Header() {
       <div className="container d-flex align-items-center justify-content-between py-3">
         <div className="d-flex align-items-center gap-3">
           <Link href="/" className="d-flex align-items-center text-decoration-none">
-            <HomeIcon />
-            <span className="fw-semibold ms-2 d-none d-sm-inline">Learning</span>
+            <HomeLogo />
           </Link>
 
           <nav className="d-none d-md-flex align-items-center">
