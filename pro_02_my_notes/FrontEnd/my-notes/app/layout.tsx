@@ -7,8 +7,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "LearnCode - Web Development Tutorials",
-  description: "Learn web development, programming, and more with interactive tutorials and examples.",
+  title: "NL Learning - CFA, ACCA, DA",
+  description: "Free to download and use!.",
 };
 
 export default function RootLayout({
