@@ -1,0 +1,30 @@
+<svg width="100" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hình vuông với chữ "NL" -->
+  <rect width="40" height="40" rx="4" fill="#198754"/>
+  <text
+    x="20"
+    y="20"
+    font-size="20"
+    font-weight="bold"
+    fill="white"
+    text-anchor="middle"
+    dominant-baseline="central"
+    dy="0.05em"
+    font-family="system-ui, -apple-system, sans-serif"
+  >
+    NL
+  </text>
+  <!-- Chữ "Learning" với màu xanh đậm -->
+  <text
+    x="48"
+    y="20"
+    font-size="16"
+    font-weight="600"
+    fill="#155724"
+    text-anchor="start"
+    dominant-baseline="central"
+    font-family="system-ui, -apple-system, sans-serif"
+  >
+    Learning
+  </text>
+</svg>

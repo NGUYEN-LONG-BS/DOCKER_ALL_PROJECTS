@@ -2,6 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import HomeIcon from "./HomeIcon"; // Import SVG component
 
 export default function Content({ title, description, children }: { title: string; description: string; children?: React.ReactNode }) {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -34,14 +35,8 @@ export default function Content({ title, description, children }: { title: strin
       </div>
 
       <Link href="/" className="d-flex align-items-center text-decoration-none">
-        <div
-          className="position-relative bg-success d-flex align-items-center justify-content-center text-white fw-bold rounded"
-          style={{ width: "40px", height: "40px" }}
-        >
-          <span className="fs-5">NL</span>
-        </div>
+        <HomeIcon />
       </Link>
-
       <h1 className="display-5 fw-bold mb-4">{title}</h1>
 
       <div className="d-flex justify-content-between mb-4">
