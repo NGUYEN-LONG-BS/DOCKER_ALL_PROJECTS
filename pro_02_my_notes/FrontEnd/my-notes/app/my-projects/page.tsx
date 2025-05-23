@@ -1,5 +1,5 @@
 import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat01";
+import Content from "@/components/ContentFormat02";
 import Advertisements from "@/components/Advertisements";
 
 export default function BootstrapHome() {
