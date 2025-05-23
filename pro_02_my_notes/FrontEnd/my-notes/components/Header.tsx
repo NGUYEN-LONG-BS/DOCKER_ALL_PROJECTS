@@ -25,27 +25,27 @@ export default function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Tutorials
+                CFA
               </button>
               <ul className="dropdown-menu">
                 <li>
                   <Link href="/tutorials/html" className="dropdown-item">
-                    HTML
+                    Kinh tế vĩ mô
                   </Link>
                 </li>
                 <li>
                   <Link href="/tutorials/css" className="dropdown-item">
-                    CSS
+                    Kinh tế vi mô
                   </Link>
                 </li>
                 <li>
                   <Link href="/tutorials/javascript" className="dropdown-item">
-                    JavaScript
+                    Thị trường tài chính
                   </Link>
                 </li>
                 <li>
                   <Link href="/tutorials/python" className="dropdown-item">
-                    Python
+                    Thị trường tiền tệ
                   </Link>
                 </li>
               </ul>
@@ -58,22 +58,22 @@ export default function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Exercises
+                ACCA
               </button>
               <ul className="dropdown-menu">
                 <li>
                   <Link href="/exercises/html" className="dropdown-item">
-                    HTML Exercises
+                    Nguyên lý kế toán
                   </Link>
                 </li>
                 <li>
                   <Link href="/exercises/css" className="dropdown-item">
-                    CSS Exercises
+                    VAS
                   </Link>
                 </li>
                 <li>
                   <Link href="/exercises/javascript" className="dropdown-item">
-                    JavaScript Exercises
+                    IFRS
                   </Link>
                 </li>
               </ul>
@@ -86,22 +86,22 @@ export default function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Certificates
+                DATA ANALYST
               </button>
               <ul className="dropdown-menu">
                 <li>
                   <Link href="/certificates/html" className="dropdown-item">
-                    HTML Certificate
+                    SQL
                   </Link>
                 </li>
                 <li>
                   <Link href="/certificates/css" className="dropdown-item">
-                    CSS Certificate
+                    Data visualisation
                   </Link>
                 </li>
                 <li>
                   <Link href="/certificates/javascript" className="dropdown-item">
-                    JavaScript Certificate
+                    Data Crawler
                   </Link>
                 </li>
               </ul>
@@ -114,17 +114,17 @@ export default function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Services
+                My projects
               </button>
               <ul className="dropdown-menu">
                 <li>
                   <Link href="/services/hosting" className="dropdown-item">
-                    Web Hosting
+                    Python Django
                   </Link>
                 </li>
                 <li>
                   <Link href="/services/spaces" className="dropdown-item">
-                    Spaces
+                    NEXT js
                   </Link>
                 </li>
               </ul>
@@ -157,11 +157,14 @@ export default function Header() {
       {/* Secondary Navigation */}
       <div className="bg-dark text-white overflow-auto">
         <div className="container d-flex align-items-center py-2 gap-3" style={{ whiteSpace: "nowrap" }}>
-          <Link href="/bootstrap" className="px-2 py-1 bg-success text-white text-decoration-none rounded">
-            Vĩ mô
+          <Link href="/kinh-te-vi-mo" className="px-2 py-1 bg-success text-white text-decoration-none rounded">
+            CFA
           </Link>
           <Link href="/nguyen-ly-ke-toan" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-            Nguyên lý kế toán
+            ACCA
+          </Link>
+          <Link href="/nguyen-ly-ke-toan" className="px-2 py-1 text-white text-decoration-none hover-overlay">
+            Data analyst
           </Link>
           <Link href="/my-projects" className="px-2 py-1 text-white text-decoration-none hover-overlay">
             My projects
