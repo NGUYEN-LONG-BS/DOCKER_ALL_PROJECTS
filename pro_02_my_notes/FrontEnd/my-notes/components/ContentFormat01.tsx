@@ -1,6 +1,30 @@
-// components/Content.tsx
+// components/ContentFormat01.tsx
+"use client";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
 export default function Content({ title, description, children }: { title: string; description: string; children?: React.ReactNode }) {
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  // Kiểm tra vị trí cuộn để hiển thị/ẩn nút
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) { // Hiển thị nút khi cuộn xuống quá 300px
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll); // Dọn dẹp
+  }, []);
+
+  // Hàm cuộn mượt về đầu trang
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="flex-grow-1 p-4 mx-auto" style={{ maxWidth: "900px" }}>
       <div className="d-flex justify-content-end mb-3">
@@ -8,13 +32,6 @@ export default function Content({ title, description, children }: { title: strin
           <i className="bi bi-bookmark"></i>
         </button>
       </div>
-
-      {/* Thêm dòng Home với liên kết */}
-      {/* <div className="mb-3">
-        <a href="/" className="text-decoration-none">
-          Home
-        </a>
-      </div> */}
 
       <Link href="/" className="d-flex align-items-center text-decoration-none">
         <div
@@ -44,6 +61,18 @@ export default function Content({ title, description, children }: { title: strin
       </div>
 
       {children}
+
+      {/* Nút Back to Top */}
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="btn btn-success position-fixed bottom-0 end-0 m-4"
+          style={{ zIndex: 1000 }}
+          title="Back to Top"
+        >
+          <i className="bi bi-arrow-up"></i>
+        </button>
+      )}
     </div>
   );
 }
