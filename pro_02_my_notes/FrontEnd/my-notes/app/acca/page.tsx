@@ -1,6 +1,6 @@
 "use client";
 import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentDirectTo";
+import Content from "@/components/ContentFormat02";
 import Advertisements from "@/components/Advertisements";
 import Header from "@/components/Header";
 import { useState } from "react";

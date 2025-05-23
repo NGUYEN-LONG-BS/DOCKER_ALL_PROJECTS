@@ -118,12 +118,12 @@ export default function Header() {
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  <Link href="/services/hosting" className="dropdown-item">
+                  <Link href="/my-projects/python-django" className="dropdown-item">
                     Python Django
                   </Link>
                 </li>
                 <li>
-                  <Link href="/services/spaces" className="dropdown-item">
+                  <Link href="/my-projects/next-js" className="dropdown-item">
                     NEXT js
                   </Link>
                 </li>

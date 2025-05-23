@@ -1,7 +1,7 @@
 // app/page.tsx
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentDirectTo";
+import Content from "@/components/ContentFormat02";
 import Advertisements from "@/components/Advertisements";
 
 export default function HomePage() {

@@ -1,4 +1,3 @@
-// app/layout.tsx
 import type React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -18,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="vi">
       <head>
         {/* Bootstrap CSS */}
         <link
@@ -32,6 +31,11 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
         />
+        {/* Prism.js CSS */}
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css"
+          rel="stylesheet"
+        />
       </head>
       <body className={inter.className}>
         {children}
@@ -41,6 +45,18 @@ export default function RootLayout({
           integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
           crossOrigin="anonymous"
         />
+        {/* Prism.js JavaScript */}
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" />
+        <Script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js" />
+        <Script id="prism-highlight">
+          {`
+            document.addEventListener('DOMContentLoaded', () => {
+              if (typeof Prism !== 'undefined') {
+                Prism.highlightAll();
+              }
+            });
+          `}
+        </Script>
       </body>
     </html>
   );
