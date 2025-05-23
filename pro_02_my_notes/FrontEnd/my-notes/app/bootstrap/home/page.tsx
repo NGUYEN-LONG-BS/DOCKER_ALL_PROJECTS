@@ -5,7 +5,7 @@ import Advertisements from "@/components/Advertisements";
 export default function BootstrapHome() {
   const sidebarLinks = [
     { href: "/bootstrap/home", label: "Chính sách tài khoá" },
-    { href: "/bootstrap/get-started", label: "Bộ ba bất khả thi" },
+    { href: "/kinh-te-vi-mo", label: "Bộ ba bất khả thi" },
     { href: "/bootstrap/containers", label: "Cơ chế tỷ giá" },
     { href: "/bootstrap/grid", label: "Vĩ mô tiền tệ" },
     { href: "/bootstrap/typography", label: "Cung tiền" },

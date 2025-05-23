@@ -1,3 +1,4 @@
+// components/Sidebar.tsx
 import Link from "next/link";
 
 export default function Sidebar({ title, links }: { title: string; links: { href: string; label: string }[] }) {

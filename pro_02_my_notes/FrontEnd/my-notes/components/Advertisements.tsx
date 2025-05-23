@@ -1,3 +1,4 @@
+// components/Advertisements.tsx
 export default function Advertisements() {
   return (
     <div className="d-none d-lg-block p-3" style={{ width: "250px" }}>
