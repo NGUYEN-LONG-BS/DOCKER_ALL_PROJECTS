@@ -1,24 +1,31 @@
+// app/my-projects/next-js/page.tsx
+import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Content from "@/components/ContentFormat03";
 import Advertisements from "@/components/Advertisements";
-import ReduxToolkitContent from "@/components/ReduxToolkitContent";
 
-export default function BootstrapHome() {
+export default function NextJsProjectHome() {
   const sidebarLinks = [
-    { href: "#", label: "redux-toolkit" },
-    
+    { href: "/my-projects/next-js/redux-toolkit", label: "Redux Toolkit" },
+    {
+      href: "/my-projects/next-js/use-state-vs-use-reducer",
+      label: "UseState Vs UseReducer",
+    },
   ];
 
   return (
-    <div className="flex-grow-1 d-flex">
-      <Sidebar title="My projects" links={sidebarLinks} />
-      <Content
-        title="Redux Toolkit"
-        description="Redux Toolkit là thư viện chính thức giúp đơn giản hóa Redux, giảm boilerplate code và tích hợp các best practices."
-      >
-        <ReduxToolkitContent />
-      </Content>
-      <Advertisements />
-    </div>
+    <>
+      <Header />
+      <div className="flex-grow-1 d-flex">
+        <Sidebar title="My projects" links={sidebarLinks} />
+        <Content
+          title="My Next.js Projects"
+          description="Explore my Next.js projects, including Redux Toolkit and useState vs useReducer guides."
+        >
+          <p>Select a project from the sidebar to view details.</p>
+        </Content>
+        <Advertisements />
+      </div>
+    </>
   );
 }
