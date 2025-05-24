@@ -1,28 +1,19 @@
 /* app/globals.css */
-/* body {
+
+/* Reset and base styles */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-} */
-
-.hover-overlay:hover {
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.hover-bg-light:hover {
-  background-color: #f8f9fa;
-}
-
-/* Existing styles (e.g., for fiscal policy, knowledge hub) */
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
   font-family: Arial, sans-serif;
   line-height: 1.6;
   color: #333;
 }
 
+/* Typography */
 h1 {
   color: #2c3e50;
   border-bottom: 2px solid #3498db;
@@ -38,6 +29,21 @@ h3 {
   color: #16a085;
 }
 
+.section-title {
+  color: #0d6efd;
+  font-weight: bold;
+}
+
+/* Hover effects */
+.hover-overlay:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hover-bg-light:hover {
+  background-color: #f8f9fa;
+}
+
+/* Content blocks */
 .highlight {
   background-color: #f8f9fa;
   padding: 15px;
@@ -45,6 +51,12 @@ h3 {
   margin: 15px 0;
 }
 
+.example {
+  font-style: italic;
+  color: #7f8c8d;
+}
+
+/* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -68,17 +80,7 @@ tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-.example {
-  font-style: italic;
-  color: #7f8c8d;
-}
-
-/* New styles for Redux Toolkit content */
-.section-title {
-  color: #0d6efd;
-  font-weight: bold;
-}
-
+/* Card styles for Redux Toolkit content */
 .card {
   transition: transform 0.2s;
   border: none;
@@ -89,6 +91,7 @@ tr:nth-child(even) {
   transform: scale(1.02);
 }
 
+/* Code blocks */
 pre {
   border-radius: 5px;
   padding: 15px;
@@ -98,5 +101,3 @@ pre {
 code {
   font-size: 0.9rem;
 }
-
-/* Prism.js styles (already included via CDN in the original HTML) */
