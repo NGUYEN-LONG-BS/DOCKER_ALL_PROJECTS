@@ -4,13 +4,14 @@ import Content from "@/components/ContentFormat03";
 import Advertisements from "@/components/Advertisements";
 import ReduxToolkitContent from "@/components/ReduxToolkitContent";
 import UseStateVsUseReducer from "@/components/UseStateVsUseReducer";
+import ReactVsRedux from "@/components/ReactVsRedux";
 import { notFound } from "next/navigation";
 
 export default function NextJsProjectPage({ params }: { params: { slug: string } }) {
   const sidebarLinks = [
     { href: "/my-projects/next-js/redux-toolkit", label: "Redux Toolkit" },
-    { href: "/my-projects/next-js/redux-toolkit2", label: "Redux Toolkit 2" },
     { href: "/my-projects/next-js/use-state-vs-use-reducer", label: "UseState Vs UseReducer" },
+    { href: "/my-projects/next-js/react-vs-redux", label: "React Vs Redux" },
   ];
 
   // Mapping slug to content
@@ -24,17 +25,17 @@ export default function NextJsProjectPage({ params }: { params: { slug: string }
         "1Redux Toolkit là thư viện chính thức giúp đơn giản hóa Redux, giảm boilerplate code và tích hợp các best practices.",
       component: <ReduxToolkitContent />,
     },
-    "redux-toolkit2": {
-      title: "1 Redux Toolkit",
-      description:
-        "1Redux Toolkit là thư viện chính thức giúp đơn giản hóa Redux, giảm boilerplate code và tích hợp các best practices.",
-      component: <ReduxToolkitContent />,
-    },
     "use-state-vs-use-reducer": {
       title: "2 Phân biệt useState và useReducer",
       description:
         "2Tìm hiểu sự khác biệt giữa hai hook useState và useReducer trong React.",
       component: <UseStateVsUseReducer />,
+    },
+    "react-vs-redux": {
+      title: "React vs Redux",
+      description:
+        "Explore the differences between React, a UI library, and Redux, a state management library.",
+      component: <ReactVsRedux />,
     },
   };
 
