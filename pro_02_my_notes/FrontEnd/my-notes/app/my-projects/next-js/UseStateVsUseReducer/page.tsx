@@ -3,13 +3,9 @@ import Sidebar from "@/components/Sidebar";
 import Content from "@/components/ContentFormat03";
 import Advertisements from "@/components/Advertisements";
 import UseStateVsUseReducer from "@/components/UseStateVsUseReducer";
+import { sidebarLinks } from "@/lib/sidebarLinks";
 
 export default function BootstrapHome() {
-  const sidebarLinks = [
-    { href: "#", label: "redux-toolkit" },
-    
-  ];
-
   return (
     <div className="flex-grow-1 d-flex">
       <Sidebar title="My projects" links={sidebarLinks} />
