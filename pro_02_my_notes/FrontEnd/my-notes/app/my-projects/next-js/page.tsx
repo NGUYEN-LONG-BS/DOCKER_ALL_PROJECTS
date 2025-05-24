@@ -1,6 +1,7 @@
 import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat02";
+import Content from "@/components/ContentFormat03";
 import Advertisements from "@/components/Advertisements";
+import ReduxToolkitContent from "@/components/ReduxToolkitContent";
 
 export default function BootstrapHome() {
   const sidebarLinks = [
@@ -13,9 +14,10 @@ export default function BootstrapHome() {
       <Sidebar title="My projects" links={sidebarLinks} />
       <Content
         title="Redux Toolkit"
-        description="Redux Toolkit là thư viện chính thức giúp đơn giản hóa Redux."
-        htmlFilePath="/nextjs/redux-toolkit.html"
-      />
+        description="Redux Toolkit là thư viện chính thức giúp đơn giản hóa Redux, giảm boilerplate code và tích hợp các best practices."
+      >
+        <ReduxToolkitContent />
+      </Content>
       <Advertisements />
     </div>
   );
