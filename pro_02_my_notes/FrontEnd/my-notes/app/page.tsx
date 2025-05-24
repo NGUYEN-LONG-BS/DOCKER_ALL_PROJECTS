@@ -6,10 +6,10 @@ import Advertisements from "@/components/Advertisements";
 
 export default function HomePage() {
   const sidebarLinks = [
-    { href: "/kinh-te-vi-mo", label: "CFA" },
-    { href: "/nguyen-ly-ke-toan", label: "ACCA" },
-    { href: "/nguyen-ly-ke-toan", label: "Data Analyst" },
-    { href: "/nguyen-ly-ke-toan", label: "My projects" },
+    { href: "/cfa", label: "CFA" },
+    { href: "/acca", label: "ACCA" },
+    { href: "/da", label: "Data Analyst" },
+    { href: "/my-projects", label: "My projects" },
   ];
 
   return (

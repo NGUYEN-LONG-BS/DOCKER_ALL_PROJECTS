@@ -80,7 +80,7 @@ export default function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                DATA ANALYST
+                Data Analyst
               </button>
               <ul className="dropdown-menu">
                 <li>
