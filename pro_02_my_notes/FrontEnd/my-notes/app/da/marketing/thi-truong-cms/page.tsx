@@ -5,7 +5,7 @@ import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
 import { sidebarTitle, sidebarLinks } from "@/lib/sideBar/marketing_sidebar";
 
-import CMSMarketShare from "@/components/marketing/thi-truong-cms";
+import CMSMarketShare from "@/components/contents/marketing/thi-truong-cms";
 
 export default function ReactHooksCheatSheetPage() {
   return (

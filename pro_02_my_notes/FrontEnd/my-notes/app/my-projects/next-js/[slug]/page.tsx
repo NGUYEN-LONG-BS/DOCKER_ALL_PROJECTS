@@ -3,10 +3,10 @@ import Header from "@/components/header/Header";
 import Sidebar from "@/components/sideBar/Sidebar";
 import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
-import ReduxToolkitContent from "@/components/reduxToolKit/ReduxToolkitContent";
-import UseStateVsUseReducer from "@/components/reduxToolKit/UseStateVsUseReducer";
-import ReactVsRedux from "@/components/reduxToolKit/ReactVsRedux";
-import ReactHooksCheatSheet from "@/components/reduxToolKit/ReactHooksCheatSheet";
+import ReduxToolkitContent from "@/components/contents/reduxToolKit/ReduxToolkitContent";
+import UseStateVsUseReducer from "@/components/contents/reduxToolKit/UseStateVsUseReducer";
+import ReactVsRedux from "@/components/contents/reduxToolKit/ReactVsRedux";
+import ReactHooksCheatSheet from "@/components/contents/reduxToolKit/ReactHooksCheatSheet";
 import { notFound } from "next/navigation";
 import { sidebarLinks } from "@/lib/sideBar/sidebarLinks";
 

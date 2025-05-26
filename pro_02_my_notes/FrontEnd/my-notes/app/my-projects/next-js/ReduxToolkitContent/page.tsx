@@ -3,7 +3,7 @@ import Header from "@/components/header/Header";
 import Sidebar from "@/components/sideBar/Sidebar";
 import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
-import ReduxToolkitContent from "@/components/reduxToolKit/ReduxToolkitContent";
+import ReduxToolkitContent from "@/components/contents/reduxToolKit/ReduxToolkitContent";
 import { sidebarLinks } from "@/lib/sideBar/sidebarLinks";
 
 export default function BootstrapHome() {

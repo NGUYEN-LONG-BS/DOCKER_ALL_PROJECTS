@@ -5,7 +5,7 @@ import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
 import { sidebarTitle, sidebarLinks } from "@/lib/sideBar/marketing_sidebar";
 
-import MarketingMetrics from "@/components/marketing/marketing-index";
+import MarketingMetrics from "@/components/contents/marketing/marketing-index";
 
 export default function ReactHooksCheatSheetPageMyself() {
   return (

@@ -6,8 +6,8 @@ import Advertisements from "@/components/advertisement/Advertisements";
 import { notFound } from "next/navigation";
 import { sidebarTitle, sidebarLinks } from "@/lib/sideBar/marketing_sidebar";
 
-import CMSMarketShare from "@/components/marketing/thi-truong-cms";
-import MarketingMetrics from "@/components/marketing/marketing-index";
+import CMSMarketShare from "@/components/contents/marketing/thi-truong-cms";
+import MarketingMetrics from "@/components/contents/marketing/marketing-index";
 
 export default function NextJsProjectPage({ params }: { params: { slug: string } }) {
   // Mapping slug to content

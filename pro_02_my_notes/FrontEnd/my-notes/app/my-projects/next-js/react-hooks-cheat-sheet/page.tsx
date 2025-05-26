@@ -3,7 +3,7 @@ import Header from "@/components/header/Header";
 import Sidebar from "@/components/sideBar/Sidebar";
 import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
-import ReactHooksCheatSheet from "@/components/reduxToolKit/ReactHooksCheatSheet";
+import ReactHooksCheatSheet from "@/components/contents/reduxToolKit/ReactHooksCheatSheet";
 import { sidebarLinks } from "@/lib/sideBar/sidebarLinks";
 
 export default function ReactHooksCheatSheetPage() {

@@ -3,7 +3,7 @@ import Header from "@/components/header/Header";
 import Sidebar from "@/components/sideBar/Sidebar";
 import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
-import ReactVsRedux from "@/components/reduxToolKit/ReactVsRedux";
+import ReactVsRedux from "@/components/contents/reduxToolKit/ReactVsRedux";
 import { sidebarLinks } from "@/lib/sideBar/sidebarLinks";
 
 export default function ReactVsReduxPage() {
