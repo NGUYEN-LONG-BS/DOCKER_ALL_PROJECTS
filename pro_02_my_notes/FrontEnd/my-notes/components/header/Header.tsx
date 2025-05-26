@@ -56,7 +56,7 @@ export default function Header() {
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  <Link href="/exercises/html" className="dropdown-item">
+                  <Link href="/acca/nguyen-ly-ke-toan" className="dropdown-item">
                     Nguyên lý kế toán
                   </Link>
                 </li>
