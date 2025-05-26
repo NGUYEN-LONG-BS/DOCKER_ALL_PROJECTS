@@ -1,12 +1,12 @@
 // app/my-projects/next-js/[slug]/page.tsx
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat03";
-import Advertisements from "@/components/Advertisements";
-import ReduxToolkitContent from "@/components/ReduxToolkitContent";
-import UseStateVsUseReducer from "@/components/UseStateVsUseReducer";
-import ReactVsRedux from "@/components/ReactVsRedux";
-import ReactHooksCheatSheet from "@/components/ReactHooksCheatSheet";
+import Header from "@/components/header/Header";
+import Sidebar from "@/components/sideBar/Sidebar";
+import Content from "@/components/content/ContentFormat03";
+import Advertisements from "@/components/advertisement/Advertisements";
+import ReduxToolkitContent from "@/components/reduxToolKit/ReduxToolkitContent";
+import UseStateVsUseReducer from "@/components/reduxToolKit/UseStateVsUseReducer";
+import ReactVsRedux from "@/components/reduxToolKit/ReactVsRedux";
+import ReactHooksCheatSheet from "@/components/reduxToolKit/ReactHooksCheatSheet";
 import { notFound } from "next/navigation";
 import { sidebarLinks } from "@/lib/sidebarLinks";
 

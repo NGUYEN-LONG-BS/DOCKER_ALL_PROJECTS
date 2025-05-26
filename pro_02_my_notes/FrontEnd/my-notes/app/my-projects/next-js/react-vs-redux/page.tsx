@@ -1,9 +1,9 @@
 // app/my-projects/next-js/react-vs-redux/page.tsx
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat03";
-import Advertisements from "@/components/Advertisements";
-import ReactVsRedux from "@/components/ReactVsRedux";
+import Header from "@/components/header/Header";
+import Sidebar from "@/components/sideBar/Sidebar";
+import Content from "@/components/content/ContentFormat03";
+import Advertisements from "@/components/advertisement/Advertisements";
+import ReactVsRedux from "@/components/reduxToolKit/ReactVsRedux";
 import { sidebarLinks } from "@/lib/sidebarLinks";
 
 export default function ReactVsReduxPage() {

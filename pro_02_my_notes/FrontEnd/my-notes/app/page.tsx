@@ -1,8 +1,8 @@
 // app/page.tsx
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat02";
-import Advertisements from "@/components/Advertisements";
+import Header from "@/components/header/Header";
+import Sidebar from "@/components/sideBar/Sidebar";
+import Content from "@/components/content/ContentFormat02";
+import Advertisements from "@/components/advertisement/Advertisements";
 
 export default function HomePage() {
   const sidebarLinks = [

@@ -1,6 +1,6 @@
 // components/Header.tsx
 import Link from "next/link";
-import HomeLogo from "./HomeLogo"; // Import SVG component
+import HomeLogo from "@/components/iconLogo/HomeLogo";
 
 export default function Header() {
   return (

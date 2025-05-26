@@ -1,8 +1,8 @@
 // app/my-projects/next-js/react-hooks-cheat-sheet/page.tsx
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat03";
-import Advertisements from "@/components/Advertisements";
+import Header from "@/components/header/Header";
+import Sidebar from "@/components/sideBar/Sidebar";
+import Content from "@/components/content/ContentFormat03";
+import Advertisements from "@/components/advertisement/Advertisements";
 import { sidebarLinks } from "@/lib/marketing_sidebar";
 
 import CMSMarketShare from "@/components/marketing/thi-truong-cms";

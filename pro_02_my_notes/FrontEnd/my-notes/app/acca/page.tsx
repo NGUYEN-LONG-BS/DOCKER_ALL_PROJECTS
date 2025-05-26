@@ -1,8 +1,8 @@
 "use client";
-import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat02";
-import Advertisements from "@/components/Advertisements";
-import Header from "@/components/Header";
+import Sidebar from "@/components/sideBar/Sidebar";
+import Content from "@/components/content/ContentFormat02";
+import Advertisements from "@/components/advertisement/Advertisements";
+import Header from "@/components/header/Header";
 import { useState } from "react";
 
 export default function BootstrapHome() {

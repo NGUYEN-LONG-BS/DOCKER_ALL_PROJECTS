@@ -2,7 +2,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import HomeIcon from "./HomeIcon"; // Import SVG component
+import HomeIcon from "../iconLogo/HomeIcon"; // Import SVG component
 
 export default function Content({ title, description, children }: { title: string; description: string; children?: React.ReactNode }) {
   const [showBackToTop, setShowBackToTop] = useState(false);

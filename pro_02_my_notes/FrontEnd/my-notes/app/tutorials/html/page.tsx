@@ -1,6 +1,6 @@
-import Sidebar from "@/components/Sidebar";
-import Content from "@/components/ContentFormat01";
-import Advertisements from "@/components/Advertisements";
+import Sidebar from "@/components/sideBar/Sidebar";
+import Content from "@/components/content/ContentFormat01";
+import Advertisements from "@/components/advertisement/Advertisements";
 
 export default function HtmlTutorial() {
   const sidebarLinks = [
