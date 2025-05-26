@@ -23,25 +23,56 @@ export default function Header() {
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  <Link href="/tutorials/html" className="dropdown-item">
-                    Kinh tế vĩ mô
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    1- Phương pháp Số học
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tutorials/css" className="dropdown-item">
-                    Kinh tế vi mô
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    2- Kinh tế học
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tutorials/javascript" className="dropdown-item">
-                    Thị trường tài chính
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    3- Báo cáo Tài chính và Phân tích
                   </Link>
                 </li>
                 <li>
-                  <Link href="/tutorials/python" className="dropdown-item">
-                    Thị trường tiền tệ
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    4- Đầu tư Cổ phiếu
                   </Link>
                 </li>
+                <li>
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    5- Đầu tư Trái phiếu
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    6- Chứng khoán Phái sinh
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    7- Đầu tư Thay thế
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    8- Quản lý Danh mục Đầu tư và Lập Kế hoạch Tài sản
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    9- Báo cáo Tài chính và Phân tích
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/cfa/macro" className="dropdown-item">
+                    10- Tiêu chuẩn Đạo đức và Chuyên môn
+                  </Link>
+                </li>
+
               </ul>
             </div>
 
