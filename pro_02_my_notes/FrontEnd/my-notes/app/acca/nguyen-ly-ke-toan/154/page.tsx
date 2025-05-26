@@ -6,7 +6,7 @@ import Advertisements from "@/components/advertisement/Advertisements";
 
 import { sidebarTitle, sidebarLinks } from "@/lib/sideBar/accountingPrinciple_sidebar";
 
-import BankDepositAccount from "@/components/contents/AccountingPrinciple/tk112";
+import BankDepositAccount from "@/components/contents/AccountingPrinciple/154/tk154";
 
 export default function ReactHooksCheatSheetPageMyself() {
   return (

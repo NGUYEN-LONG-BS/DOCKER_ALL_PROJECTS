@@ -1,7 +1,7 @@
 // app/my-projects/next-js/react-hooks-cheat-sheet/page.tsx
 import Header from "@/components/header/Header";
 import Sidebar from "@/components/sideBar/Sidebar";
-import Content from "@/components/content/ContentFormat03";
+import Content from "@/components/content/ContentFormat04";
 import Advertisements from "@/components/advertisement/Advertisements";
 
 import { sidebarTitle, sidebarLinks } from "@/lib/sideBar/accountingPrinciple_sidebar";
@@ -14,10 +14,7 @@ export default function ReactHooksCheatSheetPageMyself() {
       <Header />
       <div className="flex-grow-1 d-flex">
         <Sidebar title={sidebarTitle} links={sidebarLinks} />
-        <Content
-          title="Tài khoản 141 - Tạm ứng"
-          description="Các nguyên tắc kế toán và kết cấu tài khoản 141 để thực hiện hành vi của tài khoản này."
-        >
+        <Content>
           <BankDepositAccount />
         </Content>
         <Advertisements />
