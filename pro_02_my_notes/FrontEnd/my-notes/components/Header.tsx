@@ -98,6 +98,11 @@ export default function Header() {
                     Data Crawler
                   </Link>
                 </li>
+                <li>
+                  <Link href="/da/marketing" className="dropdown-item">
+                    Marketing
+                  </Link>
+                </li>
               </ul>
             </div>
 
@@ -123,6 +128,7 @@ export default function Header() {
                 </li>
               </ul>
             </div>
+
           </nav>
         </div>
 

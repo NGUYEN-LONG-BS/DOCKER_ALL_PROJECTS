@@ -1,0 +1,26 @@
+// app/my-projects/next-js/react-hooks-cheat-sheet/page.tsx
+import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
+import Content from "@/components/ContentFormat03";
+import Advertisements from "@/components/Advertisements";
+import { sidebarLinks } from "@/lib/marketing_sidebar";
+
+import CMSMarketShare from "@/components/marketing/thi-truong-cms";
+
+export default function ReactHooksCheatSheetPage() {
+  return (
+    <>
+      <Header />
+      <div className="flex-grow-1 d-flex">
+        <Sidebar title="Marketing" links={sidebarLinks} />
+        <Content
+          title="Thị trường CMS"
+          description="Tổng quan về thị trường CMS để chọn công cụ phù hợp cho bạn."
+        >
+          <CMSMarketShare />
+        </Content>
+        <Advertisements />
+      </div>
+    </>
+  );
+}
