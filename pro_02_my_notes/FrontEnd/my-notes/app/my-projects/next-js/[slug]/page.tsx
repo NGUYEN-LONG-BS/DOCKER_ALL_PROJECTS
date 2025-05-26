@@ -8,7 +8,7 @@ import UseStateVsUseReducer from "@/components/reduxToolKit/UseStateVsUseReducer
 import ReactVsRedux from "@/components/reduxToolKit/ReactVsRedux";
 import ReactHooksCheatSheet from "@/components/reduxToolKit/ReactHooksCheatSheet";
 import { notFound } from "next/navigation";
-import { sidebarLinks } from "@/lib/sidebarLinks";
+import { sidebarLinks } from "@/lib/sideBar/sidebarLinks";
 
 export default function NextJsProjectPage({ params }: { params: { slug: string } }) {
   // Mapping slug to content

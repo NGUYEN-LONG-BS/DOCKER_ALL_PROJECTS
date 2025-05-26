@@ -3,7 +3,7 @@ import Header from "@/components/header/Header";
 import Sidebar from "@/components/sideBar/Sidebar";
 import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
-import { sidebarLinks } from "@/lib/marketing_sidebar";
+import { sidebarTitle, sidebarLinks } from "@/lib/sideBar/marketing_sidebar";
 
 import MarketingMetrics from "@/components/marketing/marketing-index";
 
@@ -12,7 +12,7 @@ export default function ReactHooksCheatSheetPageMyself() {
     <>
       <Header />
       <div className="flex-grow-1 d-flex">
-        <Sidebar title="Marketing" links={sidebarLinks} />
+        <Sidebar title={sidebarTitle} links={sidebarLinks} />
         <Content
           title="Chỉ số đo lường hiệu quả Marketing"
           description="chỉ số đo lường hiệu quả Marketing"

@@ -4,7 +4,7 @@ import Sidebar from "@/components/sideBar/Sidebar";
 import Content from "@/components/content/ContentFormat03";
 import Advertisements from "@/components/advertisement/Advertisements";
 import { notFound } from "next/navigation";
-import { sidebarLinks } from "@/lib/marketing_sidebar";
+import { sidebarTitle, sidebarLinks } from "@/lib/sideBar/marketing_sidebar";
 
 import CMSMarketShare from "@/components/marketing/thi-truong-cms";
 import MarketingMetrics from "@/components/marketing/marketing-index";
@@ -39,7 +39,7 @@ export default function NextJsProjectPage({ params }: { params: { slug: string }
     <>
       <Header />
       <div className="flex-grow-1 d-flex">
-        <Sidebar title="My projects" links={sidebarLinks} />
+        <Sidebar title={sidebarTitle} links={sidebarLinks} />
         <Content title={content.title} description={content.description}>
           {content.component}
         </Content>
