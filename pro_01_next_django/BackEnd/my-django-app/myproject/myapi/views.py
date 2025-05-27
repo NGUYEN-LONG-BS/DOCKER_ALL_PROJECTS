@@ -320,7 +320,7 @@ from .serializers import InventoryStockSerializer
 class InventoryStockListView(APIView):
     def get(self, request, format=None):
         # Lấy tất cả bản ghi từ model
-        inventory_items = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
+        inventory_items = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all().order_by('-so_phieu')
         # Serialize dữ liệu, truyền index cho mỗi bản ghi
         serialized_data = []
         for index, item in enumerate(inventory_items):

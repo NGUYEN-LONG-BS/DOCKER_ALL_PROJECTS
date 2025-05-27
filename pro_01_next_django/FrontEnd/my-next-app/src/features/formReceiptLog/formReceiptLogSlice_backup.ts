@@ -24,19 +24,6 @@ interface Product {
   notes: string;
 }
 
-interface InventoryItem {
-  id: number;
-  so_phieu: string;
-  ngay_tren_phieu: string;
-  so_phieu_de_nghi: string;
-  ma_doi_tuong: string;
-  ten_doi_tuong?: string;
-  ma_hang: string;
-  ten_hang?: string;
-  ma_kho_nhan: string;
-  so_luong: string;
-}
-
 interface FormState {
   date: string;
   documentNumber: string;
@@ -44,11 +31,10 @@ interface FormState {
   slipNote: SlipNote;
   supplier: Supplier;
   selectedProduct: Product;
-  selectedFile: string | null;
+  selectedFile: string | null; // Store file name or null, as File objects can't be stored in Redux
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
   success: string | null;
-  inventoryData: InventoryItem[];
 }
 
 // Initial state
@@ -78,7 +64,6 @@ const initialState: FormState = {
   status: 'idle',
   error: null,
   success: null,
-  inventoryData: [],
 };
 
 // Async thunk for file import
@@ -96,19 +81,6 @@ export const importFile = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Error importing file');
-    }
-  }
-);
-
-// Async thunk for fetching inventory data
-export const fetchInventoryData = createAsyncThunk(
-  'form/fetchInventoryData',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get('http://127.0.0.1:8000/api/inventory-stock/');
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.message || 'Error fetching inventory data');
     }
   }
 );
@@ -155,10 +127,6 @@ const formSlice = createSlice({
       state.selectedFile = null;
       state.error = null;
       state.success = null;
-      state.inventoryData = [];
-    },
-    setInventoryData: (state, action: { payload: InventoryItem[] }) => {
-      state.inventoryData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -171,32 +139,9 @@ const formSlice = createSlice({
       .addCase(importFile.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.success = 'File imported successfully!';
-        state.selectedFile = null;
+        state.selectedFile = null; // Clear file after successful import
       })
       .addCase(importFile.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.payload as string;
-      })
-      .addCase(fetchInventoryData.pending, (state) => {
-        state.status = 'loading';
-        state.error = null;
-      })
-      .addCase(fetchInventoryData.fulfilled, (state, action) => {
-        state.status = 'succeeded';
-        state.inventoryData = action.payload.map((item: any, index: number) => ({
-          id: index + 1,
-          so_phieu: item.so_phieu,
-          ngay_tren_phieu: item.ngay_tren_phieu,
-          so_phieu_de_nghi: item.so_phieu_de_nghi,
-          ma_doi_tuong: item.ma_doi_tuong,
-          ten_doi_tuong: item.ten_doi_tuong || 'N/A',
-          ma_hang: item.ma_hang,
-          ten_hang: item.ten_hang || 'N/A',
-          ma_kho_nhan: item.ma_kho_nhan,
-          so_luong: item.so_luong,
-        }));
-      })
-      .addCase(fetchInventoryData.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload as string;
       });
@@ -215,7 +160,6 @@ export const {
   setError,
   setSuccess,
   clearForm,
-  setInventoryData,
 } = formSlice.actions;
 
 // Export reducer

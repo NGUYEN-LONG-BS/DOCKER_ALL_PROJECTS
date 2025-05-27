@@ -36,14 +36,23 @@ class InventoryStockReceivedIssuedReturnedSerializer(serializers.ModelSerializer
 
 # your_app/serializers.py
 from rest_framework import serializers
-from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_INVENTORY_CATEGORIES
 
 class InventoryStockSerializer(serializers.ModelSerializer):
-    STT = serializers.SerializerMethodField()  # Thêm trường STT động
+    STT = serializers.SerializerMethodField()
+    ten_hang = serializers.SerializerMethodField()
 
     def get_STT(self, obj):
         # Lấy index từ context và cộng 1 để bắt đầu từ 1
         return self.context['index'] + 1
+    
+    def get_ten_hang(self, obj):
+        # Fetch ten_hang from TB_INVENTORY_CATEGORIES based on ma_hang
+        try:
+            category = TB_INVENTORY_CATEGORIES.objects.get(ma_hang=obj.ma_hang)
+            return category.ten_hang
+        except TB_INVENTORY_CATEGORIES.DoesNotExist:
+            return 'N/A'  # Return 'N/A' if no matching category is found
 
     class Meta:
         model = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
@@ -54,6 +63,7 @@ class InventoryStockSerializer(serializers.ModelSerializer):
             'so_phieu_de_nghi',
             'ma_doi_tuong',
             'ma_hang',
+            'ten_hang',
             'so_luong',
             'ma_kho_nhan',
         ]

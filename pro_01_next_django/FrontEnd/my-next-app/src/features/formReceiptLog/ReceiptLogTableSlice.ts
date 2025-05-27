@@ -1,110 +1,218 @@
+// src/features/formReceiptLog/formReceiptLogSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Define the shape of an inventory item based on API data
+// Define interfaces
+interface Supplier {
+  code: string;
+  name: string;
+  taxId: string;
+  address: string;
+}
+
+interface SlipNote {
+  selectedWarehouse: string;
+  notesOfSlip: string;
+}
+
+interface Product {
+  code: string;
+  name: string;
+  unit: string;
+  quantity: number;
+  price: number;
+  notes: string;
+}
+
 interface InventoryItem {
-  id: number; // Replaces STT for internal use
+  id: number;
   so_phieu: string;
   ngay_tren_phieu: string;
   so_phieu_de_nghi: string;
   ma_doi_tuong: string;
-  ten_doi_tuong?: string; // Optional, not in API
+  ten_doi_tuong?: string;
   ma_hang: string;
-  ten_hang?: string; // Optional, not in API
-  so_luong: number;
+  ten_hang?: string;
   ma_kho_nhan: string;
+  so_luong: string;
 }
 
-// State shape for the inventory slice
-interface InventoryState {
-  items: InventoryItem[];
+interface FormState {
+  date: string;
+  documentNumber: string;
+  documentRequestNumber: string;
+  slipNote: SlipNote;
+  supplier: Supplier;
+  selectedProduct: Product;
+  selectedFile: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
+  success: string | null;
+  inventoryData: InventoryItem[];
 }
 
 // Initial state
-const initialState: InventoryState = {
-  items: [],
+const initialState: FormState = {
+  date: new Date().toISOString().split('T')[0],
+  documentNumber: 'TB-PNK-250001',
+  documentRequestNumber: 'TB-DNNK-250001',
+  slipNote: {
+    selectedWarehouse: 'Kho A',
+    notesOfSlip: '',
+  },
+  supplier: {
+    code: '',
+    name: '',
+    taxId: '',
+    address: '',
+  },
+  selectedProduct: {
+    code: '',
+    name: '',
+    unit: '',
+    quantity: 0,
+    price: 0,
+    notes: '',
+  },
+  selectedFile: null,
   status: 'idle',
   error: null,
+  success: null,
+  inventoryData: [],
 };
 
-// Async thunk to fetch inventory data
-export const fetchInventory = createAsyncThunk('inventory/fetchInventory', async () => {
-  const response = await axios.get('http://127.0.0.1:8000/api/inventory-stock/');
-  // Map API data to InventoryItem, renaming STT to id and converting so_luong to number
-  return response.data.map((item: any, index: number) => ({
-    id: item.STT,
-    so_phieu: item.so_phieu,
-    ngay_tren_phieu: item.ngay_tren_phieu,
-    so_phieu_de_nghi: item.so_phieu_de_nghi,
-    ma_doi_tuong: item.ma_doi_tuong,
-    ten_doi_tuong: '', // Placeholder, as not provided by API
-    ma_hang: item.ma_hang,
-    ten_hang: '', // Placeholder, as not provided by API
-    so_luong: parseFloat(item.so_luong),
-    ma_kho_nhan: item.ma_kho_nhan,
-  }));
-});
+// Async thunk for file import
+export const importFile = createAsyncThunk(
+  'form/importFile',
+  async (file: File, { rejectWithValue }) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const response = await axios.post('http://localhost:8000/api/import-data/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Error importing file');
+    }
+  }
+);
+
+// Async thunk for fetching inventory data
+export const fetchInventoryData = createAsyncThunk(
+  'form/fetchInventoryData',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/inventory-stock/');
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Error fetching inventory data');
+    }
+  }
+);
 
 // Create the slice
-const inventorySlice = createSlice({
-  name: 'ReceiptLogTable',
+const formSlice = createSlice({
+  name: 'form',
   initialState,
   reducers: {
-    addItem: (state, action: { payload: InventoryItem }) => {
-      // Check for duplicate ma_hang
-      const existingIndex = state.items.findIndex(item => item.ma_hang === action.payload.ma_hang);
-      if (existingIndex !== -1) {
-        // Replace existing item
-        state.items[existingIndex] = action.payload;
-      } else {
-        // Add new item
-        state.items.push(action.payload);
-      }
-      // Reindex items
-      state.items = state.items.map((item, index) => ({
-        ...item,
-        id: index + 1,
-      }));
+    setDate: (state, action: { payload: string }) => {
+      state.date = action.payload;
     },
-    updateItem: (state, action: { payload: { id: number; field: keyof InventoryItem; value: any } }) => {
-      const { id, field, value } = action.payload;
-      const item = state.items.find(item => item.id === id);
-      if (item) {
-        (item[field] as any) = value;
-      }
+    setDocumentNumber: (state, action: { payload: string }) => {
+      state.documentNumber = action.payload;
     },
-    deleteItem: (state, action: { payload: number }) => {
-      state.items = state.items.filter(item => item.id !== action.payload);
-      // Reindex items
-      state.items = state.items.map((item, index) => ({
-        ...item,
-        id: index + 1,
-      }));
+    setDocumentRequestNumber: (state, action: { payload: string }) => {
+      state.documentRequestNumber = action.payload;
     },
-    clearItems: (state) => {
-      state.items = [];
+    setSlipNote: (state, action: { payload: SlipNote }) => {
+      state.slipNote = action.payload;
+    },
+    setSupplier: (state, action: { payload: Supplier }) => {
+      state.supplier = action.payload;
+    },
+    setSelectedProduct: (state, action: { payload: Product }) => {
+      state.selectedProduct = action.payload;
+    },
+    setSelectedFile: (state, action: { payload: string | null }) => {
+      state.selectedFile = action.payload;
+    },
+    setError: (state, action: { payload: string | null }) => {
+      state.error = action.payload;
+    },
+    setSuccess: (state, action: { payload: string | null }) => {
+      state.success = action.payload;
+    },
+    clearForm: (state) => {
+      state.date = new Date().toISOString().split('T')[0];
+      state.documentNumber = 'TB-PNK-250001';
+      state.documentRequestNumber = 'TB-DNNK-250001';
+      state.slipNote = { selectedWarehouse: 'Kho A', notesOfSlip: '' };
+      state.supplier = { code: '', name: '', taxId: '', address: '' };
+      state.selectedProduct = { code: '', name: '', unit: '', quantity: 0, price: 0, notes: '' };
+      state.selectedFile = null;
+      state.error = null;
+      state.success = null;
+      state.inventoryData = [];
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchInventory.pending, (state) => {
+      .addCase(importFile.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
+        state.success = null;
       })
-      .addCase(fetchInventory.fulfilled, (state, action) => {
+      .addCase(importFile.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = action.payload;
+        state.success = 'File imported successfully!';
+        state.selectedFile = null;
       })
-      .addCase(fetchInventory.rejected, (state, action) => {
+      .addCase(importFile.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message || 'Failed to fetch inventory';
+        state.error = action.payload as string;
+      })
+      .addCase(fetchInventoryData.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(fetchInventoryData.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.inventoryData = action.payload.map((item: any, index: number) => ({
+          id: index + 1,
+          so_phieu: item.so_phieu,
+          ngay_tren_phieu: item.ngay_tren_phieu,
+          so_phieu_de_nghi: item.so_phieu_de_nghi,
+          ma_doi_tuong: item.ma_doi_tuong,
+          ten_doi_tuong: item.ten_doi_tuong || 'N/A',
+          ma_hang: item.ma_hang,
+          ten_hang: item.ten_hang || 'N/A',
+          ma_kho_nhan: item.ma_kho_nhan,
+          so_luong: item.so_luong,
+        }));
+      })
+      .addCase(fetchInventoryData.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload as string;
       });
   },
 });
 
 // Export actions
-export const { addItem, updateItem, deleteItem, clearItems } = inventorySlice.actions;
+export const {
+  setDate,
+  setDocumentNumber,
+  setDocumentRequestNumber,
+  setSlipNote,
+  setSupplier,
+  setSelectedProduct,
+  setSelectedFile,
+  setError,
+  setSuccess,
+  clearForm,
+} = formSlice.actions;
 
 // Export reducer
-export default inventorySlice.reducer;
+export default formSlice.reducer;

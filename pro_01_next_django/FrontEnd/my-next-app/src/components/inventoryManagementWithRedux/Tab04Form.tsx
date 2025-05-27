@@ -210,22 +210,27 @@ export function InventoryLogStockReceiveSlip() {
         <div className="row g-3 mt-1">
           <div className="col-md-6">
             <SupplierComponent />
-            <InventoryNoteOfStockReceiveSlip/>
+            <InventoryNoteOfStockReceiveSlip
+            selectedWarehouse={slipNote.selectedWarehouse}  // Truyền giá trị kho vào đây
+            notesOfSlip={slipNote.notesOfSlip}              // Truyền ghi chú vào đây
+            onWarehouseChange={handleWarehouseChange}  // Callback thay đổi kho
+            onNotesChange={handleNotesChange}        // Callback thay đổi ghi chú
+          />
           </div>
           <div className="col-md-6">
-            <ProductComponent/>
+            <ProductComponent onProductChange={handleProductChange} />
           </div>
         </div>
 
         {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
-        {/* <InventoryTableStockReceiveSlip 
+        <InventoryTableStockReceiveSlip 
         product={selectedProduct} 
         onInventoryTableChange={handleInventoryTableChange}
-        /> */}
+        />
 
         <div className="d-flex justify-content-end gap-2 mt-3">          
           <button type="button" className="btn btn-outline-secondary">
-            ALL data
+            ALl data
           </button>
           <button type="button" className="btn btn-outline-secondary">
             Export data
