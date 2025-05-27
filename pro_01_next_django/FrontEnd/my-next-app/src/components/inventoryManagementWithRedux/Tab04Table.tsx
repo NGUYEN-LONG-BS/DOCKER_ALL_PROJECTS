@@ -113,10 +113,10 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
     <div className="mt-3">
       <div className="d-flex justify-content-center gap-2 mb-3">
         <button type="button" className="btn btn-primary" onClick={addRow}>
-          Add Row
+          Filter
         </button>
         <button type="button" className="btn btn-outline-secondary" onClick={clearRows}>
-          Clear Table
+          Clear filter
         </button>
       </div>
 

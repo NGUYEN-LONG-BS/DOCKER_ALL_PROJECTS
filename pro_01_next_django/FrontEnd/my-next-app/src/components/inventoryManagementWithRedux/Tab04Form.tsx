@@ -1,14 +1,12 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab04Table";
-import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
@@ -210,12 +208,6 @@ export function InventoryLogStockReceiveSlip() {
         <div className="row g-3 mt-1">
           <div className="col-md-6">
             <SupplierComponent />
-            <InventoryNoteOfStockReceiveSlip
-            selectedWarehouse={slipNote.selectedWarehouse}  // Truyền giá trị kho vào đây
-            notesOfSlip={slipNote.notesOfSlip}              // Truyền ghi chú vào đây
-            onWarehouseChange={handleWarehouseChange}  // Callback thay đổi kho
-            onNotesChange={handleNotesChange}        // Callback thay đổi ghi chú
-          />
           </div>
           <div className="col-md-6">
             <ProductComponent onProductChange={handleProductChange} />
