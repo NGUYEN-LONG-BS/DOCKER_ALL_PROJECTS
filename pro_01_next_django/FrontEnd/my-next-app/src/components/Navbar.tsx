@@ -74,6 +74,24 @@ const Navbar = () => {
               </ul>
             </li>
 
+            {/* Dropdown */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Report
+              </a>
+              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><Link className="dropdown-item" href="/dashboard">dashboard</Link></li>
+    
+              </ul>
+            </li>
+
           </ul>
         </div>
       </div>
