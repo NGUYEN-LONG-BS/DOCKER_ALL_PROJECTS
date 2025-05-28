@@ -5,7 +5,7 @@ import axios from 'axios';
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
-import { SupplierComponent } from "./ObjectSupplierComponent";
+import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab03Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";

@@ -5,7 +5,7 @@ import { DateComponent } from "../date/date-component";
 import { DocumentNumberFilterForm } from "../documentNumber/document-number-component-filter-form";
 import { DocumentRequestNumberFilterForm } from "../documentRequestNumber/document-request-number-component-filter-form";
 // import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
-import { SupplierComponent } from "./ObjectSupplierComponent";
+import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab04Table";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";

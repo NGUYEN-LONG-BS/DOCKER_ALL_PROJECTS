@@ -24,7 +24,7 @@ import { RootState } from "../../store/store";
 import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-input-form";
-import { SupplierComponent } from "./ObjectSupplierComponent";
+import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
