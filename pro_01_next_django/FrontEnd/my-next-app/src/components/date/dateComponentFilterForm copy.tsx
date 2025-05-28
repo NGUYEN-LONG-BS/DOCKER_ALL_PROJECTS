@@ -19,10 +19,10 @@ export function DateComponentFilterForm() {
   };
 
   return (
-    <div className="d-flex align-items-center gap-2" style={{ height: '20px' }}>
+    <div className="d-flex align-items-center gap-2" style={{ flexWrap: 'wrap', height: '38px' }}>
       <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
         <label htmlFor="dateStart" className="form-label me-1 mb-0" style={{ whiteSpace: 'nowrap' }}>
-          Từ:
+          Từ ngày:
         </label>
         <input
           type="date"
@@ -30,12 +30,12 @@ export function DateComponentFilterForm() {
           id="dateStart"
           value={dateStart}
           onChange={handleDateStartChange}
-          style={{ maxWidth: '150px', minWidth: '140px' }}
+          style={{ maxWidth: '130px', minWidth: '110px' }}
         />
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
         <label htmlFor="dateEnd" className="form-label me-1 mb-0" style={{ whiteSpace: 'nowrap' }}>
-          Đến:
+          Đến ngày:
         </label>
         <input
           type="date"
@@ -43,7 +43,7 @@ export function DateComponentFilterForm() {
           id="dateEnd"
           value={dateEnd}
           onChange={handleDateEndChange}
-          style={{ maxWidth: '150px', minWidth: '140px' }}
+          style={{ maxWidth: '130px', minWidth: '110px' }}
         />
       </div>
     </div>

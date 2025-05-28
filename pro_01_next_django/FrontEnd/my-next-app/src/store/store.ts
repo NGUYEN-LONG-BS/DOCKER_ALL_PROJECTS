@@ -17,6 +17,7 @@ import documentNumberFilterFormReducer from '../features/formReceiptLog/document
 import documentRequestNumberFilterFormReducer from '../features/formReceiptLog/documentRequestNumberFilterFormSlice';
 import supplierFilterFormReducer from '../features/formReceiptLog/supplierFilterFormSlice';
 import productFilterFormReducer from '../features/formReceiptLog/objectProductFilterFormSlice';
+import dateFilterFormReducer from '../features/formReceiptLog/dateFilterFormSlice';
 
 // Cấu hình store với tất cả các reducer
 export const store = configureStore({
@@ -38,6 +39,7 @@ export const store = configureStore({
     documentRequestNumberFilterForm: documentRequestNumberFilterFormReducer,
     supplierFilterForm: supplierFilterFormReducer,
     productFilterForm: productFilterFormReducer,
+    dateFilterForm: dateFilterFormReducer,
   },
 });
 

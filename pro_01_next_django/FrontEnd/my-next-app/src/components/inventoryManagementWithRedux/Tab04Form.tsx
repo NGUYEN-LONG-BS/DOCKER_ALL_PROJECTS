@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DateComponent } from "../date/dateComponentFilterForm";
+import { DateComponentFilterForm } from "../date/dateComponentFilterForm";
 import { DocumentNumberFilterForm } from "../documentNumber/document-number-component-filter-form";
 import { DocumentRequestNumberFilterForm } from "../documentRequestNumber/document-request-number-component-filter-form";
 import { SupplierComponentFilterForm } from "../objectSupplier/ObjectSupplierComponentFilterForm";
@@ -193,7 +193,7 @@ export function InventoryLogStockReceiveSlip() {
       <div className="card-body">
         <div className="row g-3">
           <div className="col-md-4">
-            <DateComponent initialDate={date} onDateChange={handleDateChange}/>
+            <DateComponentFilterForm />
           </div>
           <div className="col-md-4">
             <DocumentNumberFilterForm/>
