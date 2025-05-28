@@ -25,7 +25,7 @@ import { DateComponent } from "../date/date-component-with-rkt";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-input-form";
 import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";
-import { ProductComponent } from "./ObjectProductComponent";
+import { ProductComponent } from "../objectProduct/ObjectProductComponentInputForm";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
