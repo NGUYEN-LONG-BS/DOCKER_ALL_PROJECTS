@@ -1,10 +1,10 @@
-// src/components/documentNumber/document-number-component-with-rkt.tsx
+// src/components/documentNumber/document-number-component-input-form.tsx
 "use client";
 
 import React from "react";
-import { useAppSelector, useAppDispatch } from "../../store/store";
-import { setDocumentNumber, fetchNewDocumentNumber } from "../../features/formReceiptSlip/documentNumberSlice";
-import { RootState } from "../../store/store";
+import { useAppSelector, useAppDispatch } from "@/store/store";
+import { setDocumentNumber, fetchNewDocumentNumber } from "@/features/formReceiptSlip/documentNumberSlice";
+import { RootState } from "@/store/store";
 import { RefreshCw } from "lucide-react";
 
 // Define props interface (documentNumber is optional, as it's now from Redux)
@@ -20,9 +20,6 @@ export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: 
 
   // Generate a new document number
   const generateNewNumber = () => {
-    // const randomNum = Math.floor(100000 + Math.random() * 900000);
-    // const newNumber = `TB-PNK-${randomNum}`;
-    // dispatch(setDocumentNumber(newNumber)); // Update Redux store
     dispatch(fetchNewDocumentNumber());
   };
 
@@ -33,7 +30,11 @@ export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: 
 
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: "20px" }}>
-      <label htmlFor="document-number" className="form-label me-2 mb-0" style={{ whiteSpace: "nowrap" }}>
+      <label 
+        htmlFor="document-number" 
+        className="form-label me-2 mb-0" 
+        style={{ whiteSpace: "nowrap" }}
+        >
         Số chứng từ:
       </label>
       <div className="input-group" style={{ maxWidth: "200px" }}>

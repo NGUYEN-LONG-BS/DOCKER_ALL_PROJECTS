@@ -2,8 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { DateComponent } from "../date/date-component";
-import { DocumentNumberComponent } from "../documentNumber/document-number-component";
-import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
+import { DocumentNumberFilterForm } from "../documentNumber/document-number-component-filter-form";
+import { DocumentRequestNumberFilterForm } from "../documentRequestNumber/document-request-number-component-filter-form";
+// import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab04Table";
@@ -194,14 +195,10 @@ export function InventoryLogStockReceiveSlip() {
             <DateComponent initialDate={date} onDateChange={handleDateChange}/>
           </div>
           <div className="col-md-4">
-            <DocumentNumberComponent 
-            documentNumber={documentNumber}
-            setDocumentNumber={setDocumentNumber}/>
+            <DocumentNumberFilterForm/>
           </div>
           <div className="col-md-4">
-            <DocumentRequestNumberComponent 
-            documentNumber={documentRequestNumber}
-            setDocumentNumber={setDocumentRequestNumber}/>
+            <DocumentRequestNumberFilterForm />
           </div>
         </div>
 

@@ -13,6 +13,8 @@ import tabNavReducer from '../features/formReceiptSlip/tabNavSlice';
 // ReceiptLogTableSlice
 import ReceiptLogTableReducer from '../features/formReceiptLog/ReceiptLogTableSlice';
 import formReducer from '../features/formReceiptLog/formReceiptLogSlice';
+import documentNumberFilterFormReducer from '../features/formReceiptLog/documentNumberFilterFormSlice';
+import documentRequestNumberFilterFormReducer from '../features/formReceiptLog/documentRequestNumberFilterFormSlice';
 
 // Cấu hình store với tất cả các reducer
 export const store = configureStore({
@@ -26,9 +28,13 @@ export const store = configureStore({
     supplier: supplierReducer,
     slipNote: slipNoteReducer,
     tabNav: tabNavReducer,
-
+    
+    // ReceiptLogTableSlice
     ReceiptLogTable: ReceiptLogTableReducer,
     form: formReducer,
+    documentNumberFilterForm: documentNumberFilterFormReducer,
+    documentRequestNumberFilterForm: documentRequestNumberFilterFormReducer,
+    
   },
 });
 

@@ -22,8 +22,8 @@ import {
 import { setItems } from "../../features/formReceiptSlip/inventoryTableSlice";
 import { RootState } from "../../store/store";
 import { DateComponent } from "../date/date-component-with-rkt";
-import { DocumentNumberComponent } from "../documentNumber/document-number-component-with-rkt";
-import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-with-rkt";
+import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
+import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-input-form";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
@@ -100,18 +100,6 @@ export function InventoryFormStockReceiveSlip() {
   const handleSave = async () => {
     // Log state của bảng (items từ inventoryTableSlice)
     console.log("Tab01Form - Inventory Table State on Save:", tableItems);
-
-    // // Log all states of child components
-    // console.log("Tab01Form - States on Save:", {
-    //   DateComponent: { date },
-    //   DocumentNumberComponent: { documentNumber },
-    //   DocumentRequestNumberComponent: { documentRequestNumber },
-    //   SupplierComponent: { supplier },
-    //   InventoryNoteOfStockReceiveSlip: { slipNote },
-    //   ProductComponent: { selectedProduct },
-    //   InventoryTableStockReceiveSlip: { inventoryTable, tableItems },
-    //   FormStates: { selectedFile: selectedFile ? selectedFile.name : null, loading },
-    // });
 
     // Validate documentNumber
     if (!documentNumber) {
