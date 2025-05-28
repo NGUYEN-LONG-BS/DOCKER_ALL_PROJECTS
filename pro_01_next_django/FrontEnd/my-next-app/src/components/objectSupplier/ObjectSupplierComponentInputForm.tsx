@@ -3,7 +3,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSupplier } from "../../features/formReceiptSlip/supplierSlice"; // Import from supplierSlice
+import { setSupplier } from "../../features/formReceiptSlip/supplierInputFormSlice"; // Import from supplierSlice
 import { RootState } from "../../store/store";
 
 interface SupplierData {
@@ -52,6 +52,12 @@ export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) 
   // Filter suppliers based on search input
   const handleFilter = (text: string) => {
     setSearchText(text);
+    // if (text.trim() === "") {
+    //   setFilteredSuppliers([]);
+    //   setShowDropdown(false);
+    //   dispatch(clearSupplier());
+    //   return;
+    // }
     if (debounceTimeout.current) {
       clearTimeout(debounceTimeout.current);
     }

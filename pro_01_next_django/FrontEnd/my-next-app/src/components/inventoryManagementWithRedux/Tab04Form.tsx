@@ -4,8 +4,9 @@ import axios from 'axios';
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberFilterForm } from "../documentNumber/document-number-component-filter-form";
 import { DocumentRequestNumberFilterForm } from "../documentRequestNumber/document-request-number-component-filter-form";
-// import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
-import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";
+
+import { SupplierComponentFilterForm } from "../objectSupplier/ObjectSupplierComponentFilterForm";
+// import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";
 import { ProductComponent } from "./ObjectProductComponent";
 import { InventoryTableStockReceiveSlip } from "./Tab04Table";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
@@ -204,7 +205,7 @@ export function InventoryLogStockReceiveSlip() {
 
         <div className="row g-3 mt-1">
           <div className="col-md-6">
-            <SupplierComponent />
+            <SupplierComponentFilterForm />
           </div>
           <div className="col-md-6">
             <ProductComponent onProductChange={handleProductChange} />

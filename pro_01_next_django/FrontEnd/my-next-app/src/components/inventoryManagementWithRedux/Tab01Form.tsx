@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/store";
 import { setDate } from "../../features/formReceiptSlip/dateSlice";
 import { setDocumentNumber } from "../../features/formReceiptSlip/documentNumberSlice";
 import { setDocumentRequestNumber } from "../../features/formReceiptSlip/documentRequestNumberSlice";
-import { setSupplier } from "../../features/formReceiptSlip/supplierSlice";
+import { setSupplier } from "../../features/formReceiptSlip/supplierInputFormSlice";
 import {
   setInventoryTable,
   setSelectedProduct,

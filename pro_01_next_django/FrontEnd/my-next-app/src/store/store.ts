@@ -7,7 +7,7 @@ import inventoryTableReducer from '../features/formReceiptSlip/inventoryTableSli
 import dateReducer from '../features/formReceiptSlip/dateSlice';
 import documentNumberReducer from '../features/formReceiptSlip/documentNumberSlice';
 import documentRequestNumberReducer from '../features/formReceiptSlip/documentRequestNumberSlice';
-import supplierReducer from '../features/formReceiptSlip/supplierSlice';
+import supplierReducer from '../features/formReceiptSlip/supplierInputFormSlice';
 import slipNoteReducer from '../features/formReceiptSlip/slipNoteSlice';
 import tabNavReducer from '../features/formReceiptSlip/tabNavSlice';
 // ReceiptLogTableSlice
@@ -15,6 +15,7 @@ import ReceiptLogTableReducer from '../features/formReceiptLog/ReceiptLogTableSl
 import formReducer from '../features/formReceiptLog/formReceiptLogSlice';
 import documentNumberFilterFormReducer from '../features/formReceiptLog/documentNumberFilterFormSlice';
 import documentRequestNumberFilterFormReducer from '../features/formReceiptLog/documentRequestNumberFilterFormSlice';
+import supplierFilterFormReducer from '../features/formReceiptLog/supplierFilterFormSlice';
 
 // Cấu hình store với tất cả các reducer
 export const store = configureStore({
@@ -34,7 +35,7 @@ export const store = configureStore({
     form: formReducer,
     documentNumberFilterForm: documentNumberFilterFormReducer,
     documentRequestNumberFilterForm: documentRequestNumberFilterFormReducer,
-    
+    supplierFilterForm: supplierFilterFormReducer,
   },
 });
 
