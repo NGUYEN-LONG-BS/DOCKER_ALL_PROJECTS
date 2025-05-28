@@ -1,6 +1,6 @@
 "use client"
 
-import { DateComponent } from "../date/date-component-with-rkt";
+import { DateComponent } from "../date/dateComponentInputForm";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
 import { ClientComponent } from "./ObjectClientComponent"
 import { ProductComponent } from "../objectProduct/ObjectProductComponentInputForm";

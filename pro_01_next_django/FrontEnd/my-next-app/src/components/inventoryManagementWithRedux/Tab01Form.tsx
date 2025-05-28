@@ -21,7 +21,7 @@ import {
 } from "../../features/formReceiptSlip/formReceiptSlipSlice";
 import { setItems } from "../../features/formReceiptSlip/inventoryTableSlice";
 import { RootState } from "../../store/store";
-import { DateComponent } from "../date/date-component-with-rkt";
+import { DateComponent } from "../date/dateComponentInputForm";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-input-form";
 import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";

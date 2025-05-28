@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DateComponent } from "../date/date-component";
+import { DateComponent } from "../date/dateComponentFilterForm";
 import { DocumentNumberFilterForm } from "../documentNumber/document-number-component-filter-form";
 import { DocumentRequestNumberFilterForm } from "../documentRequestNumber/document-request-number-component-filter-form";
 import { SupplierComponentFilterForm } from "../objectSupplier/ObjectSupplierComponentFilterForm";
