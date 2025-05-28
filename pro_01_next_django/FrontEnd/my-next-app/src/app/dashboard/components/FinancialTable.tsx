@@ -87,7 +87,6 @@ export default function FinancialTable({ selectedYear, selectedQuarter }: Financ
   return (
     <div className="financial-table">
       <div className="chart-title">
-        <i className="fas fa-chart-line me-2"></i>
         BÁO CÁO KẾT QUẢ HOẠT ĐỘNG KINH DOANH
       </div>
       <div className="table-responsive">

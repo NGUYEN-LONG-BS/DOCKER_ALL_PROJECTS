@@ -4,6 +4,7 @@ import { useState } from "react"
 import FinancialTable from "./components/FinancialTable"
 import CostStructureChart from "./components/CostStructureChart"
 import ProfitTrendCharts from "./components/ProfitTrendCharts"
+import Link from "next/link";
 
 export default function Dashboard() {
   const [selectedYear, setSelectedYear] = useState("2023")
@@ -18,9 +19,9 @@ export default function Dashboard() {
             <div className="col-md-8">
               <div className="d-flex align-items-center">
                 <div>
-                  <div>
+                  <Link href="/">
                     <img src="/images/logo-Light.jpg" alt="Tuan An Group" className="me-2" style={{ height: "40px" }} />
-                  </div>
+                  </Link>
                 </div>
                 <div className="company-name">TUẤN ÂN GROUP</div>
               </div>
