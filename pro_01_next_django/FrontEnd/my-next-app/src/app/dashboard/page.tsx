@@ -17,10 +17,9 @@ export default function Dashboard() {
           <div className="row align-items-center">
             <div className="col-md-8">
               <div className="d-flex align-items-center">
-                <div className="logo-circle">
+                <div>
                   <div>
-                    <div style={{ fontSize: "24px", lineHeight: "1", fontWeight: "bold", color: "#2c3e50" }}>CFO</div>
-                    <div style={{ fontSize: "8px", lineHeight: "1", color: "#2c3e50" }}>www.cfo.vn</div>
+                    <img src="/images/logo-Light.jpg" alt="Tuan An Group" className="me-2" style={{ height: "40px" }} />
                   </div>
                 </div>
                 <div className="company-name">TUẤN ÂN GROUP</div>

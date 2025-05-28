@@ -14,8 +14,8 @@ export const costStructureData: CostPeriod[] = [
   {
     period: "2020Q3",
     segments: [
-      { label: "Giá vốn", value: 75, color: "#3498db" },
-      { label: "CP BH", value: 5, color: "#f39c12" },
+      { label: "Giá vốn", value: 70, color: "#3498db" },
+      { label: "CP BH", value: 10, color: "#f39c12" },
       { label: "CP QL", value: 6, color: "#2ecc71" },
       { label: "CP TC", value: 8, color: "#e74c3c" },
       { label: "CP khác", value: 6, color: "#9b59b6" },
