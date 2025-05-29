@@ -177,13 +177,13 @@ export function InventoryLogStockReceiveSlip() {
       </div>
       <div className="card-body">
         <div className="row g-3">
-          <div className="col-md-4">
+          <div className="col-md-6">
             <DateComponentFilterForm />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <DocumentNumberFilterForm/>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-3">
             <DocumentRequestNumberFilterForm />
           </div>
         </div>

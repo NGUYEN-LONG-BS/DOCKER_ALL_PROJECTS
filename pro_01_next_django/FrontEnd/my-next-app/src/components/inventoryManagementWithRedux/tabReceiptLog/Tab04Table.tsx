@@ -10,6 +10,7 @@ import {
   clearForm,
 } from "@/features/formReceiptLog/formReceiptLogSlice";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
+import { setDateStart, setDateEnd } from "@/features/formReceiptLog/dateFilterFormSlice";
 
 // Define interface for API data
 interface InventoryItem {
@@ -42,6 +43,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
   const productCode = useAppSelector((state) => state.productFilterForm.Product.code);
   const dateStart = useAppSelector((state) => state.dateFilterForm.dateStart);
   const dateEnd = useAppSelector((state) => state.dateFilterForm.dateEnd);
+  const [justCleared, setJustCleared] = useState(true);
 
 
   // Fetch data on component mount
@@ -92,22 +94,26 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
   };
 
   const handleClearFilter = async () => {
-    
-    const apiUrl = `http://127.0.0.1:8000/api/inventory-stock/`;
-    console.log("API URL:", apiUrl);
+    // Set lại ngày về 10 ngày gần nhất
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - 10 + 1);
 
-    // Nếu muốn gọi API thực tế, bạn có thể fetch(apiUrl) ở đây
-    try {
-      const response = await fetch(apiUrl);
-      if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu!");
-      const data = await response.json();
-      // Giả sử data là mảng InventoryItem
-      dispatch(setInventoryData(data));
-      onInventoryTableChange(data);
-    } catch (err: any) {
-      setErrorMessage(err.message || "Lỗi không xác định!");
-    }
+    const formatDate = (date: Date) => date.toISOString().split('T')[0];
+
+    dispatch(setDateStart(formatDate(start)));
+    dispatch(setDateEnd(formatDate(end)));
+    setJustCleared(true);
   };
+
+  // Lắng nghe thay đổi dateStart/dateEnd sau khi clear filter
+  useEffect(() => {
+    if (justCleared) {
+      handleFilter();
+      setJustCleared(false);
+    }
+    // eslint-disable-next-line
+  }, [dateStart, dateEnd]);
 
   return (
     <div className="mt-3">
