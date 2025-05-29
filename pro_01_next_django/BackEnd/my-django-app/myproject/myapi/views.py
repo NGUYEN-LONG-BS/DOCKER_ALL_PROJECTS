@@ -317,16 +317,49 @@ from rest_framework import status
 from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .serializers import InventoryStockSerializer
 
+# class InventoryStockListView(APIView):
+#     def get(self, request, format=None):
+#         # Lấy tất cả bản ghi từ model
+#         inventory_items = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all().order_by('-so_phieu')
+#         # Serialize dữ liệu, truyền index cho mỗi bản ghi
+#         serialized_data = []
+#         for index, item in enumerate(inventory_items):
+#             serializer = InventoryStockSerializer(item, context={'index': index})
+#             serialized_data.append(serializer.data)
+#         # Trả về response với status 200
+#         return Response(serialized_data, status=status.HTTP_200_OK)
+
 class InventoryStockListView(APIView):
     def get(self, request, format=None):
-        # Lấy tất cả bản ghi từ model
-        inventory_items = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all().order_by('-so_phieu')
-        # Serialize dữ liệu, truyền index cho mỗi bản ghi
+        from_date = request.query_params.get('from_date')
+        to_date = request.query_params.get('to_date')
+        so_phieu = request.query_params.get('so_phieu')
+        so_phieu_de_nghi = request.query_params.get('so_phieu_de_nghi')
+        ma_doi_tuong = request.query_params.get('ma_doi_tuong')
+        ma_hang = request.query_params.get('ma_hang')
+
+        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
+
+        # Đúng tên trường ngày
+        if from_date:
+            qs = qs.filter(ngay_tren_phieu__date__gte=from_date)
+        if to_date:
+            qs = qs.filter(ngay_tren_phieu__date__lte=to_date)
+        if so_phieu:
+            qs = qs.filter(so_phieu__icontains=so_phieu)
+        if so_phieu_de_nghi:
+            qs = qs.filter(so_phieu_de_nghi__icontains=so_phieu_de_nghi)
+        if ma_doi_tuong:
+            qs = qs.filter(ma_doi_tuong__icontains=ma_doi_tuong)
+        if ma_hang:
+            qs = qs.filter(ma_hang__icontains=ma_hang)
+
+        qs = qs.order_by('-so_phieu')
+
         serialized_data = []
-        for index, item in enumerate(inventory_items):
+        for index, item in enumerate(qs):
             serializer = InventoryStockSerializer(item, context={'index': index})
             serialized_data.append(serializer.data)
-        # Trả về response với status 200
         return Response(serialized_data, status=status.HTTP_200_OK)
 
 

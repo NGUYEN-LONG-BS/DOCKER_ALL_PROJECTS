@@ -57,7 +57,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
   }, [inventoryData, onInventoryTableChange]);
 
   // Xử lý khi nhấn nút Filter
-  const handleFilter = () => {
+  const handleFilter = async () => {
     console.log("Từ ngày:", dateStart);
     console.log("Đến ngày:", dateEnd);
     console.log("Số chứng từ:", documentNumber);
@@ -65,6 +65,30 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
     console.log("Mã nhà cung cấp:", supplierCode);
     console.log("Mã sản phẩm:", productCode);
     // Bạn có thể thực hiện filter thực tế ở đây nếu muốn
+
+    // Tạo query params
+    const params = new URLSearchParams();
+    if (dateStart) params.append("from_date", dateStart);
+    if (dateEnd) params.append("to_date", dateEnd);
+    if (documentNumber) params.append("so_phieu", documentNumber);
+    if (documentRequestNumber) params.append("so_phieu_de_nghi", documentRequestNumber);
+    if (supplierCode) params.append("ma_doi_tuong", supplierCode);
+    if (productCode) params.append("ma_hang", productCode);
+
+    const apiUrl = `http://127.0.0.1:8000/api/inventory-stock/?${params.toString()}`;
+    console.log("API URL:", apiUrl);
+
+    // Nếu muốn gọi API thực tế, bạn có thể fetch(apiUrl) ở đây
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu!");
+      const data = await response.json();
+      // Giả sử data là mảng InventoryItem
+      dispatch(setInventoryData(data));
+      onInventoryTableChange(data);
+    } catch (err: any) {
+      setErrorMessage(err.message || "Lỗi không xác định!");
+    }
   };
 
   return (
@@ -108,9 +132,9 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
             </thead>
             <tbody>
               {inventoryData.length > 0 ? (
-                inventoryData.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.id}</td>
+                inventoryData.map((item, idx) => (
+                  <tr key={item.id ? item.id : idx}>
+                    <td>{idx + 1}</td>
                     <td>{item.so_phieu}</td>
                     <td>{new Date(item.ngay_tren_phieu).toLocaleDateString()}</td>
                     <td>{item.so_phieu_de_nghi}</td>
