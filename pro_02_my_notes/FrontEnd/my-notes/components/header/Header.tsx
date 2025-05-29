@@ -157,6 +157,11 @@ export default function Header() {
                     NEXT js
                   </Link>
                 </li>
+                <li>
+                  <Link href="/trang-diem-co-dau" className="dropdown-item">
+                    Trang điểm cô dâu
+                  </Link>
+                </li>
               </ul>
             </div>
 
