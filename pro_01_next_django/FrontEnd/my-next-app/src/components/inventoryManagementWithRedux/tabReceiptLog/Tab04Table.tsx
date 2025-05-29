@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
-  fetchInventoryData,
   setInventoryData,
-  setError,
-  setSuccess,
-  clearForm,
 } from "@/features/formReceiptLog/formReceiptLogSlice";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 import { setDateStart, setDateEnd } from "@/features/formReceiptLog/dateFilterFormSlice";
