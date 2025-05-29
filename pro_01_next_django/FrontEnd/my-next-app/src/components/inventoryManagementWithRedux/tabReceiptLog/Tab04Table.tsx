@@ -2,15 +2,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../store/store";
+import { useAppDispatch, useAppSelector } from "../../../store/store";
 import {
   fetchInventoryData,
   setInventoryData,
   setError,
   setSuccess,
   clearForm,
-} from "../../features/formReceiptLog/formReceiptLogSlice";
-import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
+} from "../../../features/formReceiptLog/formReceiptLogSlice";
+import PopupFadeout from "../../popups/errorPopupComponentTypeFadeOutNum01";
 
 // Define interface for API data
 interface InventoryItem {

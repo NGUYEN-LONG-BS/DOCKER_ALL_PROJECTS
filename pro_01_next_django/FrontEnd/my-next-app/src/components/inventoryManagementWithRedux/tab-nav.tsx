@@ -7,7 +7,7 @@ import { resetProductState } from "@/features/formReceiptSlip/objectProductCompo
 import { InventoryFormStockReceiveSlip } from "./Tab01Form";
 import { InventoryFormStockIssuesSlip } from "./Tab02Form";
 import { InventoryCategoryTab } from "./Tab03Form";
-import { InventoryLogStockReceiveSlip } from "./Tab04Form";
+import { InventoryLogStockReceiveSlip } from "./tabReceiptLog/Tab04Form";
 
 export function TabNav() {
   const dispatch = useAppDispatch();
