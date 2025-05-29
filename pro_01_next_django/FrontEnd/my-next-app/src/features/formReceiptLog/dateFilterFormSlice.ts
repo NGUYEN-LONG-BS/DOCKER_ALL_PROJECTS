@@ -5,10 +5,15 @@ interface DateFilterState {
   dateEnd: string;
 }
 
-const today = new Date().toISOString().split('T')[0];
+const todayDate = new Date();
+const startDate = new Date();
+startDate.setDate(todayDate.getDate() - 9);
+
+const today = todayDate.toISOString().split('T')[0];
+const tenDaysAgo = startDate.toISOString().split('T')[0];
 
 const initialState: DateFilterState = {
-  dateStart: today,
+  dateStart: tenDaysAgo,
   dateEnd: today,
 };
 

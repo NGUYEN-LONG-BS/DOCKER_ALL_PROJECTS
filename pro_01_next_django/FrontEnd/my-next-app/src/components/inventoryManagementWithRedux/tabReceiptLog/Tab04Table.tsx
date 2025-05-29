@@ -49,11 +49,26 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
   const dateEnd = useAppSelector((state) => state.dateFilterForm.dateEnd);
   const [justCleared, setJustCleared] = useState(true);
 
-
-  // Fetch data on component mount
+  // Đảm bảo ngày mặc định là 10 ngày gần nhất khi render lần đầu
   useEffect(() => {
-    dispatch(fetchInventoryData());
-  }, [dispatch]);
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - 9);
+    const formatDate = (date: Date) => date.toISOString().split('T')[0];
+
+    // Nếu ngày hiện tại khác 10 ngày gần nhất thì set lại
+    if (dateStart !== formatDate(start) || dateEnd !== formatDate(end)) {
+      dispatch(setDateStart(formatDate(start)));
+      dispatch(setDateEnd(formatDate(end)));
+      setJustCleared(true); // Đảm bảo filter sẽ chạy lại với ngày mới
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  // // Fetch data on component mount
+  // useEffect(() => {
+  //   dispatch(fetchInventoryData());
+  // }, [dispatch]);
 
   // Update parent when inventoryData changes
   useEffect(() => {
@@ -101,7 +116,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
     // Set lại ngày về 10 ngày gần nhất
     const end = new Date();
     const start = new Date();
-    start.setDate(end.getDate() - 10 + 1);
+    start.setDate(end.getDate() - 9);
 
     const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
@@ -183,7 +198,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
                 ))
               ) : (
                 <tr>
-                  <td colSpan={11} className="text-center py-4">
+                  <td colSpan={10} className="text-center py-4">
                     No data
                   </td>
                 </tr>
