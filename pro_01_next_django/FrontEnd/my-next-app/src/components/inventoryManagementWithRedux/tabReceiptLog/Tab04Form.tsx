@@ -1,16 +1,14 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DateComponentFilterForm } from "../../date/dateComponentFilterForm";
-import { DocumentNumberFilterForm } from "../../documentNumber/document-number-component-filter-form";
-import { DocumentRequestNumberFilterForm } from "../../documentRequestNumber/document-request-number-component-filter-form";
-import { SupplierComponentFilterForm } from "../../objectSupplier/ObjectSupplierComponentFilterForm";
-
-// import { ProductComponent } from "../objectProduct/ObjectProductComponentInputForm";
-import { ProductComponentFilterForm } from "../../objectProduct/ObjectProductComponentFilterForm";
+import { DateComponentFilterForm } from "@/components/date/dateComponentFilterForm";
+import { DocumentNumberFilterForm } from "@/components/documentNumber/document-number-component-filter-form";
+import { DocumentRequestNumberFilterForm } from "@/components/documentRequestNumber/document-request-number-component-filter-form";
+import { SupplierComponentFilterForm } from "@/components/objectSupplier/ObjectSupplierComponentFilterForm";
+import { ProductComponentFilterForm } from "@/components/objectProduct/ObjectProductComponentFilterForm";
 import { InventoryTableStockReceiveSlip } from "./Tab04Table";
-import PopupFadeout from "../../popups/errorPopupComponentTypeFadeOutNum01";
-import SuccessPopup from "../../popups/successPopupComponentTypeFadeOutNum01";
+import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
+import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNum01";
 
 
 // Định nghĩa InventoryItemExport interface
@@ -214,7 +212,6 @@ export function InventoryLogStockReceiveSlip() {
 
         {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
         <InventoryTableStockReceiveSlip 
-        product={selectedProduct} 
         onInventoryTableChange={handleInventoryTableChange}
         />
 

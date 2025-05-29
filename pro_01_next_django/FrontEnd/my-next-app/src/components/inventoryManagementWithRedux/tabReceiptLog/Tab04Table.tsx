@@ -27,11 +27,10 @@ interface InventoryItem {
 
 // Define component props
 interface InventoryTableStockReceiveSlipProps {
-  product: { code: string; name: string; unit: string; quantity: number; price: number; notes: string };
   onInventoryTableChange: (newItems: InventoryItem[]) => void;
 }
 
-export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
+export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
   const { inventoryData, status, error } = useAppSelector((state) => state.form);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
