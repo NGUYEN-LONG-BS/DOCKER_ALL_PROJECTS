@@ -91,6 +91,24 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
     }
   };
 
+  const handleClearFilter = async () => {
+    
+    const apiUrl = `http://127.0.0.1:8000/api/inventory-stock/`;
+    console.log("API URL:", apiUrl);
+
+    // Nếu muốn gọi API thực tế, bạn có thể fetch(apiUrl) ở đây
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu!");
+      const data = await response.json();
+      // Giả sử data là mảng InventoryItem
+      dispatch(setInventoryData(data));
+      onInventoryTableChange(data);
+    } catch (err: any) {
+      setErrorMessage(err.message || "Lỗi không xác định!");
+    }
+  };
+
   return (
     <div className="mt-3">
       <div className="d-flex justify-content-center gap-2 mb-3">
@@ -104,7 +122,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
         <button 
           type="button" 
           className="btn btn-outline-secondary" 
-          // onClick={clearRows}
+          onClick={handleClearFilter}
           >
           Clear filter
         </button>
