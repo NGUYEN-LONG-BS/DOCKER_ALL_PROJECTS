@@ -14,12 +14,15 @@ import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNu
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
   id: number;
-  code: string;
-  name: string;
-  unit: string;
-  quantity: number;
-  price: number;
-  notes: string;
+  so_phieu: string;
+  ngay_tren_phieu: string;
+  so_phieu_de_nghi: string;
+  ma_doi_tuong: string;
+  ten_doi_tuong?: string;
+  ma_hang: string;
+  ten_hang?: string;
+  ma_kho_nhan: string;
+  so_luong: string;
 }
 
 // Tạo interface riêng cho SlipNote
@@ -65,15 +68,7 @@ export function InventoryLogStockReceiveSlip() {
     taxId: '',
     address: '',
   });
-  const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([
-    { id: 1, 
-      code: '', 
-      name: '', 
-      unit: '', 
-      quantity: 0, 
-      price: 0, 
-      notes: '' },
-  ]);
+  const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([]);
   // Hàm cập nhật bảng thông tin tồn kho
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     setInventoryTable(newInventoryItems);
@@ -168,15 +163,7 @@ export function InventoryLogStockReceiveSlip() {
   };
 
   // Cập nhật state để lưu trữ thông tin sản phẩm với kiểu InventoryItemExport
-  const [selectedProduct, setSelectedProduct] = useState<InventoryItemExport>({
-    id: Date.now(), // Tạo id tạm thời
-    code: '',
-    name: '',
-    unit: '',
-    quantity: 0,
-    price: 0,
-    notes: '',
-  });
+  const [selectedProduct, setSelectedProduct] = useState<InventoryItemExport>();
 
   // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: InventoryItemExport) => {
