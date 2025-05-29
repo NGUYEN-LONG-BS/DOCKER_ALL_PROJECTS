@@ -1,16 +1,15 @@
-// src/components/inventoryManagementWithRedux/Tab04Table.tsx
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
   fetchInventoryData,
   setInventoryData,
   setError,
   setSuccess,
   clearForm,
-} from "../../../features/formReceiptLog/formReceiptLogSlice";
-import PopupFadeout from "../../popups/errorPopupComponentTypeFadeOutNum01";
+} from "@/features/formReceiptLog/formReceiptLogSlice";
+import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 
 // Define interface for API data
 interface InventoryItem {
@@ -37,6 +36,15 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
   const { inventoryData, status, error } = useAppSelector((state) => state.form);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Lấy filter từ Redux store
+  const documentNumber = useAppSelector((state) => state.documentNumberFilterForm.documentNumber);
+  const documentRequestNumber = useAppSelector((state) => state.documentRequestNumberFilterForm.documentRequestNumber);
+  const supplierCode = useAppSelector((state) => state.supplierFilterForm.supplier.code);
+  const productCode = useAppSelector((state) => state.productFilterForm.Product.code);
+  const dateStart = useAppSelector((state) => state.dateFilterForm.dateStart);
+  const dateEnd = useAppSelector((state) => state.dateFilterForm.dateEnd);
+
+
   // Fetch data on component mount
   useEffect(() => {
     dispatch(fetchInventoryData());
@@ -49,73 +57,32 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
     }
   }, [inventoryData, onInventoryTableChange]);
 
-  const addRow = () => {
-    // Validation: Check if the Mã hàng (product code) is empty or Số lượng (quantity) is 0
-    if (!product.code || product.quantity === 0) {
-      setErrorMessage("Mã hàng không được trống và Số lượng phải lớn hơn 0.");
-      return;
-    }
-    setErrorMessage(null);
-
-    // Create a new InventoryItem based on the provided product
-    const newItem: InventoryItem = {
-      id: inventoryData.length + 1,
-      so_phieu: product.code,
-      ngay_tren_phieu: new Date().toISOString(),
-      so_phieu_de_nghi: product.code,
-      ma_doi_tuong: product.code,
-      ma_hang: product.code,
-      ten_hang: product.name || 'N/A',
-      ma_kho_nhan: 'Kho A',
-      so_luong: product.quantity.toString(),
-    };
-
-    // Check for duplicate by ma_hang
-    const existingIndex = inventoryData.findIndex((item) => item.ma_hang === newItem.ma_hang);
-    let updatedItems: InventoryItem[];
-
-    if (existingIndex !== -1) {
-      updatedItems = inventoryData.filter((item) => item.ma_hang !== newItem.ma_hang);
-      updatedItems.push(newItem);
-    } else {
-      updatedItems = [...inventoryData, newItem];
-    }
-
-    // Reindex items
-    updatedItems = reindexItems(updatedItems);
-    dispatch(setInventoryData(updatedItems));
-    dispatch(setSuccess('Row added successfully!'));
-    onInventoryTableChange(updatedItems);
-  };
-
-  const deleteRow = (id: number) => {
-    const updatedItems = inventoryData.filter((item) => item.id !== id);
-    const reindexedItems = reindexItems(updatedItems);
-    dispatch(setInventoryData(reindexedItems));
-    dispatch(setSuccess('Row deleted successfully!'));
-    onInventoryTableChange(reindexedItems);
-  };
-
-  const clearRows = () => {
-    dispatch(clearForm());
-    onInventoryTableChange([]);
-  };
-
-  // Reindex function to ensure IDs are sequential
-  const reindexItems = (items: InventoryItem[]): InventoryItem[] => {
-    return items.map((item, index) => ({
-      ...item,
-      id: index + 1,
-    }));
+  // Xử lý khi nhấn nút Filter
+  const handleFilter = () => {
+    console.log("Từ ngày:", dateStart);
+    console.log("Đến ngày:", dateEnd);
+    console.log("Số chứng từ:", documentNumber);
+    console.log("Số đề nghị:", documentRequestNumber);
+    console.log("Mã nhà cung cấp:", supplierCode);
+    console.log("Mã sản phẩm:", productCode);
+    // Bạn có thể thực hiện filter thực tế ở đây nếu muốn
   };
 
   return (
     <div className="mt-3">
       <div className="d-flex justify-content-center gap-2 mb-3">
-        <button type="button" className="btn btn-primary" onClick={addRow}>
+        <button 
+          type="button" 
+          className="btn btn-primary" 
+          onClick={handleFilter}
+          >
           Filter
         </button>
-        <button type="button" className="btn btn-outline-secondary" onClick={clearRows}>
+        <button 
+          type="button" 
+          className="btn btn-outline-secondary" 
+          // onClick={clearRows}
+          >
           Clear filter
         </button>
       </div>
@@ -138,7 +105,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                 <th>Tên hàng</th>
                 <th>Kho</th>
                 <th>Số lượng</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -155,33 +121,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                     <td>{item.ten_hang || 'N/A'}</td>
                     <td>{item.ma_kho_nhan}</td>
                     <td>{item.so_luong}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-danger btn-sm position-relative"
-                        onClick={() => deleteRow(item.id)}
-                        style={{
-                          borderRadius: "50%",
-                          padding: "5px 10px",
-                          width: "30px",
-                          height: "30px",
-                        }}
-                      >
-                        <span className="fw-bold">X</span>
-                        <span
-                          className="position-absolute top-100 start-50 translate-middle-x"
-                          style={{
-                            fontSize: "12px",
-                            whiteSpace: "nowrap",
-                            display: "none",
-                            zIndex: 1,
-                          }}
-                          id={`deleteText-${item.id}`}
-                        >
-                          Delete
-                        </span>
-                      </button>
-                    </td>
                   </tr>
                 ))
               ) : (

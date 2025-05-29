@@ -8,7 +8,7 @@ import { SupplierComponentFilterForm } from "../../objectSupplier/ObjectSupplier
 
 // import { ProductComponent } from "../objectProduct/ObjectProductComponentInputForm";
 import { ProductComponentFilterForm } from "../../objectProduct/ObjectProductComponentFilterForm";
-import { InventoryTableStockReceiveSlip } from "../Tab04Table";
+import { InventoryTableStockReceiveSlip } from "./Tab04Table";
 import PopupFadeout from "../../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../../popups/successPopupComponentTypeFadeOutNum01";
 
