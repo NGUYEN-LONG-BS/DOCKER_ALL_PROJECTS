@@ -29,9 +29,10 @@ interface InventoryItem {
 // Define component props
 interface InventoryTableStockReceiveSlipProps {
   onInventoryTableChange: (newItems: InventoryItem[]) => void;
+  onRowSelect: (soPhieu: string) => void;
 }
 
-export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
+export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSelect }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
   const { inventoryData, status, error } = useAppSelector((state) => state.form);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -44,6 +45,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
   const dateStart = useAppSelector((state) => state.dateFilterForm.dateStart);
   const dateEnd = useAppSelector((state) => state.dateFilterForm.dateEnd);
   const [justCleared, setJustCleared] = useState(true);
+  
 
   // Đảm bảo ngày mặc định là 10 ngày gần nhất khi render lần đầu
   useEffect(() => {
@@ -181,7 +183,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
                 inventoryData.map((item, idx) => (
                   <tr 
                     key={item.id ? item.id : idx}
-                    onClick={() => console.log(item.so_phieu)}
+                    onClick={() => onRowSelect(item.so_phieu)}
                     style={{ cursor: "pointer" }}
                   >
                     <td>{idx + 1}</td>

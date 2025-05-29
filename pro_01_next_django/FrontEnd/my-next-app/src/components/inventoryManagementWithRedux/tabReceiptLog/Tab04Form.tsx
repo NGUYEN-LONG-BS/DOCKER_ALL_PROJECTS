@@ -73,6 +73,7 @@ export function InventoryLogStockReceiveSlip() {
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     setInventoryTable(newInventoryItems);
   };
+  const [selectedSoPhieu, setSelectedSoPhieu] = useState<string | null>(null);
 
   
   // State for all components
@@ -200,18 +201,46 @@ export function InventoryLogStockReceiveSlip() {
         {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
         <InventoryTableStockReceiveSlip 
         onInventoryTableChange={handleInventoryTableChange}
+        onRowSelect={setSelectedSoPhieu}
         />
 
-        <div className="d-flex justify-content-end gap-2 mt-3">          
-          <button type="button" className="btn btn-outline-secondary">
-            ALl data
-          </button>
-          <button type="button" className="btn btn-outline-secondary">
-            Export data
-          </button>
-          <button type="button" className="btn btn-primary">
-            Edit
-          </button>
+        <div className="d-flex justify-content-between gap-2 mt-3">  
+          <div className="d-flex gap-2">
+            <button type="button" className="btn btn-outline-secondary">
+              Export all data
+            </button>
+            <button type="button" className="btn btn-outline-secondary">
+              Export current data
+            </button>
+          </div>
+          <div className="d-flex gap-2">
+            <button 
+              type="button" 
+              className="btn btn-primary"
+              onClick={() => {
+                if (!selectedSoPhieu) {
+                  setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
+                } else {
+                  console.log(selectedSoPhieu);
+                }
+              }}
+            >
+              Edit
+            </button>
+            <button 
+              type="button" 
+              className="btn btn-danger"
+              onClick={() => {
+                if (!selectedSoPhieu) {
+                  setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
+                } else {
+                  console.log(selectedSoPhieu);
+                }
+              }}
+            >
+              Delete
+            </button>
+          </div>
         </div>
       </div>
       {/* Error Popup */}
