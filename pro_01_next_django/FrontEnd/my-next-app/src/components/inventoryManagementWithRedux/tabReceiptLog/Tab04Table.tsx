@@ -179,7 +179,11 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
             <tbody>
               {inventoryData.length > 0 ? (
                 inventoryData.map((item, idx) => (
-                  <tr key={item.id ? item.id : idx}>
+                  <tr 
+                    key={item.id ? item.id : idx}
+                    onClick={() => console.log(item.so_phieu)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <td>{idx + 1}</td>
                     <td>{item.so_phieu}</td>
                     <td>{new Date(item.ngay_tren_phieu).toLocaleDateString()}</td>
