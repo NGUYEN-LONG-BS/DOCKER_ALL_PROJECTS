@@ -243,6 +243,7 @@ const productSlice = createSlice({
       state.items = initialState.items;
       state.errorMessage = initialState.errorMessage;
     },
+    
   },
   
   // ==== 5. Xử lý kết quả trả về từ fetchProducts ====

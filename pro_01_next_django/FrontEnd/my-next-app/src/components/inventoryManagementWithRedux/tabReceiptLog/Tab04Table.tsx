@@ -11,6 +11,10 @@ import {
 } from "@/features/formReceiptLog/formReceiptLogSlice";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 import { setDateStart, setDateEnd } from "@/features/formReceiptLog/dateFilterFormSlice";
+import { clearDocumentNumber } from "@/features/formReceiptLog/documentNumberFilterFormSlice";
+import { clearDocumentRequestNumber } from "@/features/formReceiptLog/documentRequestNumberFilterFormSlice";
+import { clearSupplier } from "@/features/formReceiptLog/supplierFilterFormSlice";
+import { resetProductState } from "@/features/formReceiptLog/objectProductFilterFormSlice";
 
 // Define interface for API data
 interface InventoryItem {
@@ -103,6 +107,13 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange }: Inven
 
     dispatch(setDateStart(formatDate(start)));
     dispatch(setDateEnd(formatDate(end)));
+
+    // Clear các filter khác
+    dispatch(clearDocumentNumber());
+    dispatch(clearDocumentRequestNumber());
+    dispatch(clearSupplier());
+    dispatch(resetProductState());
+
     setJustCleared(true);
   };
 
