@@ -56,7 +56,6 @@ interface Supplier {
 }
 
 export function InventoryLogStockReceiveSlip() {
-
   // State for all components
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -67,8 +66,8 @@ export function InventoryLogStockReceiveSlip() {
   const [documentNumber, setDocumentNumber] = useState<string>('TB-PNK-250001');
   const [documentRequestNumber, setDocumentRequestNumber] = useState<string>('TB-DNNK-250001');
   const [slipNote, setSlipNoteState] = useState<SlipNote>({
-    selectedWarehouse: 'Kho A',   // Fallback to 'Kho A' if no value is passed
-    notesOfSlip: '',              // Fallback to 'No notes' if no value is passed
+    selectedWarehouse: 'Kho A',
+    notesOfSlip: '',
   });
   const [supplier, setSupplierState] = useState<Supplier>({
     code: '',
@@ -76,16 +75,13 @@ export function InventoryLogStockReceiveSlip() {
     taxId: '',
     address: '',
   });
-  // State for all components
   const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([]);
   const [selectedSoPhieu, setSelectedSoPhieu] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // State to store the selected file
-  // Cập nhật state để lưu trữ thông tin sản phẩm với kiểu InventoryItemExport
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<InventoryItemExport>();
-  
+
   const dispatch = useAppDispatch();
-  
-  
+
   // Hàm cập nhật bảng thông tin tồn kho
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     setInventoryTable(newInventoryItems);
@@ -93,18 +89,15 @@ export function InventoryLogStockReceiveSlip() {
 
   // Hàm xử lý khi người dùng chọn file
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("starting");
     if (event.target.files) {
-      const file = event.target.files[0]; // Lấy file được chọn
+      const file = event.target.files[0];
       if (file) {
-        console.log("File selected:", file.name);
-        setSelectedFile(file); // Lưu trữ file được chọn vào state
-        setErrorMessage(""); // Xóa thông báo lỗi (nếu có)
+        setSelectedFile(file);
+        setErrorMessage("");
       } else {
-        setErrorMessage("No file selected"); // Thông báo nếu không có file
+        setErrorMessage("No file selected");
       }
     }
-    console.log("ending");
   };
 
   // Hàm xử lý khi người dùng click vào nút "Import the data file"
@@ -113,105 +106,27 @@ export function InventoryLogStockReceiveSlip() {
       setErrorMessage("Please select a file to import");
       return;
     }
-
-    // Tạo form data để gửi file qua API
     const formData = new FormData();
-    formData.append("file", selectedFile); // Gửi file với key 'file'
-    console.log("Sending file:"); // Kiểm tra dữ liệu trước khi gửi
+    formData.append("file", selectedFile);
 
     try {
       const response = await axios.post("http://localhost:8000/api/import-data/", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // Cần set content-type là multipart/form-data để gửi file
+          "Content-Type": "multipart/form-data",
         },
       });
-
-      console.log("File imported successfully:", response.data);
       setSuccessMessage("File imported successfully!");
     } catch (error) {
-      console.error("Error importing file:", error);
       setErrorMessage("Error importing file");
     }
-
-    console.log("kết thúc");
   };
-  
-  
-  // Thêm hàm này trong component InventoryLogStockReceiveSlip
-  const handleEditClick = async () => {
-    if (!selectedSoPhieu) {
-      setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
-      return;
-    }
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/inventory-stock-by-so-phieu/?so_phieu=${selectedSoPhieu}`
-      );
-      if (!response.ok) throw new Error("API error");
-      const data = await response.json();
-      console.log(data);
-      // GỌI mapApiDataToForm ở đây!
-      if (Array.isArray(data) && data.length > 0) {
-        mapApiDataToForm(data[0]);
-      }
-      // Chuyển sang tab nhập kho
-      dispatch(setActiveTab(TAB_NAMES.NHAP_KHO));
-      // Bạn có thể truyền data sang tab mới nếu cần
-    } catch (err) {
-      setErrorMessage("Không thể lấy dữ liệu từ API!");
-    }
-  };
-
-  const mapApiDataToForm = (apiData: any) => {
-  // 1. Ngày trên phiếu
-  if (apiData.ngay_tren_phieu) {
-    const date = apiData.ngay_tren_phieu.split("T")[0];
-    dispatch(setDateRedux(date));
-  }
-  // 2. Số phiếu
-  if (apiData.so_phieu) {
-    dispatch(setDocumentNumberRedux(apiData.so_phieu));
-  }
-  // 3. Số phiếu đề nghị
-  if (apiData.so_phieu_de_nghi) {
-    dispatch(setDocumentRequestNumberRedux(apiData.so_phieu_de_nghi));
-  }
-  // 4. Mã đối tượng (nhà cung cấp)
-  if (apiData.ma_doi_tuong) {
-    dispatch(setSupplierRedux({
-      code: apiData.ma_doi_tuong,
-      name: apiData.ten_doi_tuong || "",
-      taxId: apiData.tax_id || "",
-      address: apiData.address || ""
-    }));
-  }
-  // 5. Ghi chú kho nhận
-  // if (apiData.ma_kho_nhan) {
-  //   dispatch(setSlipNote({ selectedWarehouse: apiData.ma_kho_nhan, notesOfSlip: "" }));
-  // }
-  // 6. Dữ liệu bảng sản phẩm
-  dispatch(setItems([
-    {
-      id: apiData.STT,
-      code: apiData.ma_hang,
-      name: apiData.ten_hang,
-      unit: "", // Nếu có trường đơn vị thì map vào, không thì để rỗng
-      quantity: Number(apiData.so_luong),
-      price: 0, // Nếu có trường đơn giá thì map vào, không thì để 0
-      value: 0, // Nếu có trường giá trị thì map vào, không thì để 0
-      notes: "", // Nếu có trường ghi chú thì map vào, không thì để rỗng
-    }
-  ]));
-  
-};
 
   // Use useEffect to trigger file import after selectedFile is updated
   useEffect(() => {
     if (selectedFile) {
-      handleImportFile(); // Gọi hàm xử lý upload file ngay khi file được chọn
+      handleImportFile();
     }
-  }, [selectedFile]); // This will run when selectedFile changes
-
+  }, [selectedFile]);
 
   // Cập nhật giá trị kho
   const handleWarehouseChange = (newWarehouse: string) => {
@@ -246,7 +161,75 @@ export function InventoryLogStockReceiveSlip() {
 
   // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: InventoryItemExport) => {
-    setSelectedProduct(product); // Cập nhật thông tin sản phẩm đã chọn
+    setSelectedProduct(product);
+  };
+
+  // Hàm map dữ liệu API vào Redux (và các slice)
+  const mapApiDataToForm = (apiDataArray: any[]) => {
+    if (!Array.isArray(apiDataArray) || apiDataArray.length === 0) return;
+
+    // Lấy thông tin chung từ dòng đầu tiên
+    const first = apiDataArray[0];
+
+    // 1. Ngày trên phiếu
+    if (first.ngay_tren_phieu) {
+      const date = first.ngay_tren_phieu.split("T")[0];
+      dispatch(setDateRedux(date));
+    }
+    // 2. Số phiếu
+    if (first.so_phieu) {
+      dispatch(setDocumentNumberRedux(first.so_phieu));
+    }
+    // 3. Số phiếu đề nghị
+    if (first.so_phieu_de_nghi) {
+      dispatch(setDocumentRequestNumberRedux(first.so_phieu_de_nghi));
+    }
+    // 4. Mã đối tượng (nhà cung cấp)
+    if (first.ma_doi_tuong) {
+      dispatch(setSupplierRedux({
+        code: first.ma_doi_tuong,
+        name: first.ten_doi_tuong || "",
+        taxId: first.tax_id || "",
+        address: first.address || ""
+      }));
+    }
+    // 5. Ghi chú kho nhận
+    if (first.ma_kho_nhan) {
+      dispatch(setSlipNote({ selectedWarehouse: first.ma_kho_nhan, notesOfSlip: "" }));
+    }
+    // 6. Dữ liệu bảng sản phẩm: map toàn bộ mảng
+    const items = apiDataArray.map((row: any) => ({
+      id: row.STT,
+      code: row.ma_hang,
+      name: row.ten_hang,
+      unit: "",
+      quantity: Number(row.so_luong),
+      price: 0,
+      value: 0,
+      notes: "",
+    }));
+    dispatch(setItems(items));
+  };
+
+  // Hàm xử lý khi nhấn Edit
+  const handleEditClick = async () => {
+    if (!selectedSoPhieu) {
+      setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/inventory-stock-by-so-phieu/?so_phieu=${selectedSoPhieu}`
+      );
+      if (!response.ok) throw new Error("API error");
+      const data = await response.json();
+      if (Array.isArray(data) && data.length > 0) {
+        mapApiDataToForm(data);
+      }
+      dispatch(setActiveTab(TAB_NAMES.NHAP_KHO));
+    } catch (err) {
+      setErrorMessage("Không thể lấy dữ liệu từ API!");
+    }
   };
 
   return (
@@ -276,10 +259,9 @@ export function InventoryLogStockReceiveSlip() {
           </div>
         </div>
 
-        {/* Truyền selectedProduct vào InventoryTableStockReceiveSlip */}
         <InventoryTableStockReceiveSlip 
-        onInventoryTableChange={handleInventoryTableChange}
-        onRowSelect={setSelectedSoPhieu}
+          onInventoryTableChange={handleInventoryTableChange}
+          onRowSelect={setSelectedSoPhieu}
         />
 
         <div className="d-flex justify-content-between gap-2 mt-3">  
