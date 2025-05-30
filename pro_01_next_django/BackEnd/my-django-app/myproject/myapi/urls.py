@@ -6,6 +6,7 @@ from .views import get_json_data, download_file_IMPORT_TEMPLATE, download_file_P
 from .views import MaxSoPhieuView
 from .views import CheckSoPhieuExistView
 from .views import InventoryStockListView, CheckMaHangExistView
+from .views import InventoryStockBySoPhieuView
 from .views import check_login
 from . import views
 from django.conf import settings
@@ -32,6 +33,7 @@ urlpatterns = [
     path('check-ma-hang/', CheckMaHangExistView.as_view(), name='check_ma_hang'),
     
     path('check-login/', check_login, name='check_login'),
+    path('inventory-stock-by-so-phieu/', InventoryStockBySoPhieuView.as_view(), name='inventory_stock_by_so_phieu'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development

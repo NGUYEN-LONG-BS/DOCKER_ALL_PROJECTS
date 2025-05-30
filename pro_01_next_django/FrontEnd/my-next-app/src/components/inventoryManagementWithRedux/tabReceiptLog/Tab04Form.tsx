@@ -124,6 +124,25 @@ export function InventoryLogStockReceiveSlip() {
     console.log("kết thúc");
   };
   
+  // Thêm hàm này trong component InventoryLogStockReceiveSlip
+  const handleEditClick = async () => {
+    if (!selectedSoPhieu) {
+      setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/inventory-stock-by-so-phieu/?so_phieu=${selectedSoPhieu}`
+      );
+      if (!response.ok) throw new Error("API error");
+      const data = await response.json();
+      console.log(data);
+      // Bạn có thể xử lý data ở đây nếu muốn
+    } catch (err) {
+      setErrorMessage("Không thể lấy dữ liệu từ API!");
+    }
+  };
+
   // Use useEffect to trigger file import after selectedFile is updated
   useEffect(() => {
     if (selectedFile) {
@@ -217,13 +236,7 @@ export function InventoryLogStockReceiveSlip() {
             <button 
               type="button" 
               className="btn btn-primary"
-              onClick={() => {
-                if (!selectedSoPhieu) {
-                  setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
-                } else {
-                  console.log(selectedSoPhieu);
-                }
-              }}
+              onClick={handleEditClick}
             >
               Edit
             </button>
@@ -232,7 +245,7 @@ export function InventoryLogStockReceiveSlip() {
               className="btn btn-danger"
               onClick={() => {
                 if (!selectedSoPhieu) {
-                  setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
+                  setErrorMessage("Vui lòng chọn 1 số phiếu để delete");
                 } else {
                   console.log(selectedSoPhieu);
                 }

@@ -396,3 +396,25 @@ def check_login(request):
             return JsonResponse({'error': str(e)}, status=500)
     
     return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)
+
+# ==============================================================================
+# inherit slip
+# ==============================================================================
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .serializers import InventoryStockSerializer
+
+class InventoryStockBySoPhieuView(APIView):
+    def get(self, request, format=None):
+        so_phieu = request.query_params.get('so_phieu')
+        if not so_phieu:
+            return Response({'error': 'Thiếu tham số so_phieu'}, status=status.HTTP_400_BAD_REQUEST)
+        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.filter(so_phieu=so_phieu, xoa_sua="new")
+        serialized_data = []
+        for index, item in enumerate(qs):
+            serializer = InventoryStockSerializer(item, context={'index': index})
+            serialized_data.append(serializer.data)
+        return Response(serialized_data, status=status.HTTP_200_OK)
