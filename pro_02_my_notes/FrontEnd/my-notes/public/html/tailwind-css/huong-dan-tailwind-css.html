@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hướng Dẫn Sử Dụng Tailwind CSS</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans leading-relaxed">
+  <!-- Header -->
+  <header class="bg-gray-600 text-white py-6">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl font-bold text-center">Hướng Dẫn Sử Dụng Tailwind CSS</h1>
+      <p class="text-center mt-2 text-lg">Tìm hiểu cách sử dụng Tailwind CSS với các ví dụ cụ thể và chi tiết</p>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-10">
+    <!-- Section: Màu sắc và nền -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">1. Màu Sắc và Nền</h2>
+      <p class="text-gray-600 mb-4">Tailwind cung cấp hệ thống màu sắc với các sắc độ từ 50 đến 900, áp dụng cho nền, chữ, viền, v.v.</p>
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+        <div class="bg-blue-500 text-white p-4 rounded mb-2">Khối màu xanh với chữ trắng</div>
+        <div class="bg-red-200 text-gray-800 p-4 rounded">Khối màu đỏ nhạt với chữ xám đậm</div>
+      </div>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+        <code>
+&lt;div class="bg-blue-500 text-white p-4 rounded"&gt;
+  Đây là một khối màu xanh với chữ trắng
+&lt;/div&gt;
+&lt;div class="bg-red-200 text-gray-800 p-4 mt-2 rounded"&gt;
+  Đây là một khối màu đỏ nhạt với chữ xám đậm
+&lt;/div&gt;
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> <code>bg-blue-500</code> đặt nền xanh, <code>text-white</code> đặt chữ trắng, <code>p-4</code> thêm padding 1rem, <code>rounded</code> bo góc, <code>mt-2</code> thêm margin-top 0.5rem.</p>
+    </section>
+
+    <!-- Section: Kích thước và khoảng cách -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">2. Kích Thước và Khoảng Cách</h2>
+      <p class="text-gray-600 mb-4">Quản lý padding, margin, width, height với đơn vị rem (1rem = 16px).</p>
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+        <div class="w-64 h-32 bg-green-300 mx-auto p-4 my-4">Khối rộng 256px, cao 128px, căn giữa, padding 16px.</div>
+        <div class="w-full h-48 bg-gray-100 py-8">Khối chiếm toàn bộ chiều rộng, cao 12rem, padding dọc 32px.</div>
+      </div>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+        <code>
+&lt;div class="w-64 h-32 bg-green-300 mx-auto p-4 my-4"&gt;
+  Khối này có chiều rộng 256px, cao 128px, căn giữa, và padding 16px.
+&lt;/div&gt;
+&lt;div class="w-full h-48 bg-gray-100 py-8"&gt;
+  Khối này chiếm toàn bộ chiều rộng và cao 12rem, padding dọc 32px.
+&lt;/div&gt;
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> <code>w-64 h-32</code> đặt kích thước, <code>mx-auto</code> căn giữa, <code>w-full h-48</code> chiếm toàn bộ chiều rộng và cao 12rem.</p>
+    </section>
+
+    <!-- Section: Flexbox và Grid -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">3. Flexbox và Grid</h2>
+      <p class="text-gray-600 mb-4">Tạo bố cục dễ dàng với Flexbox và Grid.</p>
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+        <!-- Flexbox -->
+        <div class="flex justify-center items-center h-64 bg-gray-200 mb-4">
+          <div class="bg-blue-500 text-white p-4 rounded">Khối con căn giữa</div>
+        </div>
+        <!-- Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-gray-100">
+          <div class="bg-blue-300 p-4 rounded">Cột 1</div>
+          <div class="bg-blue-400 p-4 rounded">Cột 2</div>
+          <div class="bg-blue-500 p-4 rounded">Cột 3</div>
+        </div>
+      </div>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+        <code>
+&lt;!-- Flexbox --&gt;
+&lt;div class="flex justify-center items-center h-64 bg-gray-200"&gt;
+  &lt;div class="bg-blue-500 text-white p-4 rounded"&gt;Khối con căn giữa&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Grid --&gt;
+&lt;div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-gray-100"&gt;
+  &lt;div class="bg-blue-300 p-4 rounded"&gt;Cột 1&lt;/div&gt;
+  &lt;div class="bg-blue-400 p-4 rounded"&gt;Cột 2&lt;/div&gt;
+  &lt;div class="bg-blue-500 p-4 rounded"&gt;Cột 3&lt;/div&gt;
+&lt;/div&gt;
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> <code>flex justify-center items-center</code> căn giữa nội dung trong Flexbox, <code>grid-cols-3</code> tạo lưới 3 cột trên màn hình lớn, <code>gap-4</code> đặt khoảng cách 1rem.</p>
+    </section>
+
+    <!-- Section: Typography -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">4. Typography</h2>
+      <p class="text-gray-600 mb-4">Điều chỉnh kích thước chữ, độ đậm, căn chỉnh với các lớp tiện ích.</p>
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+        <h1 class="text-3xl font-bold text-center text-blue-600">Tiêu đề lớn</h1>
+        <p class="text-lg font-semibold text-left text-gray-700 mt-2">Đây là đoạn văn bản mô tả.</p>
+      </div>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+        <code>
+&lt;div class="p-4 bg-gray-100"&gt;
+  &lt;h1 class="text-3xl font-bold text-center text-blue-600"&gt;Tiêu đề lớn&lt;/h1&gt;
+  &lt;p class="text-lg font-semibold text-left text-gray-700 mt-2"&gt;Đây là đoạn văn bản mô tả.&lt;/p&gt;
+&lt;/div&gt;
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> <code>text-3xl</code> đặt kích thước chữ lớn, <code>font-bold</code> chữ đậm, <code>text-center</code> căn giữa tiêu đề.</p>
+    </section>
+
+    <!-- Section: Responsive Design -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">5. Responsive Design</h2>
+      <p class="text-gray-600 mb-4">Sử dụng tiền tố <code>sm:</code>, <code>md:</code>, <code>lg:</code>, <code>xl:</code> để áp dụng lớp theo breakpoint.</p>
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+        <div class="text-center sm:text-left md:text-2xl lg:bg-blue-600 lg:text-white p-4">Responsive Text</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4 mt-4">
+          <div class="bg-blue-200 p-4 rounded">Khối 1</div>
+          <div class="bg-blue-300 p-4 rounded">Khối 2</div>
+          <div class="bg-blue-400 p-4 rounded">Khối 3</div>
+        </div>
+      </div>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+        <code>
+&lt;div class="text-center sm:text-left md:text-2xl lg:bg-blue-600 lg:text-white p-4"&gt;
+  Responsive Text
+&lt;/div&gt;
+&lt;div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4"&gt;
+  &lt;div class="bg-blue-200 p-4 rounded"&gt;Khối 1&lt;/div&gt;
+  &lt;div class="bg-blue-300 p-4 rounded"&gt;Khối 2&lt;/div&gt;
+  &lt;div class="bg-blue-400 p-4 rounded"&gt;Khối 3&lt;/div&gt;
+&lt;/div&gt;
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> <code>sm:text-left</code> căn trái trên màn hình ≥640px, <code>md:grid-cols-3</code> tạo lưới 3 cột trên màn hình ≥768px.</p>
+    </section>
+
+    <!-- Section: Hover, Focus, Active -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">6. Hover, Focus, Active</h2>
+      <p class="text-gray-600 mb-4">Thêm hiệu ứng tương tác với tiền tố <code>hover:</code>, <code>focus:</code>, <code>active:</code>.</p>
+      <div class="bg-white p-6 rounded-lg shadow-lg mb-4">
+        <button class="bg-blue-500 hover:bg-blue-700 focus:bg-blue-800 active:bg-blue-900 text-white p-2 rounded focus:ring-2 focus:ring-blue-300 mb-4">Nhấn tôi</button>
+        <input type="text" class="border-2 border-gray-300 p-2 rounded focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="Nhập text...">
+      </div>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto">
+        <code>
+&lt;button class="bg-blue-500 hover:bg-blue-700 focus:bg-blue-800 active:bg-blue-900 text-white p-2 rounded focus:ring-2 focus:ring-blue-300"&gt;
+  Nhấn tôi
+&lt;/button&gt;
+&lt;input type="text" class="border-2 border-gray-300 p-2 rounded focus:border-blue-500 focus:ring-2 focus:ring-blue-200" placeholder="Nhập text..."&gt;
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> <code>hover:bg-blue-700</code> đổi màu nền khi di chuột, <code>focus:ring-2</code> thêm viền hiệu ứng khi focus.</p>
+    </section>
+
+    <!-- Section: Ví dụ tổng hợp -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">7. Ví dụ Tổng Hợp: Card Responsive</h2>
+      <p class="text-gray-600 mb-4">Tạo một card responsive với Tailwind CSS.</p>
+      <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Card Tiêu Đề</h2>
+        <p class="text-gray-600 mb-4">Đây là nội dung mô tả của card, sử dụng Tailwind CSS để định dạng.</p>
+        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto">Nhấn vào đây</button>
+      </div>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto mt-4">
+        <code>
+&lt;div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md md:max-w-lg mx-auto"&gt;
+  &lt;h2 class="text-2xl font-bold text-center text-gray-800 mb-4"&gt;Card Tiêu Đề&lt;/h2&gt;
+  &lt;p class="text-gray-600 mb-4"&gt;Đây là nội dung mô tả của card, sử dụng Tailwind CSS để định dạng.&lt;/p&gt;
+  &lt;button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"&gt;
+    Nhấn vào đây
+  &lt;/button&gt;
+&lt;/div&gt;
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> Card sử dụng <code>max-w-sm sm:max-w-md md:max-w-lg</code> để responsive, <code>shadow-lg</code> thêm bóng, <code>hover:bg-blue-600</code> cho hiệu ứng nút.</p>
+    </section>
+
+    <!-- Section: Mẹo bổ sung -->
+    <section class="mb-12">
+      <h2 class="text-3xl font-semibold text-gray-800 mb-4">8. Mẹo Bổ Sung</h2>
+      <ul class="text-gray-600 list-disc pl-6">
+        <li><strong>Tái sử dụng classes:</strong> Tạo component với <code>@layer components</code> để tái sử dụng nhóm lớp.</li>
+        <li><strong>Debug nhanh:</strong> Sử dụng <a href="https://play.tailwindcss.com" target="_blank" class="text-blue-500 hover:underline">Tailwind Play</a> để thử nghiệm giao diện.</li>
+        <li><strong>VS Code:</strong> Cài extension <a href="https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss" target="_blank" class="text-blue-500 hover:underline">Tailwind CSS IntelliSense</a> để gợi ý lớp nhanh.</li>
+      </ul>
+      <pre class="bg-gray-800 text-white p-4 rounded-lg overflow-x-auto mt-4">
+        <code>
+@layer components {
+  .card {
+    @apply bg-white p-6 rounded-lg shadow-lg;
+  }
+}
+        </code>
+      </pre>
+      <p class="mt-4 text-gray-600"><strong>Giải thích:</strong> Định nghĩa component <code>.card</code> để áp dụng nhanh các lớp lặp lại.</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; 2025 Hướng Dẫn Tailwind CSS. Được tạo với Tailwind CSS.</p>
+    </div>
+  </footer>
+</body>
+</html>

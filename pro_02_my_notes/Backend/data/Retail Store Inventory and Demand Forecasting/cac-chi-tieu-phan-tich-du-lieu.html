@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân tích dữ liệu bán hàng</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 900px;
+            margin-top: 20px;
+        }
+        .accordion-button {
+            font-weight: bold;
+        }
+        .accordion-body {
+            background-color: #fff;
+        }
+        pre {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Hướng dẫn phân tích dữ liệu bán hàng</h1>
+        <div class="accordion" id="salesAnalysisAccordion">
+
+            <!-- 1. Hiệu suất bán hàng (Sales Performance) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSalesPerformance">
+                        1. Hiệu suất bán hàng (Sales Performance)
+                    </button>
+                </h2>
+                <div id="collapseSalesPerformance" class="accordion-collapse collapse show" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>Tổng số Units Sold theo Store ID, Product ID, Category, hoặc Region</h5>
+                        <p><strong>Công thức:</strong> Sử dụng hàm tổng hợp (SUM):</p>
+                        <ul>
+                            <li>Theo Store ID: <code>SUM(Units_Sold) GROUP BY Store_ID</code></li>
+                            <li>Theo Product ID: <code>SUM(Units_Sold) GROUP BY Product_ID</code></li>
+                            <li>Theo Category: <code>SUM(Units_Sold) GROUP BY Category</code></li>
+                            <li>Theo Region: <code>SUM(Units_Sold) GROUP BY Region</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Store_ID, SUM(Units_Sold) as Total_Units_Sold
+FROM table_name
+GROUP BY Store_ID;
+                        </pre>
+
+                        <h5>Doanh thu (Revenue) = Units Sold × Price (sau khi trừ Discount)</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Giá sau chiết khấu: <code>Adjusted_Price = Price × (1 - Discount)</code></li>
+                            <li>Doanh thu: <code>Revenue = Units_Sold × Adjusted_Price</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (Excel):</strong></p>
+                        <ul>
+                            <li>Adjusted_Price: <code>=Price * (1 - Discount)</code></li>
+                            <li>Revenue: <code>=Units_Sold * Adjusted_Price</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (Python):</strong></p>
+                        <pre>
+df['Adjusted_Price'] = df['Price'] * (1 - df['Discount'])
+df['Revenue'] = df['Units_Sold'] * df['Adjusted_Price']
+                        </pre>
+
+                        <h5>Tỷ lệ tăng trưởng doanh thu theo thời gian (Date)</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Doanh thu theo ngày: <code>Revenue_by_Date = SUM(Revenue) GROUP BY Date</code></li>
+                            <li>Tỷ lệ tăng trưởng: <code>Growth_Rate = (Revenue_current - Revenue_previous) / Revenue_previous × 100</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+WITH Revenue_By_Date AS (
+    SELECT Date, SUM(Units_Sold * Price * (1 - Discount)) as Revenue
+    FROM table_name
+    GROUP BY Date
+)
+SELECT Date, Revenue, 
+       (Revenue - LAG(Revenue) OVER (ORDER BY Date)) / LAG(Revenue) OVER (ORDER BY Date) * 100 as Growth_Rate
+FROM Revenue_By_Date;
+                        </pre>
+                        <p><strong>Ví dụ (Excel):</strong></p>
+                        <ul>
+                            <li>Revenue theo Date: <code>=SUMIFS(Revenue_Column, Date_Column, Date)</code></li>
+                            <li>Tỷ lệ tăng trưởng: <code>=((Revenue_current - Revenue_previous) / Revenue_previous) * 100</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Quản lý tồn kho (Inventory Management) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInventoryManagement">
+                        2. Quản lý tồn kho (Inventory Management)
+                    </button>
+                </h2>
+                <div id="collapseInventoryManagement" class="accordion-collapse collapse" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>Mức độ tồn kho (Inventory Level) so với Units Sold và Units Ordered</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Tình trạng thừa hàng: <code>Excess_Inventory = Inventory_Level - Units_Sold</code></li>
+                            <li>Tình trạng thiếu hàng: <code>Shortage = Units_Sold + Units_Ordered - Inventory_Level</code> (nếu âm thì không thiếu)</li>
+                        </ul>
+                        <p><strong>Ví dụ (Excel):</strong></p>
+                        <ul>
+                            <li>Excess_Inventory: <code>=Inventory_Level - Units_Sold</code></li>
+                            <li>Shortage: <code>=MAX(0, Units_Sold + Units_Ordered - Inventory_Level)</code></li>
+                        </ul>
+
+                        <h5>Tỷ lệ quay vòng hàng tồn kho (Inventory Turnover) = Units Sold / Inventory Level</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li><code>Inventory_Turnover = Units_Sold / Inventory_Level</code></li>
+                            <li>Theo nhóm (ví dụ: Store ID): <code>AVG_Inventory_Turnover = SUM(Units_Sold) / SUM(Inventory_Level) GROUP BY Store_ID</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Store_ID, SUM(Units_Sold) / SUM(Inventory_Level) as Inventory_Turnover
+FROM table_name
+GROUP BY Store_ID;
+                        </pre>
+
+                        <h5>Phân tích hàng tồn kho theo Store ID, Region, hoặc Category</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Tổng tồn kho: <code>SUM(Inventory_Level) GROUP BY Store_ID/Region/Category</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Region, SUM(Inventory_Level) as Total_Inventory
+FROM table_name
+GROUP BY Region;
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Hiệu quả giá và chiết khấu (Pricing and Discount Analysis) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePricingDiscount">
+                        3. Hiệu quả giá và chiết khấu (Pricing and Discount Analysis)
+                    </button>
+                </h2>
+                <div id="collapsePricingDiscount" class="accordion-collapse collapse" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>Tác động của Discount lên Units Sold</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Trung bình Units Sold khi có chiết khấu: <code>AVG_Units_Sold_With_Discount = AVG(Units_Sold) WHERE Discount > 0</code></li>
+                            <li>Trung bình Units Sold khi không có chiết khấu: <code>AVG_Units_Sold_Without_Discount = AVG(Units_Sold) WHERE Discount = 0</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT 
+    AVG(CASE WHEN Discount > 0 THEN Units_Sold END) as Avg_Sold_With_Discount,
+    AVG(CASE WHEN Discount = 0 THEN Units_Sold END) as Avg_Sold_Without_Discount
+FROM table_name;
+                        </pre>
+
+                        <h5>Mức giá trung bình (Price) theo Category hoặc Region</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li><code>AVG_Price = AVG(Price) GROUP BY Category/Region</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Category, AVG(Price) as Avg_Price
+FROM table_name
+GROUP BY Category;
+                        </pre>
+
+                        <h5>So sánh Price với Competitor Pricing</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Độ chênh lệch giá: <code>Price_Difference = Price - Competitor_Pricing</code></li>
+                            <li>Tỷ lệ chênh lệch: <code>Price_Difference_Ratio = (Price - Competitor_Pricing) / Competitor_Pricing × 100</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (Excel):</strong></p>
+                        <ul>
+                            <li>Price_Difference: <code>=Price - Competitor_Pricing</code></li>
+                            <li>Price_Difference_Ratio: <code>=((Price - Competitor_Pricing) / Competitor_Pricing) * 100</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Ảnh hưởng của các yếu tố bên ngoài (External Factors) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExternalFactors">
+                        4. Ảnh hưởng của các yếu tố bên ngoài (External Factors)
+                    </button>
+                </h2>
+                <div id="collapseExternalFactors" class="accordion-collapse collapse" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>Tác động của Weather Condition lên Units Sold</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Trung bình Units Sold theo Weather Condition: <code>AVG_Units_Sold_by_Weather = AVG(Units_Sold) GROUP BY Weather_Condition</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Weather_Condition, AVG(Units_Sold) as Avg_Units_Sold
+FROM table_name
+GROUP BY Weather_Condition;
+                        </pre>
+
+                        <h5>Hiệu quả của Promotion</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Trung bình Units Sold khi có Promotion: <code>AVG_Units_Sold_With_Promotion = AVG(Units_Sold) WHERE Promotion = 'Yes'</code></li>
+                            <li>Trung bình Units Sold khi không có Promotion: <code>AVG_Units_Sold_Without_Promotion = AVG(Units_Sold) WHERE Promotion = 'No'</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT 
+    AVG(CASE WHEN Promotion = 'Yes' THEN Units_Sold END) as Avg_Sold_With_Promotion,
+    AVG(CASE WHEN Promotion = 'No' THEN Units_Sold END) as Avg_Sold_Without_Promotion
+FROM table_name;
+                        </pre>
+
+                        <h5>Ảnh hưởng của Seasonality đến doanh số</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Doanh số theo Seasonality: <code>Revenue_by_Seasonality = SUM(Units_Sold × Price × (1 - Discount)) GROUP BY Seasonality</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Seasonality, SUM(Units_Sold * Price * (1 - Discount)) as Revenue
+FROM table_name
+GROUP BY Seasonality;
+                        </pre>
+
+                        <h5>Tác động của Epidemic lên Demand và doanh số</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Trung bình Demand khi có Epidemic: <code>AVG_Demand_With_Epidemic = AVG(Demand) WHERE Epidemic = 'Yes'</code></li>
+                            <li>Trung bình Demand khi không có Epidemic: <code>AVG_Demand_Without_Epidemic = AVG(Demand) WHERE Epidemic = 'No'</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT 
+    AVG(CASE WHEN Epidemic = 'Yes' THEN Demand END) as Avg_Demand_With_Epidemic,
+    AVG(CASE WHEN Epidemic = 'No' THEN Demand END) as Avg_Demand_Without_Epidemic
+FROM table_name;
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Phân tích khu vực và danh mục (Region and Category Analysis) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRegionCategory">
+                        5. Phân tích khu vực và danh mục (Region and Category Analysis)
+                    </button>
+                </h2>
+                <div id="collapseRegionCategory" class="accordion-collapse collapse" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>Doanh số và Demand theo Region</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Doanh số: <code>Revenue_by_Region = SUM(Units_Sold × Price × (1 - Discount)) GROUP BY Region</code></li>
+                            <li>Nhu cầu: <code>Total_Demand_by_Region = SUM(Demand) GROUP BY Region</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Region, 
+       SUM(Units_Sold * Price * (1 - Discount)) as Revenue,
+       SUM(Demand) as Total_Demand
+FROM table_name
+GROUP BY Region;
+                        </pre>
+
+                        <h5>Hiệu suất bán hàng theo Category</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li><code>Total_Units_Sold_by_Category = SUM(Units_Sold) GROUP BY Category</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Category, SUM(Units_Sold) as Total_Units_Sold
+FROM table_name
+GROUP BY Category;
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Hành vi đặt hàng (Ordering Behavior) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOrderingBehavior">
+                        6. Hành vi đặt hàng (Ordering Behavior)
+                    </button>
+                </h2>
+                <div id="collapseOrderingBehavior" class="accordion-collapse collapse" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>So sánh Units Ordered với Units Sold</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Độ chính xác dự báo: <code>Forecast_Accuracy = (Units_Sold / Units_Ordered) × 100</code> (nếu Units_Ordered ≠ 0)</li>
+                        </ul>
+                        <p><strong>Ví dụ (Excel):</strong></p>
+                        <ul>
+                            <li>Forecast_Accuracy: <code>=(Units_Sold / Units_Ordered) * 100</code></li>
+                        </ul>
+
+                        <h5>Phân tích tần suất đặt hàng theo Store ID hoặc Region</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Số lần đặt hàng: <code>Order_Frequency = COUNT(Units_Ordered > 0) GROUP BY Store_ID/Region</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL):</strong></p>
+                        <pre>
+SELECT Store_ID, COUNT(*) as Order_Frequency
+FROM table_name
+WHERE Units_Ordered > 0
+GROUP BY Store_ID;
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Dự báo và xu hướng (Trend and Forecasting) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTrendForecasting">
+                        7. Dự báo và xu hướng (Trend and Forecasting)
+                    </button>
+                </h2>
+                <div id="collapseTrendForecasting" class="accordion-collapse collapse" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>Xu hướng doanh số theo thời gian (Date)</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Doanh số theo ngày: <code>Revenue_by_Date = SUM(Units_Sold × Price × (1 - Discount)) GROUP BY Date</code></li>
+                            <li>Xu hướng: Sử dụng trung bình động (Moving Average).</li>
+                        </ul>
+                        <p><strong>Ví dụ (SQL - Moving Average):</strong></p>
+                        <pre>
+SELECT Date, 
+       SUM(Units_Sold * Price * (1 - Discount)) as Revenue,
+       AVG(SUM(Units_Sold * Price * (1 - Discount))) OVER (ORDER BY Date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) as Moving_Avg
+FROM table_name
+GROUP BY Date;
+                        </pre>
+
+                        <h5>Dự báo Demand dựa trên Seasonality, Weather Condition, và Epidemic</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Mô hình hồi quy: <code>Demand = β0 + β1×Seasonality + β2×Weather_Condition + β3×Epidemic + ε</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (Python):</strong></p>
+                        <pre>
+from sklearn.linear_model import LinearRegression
+X = df[['Seasonality', 'Weather_Condition', 'Epidemic']]  # Cần mã hóa thành số
+y = df['Demand']
+model = LinearRegression().fit(X, y)
+predicted_demand = model.predict(X)
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Phân tích cạnh tranh (Competitor Analysis) -->
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCompetitorAnalysis">
+                        8. Phân tích cạnh tranh (Competitor Analysis)
+                    </button>
+                </h2>
+                <div id="collapseCompetitorAnalysis" class="accordion-collapse collapse" data-bs-parent="#salesAnalysisAccordion">
+                    <div class="accordion-body">
+                        <h5>So sánh Price với Competitor Pricing</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Độ chênh lệch giá: <code>Price_Difference = Price - Competitor_Pricing</code></li>
+                            <li>Tỷ lệ chênh lệch: <code>Price_Difference_Ratio = (Price - Competitor_Pricing) / Competitor_Pricing × 100</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (Excel):</strong></p>
+                        <ul>
+                            <li>Price_Difference: <code>=Price - Competitor_Pricing</code></li>
+                            <li>Price_Difference_Ratio: <code>=((Price - Competitor_Pricing) / Competitor_Pricing) * 100</code></li>
+                        </ul>
+
+                        <h5>Đánh giá tác động của giá cạnh tranh lên Units Sold</h5>
+                        <p><strong>Công thức:</strong></p>
+                        <ul>
+                            <li>Hồi quy: <code>Units_Sold = β0 + β1×Price_Difference + ε</code></li>
+                        </ul>
+                        <p><strong>Ví dụ (Python):</strong></p>
+                        <pre>
+from sklearn.linear_model import LinearRegression
+df['Price_Difference'] = df['Price'] - df['Competitor_Pricing']
+X = df[['Price_Difference']]
+y = df['Units_Sold']
+model = LinearRegression().fit(X, y)
+print(model.coef_)  # Hệ số β1 cho biết tác động
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-4">
+            <h4>Lưu ý:</h4>
+            <ul>
+                <li>Các công thức trên có thể áp dụng trong Excel, SQL, hoặc Python tùy thuộc vào cách bạn xử lý dữ liệu.</li>
+                <li>Một số phân tích nâng cao (như dự báo, hồi quy) cần dữ liệu thực tế và các công cụ phân tích (Python, R, hoặc phần mềm BI như Tableau).</li>
+                <li>Nếu bạn có dữ liệu mẫu, có thể tính toán cụ thể hoặc viết mã chi tiết hơn!</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
