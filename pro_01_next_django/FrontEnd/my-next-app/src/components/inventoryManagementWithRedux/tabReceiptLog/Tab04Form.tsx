@@ -56,7 +56,6 @@ interface Supplier {
 }
 
 export function InventoryLogStockReceiveSlip() {
-
   // State for all components
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -67,8 +66,8 @@ export function InventoryLogStockReceiveSlip() {
   const [documentNumber, setDocumentNumber] = useState<string>('TB-PNK-250001');
   const [documentRequestNumber, setDocumentRequestNumber] = useState<string>('TB-DNNK-250001');
   const [slipNote, setSlipNoteState] = useState<SlipNote>({
-    selectedWarehouse: 'Kho A',   // Fallback to 'Kho A' if no value is passed
-    notesOfSlip: '',              // Fallback to 'No notes' if no value is passed
+    selectedWarehouse: 'Kho A',
+    notesOfSlip: '',
   });
   const [supplier, setSupplierState] = useState<Supplier>({
     code: '',
@@ -84,7 +83,6 @@ export function InventoryLogStockReceiveSlip() {
   const [selectedProduct, setSelectedProduct] = useState<InventoryItemExport>();
   
   const dispatch = useAppDispatch();
-  
   
   // Hàm cập nhật bảng thông tin tồn kho
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
@@ -137,73 +135,9 @@ export function InventoryLogStockReceiveSlip() {
   };
   
   
-  // Thêm hàm này trong component InventoryLogStockReceiveSlip
-  const handleEditClick = async () => {
-    if (!selectedSoPhieu) {
-      setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
-      return;
-    }
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/inventory-stock-by-so-phieu/?so_phieu=${selectedSoPhieu}`
-      );
-      if (!response.ok) throw new Error("API error");
-      const data = await response.json();
-      console.log(data);
-      // GỌI mapApiDataToForm ở đây!
-      if (Array.isArray(data) && data.length > 0) {
-        mapApiDataToForm(data[0]);
-      }
-      // Chuyển sang tab nhập kho
-      dispatch(setActiveTab(TAB_NAMES.NHAP_KHO));
-      // Bạn có thể truyền data sang tab mới nếu cần
-    } catch (err) {
-      setErrorMessage("Không thể lấy dữ liệu từ API!");
-    }
-  };
-
-  const mapApiDataToForm = (apiData: any) => {
-  // 1. Ngày trên phiếu
-  if (apiData.ngay_tren_phieu) {
-    const date = apiData.ngay_tren_phieu.split("T")[0];
-    dispatch(setDateRedux(date));
-  }
-  // 2. Số phiếu
-  if (apiData.so_phieu) {
-    dispatch(setDocumentNumberRedux(apiData.so_phieu));
-  }
-  // 3. Số phiếu đề nghị
-  if (apiData.so_phieu_de_nghi) {
-    dispatch(setDocumentRequestNumberRedux(apiData.so_phieu_de_nghi));
-  }
-  // 4. Mã đối tượng (nhà cung cấp)
-  if (apiData.ma_doi_tuong) {
-    dispatch(setSupplierRedux({
-      code: apiData.ma_doi_tuong,
-      name: apiData.ten_doi_tuong || "",
-      taxId: apiData.tax_id || "",
-      address: apiData.address || ""
-    }));
-  }
-  // 5. Ghi chú kho nhận
-  // if (apiData.ma_kho_nhan) {
-  //   dispatch(setSlipNote({ selectedWarehouse: apiData.ma_kho_nhan, notesOfSlip: "" }));
-  // }
-  // 6. Dữ liệu bảng sản phẩm
-  dispatch(setItems([
-    {
-      id: apiData.STT,
-      code: apiData.ma_hang,
-      name: apiData.ten_hang,
-      unit: "", // Nếu có trường đơn vị thì map vào, không thì để rỗng
-      quantity: Number(apiData.so_luong),
-      price: 0, // Nếu có trường đơn giá thì map vào, không thì để 0
-      value: 0, // Nếu có trường giá trị thì map vào, không thì để 0
-      notes: "", // Nếu có trường ghi chú thì map vào, không thì để rỗng
-    }
-  ]));
   
-};
+
+  
 
   // Use useEffect to trigger file import after selectedFile is updated
   useEffect(() => {
@@ -247,6 +181,74 @@ export function InventoryLogStockReceiveSlip() {
   // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: InventoryItemExport) => {
     setSelectedProduct(product); // Cập nhật thông tin sản phẩm đã chọn
+  };
+
+  const mapApiDataToForm = (apiData: any) => {
+    // 1. Ngày trên phiếu
+    if (apiData.ngay_tren_phieu) {
+      const date = apiData.ngay_tren_phieu.split("T")[0];
+      dispatch(setDateRedux(date));
+    }
+    // 2. Số phiếu
+    if (apiData.so_phieu) {
+      dispatch(setDocumentNumberRedux(apiData.so_phieu));
+    }
+    // 3. Số phiếu đề nghị
+    if (apiData.so_phieu_de_nghi) {
+      dispatch(setDocumentRequestNumberRedux(apiData.so_phieu_de_nghi));
+    }
+    // 4. Mã đối tượng (nhà cung cấp)
+    if (apiData.ma_doi_tuong) {
+      dispatch(setSupplierRedux({
+        code: apiData.ma_doi_tuong,
+        name: apiData.ten_doi_tuong || "",
+        taxId: apiData.tax_id || "",
+        address: apiData.address || ""
+      }));
+    }
+    // 5. Ghi chú kho nhận
+    // if (apiData.ma_kho_nhan) {
+    //   dispatch(setSlipNote({ selectedWarehouse: apiData.ma_kho_nhan, notesOfSlip: "" }));
+    // }
+    // 6. Dữ liệu bảng sản phẩm
+    dispatch(setItems([
+      {
+        id: apiData.STT,
+        code: apiData.ma_hang,
+        name: apiData.ten_hang,
+        unit: "", // Nếu có trường đơn vị thì map vào, không thì để rỗng
+        quantity: Number(apiData.so_luong),
+        price: 0, // Nếu có trường đơn giá thì map vào, không thì để 0
+        value: 0, // Nếu có trường giá trị thì map vào, không thì để 0
+        notes: "", // Nếu có trường ghi chú thì map vào, không thì để rỗng
+      }
+    ]));
+  
+  };
+
+  // Thêm hàm này trong component InventoryLogStockReceiveSlip
+  const handleEditClick = async () => {
+    if (!selectedSoPhieu) {
+      setErrorMessage("Vui lòng chọn 1 số phiếu để edit");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/inventory-stock-by-so-phieu/?so_phieu=${selectedSoPhieu}`
+      );
+      if (!response.ok) throw new Error("API error");
+      const data = await response.json();
+      console.log(data);
+      // GỌI mapApiDataToForm ở đây!
+      if (Array.isArray(data) && data.length > 0) {
+        mapApiDataToForm(data[0]);
+      }
+      // Chuyển sang tab nhập kho
+      dispatch(setActiveTab(TAB_NAMES.NHAP_KHO));
+      // Bạn có thể truyền data sang tab mới nếu cần
+    } catch (err) {
+      setErrorMessage("Không thể lấy dữ liệu từ API!");
+    }
   };
 
   return (
