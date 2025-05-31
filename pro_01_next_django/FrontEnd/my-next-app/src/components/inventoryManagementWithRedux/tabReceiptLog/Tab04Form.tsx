@@ -183,46 +183,51 @@ export function InventoryLogStockReceiveSlip() {
     setSelectedProduct(product); // Cập nhật thông tin sản phẩm đã chọn
   };
 
-  const mapApiDataToForm = (apiData: any) => {
+  const mapApiDataToForm = (apiDataArray: any[]) => {
+    if (!Array.isArray(apiDataArray) || apiDataArray.length === 0) return;
+
+    // Lấy thông tin chung từ dòng đầu tiên
+    const first = apiDataArray[0];
+
     // 1. Ngày trên phiếu
-    if (apiData.ngay_tren_phieu) {
-      const date = apiData.ngay_tren_phieu.split("T")[0];
+    if (first.ngay_tren_phieu) {
+      const date = first.ngay_tren_phieu.split("T")[0];
       dispatch(setDateRedux(date));
     }
     // 2. Số phiếu
-    if (apiData.so_phieu) {
-      dispatch(setDocumentNumberRedux(apiData.so_phieu));
+    if (first.so_phieu) {
+      dispatch(setDocumentNumberRedux(first.so_phieu));
     }
     // 3. Số phiếu đề nghị
-    if (apiData.so_phieu_de_nghi) {
-      dispatch(setDocumentRequestNumberRedux(apiData.so_phieu_de_nghi));
+    if (first.so_phieu_de_nghi) {
+      dispatch(setDocumentRequestNumberRedux(first.so_phieu_de_nghi));
     }
     // 4. Mã đối tượng (nhà cung cấp)
-    if (apiData.ma_doi_tuong) {
+    if (first.ma_doi_tuong) {
       dispatch(setSupplierRedux({
-        code: apiData.ma_doi_tuong,
-        name: apiData.ten_doi_tuong || "",
-        taxId: apiData.tax_id || "",
-        address: apiData.address || ""
+        code: first.ma_doi_tuong,
+        name: first.ten_doi_tuong || "",
+        taxId: first.tax_id || "",
+        address: first.address || ""
       }));
     }
     // 5. Ghi chú kho nhận
-    // if (apiData.ma_kho_nhan) {
-    //   dispatch(setSlipNote({ selectedWarehouse: apiData.ma_kho_nhan, notesOfSlip: "" }));
-    // }
+    if (first.ma_kho_nhan) {
+      dispatch(setSlipNote({ selectedWarehouse: first.ma_kho_nhan, notesOfSlip: "" }));
+    }
+
     // 6. Dữ liệu bảng sản phẩm
-    dispatch(setItems([
-      {
-        id: apiData.STT,
-        code: apiData.ma_hang,
-        name: apiData.ten_hang,
-        unit: "", // Nếu có trường đơn vị thì map vào, không thì để rỗng
-        quantity: Number(apiData.so_luong),
-        price: 0, // Nếu có trường đơn giá thì map vào, không thì để 0
-        value: 0, // Nếu có trường giá trị thì map vào, không thì để 0
-        notes: "", // Nếu có trường ghi chú thì map vào, không thì để rỗng
-      }
-    ]));
+    const items = apiDataArray.map((row: any) => ({
+      id: row.STT,
+      code: row.ma_hang,
+      name: row.ten_hang,
+      unit: "",
+      quantity: Number(row.so_luong),
+      price: 0,
+      value: 0,
+      notes: "",
+    }));
+    dispatch(setItems(items));
   
   };
 
@@ -241,7 +246,7 @@ export function InventoryLogStockReceiveSlip() {
       console.log(data);
       // GỌI mapApiDataToForm ở đây!
       if (Array.isArray(data) && data.length > 0) {
-        mapApiDataToForm(data[0]);
+        mapApiDataToForm(data);
       }
       // Chuyển sang tab nhập kho
       dispatch(setActiveTab(TAB_NAMES.NHAP_KHO));
