@@ -12,7 +12,7 @@ import {
   setItems,
 } from '@/features/formReceiptSlip/inventoryTableSlice';
 import { InventoryItemExport } from '@/features/formReceiptSlip/inventoryTableSlice';
-import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
+import PopupFadeout from "../../popups/errorPopupComponentTypeFadeOutNum01";
 
 interface InventoryTableStockReceiveSlipProps {
   product: InventoryItemExport;

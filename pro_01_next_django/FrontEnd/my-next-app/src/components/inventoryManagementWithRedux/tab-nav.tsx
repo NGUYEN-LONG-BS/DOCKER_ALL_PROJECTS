@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { setActiveTab, TAB_NAMES } from "@/features/formReceiptSlip/tabNavSlice";
 import { resetProductState } from "@/features/formReceiptSlip/objectProductComponentSlice";
-import { InventoryFormStockReceiveSlip } from "./Tab01Form";
+import { InventoryFormStockReceiveSlip } from "./tabReceiptInputSlip/Tab01Form";
 import { InventoryFormStockIssuesSlip } from "./Tab02Form";
 import { InventoryCategoryTab } from "./Tab03Form";
 import { InventoryLogStockReceiveSlip } from "./tabReceiptLog/Tab04Form";

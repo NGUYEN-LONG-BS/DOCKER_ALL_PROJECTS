@@ -4,10 +4,10 @@
 import React, { useEffect } from "react";
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import { setDate } from "../../features/formReceiptSlip/dateSlice";
-import { setDocumentNumber } from "../../features/formReceiptSlip/documentNumberSlice";
-import { setDocumentRequestNumber } from "../../features/formReceiptSlip/documentRequestNumberSlice";
-import { setSupplier } from "../../features/formReceiptSlip/supplierInputFormSlice";
+import { setDate } from "@/features/formReceiptSlip/dateSlice";
+import { setDocumentNumber } from "@/features/formReceiptSlip/documentNumberSlice";
+import { setDocumentRequestNumber } from "@/features/formReceiptSlip/documentRequestNumberSlice";
+import { setSupplier } from "@/features/formReceiptSlip/supplierInputFormSlice";
 import {
   setInventoryTable,
   setSelectedProduct,
@@ -18,18 +18,18 @@ import {
   downloadImportTemplate,
   downloadPrintTemplate,
   importFile,
-} from "../../features/formReceiptSlip/formReceiptSlipSlice";
-import { setItems } from "../../features/formReceiptSlip/inventoryTableSlice";
-import { RootState } from "../../store/store";
-import { DateComponent } from "../date/dateComponentInputForm";
-import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
-import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component-input-form";
-import { SupplierComponent } from "../objectSupplier/ObjectSupplierComponentInputForm";
-import { ProductComponent } from "../objectProduct/ObjectProductComponentInputForm";
+} from "@/features/formReceiptSlip/formReceiptSlipSlice";
+import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";
+import { RootState } from "@/store/store";
+import { DateComponent } from "@/components/date/dateComponentInputForm";
+import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-input-form";
+import { DocumentRequestNumberComponent } from "@/components/documentRequestNumber/document-request-number-component-input-form";
+import { SupplierComponent } from "@/components/objectSupplier/ObjectSupplierComponentInputForm";
+import { ProductComponent } from "@/components/objectProduct/ObjectProductComponentInputForm";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
-import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
-import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
-import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
+import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip";
+import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
+import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNum01";
 import { API_CHECK_SO_PHIEU_ENDPOINT } from '@/api/api';
 
 // Định nghĩa InventoryItemExport interface
