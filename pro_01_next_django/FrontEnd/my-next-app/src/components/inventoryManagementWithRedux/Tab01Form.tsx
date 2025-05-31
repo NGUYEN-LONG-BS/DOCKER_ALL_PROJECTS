@@ -264,57 +264,64 @@ export function InventoryFormStockReceiveSlip() {
           onInventoryTableChange={handleInventoryTableChange}
         />
 
-        <div className="d-flex justify-content-end gap-2 mt-3">
-          <button 
+        <div className="d-flex justify-content-between gap-2 mt-3">
+          <div className="d-flex gap-2">
+            <button 
+              type="button" 
+              className="btn btn-outline-secondary" 
+              onClick={handleTemplateClick}
+              disabled={loading}
+              >
+              Template
+            </button>
+            <input
+              type="file"
+              accept=".xlsx,.xls"
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+              id="import-file-input"
+            />
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={() => document.getElementById("import-file-input")?.click()}
+              disabled={loading}
+            >
+              Import the data file
+            </button>
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={handleImportFile}
+              disabled={loading || !selectedFile}
+            >
+              Import
+            </button>
+          </div>
+          <div className="d-flex gap-2">
+            <button 
             type="button" 
             className="btn btn-outline-secondary" 
-            onClick={handleTemplateClick}
+            onClick={handlePrintClick}
             disabled={loading}
             >
-            Template
-          </button>
-          <input
-            type="file"
-            accept=".xlsx,.xls"
-            onChange={handleFileChange}
-            style={{ display: "none" }}
-            id="import-file-input"
-          />
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => document.getElementById("import-file-input")?.click()}
-            disabled={loading}
-          >
-            Import the data file
-          </button>
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={handleImportFile}
-            disabled={loading || !selectedFile}
-          >
-            Import
-          </button>
-          <button 
-          type="button" 
-          className="btn btn-outline-secondary" 
-          onClick={handlePrintClick}
-          disabled={loading}
-          >
-            Print
-          </button>
-          <button 
-            type="button" 
-            className="btn btn-primary" 
-            onClick={handleSave}
-            disabled={loading}
-            >
-            Save
-          </button>
-          <button type="button" className="btn btn-outline-secondary" disabled={loading}>
-            Update
-          </button>
+              Print
+            </button>
+            <button 
+              type="button" 
+              className="btn btn-primary" 
+              onClick={handleSave}
+              disabled={loading}
+              >
+              Save
+            </button>
+            <button 
+              type="button" 
+              className="btn btn-outline-secondary" 
+              disabled={loading}>
+              Update
+            </button>
+          </div>
         </div>
       </div>
       <PopupFadeout message={errorMessage} onClose={() => dispatch(setErrorMessage(null))} />
