@@ -22,12 +22,9 @@ export interface PerformanceChartProps {
     hit: string
     exceed: string
   }
-  showTable?: boolean
   className?: string
   yearBackgroundColors?: string[]
   yearTextColors?: string[]
-  width?: number
-  height?: number
 }
 
 const defaultColors = {
@@ -48,21 +45,22 @@ export default function PerformanceChart({
   data,
   title = "Project Performance Trends",
   colors = defaultColors,
-  showTable: initialShowTable = false,
   className = "",
   yearBackgroundColors = defaultYearBackgroundColors,
   yearTextColors = defaultYearTextColors,
-  width = 800,
-  height = 400,
 }: PerformanceChartProps) {
-  const [showTable, setShowTable] = useState(initialShowTable)
   const chartRef = useRef<ChartJS>(null)
+  const [mounted, setMounted] = useState(false)
+
+  // Đảm bảo chỉ render chart ở client
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Get unique years from data
   const years = [...new Set(data.map((item) => item.year))].sort()
-  const quartersPerYear = 4
 
-  // Create custom plugins
+  // Custom plugins
   const yearBackgroundPlugin: Plugin = {
     id: "yearBackgroundPlugin",
     beforeDraw: (chart) => {
@@ -201,64 +199,48 @@ export default function PerformanceChart({
     },
   }
 
+  // Xử lý devicePixelRatio để cải thiện độ sắc nét (chỉ chạy ở client)
+  useEffect(() => {
+    if (mounted && chartRef.current) {
+      const canvas = chartRef.current.canvas
+      if (typeof window !== "undefined" && canvas) {
+        const ctx = canvas.getContext("2d")
+        if (ctx) {
+          const dpr = window.devicePixelRatio || 1
+          const rect = canvas.getBoundingClientRect()
+
+          canvas.width = rect.width * dpr
+          canvas.height = rect.height * dpr
+
+          ctx.scale(dpr, dpr)
+
+          canvas.style.width = `${rect.width}px`
+          canvas.style.height = `${rect.height}px`
+        }
+      }
+    }
+  }, [data, mounted])
+
+  if (!mounted) return null
+
   return (
     <div className={`w-full max-w-4xl mx-auto ${className}`}>
       {/* Chart Container */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <div className="w-full" style={{ minHeight: height }}>
-          <Chart 
-            ref={chartRef} 
-            type="bar" 
-            data={chartData} 
-            options={chartOptions}
-            width={width}
-            height={height}
+      <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="h-96 w-full">
+          <Chart
+            ref={chartRef}
+            type="bar"
+            data={chartData}
+            options={{
+              ...chartOptions,
+              devicePixelRatio: typeof window !== "undefined" ? window.devicePixelRatio * 2 : 2,
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
           />
         </div>
       </div>
-
-      {/* Toggle Button */}
-      <div className="text-center mb-6">
-        <button
-          onClick={() => setShowTable(!showTable)}
-          className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-        >
-          {showTable ? "Hide Data Table" : "Show Data Table"}
-        </button>
-      </div>
-
-      {/* Data Table */}
-      {showTable && (
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="px-6 py-4 bg-gray-50 border-b">
-            <h2 className="text-2xl font-bold text-gray-800 text-center tracking-wide">Project Performance Data</h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm text-left text-gray-700 border-separate border-spacing-0">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">YEAR</th>
-                  <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">QUARTER</th>
-                  <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">MISS (%)</th>
-                  <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">HIT (%)</th>
-                  <th className="px-6 py-3 text-xs font-bold text-gray-600 uppercase tracking-wider border-b border-gray-200">EXCEED (%)</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-100">
-                {data.map((row, index) => (
-                  <tr key={`${row.year}-${row.quarter}`} className={index % 2 === 0 ? "bg-white hover:bg-blue-50" : "bg-gray-50 hover:bg-blue-50"}>
-                    <td className="px-6 py-4 whitespace-nowrap text-base text-gray-900 font-medium">{row.year}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-base text-gray-900 font-medium">{row.quarter}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-base text-blue-600 text-center font-semibold">{row.miss}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-base text-green-600 text-center font-semibold">{row.hit}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-base text-indigo-600 text-center font-semibold">{row.exceed}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

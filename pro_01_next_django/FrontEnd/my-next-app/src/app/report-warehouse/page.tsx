@@ -1,3 +1,4 @@
+"use client"
 import PerformanceChart, { type PerformanceData } from "@/components/charts/myBarChart/barChartNum01-perfomment"
 
 // Sample data - replace with your actual data
@@ -27,7 +28,10 @@ export default function Home() {
           data={sampleData} 
           title="Project Performance Trends" 
           showTable={false} 
-          className="mb-12" />
+          className="mb-12" 
+          width={400}
+          height={300}
+        />
 
         {/* Custom colors example */}
         <PerformanceChart
