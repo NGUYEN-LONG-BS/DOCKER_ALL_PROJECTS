@@ -88,7 +88,8 @@ const Navbar = () => {
               </a>
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><Link className="dropdown-item" href="/dashboard">dashboard</Link></li>
-    
+                <li><Link className="dropdown-item" href="/report-warehouse">report-warehouse</Link></li>
+                
               </ul>
             </li>
 
