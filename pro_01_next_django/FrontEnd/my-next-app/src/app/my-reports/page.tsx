@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link";
 import { ReportDashboardTab01 } from "./components/ReportDashboardTab01"
 import { ReportDashboardTab02 } from "./components/ReportDashboardTab02"
+import { ReportDashboardTab03 } from "./components/ReportDashboardTab03"
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'tab01' | 'tab02' | 'tab03'>('tab01')
@@ -54,7 +55,9 @@ export default function Dashboard() {
           </div>
         )}
         {activeTab === 'tab03' && (
-          <div className="p-8 text-center text-gray-500 text-lg">(Nội dung báo cáo hàng tồn kho sẽ cập nhật sau)</div>
+          <div className="p-4">
+            <ReportDashboardTab03 />
+          </div>
         )}
       </div>
     </div>
