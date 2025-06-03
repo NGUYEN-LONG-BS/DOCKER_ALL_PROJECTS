@@ -1,7 +1,7 @@
 import { useState } from "react"
-import FinancialTable from "./FinancialTable"
-import CostStructureChart from "./CostStructureChart"
-import ProfitTrendCharts from "./ProfitTrendCharts"
+import FinancialTable from "./tab01/FinancialTable"
+import CostStructureChart from "./tab01/CostStructureChart"
+import ProfitTrendCharts from "./tab01/ProfitTrendCharts"
 
 export function ReportDashboardTab01() {
   const [selectedYear, setSelectedYear] = useState("2023")

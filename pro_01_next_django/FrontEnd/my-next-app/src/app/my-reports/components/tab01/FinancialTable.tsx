@@ -1,6 +1,6 @@
-import { financialData } from "../data/financialData"
-import { formatNumber, getVarianceColor } from "../utils/formatters"
-import type { FinancialItem } from "../data/types"
+import { financialData } from "../../data/financialData"
+import { formatNumber, getVarianceColor } from "../../utils/formatters"
+import type { FinancialItem } from "../../data/types"
 
 interface FinancialTableProps {
   selectedYear: string

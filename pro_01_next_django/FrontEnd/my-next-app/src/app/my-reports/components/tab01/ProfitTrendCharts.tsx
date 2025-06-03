@@ -1,5 +1,5 @@
-import { profitTrendData } from "../data/profitTrendData"
-import type { ProfitChart } from "../data/types"
+import { profitTrendData } from "../../data/profitTrendData"
+import type { ProfitChart } from "../../data/types"
 
 export default function ProfitTrendCharts() {
   const renderMiniChart = (chartInfo: ProfitChart, index: number) => {

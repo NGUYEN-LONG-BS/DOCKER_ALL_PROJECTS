@@ -1,4 +1,4 @@
-import { costStructureData } from "../data/costStructureData"
+import { costStructureData } from "../../data/costStructureData"
 
 export default function CostStructureChart() {
   return (
