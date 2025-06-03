@@ -87,9 +87,9 @@ const Navbar = () => {
                 Report
               </a>
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><Link className="dropdown-item" href="/my-reports">Báo cáo</Link></li>
                 <li><Link className="dropdown-item" href="/dashboard">dashboard</Link></li>
                 <li><Link className="dropdown-item" href="/report-warehouse">report-warehouse</Link></li>
-                <li><Link className="dropdown-item" href="/my-report-dashboard">my-report-dashboard</Link></li>
                 <li><Link className="dropdown-item" href="/my-report-bao-cao-tong-quan">my-report-bao-cao-tong-quan</Link></li>
                 
               </ul>
