@@ -90,6 +90,7 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" href="/dashboard">dashboard</Link></li>
                 <li><Link className="dropdown-item" href="/report-warehouse">report-warehouse</Link></li>
                 <li><Link className="dropdown-item" href="/my-report-dashboard">my-report-dashboard</Link></li>
+                <li><Link className="dropdown-item" href="/my-report-bao-cao-tong-quan">my-report-bao-cao-tong-quan</Link></li>
                 
               </ul>
             </li>
