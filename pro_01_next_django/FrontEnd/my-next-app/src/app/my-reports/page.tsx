@@ -5,6 +5,7 @@ import FinancialTable from "./components/FinancialTable"
 import CostStructureChart from "./components/CostStructureChart"
 import ProfitTrendCharts from "./components/ProfitTrendCharts"
 import Link from "next/link";
+import { ReportDashboardTab02 } from "./components/ReportDashboardTab02"
 
 export default function Dashboard() {
   const [selectedYear, setSelectedYear] = useState("2023")
@@ -110,7 +111,9 @@ export default function Dashboard() {
           </>
         )}
         {activeTab === 'tab02' && (
-          <div className="p-8 text-center text-gray-500 text-lg">(Nội dung báo cáo dự án sẽ cập nhật sau)</div>
+          <div className="p-4">
+            <ReportDashboardTab02 />
+          </div>
         )}
         {activeTab === 'tab03' && (
           <div className="p-8 text-center text-gray-500 text-lg">(Nội dung báo cáo hàng tồn kho sẽ cập nhật sau)</div>
