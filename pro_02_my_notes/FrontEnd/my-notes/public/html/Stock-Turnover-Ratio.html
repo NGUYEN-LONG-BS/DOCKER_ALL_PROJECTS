@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân tích Stock Turnover Ratio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+        h1, h2, h3 {
+            color: #343a40;
+        }
+        .table-responsive {
+            margin: 20px 0;
+        }
+        .table {
+            background-color: #fff;
+        }
+        .chart-container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        @media (max-width: 576px) {
+            .table {
+                font-size: 0.9rem;
+            }
+            .chart-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Phân tích Stock Turnover Ratio</h1>
+
+        <h2>Ý nghĩa</h2>
+        <p>Stock Turnover Ratio (Tỷ lệ vòng quay hàng tồn kho) là một chỉ số tài chính quan trọng, thể hiện tần suất mà một công ty bán và thay thế toàn bộ hàng tồn kho trong một khoảng thời gian nhất định (thường là một năm). Chỉ số này cho thấy mức độ hiệu quả trong quản lý hàng tồn kho và khả năng chuyển đổi hàng tồn kho thành doanh thu.</p>
+        
+        <h3>Giao dịch</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Số phiếu</th>
+                        <th>Phân loại</th>
+                        <th>Mã hàng</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền (VNĐ)</th>
+                        <th>Ngày trên phiếu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PNK001</td>
+                        <td>Nhập kho</td>
+                        <td>SP001</td>
+                        <td>100</td>
+                        <td>100,000</td>
+                        <td>2025-06-01</td>
+                    </tr>
+                    <tr>
+                        <td>PNK002</td>
+                        <td>Nhập kho</td>
+                        <td>SP002</td>
+                        <td>50</td>
+                        <td>50,000</td>
+                        <td>2025-06-02</td>
+                    </tr>
+                    <tr>
+                        <td>PXK001</td>
+                        <td>Xuất kho</td>
+                        <td>SP001</td>
+                        <td>30</td>
+                        <td>30,000</td>
+                        <td>2025-06-03</td>
+                    </tr>
+                    <tr>
+                        <td>PXK002</td>
+                        <td>Xuất kho</td>
+                        <td>SP001</td>
+                        <td>20</td>
+                        <td>20,000</td>
+                        <td>2025-06-04</td>
+                    </tr>
+                    <tr>
+                        <td>PXK003</td>
+                        <td>Xuất kho</td>
+                        <td>SP002</td>
+                        <td>10</td>
+                        <td>10,000</td>
+                        <td>2025-06-05</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Tồn kho đầu kỳ</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mã hàng</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền (VNĐ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SP001</td>
+                        <td>50</td>
+                        <td>50,000</td>
+                    </tr>
+                    <tr>
+                        <td>SP002</td>
+                        <td>20</td>
+                        <td>20,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>Giả định</h2>
+        <ul class="list-group mb-4">
+            <li class="list-group-item">Thời gian phân tích: Từ 1/6/2025 đến 5/6/2025.</li>
+            <li class="list-group-item">Đơn giá cố định: SP001 và SP002 đều có giá 1,000 VNĐ/đơn vị.</li>
+            <li class="list-group-item">Tồn kho đầu kỳ: SP001 (50 đơn vị, 50,000 VNĐ), SP002 (20 đơn vị, 20,000 VNĐ).</li>
+        </ul>
+
+        <h2>Tính toán Stock Turnover Ratio</h2>
+        <h3>Bước 1: Tính hàng tồn kho cuối kỳ</h3>
+        <ul class="list-group mb-4">
+            <li class="list-group-item">
+                <strong>SP001</strong>:
+                <ul>
+                    <li>Tồn kho đầu kỳ: 50 đơn vị (50,000 VNĐ).</li>
+                    <li>Nhập kho: 100 đơn vị (100,000 VNĐ).</li>
+                    <li>Xuất kho: 50 đơn vị (30,000 + 20,000 = 50,000 VNĐ).</li>
+                    <li>Tồn kho cuối kỳ: 50 + 100 - 50 = 100 đơn vị (100,000 VNĐ).</li>
+                </ul>
+            </li>
+            <li class="list-group-item">
+                <strong>SP002</strong>:
+                <ul>
+                    <li>Tồn kho đầu kỳ: 20 đơn vị (20,000 VNĐ).</li>
+                    <li>Nhập kho: 50 đơn vị (50,000 VNĐ).</li>
+                    <li>Xuất kho: 10 đơn vị (10,000 VNĐ).</li>
+                    <li>Tồn kho cuối kỳ: 20 + 50 - 10 = 60 đơn vị (60,000 VNĐ).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Bước 2: Tính hàng tồn kho trung bình</h3>
+        <ul class="list-group mb-4">
+            <li class="list-group-item"><strong>SP001</strong>: (50,000 + 100,000) / 2 = 75,000 VNĐ.</li>
+            <li class="list-group-item"><strong>SP002</strong>: (20,000 + 60,000) / 2 = 40,000 VNĐ.</li>
+        </ul>
+
+        <h3>Bước 3: Tính giá vốn hàng bán (COGS)</h3>
+        <ul class="list-group mb-4">
+            <li class="list-group-item"><strong>SP001</strong>: 50,000 VNĐ (30,000 + 20,000).</li>
+            <li class="list-group-item"><strong>SP002</strong>: 10,000 VNĐ.</li>
+        </ul>
+
+        <h3>Bước 4: Tính Stock Turnover Ratio</h3>
+        <ul class="list-group mb-4">
+            <li class="list-group-item"><strong>SP001</strong>: 50,000 / 75,000 = 0.667 lần.</li>
+            <li class="list-group-item"><strong>SP002</strong>: 10,000 / 40,000 = 0.25 lần.</li>
+        </ul>
+
+        <h3>Bước 5: Tính số ngày trung bình để quay vòng</h3>
+        <p>Sử dụng 5 ngày (thay vì 365 ngày) do dữ liệu chỉ trong 5 ngày.</p>
+        <ul class="list-group mb-4">
+            <li class="list-group-item"><strong>SP001</strong>: 5 / 0.667 ≈ 7.5 ngày.</li>
+            <li class="list-group-item"><strong>SP002</strong>: 5 / 0.25 = 20 ngày.</li>
+        </ul>
+
+        <h2>Kết quả phân tích</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Mặt hàng</th>
+                        <th>COGS (VNĐ)</th>
+                        <th>Tồn kho trung bình (VNĐ)</th>
+                        <th>Stock Turnover Ratio</th>
+                        <th>Số ngày quay vòng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SP001</td>
+                        <td>50,000</td>
+                        <td>75,000</td>
+                        <td>0.667</td>
+                        <td>7.5 ngày</td>
+                    </tr>
+                    <tr>
+                        <td>SP002</td>
+                        <td>10,000</td>
+                        <td>40,000</td>
+                        <td>0.25</td>
+                        <td>20 ngày</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Diễn giải</h3>
+        <ul class="list-group mb-4">
+            <li class="list-group-item"><strong>SP001</strong>: Tỷ lệ vòng quay 0.667 lần, quay vòng trong khoảng 7.5 ngày, cho thấy hiệu quả quản lý tồn kho tốt hơn.</li>
+            <li class="list-group-item"><strong>SP002</strong>: Tỷ lệ vòng quay 0.25 lần, mất 20 ngày để quay vòng, cho thấy tốc độ quay vòng chậm, có thể tồn kho dư thừa hoặc nhu cầu thấp.</li>
+        </ul>
+
+        <h2>Biểu đồ minh họa</h2>
+        <div class="chart-container">
+            <canvas id="turnoverChart"></canvas>
+        </div>
+        <script>
+            const ctx = document.getElementById('turnoverChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['SP001', 'SP002'],
+                    datasets: [
+                        {
+                            label: 'Stock Turnover Ratio',
+                            data: [0.667, 0.25],
+                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Số ngày quay vòng',
+                            data: [7.5, 20],
+                            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Giá trị'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Mặt hàng'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Stock Turnover Ratio và Số ngày quay vòng'
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <h2>Lưu ý</h2>
+        <ul class="list-group">
+            <li class="list-group-item">Dữ liệu chỉ trong 5 ngày, nên chỉ số vòng quay thấp là bình thường. Phân tích dài hạn (ví dụ: 1 năm) sẽ cho kết quả ý nghĩa hơn.</li>
+            <li class="list-group-item">Giả định đơn giá cố định (1,000 VNĐ/đơn vị) có thể không chính xác nếu giá nhập/xuất thay đổi.</li>
+        </ul>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
