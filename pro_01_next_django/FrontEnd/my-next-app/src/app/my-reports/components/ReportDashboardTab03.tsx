@@ -49,12 +49,48 @@ export function ReportDashboardTab03() {
           <BarChartNum01PerfommentNotable
             data={sampleData}
             title="Hiệu suất nổi bật"
-            width={500}
+            width={400}
             height={300}
           />
         </div>
+
         <div className="col-lg-6 col-md-12 mb-4">
-          <BarChartNum01Perfomment data={sampleData} title="Hiệu suất tổng thể" width={500} height={300} />
+          <BarChartNum01Perfomment 
+            data={sampleData} 
+            title="Hiệu suất tổng thể" 
+            width={500} 
+            height={300} />
+        </div>
+
+        <div className="col-lg-3 col-md-12 mb-4">
+          <div className="card shadow-sm border-primary">
+            <div className="card-header bg-primary text-white text-center">
+              <h5 className="mb-0 fw-bold">Hiệu suất nổi bật</h5>
+            </div>
+            <div className="card-body p-3">
+              <BarChartNum01PerfommentNotable
+                data={sampleData}
+                title=""
+                width={400}
+                height={300}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="col-lg-3 col-md-12 mb-4">
+          <div className="card shadow-sm border-primary">
+            <div className="card-header bg-primary text-white text-center">
+              <h5 className="mb-0 fw-bold">Hiệu suất nổi bật</h5>
+            </div>
+            <div className="card-body p-3">
+              <BarChartNum01PerfommentNotable
+                data={sampleData}
+                title=""
+                width={400}
+                height={300}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
