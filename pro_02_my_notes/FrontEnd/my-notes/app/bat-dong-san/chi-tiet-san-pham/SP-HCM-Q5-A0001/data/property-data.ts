@@ -54,7 +54,7 @@ Thiết kế đẹp.
 + Tầng 4: Phòng thường và sân phơi.
 Sổ đỏ vướng đẹp, chính chủ giao dịch ngay.
 
-- LH: Anh Kiệt - 0372 541 ***`,
+- LH: Mr Long - 0372 541 ***`,
   features: [
     { icon: "💰", label: "Mức giá", value: "13.8 tỷ" },
     { icon: "🏠", label: "Hướng nhà", value: "Đông" },
@@ -79,7 +79,7 @@ Sổ đỏ vướng đẹp, chính chủ giao dịch ngay.
     "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (10).jpg",
   ],
   contact: {
-    name: "Trần Tuấn Kiệt",
+    name: "Mr Long Nguyen",
     phone: "0372 541 ***",
     avatar: "/placeholder.svg?height=40&width=40",
     lastSeen: "Xem thêm 29 tin khác",

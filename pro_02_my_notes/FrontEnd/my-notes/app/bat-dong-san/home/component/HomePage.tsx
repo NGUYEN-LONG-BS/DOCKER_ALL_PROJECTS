@@ -13,7 +13,7 @@ const HomePage: React.FC = () => {
         
         <div className={styles.list}>
           {realEstateList.map((item) => (
-            <RealEstateCard key={item.id} {...item} link="/bat-dong-san/chi-tiet-san-pham" />
+            <RealEstateCard key={item.id} {...item} link={item.link} />
           ))}
         </div>
       </div>
