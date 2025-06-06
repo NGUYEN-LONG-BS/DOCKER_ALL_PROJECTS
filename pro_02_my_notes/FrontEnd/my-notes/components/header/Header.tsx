@@ -162,6 +162,11 @@ export default function Header() {
                     Trang điểm cô dâu
                   </Link>
                 </li>
+                <li>
+                  <Link href="/bat-dong-san/duchoa-longan" className="dropdown-item">
+                    Web bất động sản
+                  </Link>
+                </li>
               </ul>
             </div>
 

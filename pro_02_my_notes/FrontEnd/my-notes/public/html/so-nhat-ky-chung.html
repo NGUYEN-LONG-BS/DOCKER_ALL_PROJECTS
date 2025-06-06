@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống ghi sổ kế toán</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for additional styling -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .section-title {
+            font-weight: bold;
+            color: #343a40;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .accordion-button {
+            font-weight: 500;
+        }
+        .example-box {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <h1 class="text-center mb-5">Hệ thống ghi sổ kế toán trước khi có máy tính</h1>
+
+        <!-- Section 1: Who recorded the ledger -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="section-title">Trước khi có máy tính, sổ sách kế toán được ghi chép như thế nào?</h2>
+                <p>Trước khi máy tính được sử dụng rộng rãi, công việc ghi <strong>sổ kế toán</strong> thường được thực hiện bằng tay bởi các <strong>kế toán viên</strong> hoặc <strong>nhân viên kế toán</strong> trong doanh nghiệp. Họ chịu trách nhiệm ghi chép các giao dịch tài chính vào các sổ sách kế toán, chẳng hạn như sổ cái, sổ nhật ký, sổ tiền mặt, và các sổ khác. Công việc này đòi hỏi sự cẩn thận và kỹ năng cao để đảm bảo tính chính xác.</p>
+            </div>
+        </div>
+
+        <!-- Section 2: Difference between Journal and Ledger -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="section-title">Phân biệt sổ nhật ký và sổ cái</h2>
+                <p>Sổ cái và sổ nhật ký đều là những sổ sách quan trọng trong hệ thống kế toán, nhưng chúng có mục đích và chức năng khác nhau. Dưới đây là sự phân biệt chi tiết:</p>
+
+                <div class="accordion" id="accordionDifference">
+                    <!-- Sổ nhật ký -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJournal" aria-expanded="true" aria-controls="collapseJournal">
+                                Sổ nhật ký (Journal)
+                            </button>
+                        </h2>
+                        <div id="collapseJournal" class="accordion-collapse collapse show" data-bs-parent="#accordionDifference">
+                            <div class="accordion-body">
+                                <p><strong>Mục đích:</strong> Sổ nhật ký là nơi ghi chép tất cả các giao dịch kế toán theo thứ tự thời gian phát sinh. Mỗi giao dịch được ghi nhận dưới dạng bút toán nhật ký.</p>
+                                <p><strong>Cấu trúc:</strong> Mỗi bút toán trong sổ nhật ký thường bao gồm:</p>
+                                <ul>
+                                    <li>Ngày giao dịch</li>
+                                    <li>Mô tả giao dịch</li>
+                                    <li>Tài khoản nợ và tài khoản có</li>
+                                    <li>Số tiền của giao dịch</li>
+                                    <li>Chú thích hoặc giải thích (nếu cần)</li>
+                                </ul>
+                                <p><strong>Ví dụ:</strong></p>
+                                <div class="example-box">
+                                    Ngày 01/06/2025: Mua hàng từ nhà cung cấp A<br>
+                                    - Nợ tài khoản "Hàng hóa" 10,000,000 đồng<br>
+                                    - Có tài khoản "Tiền mặt" 10,000,000 đồng
+                                </div>
+                                <p><strong>Chức năng:</strong></p>
+                                <ul>
+                                    <li>Cung cấp bản ghi chi tiết về tất cả các giao dịch tài chính.</li>
+                                    <li>Lưu giữ thông tin về các bút toán kế toán trong thời gian phát sinh.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sổ cái -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLedger" aria-expanded="false" aria-controls="collapseLedger">
+                                Sổ cái (Ledger)
+                            </button>
+                        </h2>
+                        <div id="collapseLedger" class="accordion-collapse collapse" data-bs-parent="#accordionDifference">
+                            <div class="accordion-body">
+                                <p><strong>Mục đích:</strong> Sổ cái là nơi tập hợp và tổng hợp các giao dịch đã được ghi nhận trong sổ nhật ký và phân loại theo từng tài khoản.</p>
+                                <p><strong>Cấu trúc:</strong> Mỗi tài khoản trong sổ cái bao gồm:</p>
+                                <ul>
+                                    <li>Số dư đầu kỳ</li>
+                                    <li>Các giao dịch trong kỳ (nợ, có)</li>
+                                    <li>Số dư cuối kỳ của từng tài khoản</li>
+                                </ul>
+                                <p><strong>Ví dụ:</strong></p>
+                                <div class="example-box">
+                                    Tài khoản: Hàng hóa<br>
+                                    - Ngày 01/06/2025: Nợ 10,000,000 đồng<br>
+                                    - Số dư cuối kỳ: 10,000,000 đồng<br><br>
+                                    Tài khoản: Tiền mặt<br>
+                                    - Ngày 01/06/2025: Có 10,000,000 đồng<br>
+                                    - Số dư cuối kỳ: (tùy theo giao dịch khác)
+                                </div>
+                                <p><strong>Chức năng:</strong></p>
+                                <ul>
+                                    <li>Tổng hợp các giao dịch theo tài khoản.</li>
+                                    <li>Giúp xác định số dư cuối kỳ của từng tài khoản.</li>
+                                    <li>Theo dõi tình hình tài chính của doanh nghiệp.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sự khác biệt chính -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDifference" aria-expanded="false" aria-controls="collapseDifference">
+                                Sự khác biệt chính
+                            </button>
+                        </h2>
+                        <div id="collapseDifference" class="accordion-collapse collapse" data-bs-parent="#accordionDifference">
+                            <div class="accordion-body">
+                                <ul>
+                                    <li><strong>Mục đích:</strong> Sổ nhật ký ghi theo thứ tự thời gian; Sổ cái phân loại theo tài khoản.</li>
+                                    <li><strong>Cấu trúc:</strong> Sổ nhật ký ghi từng giao dịch cụ thể; Sổ cái tổng hợp theo tài khoản.</li>
+                                    <li><strong>Chức năng:</strong> Sổ nhật ký là bản ghi gốc; Sổ cái là bản tổng hợp.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Order of Recording -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="section-title">Thứ tự ghi chép kế toán</h2>
+                <p>Quy trình ghi chép các giao dịch trong kế toán thường được thực hiện theo các bước sau:</p>
+                <ol>
+                    <li><strong>Ghi vào sổ nhật ký:</strong>
+                        <ul>
+                            <li>Ghi từng giao dịch theo thứ tự thời gian phát sinh.</li>
+                            <li>Thông tin bao gồm: ngày tháng, mô tả, tài khoản nợ/có, số tiền, chú thích.</li>
+                            <li><strong>Ví dụ:</strong>
+                                <div class="example-box">
+                                    Ngày 01/06/2025: Mua hàng từ nhà cung cấp A<br>
+                                    - Nợ tài khoản "Hàng hóa" 10,000,000 đồng<br>
+                                    - Có tài khoản "Tiền mặt" 10,000,000 đồng
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Chuyển giao dữ liệu vào sổ cái:</strong>
+                        <ul>
+                            <li>Phân loại các bút toán từ sổ nhật ký vào các tài khoản trong sổ cái.</li>
+                            <li>Mỗi tài khoản ghi: số dư đầu kỳ, giao dịch trong kỳ, số dư cuối kỳ.</li>
+                            <li><strong>Ví dụ:</strong>
+                                <div class="example-box">
+                                    Tài khoản: Hàng hóa<br>
+                                    - Ngày 01/06/2025: Nợ 10,000,000 đồng<br>
+                                    - Số dư cuối kỳ: 10,000,000 đồng
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Kiểm tra và đối chiếu số liệu:</strong>
+                        <ul>
+                            <li>Kiểm tra tính chính xác của số liệu, đảm bảo tổng số dư nợ và có khớp nhau.</li>
+                            <li>Đối chiếu số dư cuối kỳ trong sổ cái với các báo cáo tài chính.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Lập báo cáo tài chính:</strong>
+                        <ul>
+                            <li>Sử dụng dữ liệu từ sổ cái để lập bảng cân đối kế toán, báo cáo kết quả hoạt động kinh doanh, báo cáo lưu chuyển tiền tệ, v.v.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><strong>Tóm tắt quy trình:</strong></p>
+                <ul>
+                    <li>Ghi nhật ký → Chuyển sang sổ cái → Đối chiếu và kiểm tra → Lập báo cáo tài chính.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
