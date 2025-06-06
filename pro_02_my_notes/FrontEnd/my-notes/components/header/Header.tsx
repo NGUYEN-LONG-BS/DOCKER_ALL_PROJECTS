@@ -163,7 +163,7 @@ export default function Header() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/bat-dong-san/duchoa-longan" className="dropdown-item">
+                  <Link href="/bat-dong-san/home" className="dropdown-item">
                     Web bất động sản
                   </Link>
                 </li>

@@ -13,8 +13,8 @@ export default function PropertyHeader({ contact }: PropertyHeaderProps) {
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb mb-0 small">
                 <li className="breadcrumb-item">
-                  <a href="#" className="text-decoration-none">
-                    Bán
+                  <a href="home" className="text-decoration-none">
+                    Home
                   </a>
                 </li>
                 <li className="breadcrumb-item">
