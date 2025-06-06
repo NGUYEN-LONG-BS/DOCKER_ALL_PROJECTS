@@ -9,7 +9,8 @@ const HomePage: React.FC = () => {
     <>
       <Header />
       <div className={styles.container}>
-        <h1 className={styles.heading}>Mua bán nhà đất tại Huyện Bình Chánh</h1>
+        <h1 className={styles.heading}>THÔNG TIN RÕ RÀNG - TIN CẬY - TIẾT KIỆM THỜI GIAN</h1>
+        
         <div className={styles.list}>
           {realEstateList.map((item) => (
             <RealEstateCard key={item.id} {...item} />
