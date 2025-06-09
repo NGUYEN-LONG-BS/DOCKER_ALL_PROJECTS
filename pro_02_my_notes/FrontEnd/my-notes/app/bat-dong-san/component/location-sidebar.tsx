@@ -1,15 +1,16 @@
 "use client"
 
 import React, { useState } from "react"
-import type { LocationSuggestion } from "../data/property-data"
+import type { typeDanhSachSanPham } from "../data/sideBar-data"
 
 interface LocationSidebarProps {
-  suggestions: LocationSuggestion[]
+  suggestions: typeDanhSachSanPham[]
+  canHoChungCuDucHoaLongAns: typeDanhSachSanPham[]
   relatedProperties: string[]
   supportServices: string[]
 }
 
-export default function LocationSidebar({ suggestions, relatedProperties, supportServices }: LocationSidebarProps) {
+export default function LocationSidebar({ suggestions, canHoChungCuDucHoaLongAns, relatedProperties, supportServices }: LocationSidebarProps) {
   const [showAllLand, setShowAllLand] = useState(false)
   const [showAllApartment, setShowAllApartment] = useState(false)
   const [showAllRent, setShowAllRent] = useState(false)
@@ -26,12 +27,12 @@ export default function LocationSidebar({ suggestions, relatedProperties, suppor
           Đất nền và nhà riêng {suggestions.length > landLimit && (showAllLand ? "▲" : "▼")}
         </h6>
         <div className="location-list">
-          {(showAllLand ? suggestions : suggestions.slice(0, landLimit)).map((item, index) => (
+          {(showAllLand ? suggestions : suggestions.slice(0, landLimit)).map((item: typeDanhSachSanPham, index: number) => (
             <div key={index} className="location-item">
               <a href="#" className="location-link">
-                {item.district}
+                {item.tenPhanLoai}
               </a>
-              <span className="location-count">({item.count})</span>
+              <span className="location-count">({item.soSanPham})</span>
             </div>
           ))}
         </div>
@@ -39,15 +40,15 @@ export default function LocationSidebar({ suggestions, relatedProperties, suppor
 
       <div className="sidebar-section">
         <h6 className="sidebar-title" style={{cursor: 'pointer'}} onClick={() => setShowAllApartment(v => !v)}>
-          Chung cư - căn hộ {suggestions.length > apartmentLimit && (showAllApartment ? "▲" : "▼")}
+          Chung cư - căn hộ {canHoChungCuDucHoaLongAns.length > apartmentLimit && (showAllApartment ? "▲" : "▼")}
         </h6>
         <div className="location-list">
-          {(showAllApartment ? suggestions : suggestions.slice(0, apartmentLimit)).map((item, index) => (
+          {(showAllApartment ? canHoChungCuDucHoaLongAns : canHoChungCuDucHoaLongAns.slice(0, apartmentLimit)).map((item: typeDanhSachSanPham, index: number) => (
             <div key={index} className="location-item">
               <a href="#" className="location-link">
-                {item.district}
+                {item.tenPhanLoai}
               </a>
-              <span className="location-count">({item.count})</span>
+              <span className="location-count">({item.soSanPham})</span>
             </div>
           ))}
         </div>
@@ -58,7 +59,7 @@ export default function LocationSidebar({ suggestions, relatedProperties, suppor
           Cho thuê - kinh doanh - nhà trọ {relatedProperties.length > rentLimit && (showAllRent ? "▲" : "▼")}
         </h6>
         <div className="location-list">
-          {(showAllRent ? relatedProperties : relatedProperties.slice(0, rentLimit)).map((property, index) => (
+          {(showAllRent ? relatedProperties : relatedProperties.slice(0, rentLimit)).map((property: string, index: number) => (
             <div key={index} className="location-item">
               <a href="#" className="location-link">
                 {property}
@@ -73,7 +74,7 @@ export default function LocationSidebar({ suggestions, relatedProperties, suppor
           Chính sách - quy quạch {supportServices.length > policyLimit && (showAllPolicy ? "▲" : "▼")}
         </h6>
         <div className="location-list">
-          {(showAllPolicy ? supportServices : supportServices.slice(0, policyLimit)).map((service, index) => (
+          {(showAllPolicy ? supportServices : supportServices.slice(0, policyLimit)).map((service: string, index: number) => (
             <div key={index} className="location-item">
               <a href="#" className="location-link">
                 {service}

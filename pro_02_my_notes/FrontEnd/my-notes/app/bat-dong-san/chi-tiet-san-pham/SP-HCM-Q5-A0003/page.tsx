@@ -4,9 +4,10 @@ import PropertyHeader from "./component/property-header"
 import PropertyGallery from "./component/property-gallery"
 import PropertyDetails from "./component/property-details"
 import PropertyFeatures from "./component/property-features"
-import LocationSidebar from "./component/location-sidebar"
+import LocationSidebar from "../../component/location-sidebar"
 import PropertyMap from "./component/property-map"
-import { propertyData, locationSuggestions, relatedProperties, supportServices } from "./data/property-data"
+import { propertyData } from "./data/property-data"
+import { DatNenNhaRieng, canHoChungCu, relatedProperties, supportServices } from "../../data/sideBar-data"
 
 export default function SanPhamPage() {
   return (
@@ -27,7 +28,8 @@ export default function SanPhamPage() {
 
           <div className="col-lg-4">
             <LocationSidebar
-              suggestions={locationSuggestions}
+              suggestions={DatNenNhaRieng}
+              canHoChungCuDucHoaLongAns={canHoChungCu}
               relatedProperties={relatedProperties}
               supportServices={supportServices}
             />

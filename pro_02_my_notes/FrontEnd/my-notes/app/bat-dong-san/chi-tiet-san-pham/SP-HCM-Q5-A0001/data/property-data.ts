@@ -30,11 +30,6 @@ export interface PropertySpec {
   value: string
 }
 
-export interface LocationSuggestion {
-  district: string
-  count: number
-}
-
 export const propertyData: PropertyData = {
   id: "43180567",
   title: "Bán nhà riêng Mỹ Đình, dt 56m2, 6 tô đồ cửa, giá 13.8 tỷ. Lh: 0372 541",
@@ -90,46 +85,4 @@ Sổ đỏ vướng đẹp, chính chủ giao dịch ngay.
   ],
 }
 
-export const locationSuggestions: LocationSuggestion[] = [
-  { district: "Tân mỹ", count: 15 },
-  { district: "Đức Hoà", count: 26 },
-  { district: "Hiệp Hoà", count: 12 },
-  { district: "Đức Hoà Đông", count: 16 },
-  { district: "Đức Hoà Hạ", count: 51 },
-  { district: "Đức Hoà Thượng", count: 10 },
-  { district: "Đức Lập Hạ", count: 10 },
-  { district: "Đức Lập Thượng", count: 5 },
-  { district: "Mỹ Hạnh Bắc", count: 6 },
-  { district: "Mỹ Hạnh Nam", count: 7 },
-]
 
-export const relatedProperties = [
-  "Bán đất Gia Lai",
-  "Chung cư The One Residence",
-  "Bán nhà Cầu Diễn",
-  "Chung cư FLC Star Tower",
-  "Cho thuê nhà mặt phố Lê Đức Thọ",
-  "Căn hộ Khuông Việt",
-  "Chung cư New Horizon City - 87 Lĩnh Nam",
-  "Bán đất nền Biên Hòa Riverside",
-  "Tincom Pháp Vân",
-  "căn hộ Habitat",
-  "Bán nhà mặt phố Lê Đức Thọ",
-  "Bán nhà mặt phố Định Thôn",
-  "Chung cư thap doanh nhân Tower",
-  "Bán nhà mặt phố Nguyễn Cơ Thạch",
-  "Bán nhà Quận 10",
-  "Chung cư Hateco Xuân Phương",
-  "Bán nhà Ba Đình",
-  "Bán nhà Bách Khoa",
-  "Bán nhà Phường 1 Quận 11",
-  "Bán nhà Phường 13 Phú Nhuận",
-]
-
-export const supportServices = [
-  "Tư vấn phong thủy",
-  "Dự tính chi phí làm nhà",
-  "Tính lãi suất",
-  "Quy trình xây nhà",
-  "Xem tuổi làm nhà",
-]
