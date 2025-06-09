@@ -1,5 +1,5 @@
-import "./styles/main.css"
-import "./styles/components.css"
+import "../../styles/main.css"
+import "../../styles/components.css"
 import PropertyHeader from "../../component/property-header"
 import PropertyGallery from "../../component/property-gallery"
 import PropertyDetails from "../../component/property-details"

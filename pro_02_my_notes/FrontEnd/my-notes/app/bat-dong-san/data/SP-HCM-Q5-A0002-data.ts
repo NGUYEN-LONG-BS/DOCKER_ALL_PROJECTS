@@ -30,14 +30,9 @@ export interface PropertySpec {
   value: string
 }
 
-export interface LocationSuggestion {
-  district: string
-  count: number
-}
-
 export const propertyData: PropertyData = {
   id: "43180567",
-  title: "Bán nhà riêng Mỹ Đình, dt 56m2, 6 tô đồ cửa, giá 13.8 tỷ. Lh: 0372 541",
+  title: "SP-HCM-Q5-A0002 | Bán nhà riêng Mỹ Đình, dt 56m2, 6 tô đồ cửa, giá 13.8 tỷ. Lh: 0372 541",
   price: "13.8 tỷ",
   area: "56 m²",
   bedrooms: 4,
@@ -90,46 +85,4 @@ Sổ đỏ vướng đẹp, chính chủ giao dịch ngay.
   ],
 }
 
-export const locationSuggestions: LocationSuggestion[] = [
-  { district: "Mỹ Đình 1", count: 337 },
-  { district: "Mỹ Đình 2", count: 229 },
-  { district: "Mễ Trì", count: 168 },
-  { district: "Tây Mỗ", count: 167 },
-  { district: "Phú Đô", count: 163 },
-  { district: "Xuân Phương", count: 135 },
-  { district: "Phương Canh", count: 125 },
-  { district: "Đại Mỗ", count: 117 },
-  { district: "Cầu Diễn", count: 101 },
-  { district: "Trung Văn", count: 96 },
-]
 
-export const relatedProperties = [
-  "Bán đất Gia Lai",
-  "Chung cư The One Residence",
-  "Bán nhà Cầu Diễn",
-  "Chung cư FLC Star Tower",
-  "Cho thuê nhà mặt phố Lê Đức Thọ",
-  "Căn hộ Khuông Việt",
-  "Chung cư New Horizon City - 87 Lĩnh Nam",
-  "Bán đất nền Biên Hòa Riverside",
-  "Tincom Pháp Vân",
-  "căn hộ Habitat",
-  "Bán nhà mặt phố Lê Đức Thọ",
-  "Bán nhà mặt phố Định Thôn",
-  "Chung cư thap doanh nhân Tower",
-  "Bán nhà mặt phố Nguyễn Cơ Thạch",
-  "Bán nhà Quận 10",
-  "Chung cư Hateco Xuân Phương",
-  "Bán nhà Ba Đình",
-  "Bán nhà Bách Khoa",
-  "Bán nhà Phường 1 Quận 11",
-  "Bán nhà Phường 13 Phú Nhuận",
-]
-
-export const supportServices = [
-  "Tư vấn phong thủy",
-  "Dự tính chi phí làm nhà",
-  "Tính lãi suất",
-  "Quy trình xây nhà",
-  "Xem tuổi làm nhà",
-]

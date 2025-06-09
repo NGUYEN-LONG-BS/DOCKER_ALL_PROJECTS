@@ -32,7 +32,7 @@ export interface PropertySpec {
 
 export const propertyData: PropertyData = {
   id: "43180567",
-  title: "SP-HCM-Q5-A0001 | Bán nhà riêng Mỹ Đình, dt 56m2, 6 tô đồ cửa, giá 13.8 tỷ. Lh: 0372 541",
+  title: "SP-HCM-Q5-A0003 | Bán nhà riêng Mỹ Đình, dt 56m2, 6 tô đồ cửa, giá 13.8 tỷ. Lh: 0372 541",
   price: "13.8 tỷ",
   area: "56 m²",
   bedrooms: 4,
