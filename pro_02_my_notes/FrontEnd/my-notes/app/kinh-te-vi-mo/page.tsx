@@ -13,7 +13,7 @@ export default function BootstrapHome() {
     { href: "/bootstrap/containers", label: "Cơ chế tỷ giá" },
     { href: "/bootstrap/grid", label: "Vĩ mô tiền tệ" },
     { href: "/bootstrap/typography", label: "Cung tiền" },
-    { href: "/bootstrap/colors", label: "Đường con lợi suất" },
+    { href: "/bootstrap/colors", label: "Đường cong lợi suất" },
     { href: "/bootstrap/tables", label: "Công cụ điều hành tỷ giá" },
     { href: "/bootstrap/images", label: "Cơ chế điều hành lãi suất" },
   ];

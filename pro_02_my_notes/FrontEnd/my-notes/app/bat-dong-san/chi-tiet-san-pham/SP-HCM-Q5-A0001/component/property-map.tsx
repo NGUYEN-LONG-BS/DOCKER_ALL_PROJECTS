@@ -1,8 +1,13 @@
+import Logo from "../../../home/component/Logo";
+
 export default function PropertyMap() {
   return (
     <div className="card mt-4">
       <div className="card-body">
-        <h5 className="fw-bold mb-3">Xem trên bản đồ</h5>
+        <div className="d-flex align-items-center mb-3">
+          <Logo />
+          <h5 className="fw-bold ms-3 mb-0">Xem trên bản đồ</h5>
+        </div>
         <div className="map-container">
           <div className="map-placeholder">
             <div className="map-icon">🗺️</div>

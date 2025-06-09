@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "../styles/Header.module.css";
-import Image from "next/image";
+import Logo from "./Logo";
 
 const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.left}>
-        <Image src="/bat-dong-san/placeholder-logo.png" alt="Batdongsan Logo" width={120} height={32} className={styles.logo} />
+        <Logo />
         <nav className={styles.nav}>
           <a className={styles.active} href="#">Nhà đất bán</a>
           <a href="#">Nhà đất cho thuê</a>

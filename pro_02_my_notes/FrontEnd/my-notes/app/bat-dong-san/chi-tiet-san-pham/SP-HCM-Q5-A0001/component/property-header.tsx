@@ -1,4 +1,5 @@
 import type { ContactInfo } from "../data/property-data"
+import Logo from "../../../home/component/Logo"
 
 interface PropertyHeaderProps {
   contact: ContactInfo
@@ -9,7 +10,10 @@ export default function PropertyHeader({ contact }: PropertyHeaderProps) {
     <div className="property-header">
       <div className="container-fluid">
         <div className="row align-items-center py-2">
-          <div className="col-md-8">
+          <div className="col-md-2 d-flex align-items-center">
+            <Logo />
+          </div>
+          <div className="col-md-6">
             <nav aria-label="breadcrumb">
               <ol className="breadcrumb mb-0 small">
                 <li className="breadcrumb-item">
