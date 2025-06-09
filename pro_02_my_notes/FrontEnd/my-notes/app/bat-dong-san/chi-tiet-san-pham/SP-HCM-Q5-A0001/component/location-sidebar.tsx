@@ -1,3 +1,6 @@
+"use client"
+
+import React, { useState } from "react"
 import type { LocationSuggestion } from "../data/property-data"
 
 interface LocationSidebarProps {
@@ -7,12 +10,23 @@ interface LocationSidebarProps {
 }
 
 export default function LocationSidebar({ suggestions, relatedProperties, supportServices }: LocationSidebarProps) {
+  const [showAllLand, setShowAllLand] = useState(false)
+  const [showAllApartment, setShowAllApartment] = useState(false)
+  const [showAllRent, setShowAllRent] = useState(false)
+  const [showAllPolicy, setShowAllPolicy] = useState(false)
+  
+  const landLimit = 0
+  const apartmentLimit = 0
+  const rentLimit = 0
+  const policyLimit = 0
   return (
     <div className="sidebar">
       <div className="sidebar-section">
-        <h6 className="sidebar-title">Bạn nhà riêng tại Quận Nam Từ Liêm</h6>
+        <h6 className="sidebar-title" style={{cursor: 'pointer'}} onClick={() => setShowAllLand(v => !v)}>
+          Đất nền và nhà riêng {suggestions.length > landLimit && (showAllLand ? "▲" : "▼")}
+        </h6>
         <div className="location-list">
-          {suggestions.map((item, index) => (
+          {(showAllLand ? suggestions : suggestions.slice(0, landLimit)).map((item, index) => (
             <div key={index} className="location-item">
               <a href="#" className="location-link">
                 {item.district}
@@ -20,14 +34,31 @@ export default function LocationSidebar({ suggestions, relatedProperties, suppor
               <span className="location-count">({item.count})</span>
             </div>
           ))}
-          <button className="expand-btn">Xem thêm ▼</button>
         </div>
       </div>
 
       <div className="sidebar-section">
-        <h6 className="sidebar-title">Bất động sản nổi bật</h6>
+        <h6 className="sidebar-title" style={{cursor: 'pointer'}} onClick={() => setShowAllApartment(v => !v)}>
+          Chung cư - căn hộ {suggestions.length > apartmentLimit && (showAllApartment ? "▲" : "▼")}
+        </h6>
         <div className="location-list">
-          {relatedProperties.slice(0, 10).map((property, index) => (
+          {(showAllApartment ? suggestions : suggestions.slice(0, apartmentLimit)).map((item, index) => (
+            <div key={index} className="location-item">
+              <a href="#" className="location-link">
+                {item.district}
+              </a>
+              <span className="location-count">({item.count})</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="sidebar-section">
+        <h6 className="sidebar-title" style={{cursor: 'pointer'}} onClick={() => setShowAllRent(v => !v)}>
+          Cho thuê - kinh doanh - nhà trọ {relatedProperties.length > rentLimit && (showAllRent ? "▲" : "▼")}
+        </h6>
+        <div className="location-list">
+          {(showAllRent ? relatedProperties : relatedProperties.slice(0, rentLimit)).map((property, index) => (
             <div key={index} className="location-item">
               <a href="#" className="location-link">
                 {property}
@@ -38,9 +69,11 @@ export default function LocationSidebar({ suggestions, relatedProperties, suppor
       </div>
 
       <div className="sidebar-section">
-        <h6 className="sidebar-title">Hỗ trợ tiện ích</h6>
+        <h6 className="sidebar-title" style={{cursor: 'pointer'}} onClick={() => setShowAllPolicy(v => !v)}>
+          Chính sách - quy quạch {supportServices.length > policyLimit && (showAllPolicy ? "▲" : "▼")}
+        </h6>
         <div className="location-list">
-          {supportServices.map((service, index) => (
+          {(showAllPolicy ? supportServices : supportServices.slice(0, policyLimit)).map((service, index) => (
             <div key={index} className="location-item">
               <a href="#" className="location-link">
                 {service}

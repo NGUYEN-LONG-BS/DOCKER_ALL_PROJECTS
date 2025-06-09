@@ -67,16 +67,16 @@ Sổ đỏ vướng đẹp, chính chủ giao dịch ngay.
     { icon: "🏢", label: "Số tầng", value: "4 tầng" },
   ],
   images: [
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (1).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (2).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (3).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (4).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (5).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (6).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (7).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (8).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (9).jpg",
-    "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (10).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (1).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (2).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (3).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (4).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (5).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (6).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (7).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (8).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (9).jpg",
+    "../../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (10).jpg",
   ],
   contact: {
     name: "Mr Long Nguyen",
@@ -91,16 +91,16 @@ Sổ đỏ vướng đẹp, chính chủ giao dịch ngay.
 }
 
 export const locationSuggestions: LocationSuggestion[] = [
-  { district: "Mỹ Đình 1", count: 337 },
-  { district: "Mỹ Đình 2", count: 229 },
-  { district: "Mễ Trì", count: 168 },
-  { district: "Tây Mỗ", count: 167 },
-  { district: "Phú Đô", count: 163 },
-  { district: "Xuân Phương", count: 135 },
-  { district: "Phương Canh", count: 125 },
-  { district: "Đại Mỗ", count: 117 },
-  { district: "Cầu Diễn", count: 101 },
-  { district: "Trung Văn", count: 96 },
+  { district: "Tân mỹ", count: 15 },
+  { district: "Đức Hoà", count: 26 },
+  { district: "Hiệp Hoà", count: 12 },
+  { district: "Đức Hoà Đông", count: 16 },
+  { district: "Đức Hoà Hạ", count: 51 },
+  { district: "Đức Hoà Thượng", count: 10 },
+  { district: "Đức Lập Hạ", count: 10 },
+  { district: "Đức Lập Thượng", count: 5 },
+  { district: "Mỹ Hạnh Bắc", count: 6 },
+  { district: "Mỹ Hạnh Nam", count: 7 },
 ]
 
 export const relatedProperties = [
