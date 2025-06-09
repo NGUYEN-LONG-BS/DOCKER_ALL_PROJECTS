@@ -1,4 +1,5 @@
 import type { ContactInfo } from "../data/property-data"
+import Breadcrumb, { BreadcrumbItem } from "./Breadcrumb"
 
 interface PropertyHeaderProps {
   contact: ContactInfo
@@ -10,26 +11,15 @@ export default function PropertyHeader({ contact }: PropertyHeaderProps) {
       <div className="container-fluid">
         <div className="row align-items-center py-2">
           <div className="col-md-8">
-            <nav aria-label="breadcrumb">
-              <ol className="breadcrumb mb-0 small">
-                <li className="breadcrumb-item">
-                  <a href="home" className="text-decoration-none">
-                    Home
-                  </a>
-                </li>
-                <li className="breadcrumb-item">
-                  <a href="#" className="text-decoration-none">
-                    Hà Nội
-                  </a>
-                </li>
-                <li className="breadcrumb-item">
-                  <a href="#" className="text-decoration-none">
-                    Nam Từ Liêm
-                  </a>
-                </li>
-                <li className="breadcrumb-item active">Nhà riêng tại đường Mỹ Đình</li>
-              </ol>
-            </nav>
+            <Breadcrumb
+              items={[
+                { label: "Home", link: "home" },
+                { label: "Long An", link: "home/long-an" },
+                { label: "Đức Hoà", link: "home/long-an/duc-hoa" },
+                { label: "Khu dân cư Đức Hoà Hạ", link: "home/long-an/duc-hoa/khu-dan-cu-duc-hoa-ha" },
+                { label: "SP-LA-bella-T8-62", active: true },
+              ]}
+            />
           </div>
           <div className="col-md-4">
             <div className="contact-info justify-content-end">
