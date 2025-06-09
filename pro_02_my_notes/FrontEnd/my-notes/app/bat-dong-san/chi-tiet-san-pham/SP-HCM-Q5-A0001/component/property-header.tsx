@@ -1,4 +1,4 @@
-import type { ContactInfo } from "../data/property-data"
+import type { ContactInfo } from "../../../data/SP-HCM-Q5-A0001-data"
 import Logo from "../../../home/component/Logo"
 import Breadcrumb, { BreadcrumbItem } from "./Breadcrumb"
 

@@ -6,7 +6,7 @@ import PropertyDetails from "./component/property-details"
 import PropertyFeatures from "./component/property-features"
 import LocationSidebar from "../../component/location-sidebar"
 import PropertyMap from "./component/property-map"
-import { propertyData } from "./data/property-data"
+import { propertyData } from "../../data/SP-HCM-Q5-A0001-data"
 import { DatNenNhaRieng, canHoChungCu, relatedProperties, supportServices } from "../../data/sideBar-data"
 
 export default function SanPhamPage() {

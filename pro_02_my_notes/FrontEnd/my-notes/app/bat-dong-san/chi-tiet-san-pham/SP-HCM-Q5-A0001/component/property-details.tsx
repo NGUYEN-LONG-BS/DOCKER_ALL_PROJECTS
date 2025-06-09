@@ -1,4 +1,4 @@
-import type { PropertyData } from "../data/property-data"
+import type { PropertyData } from "../../../data/SP-HCM-Q5-A0001-data"
 
 interface PropertyDetailsProps {
   property: PropertyData
