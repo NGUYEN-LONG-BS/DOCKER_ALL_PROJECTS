@@ -1,5 +1,5 @@
 import React from "react";
-import { realEstateList } from "../data/realEstateList";
+import { realEstateList } from "../../data/realEstateList";
 import RealEstateCard from "./RealEstateCard";
 import Header from "./Header";
 import styles from "../styles/HomePage.module.css";

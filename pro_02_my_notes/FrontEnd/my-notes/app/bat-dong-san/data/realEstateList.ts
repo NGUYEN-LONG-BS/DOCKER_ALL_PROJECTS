@@ -2,10 +2,10 @@
 export const realEstateList = [
   {
     id: 1,
-    title: "Bán đất tại Đoàn Nguyễn Tuấn, Hưng Long, Bình Chánh, Hồ Chí Minh, 35 triệu / m2, 6901 m2",
-    price: "24,15 tỷ",
-    area: "6901 m²",
-    address: "Đoàn Nguyễn Tuấn, Hưng Long, Bình Chánh",
+    title: "Bella Vista City, lô góc đường thương mại 21m, giá 1,15 tỷ, 100m2",
+    price: "1,15 tỷ",
+    area: "100 m²",
+    address: "Dự án Bella Vista City, Đường Tỉnh lộ 8, Xã Đức Lập Hạ, Đức Hòa, Long An",
     images: [
       "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (1).jpg",
       "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (2).jpg",
@@ -13,7 +13,7 @@ export const realEstateList = [
       "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (4).jpg",
       "../bat-dong-san/SP-HCM-Q5-A0001/SP-HCM-Q5-A0001 (5).jpg",
     ],
-    description: "Đất nền lô Đoàn Nguyễn Tuấn, Xã Hưng Long, Bình Chánh. Hỗ trợ lên đất ở, xây dựng được chào bán với giá 35 triệu/m². Thích hợp cho đầu tư sinh lời hoặc xây dựng nhà ở, vị trí tiềm năng.",
+    description: "Pháp lý: Đang chờ sổ.",
     link: "/bat-dong-san/chi-tiet-san-pham/SP-HCM-Q5-A0001"
   },
   {
