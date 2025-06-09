@@ -1,4 +1,4 @@
-import type { PropertyFeature } from "../../../data/SP-HCM-Q5-A0001-data"
+import type { PropertyFeature } from "../data/SP-HCM-Q5-A0001-data"
 
 interface PropertyFeaturesProps {
   features: PropertyFeature[]

@@ -1,6 +1,6 @@
-import type { ContactInfo } from "../../../data/SP-HCM-Q5-A0001-data"
-import Logo from "../../../home/component/Logo"
-import Breadcrumb, { BreadcrumbItem } from "../../../component/Breadcrumb"
+import type { ContactInfo } from "../data/SP-HCM-Q5-A0001-data"
+import Logo from "../home/component/Logo"
+import Breadcrumb, { BreadcrumbItem } from "./Breadcrumb"
 
 interface PropertyHeaderProps {
   contact: ContactInfo

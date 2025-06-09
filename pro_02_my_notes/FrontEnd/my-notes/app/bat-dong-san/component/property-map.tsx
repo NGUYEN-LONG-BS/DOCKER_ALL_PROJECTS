@@ -1,4 +1,4 @@
-import Logo from "../../../home/component/Logo";
+import Logo from "../home/component/Logo";
 
 export default function PropertyMap() {
   return (
