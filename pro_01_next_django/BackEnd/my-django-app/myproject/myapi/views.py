@@ -67,11 +67,18 @@ def submit_login_info(request):
 @api_view(['POST'])
 def submit_inventory_categories(request):
     if request.method == 'POST':
+        ma_hang = request.data.get('ma_hang')
+        if not ma_hang:
+            return Response({"error": "Trường 'ma_hang' không được để trống."}, status=status.HTTP_400_BAD_REQUEST)
+        # Kiểm tra điều kiện: ma_hang chưa tồn tại hoặc đã tồn tại nhưng xoa_sua khác 'new'
+        exists_new = TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=ma_hang, xoa_sua="new").exists()
+        if exists_new:
+            return Response({"error": f"Mã hàng '{ma_hang}' đã tồn tại, không thể thêm mới."}, status=status.HTTP_400_BAD_REQUEST)
         serializer = InventoryCategoriesSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Dữ liệu đã được thêm thành công!"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginInfoListView(ListAPIView):
     queryset = LoginInfo.objects.all()
