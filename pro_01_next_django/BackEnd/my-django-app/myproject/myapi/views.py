@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import FormSubmission
 from .serializers import FormSubmissionSerializer
@@ -22,6 +23,7 @@ import json
 from django.http import JsonResponse
 from django.conf import settings
 import os
+import openpyxl
 
 #========================================================================================================================
 #========================================================================================================================
@@ -418,3 +420,48 @@ class InventoryStockBySoPhieuView(APIView):
             serializer = InventoryStockSerializer(item, context={'index': index})
             serialized_data.append(serializer.data)
         return Response(serialized_data, status=status.HTTP_200_OK)
+
+# ==============================================================================
+# import inventory categories
+# ==============================================================================
+
+from .models import TB_INVENTORY_CATEGORIES
+
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def import_inventory_categories(request):
+    file_obj = request.FILES.get('file')
+    if not file_obj:
+        return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        wb = openpyxl.load_workbook(file_obj)
+        if 'import-data' not in wb.sheetnames:
+            return Response({'error': 'Sheet "import-data" not found.'}, status=status.HTTP_400_BAD_REQUEST)
+        ws = wb['import-data']
+        rows = list(ws.iter_rows(values_only=True))
+        if not rows or len(rows) < 2:
+            return Response({'error': 'No data found in sheet.'}, status=status.HTTP_400_BAD_REQUEST)
+        header = rows[0]
+        header_map = {col: idx for idx, col in enumerate(header)}
+        required_fields = ['id_nhan_vien', 'xoa_sua', 'ma_hang', 'ten_hang', 'dvt', 'sl_ton_dau_ky', 'don_gia_ton_dau_ky', 'ma_kho_luu_tru']
+        for field in required_fields:
+            if field not in header_map:
+                return Response({'error': f'Missing column: {field}'}, status=status.HTTP_400_BAD_REQUEST)
+        count = 0
+        for row in rows[1:]:
+            if not row or not row[header_map['ma_hang']]:
+                continue  # Bỏ qua dòng trống hoặc thiếu mã hàng
+            TB_INVENTORY_CATEGORIES.objects.create(
+                id_nhan_vien=row[header_map['id_nhan_vien']],
+                xoa_sua=row[header_map['xoa_sua']],
+                ma_hang=row[header_map['ma_hang']],
+                ten_hang=row[header_map['ten_hang']],
+                dvt=row[header_map['dvt']],
+                sl_ton_dau_ky=row[header_map['sl_ton_dau_ky']],
+                don_gia_ton_dau_ky=row[header_map['don_gia_ton_dau_ky']],
+                ma_kho_luu_tru=row[header_map['ma_kho_luu_tru']],
+            )
+            count += 1
+        return Response({'message': f'Import thành công {count} dòng!'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

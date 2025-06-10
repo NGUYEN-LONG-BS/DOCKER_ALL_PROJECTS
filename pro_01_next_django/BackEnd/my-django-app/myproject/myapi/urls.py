@@ -11,6 +11,7 @@ from .views import check_login
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import import_inventory_categories
 
 urlpatterns = [
     path('submit-form/', FormSubmissionView.as_view(), name='submit-form'),
@@ -34,6 +35,7 @@ urlpatterns = [
     
     path('check-login/', check_login, name='check_login'),
     path('inventory-stock-by-so-phieu/', InventoryStockBySoPhieuView.as_view(), name='inventory_stock_by_so_phieu'),
+    path('import-inventory-categories/', import_inventory_categories, name='import_inventory_categories'),
 ]
 
 if settings.DEBUG:  # Only serve static and media files during development
