@@ -197,7 +197,38 @@ export function InventoryCategoryTab() {
         <Inventory_category_post/>
         <Table_inventory_category />
         
-        <div className="d-flex justify-content-end gap-2 mt-3">          
+        <div className="d-flex justify-content-end gap-2 mt-3">
+          {/* Hidden file input for Excel import */}
+          <input
+            type="file"
+            accept=".xlsx,.xls"
+            style={{ display: "none" }}
+            id="excel-file-input"
+            onChange={async (event) => {
+              const file = event.target.files?.[0];
+              if (!file) return;
+              setSelectedFile(file);
+              setErrorMessage("");
+              // Gửi file lên API
+              const formData = new FormData();
+              formData.append("file", file);
+              try {
+                const response = await axios.post("http://localhost:8000/api/import-inventory-categories/", formData, {
+                  headers: { "Content-Type": "multipart/form-data" },
+                });
+                setSuccessMessage("File imported successfully!");
+              } catch (error) {
+                setErrorMessage("Error importing file");
+              }
+            }}
+          />
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={() => document.getElementById("excel-file-input")?.click()}
+          >
+            IMPORT EXCEL
+          </button>
           <button type="button" className="btn btn-outline-secondary">
             ALL data
           </button>
