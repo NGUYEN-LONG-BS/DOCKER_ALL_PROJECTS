@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Triển khai dự án Next.js trong mạng LAN</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    pre code {
+      background: #222 !important;
+      color: #fff !important;
+      padding: 1rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+      overflow-x: auto;
+      display: block;
+    }
+
+    /* JSON syntax highlighting */
+    pre code.json-key {
+      color: #ff5555;
+    }
+    pre code.json-value {
+      color: #50fa7b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container my-5">
+    <h1 class="text-center mb-4">Hướng dẫn triển khai dự án Next.js trong mạng LAN</h1>
+
+    <div class="row">
+      <div class="col-12">
+        <p>Để triển khai một dự án Next.js trong mạng LAN (Local Area Network), bạn sẽ cần thực hiện các bước cơ bản sau đây để đảm bảo ứng dụng có thể truy cập từ các máy khác trong cùng mạng LAN.</p>
+        <h2>1. Cài đặt Node.js và Next.js</h2>
+        <p>Đảm bảo rằng bạn đã cài đặt <strong>Node.js</strong> trên máy chủ (server). Nếu chưa, bạn có thể tải và cài đặt tại <a href="https://nodejs.org/" target="_blank">nodejs.org</a>.</p>
+        <p>Sau khi cài đặt Node.js, bạn có thể sử dụng npm (hoặc yarn) để tạo một dự án Next.js:</p>
+        <pre><code>npx create-next-app@latest
+cd your-next-app
+npm install</code></pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2>2. Cấu hình ứng dụng Next.js để có thể truy cập qua mạng LAN</h2>
+        <p>Mặc định, Next.js chỉ chạy trên <code>localhost</code>, điều này có nghĩa là ứng dụng chỉ có thể truy cập từ máy tính đang chạy ứng dụng.</p>
+        <p>Để ứng dụng có thể truy cập được từ các máy khác trong mạng LAN, bạn cần thay đổi cấu hình để lắng nghe trên tất cả các IP, không chỉ <code>localhost</code>.</p>
+        <p>Mở tệp <code>package.json</code> trong dự án Next.js và tìm phần script <code>"dev"</code>. Cập nhật lại như sau:</p>
+        <pre><code>"scripts": {
+  "dev": "next dev -H 0.0.0.0 -p 3000"
+}</code></pre>
+        <ul>
+          <li><code>-H 0.0.0.0</code> cho phép Next.js lắng nghe trên tất cả các IP trong mạng LAN.</li>
+          <li><code>-p 3000</code> là cổng mặc định của Next.js, bạn có thể thay đổi nếu muốn.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2>3. Mở cổng trên tường lửa (Firewall)</h2>
+        <p>Đảm bảo rằng cổng <strong>3000</strong> (hoặc cổng khác mà bạn đã cấu hình) không bị chặn bởi tường lửa của máy chủ.</p>
+        <p>Trên Windows, bạn có thể mở cổng này qua <strong>Control Panel > Windows Defender Firewall > Advanced settings</strong> và tạo một inbound rule cho cổng <strong>3000</strong>.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2>4. Kiểm tra địa chỉ IP của máy chủ</h2>
+        <p>Để truy cập ứng dụng từ các máy khác trong mạng LAN, bạn cần biết địa chỉ IP của máy chủ. Bạn có thể tìm địa chỉ IP của máy chủ bằng cách sử dụng lệnh <code>ipconfig</code> trên Windows hoặc <code>ifconfig</code> trên Linux/macOS.</p>
+        <p>Ghi nhớ địa chỉ IP của máy chủ, ví dụ: <code>192.168.1.100</code>.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2>5. Truy cập ứng dụng từ các máy khác trong mạng LAN</h2>
+        <p>Sau khi cấu hình xong, bạn có thể truy cập ứng dụng Next.js từ các máy tính khác trong mạng LAN bằng cách nhập địa chỉ IP của máy chủ cùng với cổng, ví dụ:</p>
+        <pre><code>http://192.168.1.100:3000</code></pre>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2>6. Một số lưu ý</h2>
+        <ul>
+          <li>Để triển khai ứng dụng Next.js ổn định và phục vụ cho môi trường thực tế, bạn có thể tạo bản build và triển khai ứng dụng bằng các công cụ như <strong>PM2</strong> hoặc <strong>Docker</strong>.</li>
+          <li>Để build dự án Next.js, sử dụng:</li>
+        </ul>
+        <pre><code>npm run build
+npm start</code></pre>
+        <ul>
+          <li>Đảm bảo rằng máy tính của bạn và các máy khác trong mạng LAN có thể giao tiếp với nhau. Nếu có sử dụng mạng Wi-Fi, bạn cần đảm bảo chúng ở cùng một dải địa chỉ IP.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2>7. Cách xem địa chỉ ip của máy tính (trên windows)</h2>
+        <p><strong>Cách 1:</strong> Sử dụng Command Prompt</p>
+        <ul>
+          <li>Nhấn Windows + R để mở hộp thoại Run.</li>
+          <li>Gõ cmd và nhấn Enter để mở Command Prompt.</li>
+          <li>Trong cửa sổ Command Prompt, gõ lệnh sau và nhấn Enter:</li>
+        </ul>
+        <pre><code>
+ipconfig
+        </code></pre>
+        <ul>
+          <li>Tìm dòng có tên IPv4 Address (Địa chỉ IPv4). Đó chính là địa chỉ IP của máy bạn.</li>
+        </ul>
+        <p><strong>Cách 2:</strong> Sử dụng Network Settings</p>
+        <ul>
+          <li>Mở Settings > Network & Internet.</li>
+          <li>Chọn Status > View your network properties.</li>
+          <li>Tìm phần IPv4 Address, bạn sẽ thấy địa chỉ IP của mình.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2>8. Lưu ý về chế độ development (npm run dev) và production (npm run build, npm start)</h2>
+        <p><strong>Khi bạn chỉ chạy <code>npm run dev</code> (hoặc <code>next dev</code>), ứng dụng Next.js sẽ hoạt động ở chế độ development (phát triển), điều này có thể có một số hạn chế so với việc chạy ứng dụng trong chế độ production.</strong></p>
+        <p><u>Dưới đây là những hạn chế và lý do tại sao bạn nên tránh sử dụng <code>npm run dev</code> cho môi trường sản xuất:</u></p>
+        <ul>
+          <li><strong>Hiệu suất không tối ưu:</strong> Chế độ development không tối ưu hóa mã nguồn và tài nguyên cho tốc độ hoặc hiệu suất. Các tính năng như caching, tree shaking, và minification không được bật trong chế độ dev, khiến thời gian tải trang và hiệu suất tổng thể thấp hơn so với chế độ production.</li>
+          <li><strong>Không có các tính năng bảo mật:</strong> Chế độ development không cung cấp các tính năng bảo mật mà bạn sẽ nhận được trong môi trường production. Ví dụ: trong chế độ development, ứng dụng có thể để lộ thông tin lỗi và thông báo chi tiết mà hacker có thể tận dụng để tìm ra lỗ hổng bảo mật.</li>
+          <li><strong>Không có tối ưu hóa tài nguyên:</strong> Webpack và các công cụ build trong chế độ development không nén hoặc tối ưu hóa các file JavaScript và CSS, làm cho dung lượng tải về lớn hơn và có thể làm chậm tốc độ tải trang.</li>
+          <li><strong>Không hỗ trợ khả năng mở rộng:</strong> Ứng dụng chạy ở chế độ development thường không thể mở rộng tốt như trong môi trường production. Bạn không thể sử dụng các công cụ như load balancing hay caching hiệu quả.</li>
+          <li><strong>Không phục vụ các tài nguyên tĩnh tối ưu:</strong> Các tài nguyên tĩnh (ảnh, file CSS, JavaScript) trong chế độ development không được tối ưu hóa. Trong môi trường production, chúng sẽ được nén và có hash name để cache lâu dài, giảm băng thông và tăng tốc độ tải.</li>
+          <li><strong>Khả năng xử lý lỗi kém hơn:</strong> Chế độ development cung cấp nhiều thông tin chi tiết về lỗi và cảnh báo, nhưng khi sản phẩm được triển khai trong môi trường thực tế, người dùng không nên thấy những lỗi này. Điều này có thể dẫn đến trải nghiệm người dùng không tốt.</li>
+        </ul>
+        <p><strong>Khi nào bạn nên sử dụng <code>npm run dev</code>:</strong></p>
+        <ul>
+          <li>Chỉ nên sử dụng <code>npm run dev</code> khi bạn đang trong quá trình phát triển và cần nhanh chóng kiểm tra thay đổi mã nguồn.</li>
+          <li>Không dùng cho sản phẩm cuối: Đừng sử dụng <code>npm run dev</code> trong môi trường sản xuất (production) vì nó không đủ mạnh mẽ và tối ưu cho các yêu cầu hiệu suất, bảo mật, và khả năng mở rộng.</li>
+        </ul>
+        <p><strong>Khi nào bạn nên sử dụng <code>npm run build</code> và <code>npm start</code>:</strong></p>
+        <ul>
+          <li><strong>Sản xuất (Production):</strong> Khi bạn đã hoàn thành việc phát triển và muốn triển khai ứng dụng vào môi trường sản xuất, bạn nên sử dụng <code>npm run build</code> để tạo bản build tối ưu của ứng dụng và sau đó sử dụng <code>npm start</code> để chạy ứng dụng ở chế độ production.</li>
+          <li><code>npm run build</code>: Tạo bản build tối ưu cho production, nén và tối ưu hóa các file.</li>
+          <li><code>npm start</code>: Chạy ứng dụng trong môi trường production, sử dụng các cài đặt tối ưu cho hiệu suất và bảo mật.</li>
+        </ul>
+        <div class="alert alert-info mt-3">
+          <strong>Tóm lại:</strong><br/>
+          <ul>
+            <li><code>npm run dev</code> chỉ nên dùng cho phát triển, không nên sử dụng trong môi trường production vì hiệu suất và bảo mật kém.</li>
+            <li><code>npm run build</code> và <code>npm start</code> là lựa chọn tốt hơn cho môi trường sản xuất vì chúng tối ưu hóa hiệu suất và bảo mật của ứng dụng.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('pre code').forEach(function (block) {
+        // Only highlight if content looks like JSON
+        try {
+          const text = block.textContent.trim();
+          if (text.startsWith('{') || text.startsWith('[')) {
+            block.innerHTML = block.innerHTML
+              .replace(/("[^"]+":)/g, '<span class="json-key">$1</span>')
+              .replace(/(:\s*)("[^"]*"|\d+|true|false|null)/g, function(match, p1, p2) {
+                return p1 + '<span class="json-value">' + p2 + '</span>';
+              });
+          }
+        } catch (e) {}
+      });
+    });
+  </script>
+</body>
+</html>
