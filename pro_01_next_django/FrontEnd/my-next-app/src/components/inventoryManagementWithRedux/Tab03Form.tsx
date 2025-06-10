@@ -134,11 +134,11 @@ export function InventoryCategoryTab() {
   };
   
   // Use useEffect to trigger file import after selectedFile is updated
-  useEffect(() => {
-    if (selectedFile) {
-      handleImportFile(); // Gọi hàm xử lý upload file ngay khi file được chọn
-    }
-  }, [selectedFile]); // This will run when selectedFile changes
+  // useEffect(() => {
+  //   if (selectedFile) {
+  //     handleImportFile(); // Gọi hàm xử lý upload file ngay khi file được chọn
+  //   }
+  // }, [selectedFile]); // This will run when selectedFile changes
 
 
   // Cập nhật giá trị kho
@@ -216,9 +216,20 @@ export function InventoryCategoryTab() {
                 const response = await axios.post("http://localhost:8000/api/import-inventory-categories/", formData, {
                   headers: { "Content-Type": "multipart/form-data" },
                 });
-                setSuccessMessage("File imported successfully!");
-              } catch (error) {
-                setErrorMessage("Error importing file");
+                // Hiển thị thông báo thành công từ backend
+                setSuccessMessage(response.data.message || "Import thành công!");
+              } catch (error: any) {
+                // Nếu backend trả về message hoặc errors, hiển thị chúng
+                if (error.response && error.response.data) {
+                  const data = error.response.data;
+                  let msg = data.message || data.error || "Error importing file";
+                  if (data.errors && Array.isArray(data.errors)) {
+                    msg += "\n" + data.errors.join("\n");
+                  }
+                  setErrorMessage(msg);
+                } else {
+                  setErrorMessage("Error importing file");
+                }
               }
             }}
           />
