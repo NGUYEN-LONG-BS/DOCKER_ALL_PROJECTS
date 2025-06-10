@@ -14,9 +14,15 @@ interface InventoryFormData {
   ma_kho_luu_tru: string;
 }
 
+// Thêm props để nhận callback từ cha
+interface InventoryFormProps {
+  onSuccess?: (msg: string) => void;
+  onError?: (msg: string) => void;
+}
+
 const API_URL = 'http://localhost:8000/api/get-inventory-categories/';
 
-const InventoryForm: React.FC = () => {
+const InventoryForm: React.FC<InventoryFormProps> = ({ onSuccess, onError }) => {
   // State để lưu trữ dữ liệu form
   const [formData, setFormData] = useState<InventoryFormData>({
     id_nhan_vien: 'NV01',
@@ -30,8 +36,6 @@ const InventoryForm: React.FC = () => {
   });
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [success, setSuccess] = useState<string>('');
 
   // Hàm xử lý thay đổi giá trị trong form
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -43,8 +47,6 @@ const InventoryForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
 
     try {
       const response = await axios.post('http://localhost:8000/api/submit-inventory-categories/', formData, {
@@ -53,11 +55,19 @@ const InventoryForm: React.FC = () => {
         },
       });
       // Nếu thành công
-      setSuccess('Dữ liệu đã được gửi thành công!');
       mutate(API_URL); // Cập nhật lại bảng inventory khi thêm mới thành công
+      if (onSuccess) onSuccess('Dữ liệu đã được gửi thành công!');
       console.log(response.data);
-    } catch (error) {
-      setError('Đã có lỗi xảy ra, vui lòng thử lại!');
+    } catch (error: any) {
+      let msg = 'Đã có lỗi xảy ra, vui lòng thử lại!';
+      if (error.response && error.response.data) {
+        const data = error.response.data;
+        msg = data.message || data.error || msg;
+        if (data.errors && Array.isArray(data.errors)) {
+          msg += "\n" + data.errors.join("\n");
+        }
+      }
+      if (onError) onError(msg);
       console.error(error);
     } finally {
       setLoading(false);
@@ -170,9 +180,6 @@ const InventoryForm: React.FC = () => {
             {loading ? 'Sending...' : 'Save'}
           </button>
         </div>
-        {/* Hiển thị thông báo lỗi hoặc thành công */}
-        {error && <div className="alert alert-danger mt-3 mb-0 py-2 px-3 small">{error}</div>}
-        {success && <div className="alert alert-success mt-3 mb-0 py-2 px-3 small">{success}</div>}
       </form>
     </div>
   );

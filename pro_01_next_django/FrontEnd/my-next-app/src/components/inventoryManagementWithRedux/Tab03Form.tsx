@@ -220,7 +220,10 @@ export function InventoryCategoryTab() {
         <h5 className="card-title mb-0">TẠO MỚI MÃ HÀNG</h5>
       </div>
       <div className="card-body">
-        <Inventory_category_post/>
+        <Inventory_category_post
+          onSuccess={(msg) => setSuccessMessage(msg)}
+          onError={(msg) => setErrorMessage(msg)}
+        />
         <Table_inventory_category />
         
         <div className="d-flex justify-content-end gap-2 mt-3">
