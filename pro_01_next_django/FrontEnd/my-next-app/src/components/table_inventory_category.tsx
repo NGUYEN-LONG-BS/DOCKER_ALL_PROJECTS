@@ -24,9 +24,9 @@ const table_inventory_category: React.FC = () => {
   const columnTitles = ['Mã hàng', 'Tên hàng', 'Đvt'];
 
   return (
-    <div className="table-responsive">
-      <table className="table table-bordered table-striped">
-        <thead>
+    <div className="table-responsive" style={{ maxHeight: 350, overflowY: 'auto' }}>
+      <table className="table table-bordered table-striped" style={{ minWidth: 500 }}>
+        <thead style={{ position: 'sticky', top: 0, zIndex: 2, background: '#fff' }}>
           <tr>
             {columnTitles.map((title, index) => (
               <th key={index}>{title}</th>

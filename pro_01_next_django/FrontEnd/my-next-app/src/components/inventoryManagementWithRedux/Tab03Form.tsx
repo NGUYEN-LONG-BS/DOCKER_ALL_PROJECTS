@@ -188,6 +188,30 @@ export function InventoryCategoryTab() {
     setSelectedProduct(product); // Cập nhật thông tin sản phẩm đã chọn
   };
 
+  // Hàm xử lý import Excel file (tách riêng)
+  const handleExcelImport = async (file: File) => {
+    setErrorMessage("");
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const response = await axios.post("http://localhost:8000/api/import-inventory-categories/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setSuccessMessage(response.data.message || "Import thành công!");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        const data = error.response.data;
+        let msg = data.message || data.error || "Error importing file";
+        if (data.errors && Array.isArray(data.errors)) {
+          msg += "\n" + data.errors.join("\n");
+        }
+        setErrorMessage(msg);
+      } else {
+        setErrorMessage("Error importing file");
+      }
+    }
+  };
+
   return (
     <div className="card mt-3">
       <div className="card-header text-center">
@@ -208,29 +232,7 @@ export function InventoryCategoryTab() {
               const file = event.target.files?.[0];
               if (!file) return;
               setSelectedFile(file);
-              setErrorMessage("");
-              // Gửi file lên API
-              const formData = new FormData();
-              formData.append("file", file);
-              try {
-                const response = await axios.post("http://localhost:8000/api/import-inventory-categories/", formData, {
-                  headers: { "Content-Type": "multipart/form-data" },
-                });
-                // Hiển thị thông báo thành công từ backend
-                setSuccessMessage(response.data.message || "Import thành công!");
-              } catch (error: any) {
-                // Nếu backend trả về message hoặc errors, hiển thị chúng
-                if (error.response && error.response.data) {
-                  const data = error.response.data;
-                  let msg = data.message || data.error || "Error importing file";
-                  if (data.errors && Array.isArray(data.errors)) {
-                    msg += "\n" + data.errors.join("\n");
-                  }
-                  setErrorMessage(msg);
-                } else {
-                  setErrorMessage("Error importing file");
-                }
-              }
+              await handleExcelImport(file);
             }}
           />
           <button
