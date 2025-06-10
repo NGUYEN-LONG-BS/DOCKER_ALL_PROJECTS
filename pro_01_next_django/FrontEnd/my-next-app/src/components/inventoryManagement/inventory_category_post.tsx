@@ -167,7 +167,7 @@ const InventoryForm: React.FC = () => {
             {loading ? (
               <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
             ) : null}
-            {loading ? 'Đang gửi...' : 'Lưu thông tin'}
+            {loading ? 'Sending...' : 'Save'}
           </button>
         </div>
         {/* Hiển thị thông báo lỗi hoặc thành công */}

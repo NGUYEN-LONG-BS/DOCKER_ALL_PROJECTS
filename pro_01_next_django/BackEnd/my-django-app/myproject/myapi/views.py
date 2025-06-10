@@ -447,9 +447,15 @@ def import_inventory_categories(request):
         for field in required_fields:
             if field not in header_map:
                 return Response({'error': f'Thiếu cột bắt buộc: {field}'}, status=status.HTTP_400_BAD_REQUEST)
+        # Kiểm tra mã hàng trùng trước khi import
+        for idx, row in enumerate(rows[1:], start=2):
+            ma_hang = row[header_map['ma_hang']]
+            # xoa_sua = row[header_map['xoa_sua']]
+            if ma_hang and TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=ma_hang, xoa_sua="new").exists():
+                return Response({'error': f'Mã hàng "{ma_hang}" ở dòng {idx} đã tồn tại, vui lòng kiểm tra lại.'}, status=status.HTTP_400_BAD_REQUEST)
         count = 0
         errors = []
-        for idx, row in enumerate(rows[1:], start=2):  # start=2 để báo số dòng đúng với Excel
+        for idx, row in enumerate(rows[1:], start=2):
             # Kiểm tra dòng trống hoặc thiếu mã hàng
             if not row or not row[header_map['ma_hang']]:
                 errors.append(f'Dòng {idx}: Cột "ma_hang" không được rỗng.')
