@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { mutate } from 'swr';
 
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component";
@@ -15,7 +16,7 @@ import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 import Table_inventory_category from '@/components/table_inventory_category';
 import Inventory_category_post from '@/components/inventoryManagement/inventory_category_post';
 
-
+const API_URL = 'http://localhost:8000/api/get-inventory-categories/';
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
   id: number;
@@ -198,6 +199,7 @@ export function InventoryCategoryTab() {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setSuccessMessage(response.data.message || "Import thành công!");
+      mutate(API_URL); // Cập nhật lại bảng khi import thành công
     } catch (error: any) {
       if (error.response && error.response.data) {
         const data = error.response.data;

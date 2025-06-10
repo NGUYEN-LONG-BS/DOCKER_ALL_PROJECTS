@@ -434,7 +434,7 @@ def import_inventory_categories(request):
     if not file_obj:
         return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
-        wb = openpyxl.load_workbook(file_obj)
+        wb = openpyxl.load_workbook(file_obj, data_only=True)
         if 'import-data' not in wb.sheetnames:
             return Response({'error': 'Không tìm thấy sheet "import-data" trong file Excel.'}, status=status.HTTP_400_BAD_REQUEST)
         ws = wb['import-data']

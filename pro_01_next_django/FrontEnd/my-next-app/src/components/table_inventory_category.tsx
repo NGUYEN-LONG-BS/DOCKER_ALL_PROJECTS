@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -12,9 +12,11 @@ interface LoginInfo {
   dvt: string;
 }
 
-const table_inventory_category: React.FC = () => {
+const API_URL = 'http://localhost:8000/api/get-inventory-categories/';
+
+const table_inventory_category: React.FC<{ refreshKey?: number }> = ({ refreshKey }) => {
   // Fetch dữ liệu từ API
-  const { data, error } = useSWR<LoginInfo[]>('http://localhost:8000/api/get-inventory-categories/', fetcher);
+  const { data, error } = useSWR<LoginInfo[]>(API_URL, fetcher, { refreshInterval: 0 });
 
   // Kiểm tra lỗi hoặc trạng thái loading
   if (error) return <div>Error loading data...</div>;
@@ -54,5 +56,7 @@ const table_inventory_category: React.FC = () => {
     </div>
   );
 };
+
+// Để cập nhật bảng từ component cha, hãy gọi mutate(API_URL) sau khi thêm/sửa/xóa thành công.
 
 export default table_inventory_category;
