@@ -48,11 +48,8 @@ class InventoryStockSerializer(serializers.ModelSerializer):
     
     def get_ten_hang(self, obj):
         # Fetch ten_hang from TB_INVENTORY_CATEGORIES based on ma_hang
-        try:
-            category = TB_INVENTORY_CATEGORIES.objects.get(ma_hang=obj.ma_hang)
-            return category.ten_hang
-        except TB_INVENTORY_CATEGORIES.DoesNotExist:
-            return 'N/A'  # Return 'N/A' if no matching category is found
+        category = TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=obj.ma_hang).first()
+        return category.ten_hang if category else 'N/A'
 
     class Meta:
         model = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
