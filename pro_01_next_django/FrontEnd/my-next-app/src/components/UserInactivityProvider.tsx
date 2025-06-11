@@ -22,7 +22,7 @@ const UserInactivityProvider: React.FC<UserInactivityProviderProps> = ({ childre
     document.cookie = 'isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     dispatch(logout()); // Redux: clear user info toàn app
     router.push("/login");
-    alert("Bạn đã bị đăng xuất do không hoạt động trong " + timeoutMinutes + " phút.");
+    // alert("Bạn đã bị đăng xuất do không hoạt động trong " + timeoutMinutes + " phút.");
   };
 
   // Reset timer mỗi khi có thao tác
