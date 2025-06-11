@@ -13,7 +13,9 @@ SECRET_KEY = 'django-insecure-^2a&lr4l&k*7v^p508gw_8eb@5sv1hrpky27g8i&c&t4p+h2e6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 
+                 '127.0.0.1', 
+                 '172.16.0.53']
 
 
 # Application definition
@@ -133,3 +135,6 @@ MEDIA_ROOT = BASE_DIR / 'media'  # Absolute path to the 'media' directory
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True  # Cho phép tất cả các domain
+CORS_ALLOWED_ORIGINS = [
+    "http://172.16.0.4:3000",  # Thay bằng IP và port frontend thực tế
+]

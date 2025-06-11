@@ -1,10 +1,24 @@
+"use client";
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Thêm phần Bootstrap JS
+import { useDispatch } from 'react-redux';
+import { logout } from '@/features/userSlice';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const handleLogout = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // Xóa cookie isAuthenticated
+    document.cookie = 'isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    dispatch(logout());
+    router.push('/login');
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -48,7 +62,7 @@ const Navbar = () => {
               <Link className="nav-link" href="/bpnhansu">BP Nhân Sự</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/users">Login</Link>
+              <a className="nav-link" href="#" onClick={handleLogout}>Logout</a>
             </li>
 
             {/* Dropdown */}
