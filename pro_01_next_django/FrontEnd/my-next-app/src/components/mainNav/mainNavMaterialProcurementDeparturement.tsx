@@ -80,6 +80,10 @@ const menuItems = [
 		label: "Tiện ích",
 		href: "#",
 	},
+	{
+		label: "Admin",
+		href: "/admin/user",
+	},
 ]
 
 export function MainNav({ className }: { className?: string }) {

@@ -107,6 +107,9 @@ const Navbar = () => {
               </ul>
             </li>
 
+            <li className="nav-item">
+              <Link className="nav-link" href="/admin/user">Admin</Link>
+            </li>
           </ul>
           <LogoutButton />
         </div>

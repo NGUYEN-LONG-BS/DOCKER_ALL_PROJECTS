@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework import viewsets
 
 from .models import FormSubmission
 from .serializers import FormSubmissionSerializer
@@ -509,3 +510,29 @@ def import_inventory_categories(request):
         import traceback
         print(traceback.format_exc())
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+# ==============================================================================
+# User Permission
+# ==============================================================================
+
+from .models import UserPermission
+from .serializers import UserPermissionSerializer
+
+class UserPermissionViewSet(viewsets.ModelViewSet):
+    serializer_class = UserPermissionSerializer
+
+    def get_queryset(self):
+        queryset = UserPermission.objects.all().order_by('user_id')
+        # Đánh lại số thứ tự (STT) cho từng bản ghi
+        for idx, obj in enumerate(queryset, start=1):
+            obj.stt = idx
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        # Thêm trường STT vào từng bản ghi trả về
+        data = serializer.data
+        for idx, item in enumerate(data, start=1):
+            item['stt'] = idx
+        return Response(data)

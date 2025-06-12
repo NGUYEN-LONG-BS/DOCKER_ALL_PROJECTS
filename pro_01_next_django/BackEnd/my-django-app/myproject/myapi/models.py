@@ -50,7 +50,7 @@ class TB_INVENTORY_CATEGORIES(models.Model):
 
     class Meta:
         db_table = 'TB_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
-        managed = True  # Django sẽ quản lý bảng này trong migration
+        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
 
 class TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -74,7 +74,7 @@ class TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED(models.Model):
 
     class Meta:
         db_table = 'TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
-        managed = True  # Django sẽ quản lý bảng này trong migration
+        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
 
 class VIEW_INVENTORY_REPORT_QUANTITY(models.Model):
     ma_hang = models.CharField(max_length=50)
@@ -86,6 +86,15 @@ class VIEW_INVENTORY_REPORT_QUANTITY(models.Model):
     tong_sl_ton = models.DecimalField(max_digits=15, decimal_places=2)
 
     class Meta:
-        managed = False  # Django sẽ không quản lý view này trong migrations
+        managed = False  # Django chỉ dùng để truy vấn, không can thiệp tạo/xóa/sửa bảng đó.
         db_table = 'inventory."VIEW_INVENTORY_REPORT_QUANTITY"'  # Tên view trong PostgreSQL
 
+class UserPermission(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.CharField(max_length=10, null=False)
+    subsidiary = models.CharField(max_length=10, null=False)
+    department = models.CharField(max_length=100, null=False)
+
+    class Meta:
+        db_table = 'inventory"."user_permissions'  # Đúng tên bảng trong PostgreSQL
+        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).

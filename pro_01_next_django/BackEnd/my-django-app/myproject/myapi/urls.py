@@ -12,6 +12,11 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import import_inventory_categories
+from rest_framework.routers import DefaultRouter
+from .views import UserPermissionViewSet
+
+router = DefaultRouter()
+router.register(r'user-permissions', UserPermissionViewSet, basename='user-permission')
 
 urlpatterns = [
     path('submit-form/', FormSubmissionView.as_view(), name='submit-form'),
@@ -37,6 +42,8 @@ urlpatterns = [
     path('inventory-stock-by-so-phieu/', InventoryStockBySoPhieuView.as_view(), name='inventory_stock_by_so_phieu'),
     path('import-inventory-categories/', import_inventory_categories, name='import_inventory_categories'),
 ]
+
+urlpatterns += router.urls
 
 if settings.DEBUG:  # Only serve static and media files during development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Serve media files
