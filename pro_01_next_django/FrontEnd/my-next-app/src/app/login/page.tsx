@@ -65,6 +65,10 @@ export default function LoginPage() {
       if (isValid) {
         // Nếu đăng nhập thành công, set cookie isAuthenticated=true cho middleware đọc được
         document.cookie = "isAuthenticated=true; path=/; max-age=86400";
+        // Lưu user_id vào localStorage để Navbar dùng fetch quyền
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user_id', loginId);
+        }
         // Chuyển hướng đến trang inventory-management (full reload để middleware chạy)
         window.location.href = "/inventory-management-with_reDux_ToolKit";
       } else {

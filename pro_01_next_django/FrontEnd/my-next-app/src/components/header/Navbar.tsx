@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,6 +11,21 @@ import LogoutButton from "@/components/LogoutButton";
 const Navbar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [departments, setDepartments] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Lấy user_id từ localStorage (đã lưu khi login thành công)
+    const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') : null;
+    if (!userId) return;
+    fetch(`http://localhost:8000//api/get-user-permission-info/?user_id=${userId}`)
+      .then(res => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setDepartments(data.map((item: any) => item.department));
+        }
+      })
+      .catch(() => setDepartments([]));
+  }, []);
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -50,66 +65,82 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" href="/home">Home</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/bpkinhdoanh">BP Kinh Doanh</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/bpvattu">BP Vật Tư</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/bpkttc">BP Kế Toán - Tài Chính</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" href="/bpnhansu">BP Nhân Sự</Link>
-            </li>
+            {departments.includes('KinhDoanh') && (
+              <li className="nav-item">
+                <Link className="nav-link" href="/bpkinhdoanh">BP Kinh Doanh</Link>
+              </li>
+            )}
+            {departments.includes('VatTu') && (
+              <li className="nav-item">
+                <Link className="nav-link" href="/bpvattu">BP Vật Tư</Link>
+              </li>
+            )}
+            {departments.includes('TaiChinh') && (
+              <li className="nav-item">
+                <Link className="nav-link" href="/bpkttc">BP Kế Toán - Tài Chính</Link>
+              </li>
+            )}
+            {departments.includes('NhanSu') && (
+              <li className="nav-item">
+                <Link className="nav-link" href="/bpnhansu">BP Nhân Sự</Link>
+              </li>
+            )}
 
             {/* Dropdown */}
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Test link
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item" href="/inventory-management">test inventory V0</Link></li>
-                <li><Link className="dropdown-item" href="/inventory-management-with_reDux_ToolKit">test inventory with reDux</Link></li>
-                <li><Link className="dropdown-item" href="/bpvattu/inventory">test trang thêm mã hàng</Link></li>
-                <li><Link className="dropdown-item" href="/form">test form</Link></li>
-                <li><Link className="dropdown-item" href="/add-item">test add item</Link></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><Link className="dropdown-item" href="#">Something else here</Link></li>
-              </ul>
-            </li>
+            {departments.map(dep => dep.toLowerCase()).includes('admin'.toLowerCase()) && (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Test link
+                </a>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><Link className="dropdown-item" href="/inventory-management">test inventory V0</Link></li>
+                  <li><Link className="dropdown-item" href="/inventory-management-with_reDux_ToolKit">test inventory with reDux</Link></li>
+                  <li><Link className="dropdown-item" href="/bpvattu/inventory">test trang thêm mã hàng</Link></li>
+                  <li><Link className="dropdown-item" href="/form">test form</Link></li>
+                  <li><Link className="dropdown-item" href="/add-item">test add item</Link></li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li><Link className="dropdown-item" href="#">Something else here</Link></li>
+                </ul>
+              </li>
+            )}
 
             {/* Dropdown */}
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Report
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><Link className="dropdown-item" href="/my-reports">Báo cáo</Link></li>
-                <li><Link className="dropdown-item" href="/dashboard">dashboard</Link></li>
-                <li><Link className="dropdown-item" href="/report-warehouse">report-warehouse</Link></li>
-                <li><Link className="dropdown-item" href="/my-report-bao-cao-tong-quan">my-report-bao-cao-tong-quan</Link></li>
-                
-              </ul>
-            </li>
+            {departments.map(dep => dep.toLowerCase()).includes('admin'.toLowerCase()) && (
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Report
+                </a>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <li><Link className="dropdown-item" href="/my-reports">Báo cáo</Link></li>
+                  <li><Link className="dropdown-item" href="/dashboard">dashboard</Link></li>
+                  <li><Link className="dropdown-item" href="/report-warehouse">report-warehouse</Link></li>
+                  <li><Link className="dropdown-item" href="/my-report-bao-cao-tong-quan">my-report-bao-cao-tong-quan</Link></li>
+                  
+                </ul>
+              </li>
+              )}
 
-            <li className="nav-item">
-              <Link className="nav-link" href="/admin/user">Admin</Link>
-            </li>
+
+            {departments.includes('admin') && (
+              <li className="nav-item">
+                <Link className="nav-link" href="/admin/user">Admin</Link>
+              </li>
+            )}
+            
           </ul>
           <LogoutButton />
         </div>
