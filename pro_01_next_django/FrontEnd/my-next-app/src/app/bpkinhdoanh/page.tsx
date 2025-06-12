@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import Head from "next/head";
 import Header from '@/components/header/Header';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/header/Navbar';
 import Footer from '@/components/footer/Footer';
 
 // Hàm fetcher để gọi API

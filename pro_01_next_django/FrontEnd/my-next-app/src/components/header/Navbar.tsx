@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/features/userSlice';
 import { useRouter } from 'next/navigation';
+import LogoutButton from "@/components/LogoutButton";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ const Navbar = () => {
             height={40}       // Điều chỉnh kích thước logo
             priority
           />
-          <span className="ms-2">Trang chủ</span> {/* Tên trang hoặc khẩu hiệu */}
+          <span className="ms-2">Tuấn Ân Group</span> {/* Tên trang hoặc khẩu hiệu */}
         </Link>
         <button
           className="navbar-toggler"
@@ -60,9 +61,6 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" href="/bpnhansu">BP Nhân Sự</Link>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#" onClick={handleLogout}>Logout</a>
             </li>
 
             {/* Dropdown */}
@@ -107,6 +105,10 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" href="/my-report-bao-cao-tong-quan">my-report-bao-cao-tong-quan</Link></li>
                 
               </ul>
+            </li>
+
+            <li className="nav-item">
+              <LogoutButton />
             </li>
 
           </ul>

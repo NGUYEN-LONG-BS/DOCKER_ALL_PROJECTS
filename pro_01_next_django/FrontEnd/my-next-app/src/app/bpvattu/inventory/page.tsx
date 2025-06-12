@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Tab, Nav, Row, Col, Container } from 'react-bootstrap';
-import Navbar from '@/components/Navbar';
+import Navbar from '@/components/header/Navbar';
 import Table_Test from '@/components/table_test';
 import Table_test_02category from '@/components/table_test_02category';
 import Table_login_info from '@/components/table_login_info';
