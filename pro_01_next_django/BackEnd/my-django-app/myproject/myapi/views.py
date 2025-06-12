@@ -536,3 +536,24 @@ class UserPermissionViewSet(viewsets.ModelViewSet):
         for idx, item in enumerate(data, start=1):
             item['stt'] = idx
         return Response(data)
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import UserPermission
+    
+@api_view(['GET'])
+def get_user_permission_info(request):
+    user_id = request.query_params.get('user_id')
+    if not user_id:
+        return Response({'error': 'Thiếu user_id'}, status=400)
+    user_permissions = UserPermission.objects.filter(user_id=user_id)
+    if not user_permissions.exists():
+        return Response({'error': 'Không tìm thấy user_id này'}, status=404)
+    data = [
+        {
+            'subsidiary': up.subsidiary,
+            'department': up.department
+        }
+        for up in user_permissions
+    ]
+    return Response(data, status=200)

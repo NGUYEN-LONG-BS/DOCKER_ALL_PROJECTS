@@ -69,18 +69,6 @@ const menuItems = [
 		],
 	},
 	{
-		label: "Đơn hàng bán",
-		href: "#",
-	},
-	{
-		label: "Đơn hàng mua",
-		href: "#",
-	},
-	{
-		label: "Tiện ích",
-		href: "#",
-	},
-	{
 		label: "Admin",
 		href: "/admin/user",
 	},

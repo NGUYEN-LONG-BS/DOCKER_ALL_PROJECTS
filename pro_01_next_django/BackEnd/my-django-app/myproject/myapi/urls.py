@@ -41,6 +41,7 @@ urlpatterns = [
     path('check-login/', check_login, name='check_login'),
     path('inventory-stock-by-so-phieu/', InventoryStockBySoPhieuView.as_view(), name='inventory_stock_by_so_phieu'),
     path('import-inventory-categories/', import_inventory_categories, name='import_inventory_categories'),
+    path('get-user-permission-info/', views.get_user_permission_info, name='get_user_permission_info'),
 ]
 
 urlpatterns += router.urls
