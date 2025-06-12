@@ -97,7 +97,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
     if (productCode) params.append("ma_hang", productCode);
 
     const apiUrl = `http://127.0.0.1:8000/api/inventory-stock/?${params.toString()}`;
-    console.log("API URL:", apiUrl);
+    // console.log("API URL:", apiUrl);
 
     // Nếu muốn gọi API thực tế, bạn có thể fetch(apiUrl) ở đây
     try {

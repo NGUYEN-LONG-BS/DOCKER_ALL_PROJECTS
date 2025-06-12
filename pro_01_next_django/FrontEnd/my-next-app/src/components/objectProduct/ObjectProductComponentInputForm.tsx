@@ -63,12 +63,14 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     dispatch(fetchProducts());
   }, [dispatch]);
 
-  // In ra toàn bộ state khi component render hoặc khi state thay đổi
-  useEffect(() => {
-    console.log("ProductComponent State:", {
-      inventoryItem,
-    });
-  }, [inventoryItem]);
+  // ===================================================================
+  // useEffect(() => {
+  //   // In ra toàn bộ state khi component render hoặc khi state thay đổi
+  //   console.log("ProductComponent State:", {
+  //     inventoryItem,
+  //   });
+  // }, [inventoryItem]);
+  // ===================================================================
 
   // Timeout để debounce người dùng gõ: người dùng gõ liên tục thì khoan tìm, ngừng gõ mới tìm
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);

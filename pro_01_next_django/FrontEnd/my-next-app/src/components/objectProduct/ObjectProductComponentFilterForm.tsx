@@ -57,17 +57,21 @@ export function ProductComponentFilterForm({ onProductChange }: ProductComponent
   const dropdownRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Fetch danh sách sản phẩm khi component được mount
+  // =================================================================
   useEffect(() => {
+    // Fetch danh sách sản phẩm khi component được mount
     dispatch(fetchProducts());
   }, [dispatch]);
+  // =================================================================
 
-  // In ra toàn bộ state khi component render hoặc khi state thay đổi
-  useEffect(() => {
-    console.log("ProductComponentFilterForm State:", {
-      inventoryItem,
-    });
-  }, [inventoryItem]);
+  // =================================================================
+  // useEffect(() => {
+  //   // In ra toàn bộ state khi component render hoặc khi state thay đổi
+  //   console.log("ProductComponentFilterForm State:", {
+  //     inventoryItem,
+  //   });
+  // }, [inventoryItem]);
+  // =================================================================
 
   // Timeout để debounce người dùng gõ: người dùng gõ liên tục thì khoan tìm, ngừng gõ mới tìm
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
