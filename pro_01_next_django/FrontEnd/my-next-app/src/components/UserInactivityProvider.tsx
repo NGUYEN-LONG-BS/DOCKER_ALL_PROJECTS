@@ -9,7 +9,7 @@ interface UserInactivityProviderProps {
   timeoutMinutes?: number; // default 10
 }
 
-const UserInactivityProvider: React.FC<UserInactivityProviderProps> = ({ children, timeoutMinutes = 1 }) => {
+const UserInactivityProvider: React.FC<UserInactivityProviderProps> = ({ children, timeoutMinutes = 10 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
