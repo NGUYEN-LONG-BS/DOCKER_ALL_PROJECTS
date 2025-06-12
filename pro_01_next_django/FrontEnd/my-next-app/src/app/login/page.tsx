@@ -63,8 +63,10 @@ export default function LoginPage() {
       const isValid = await checkLogin(loginId, password)
 
       if (isValid) {
-        // Nếu đăng nhập thành công, chuyển hướng đến trang inventory-management (full reload để middleware chạy)
-        window.location.href = "/inventory-management-with_reDux_ToolKit"
+        // Nếu đăng nhập thành công, set cookie isAuthenticated=true cho middleware đọc được
+        document.cookie = "isAuthenticated=true; path=/; max-age=86400";
+        // Chuyển hướng đến trang inventory-management (full reload để middleware chạy)
+        window.location.href = "/inventory-management-with_reDux_ToolKit";
       } else {
         // Nếu đăng nhập thất bại, hiển thị lỗi
         setError("Tên đăng nhập hoặc mật khẩu không đúng.")
