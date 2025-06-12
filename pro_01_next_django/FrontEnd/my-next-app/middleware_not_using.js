@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+const { NextResponse } = require('next/server');
 
-export function middleware(request: NextRequest) {
+function middleware(request) {
   console.log('MIDDLEWARE RUN:', request.nextUrl.pathname, request.cookies.get('isAuthenticated')?.value);
 
   // Bỏ qua check cho trang login và static files
@@ -25,7 +25,9 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Áp dụng middleware cho tất cả các route
-export const config = {
-  matcher: '/:path*',
+module.exports = {
+  middleware,
+  config: {
+    matcher: '/:path*',
+  },
 };

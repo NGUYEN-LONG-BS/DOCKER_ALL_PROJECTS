@@ -55,10 +55,10 @@ export default function LoginPage() {
     e.preventDefault() // Ngăn chặn hành vi mặc định của form (tải lại trang)
     setError("")
     // In dữ liệu form ra console để kiểm tra
-    // console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
+    console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
 
     // Ghi log loginId và password
-    // console.log("Login Info:", { loginId, password })
+    console.log("Login Info:", { loginId, password })
 
     // Nếu ở chế độ đăng nhập, chuyển hướng đến trang inventory-management
     if (isLogin) {

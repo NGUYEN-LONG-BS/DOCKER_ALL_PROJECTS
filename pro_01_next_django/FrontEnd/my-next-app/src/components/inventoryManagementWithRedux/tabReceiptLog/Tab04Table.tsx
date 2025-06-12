@@ -77,12 +77,14 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
 
   // Xử lý khi nhấn nút Filter
   const handleFilter = async () => {
-    console.log("Từ ngày:", dateStart);
-    console.log("Đến ngày:", dateEnd);
-    console.log("Số chứng từ:", documentNumber);
-    console.log("Số đề nghị:", documentRequestNumber);
-    console.log("Mã nhà cung cấp:", supplierCode);
-    console.log("Mã sản phẩm:", productCode);
+    // ================================================================
+    // console.log("Từ ngày:", dateStart);
+    // console.log("Đến ngày:", dateEnd);
+    // console.log("Số chứng từ:", documentNumber);
+    // console.log("Số đề nghị:", documentRequestNumber);
+    // console.log("Mã nhà cung cấp:", supplierCode);
+    // console.log("Mã sản phẩm:", productCode);
+    // ================================================================
     // Bạn có thể thực hiện filter thực tế ở đây nếu muốn
 
     // Tạo query params
