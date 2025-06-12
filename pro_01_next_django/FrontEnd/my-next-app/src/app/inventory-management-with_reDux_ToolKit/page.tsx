@@ -4,8 +4,35 @@ import { MainNav } from "@/components/mainNav/mainNavMaterialProcurementDepartur
 import { TabNav } from "@/components/inventoryManagementWithRedux/tab-nav"
 import RightBar from "@/components/rightBarNotification/rightBarComponent";
 import LeftBar from "@/components/leftBarNavigator/leftBarComponent"; 
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    // Lấy user_id từ localStorage
+    const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') : null;
+    if (!userId) {
+      router.replace('/login');
+      return;
+    }
+    fetch(`http://localhost:8000//api/get-user-permission-info/?user_id=${userId}`)
+      .then(res => res.json())
+      .then((data) => {
+        if (!Array.isArray(data) || !data.some((item: any) => (item.department || '').toLowerCase() === 'ketoan')) {
+          // Xoá user_id và cookie, sign out ngay
+          localStorage.removeItem('user_id');
+          document.cookie = 'isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          router.replace('/login');
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem('user_id');
+        document.cookie = 'isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        router.replace('/login');
+      });
+  }, [router]);
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <header className="sticky-top border-bottom bg-white">
