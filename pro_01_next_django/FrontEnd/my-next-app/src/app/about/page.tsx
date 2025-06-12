@@ -10,10 +10,10 @@ export default function Home() {
         <title>TAG-Home</title>
         <meta name="description" content="Trang chủ của công ty XYZ, nơi bạn có thể tìm thấy thông tin về sản phẩm và dịch vụ của chúng tôi." />
       </Head>
-      <Header />
+      {/* <Header /> */}
       <Navbar />
       <main className="container py-5 flex-grow-1">
-        <div className="row justify-content-center">
+        {/* <div className="row justify-content-center">
           <div className="col-md-8">
             <div className="card shadow-lg">
               <div className="card-body">
@@ -29,7 +29,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </main>
       <Footer />
     </div>
