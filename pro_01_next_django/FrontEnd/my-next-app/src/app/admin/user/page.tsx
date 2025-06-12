@@ -130,8 +130,8 @@ export default function UserPermissionPage() {
       {/* Table có giới hạn chiều cao và filter */}
       {loading ? <div>Đang tải...</div> : (
         <div style={{ maxHeight: 400, overflowY: 'auto' }}>
-          <table className="table table-bordered table-hover mb-0">
-            <thead>
+          <table className="table table-bordered table-hover mb-0" style={{ minWidth: 700 }}>
+            <thead style={{ position: 'sticky', top: 0, zIndex: 2, background: '#fff' }}>
               <tr>
                 <th>ID</th>
                 <th>User ID</th>
