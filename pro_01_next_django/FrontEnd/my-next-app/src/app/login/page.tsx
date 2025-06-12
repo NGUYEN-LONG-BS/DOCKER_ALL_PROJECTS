@@ -2,7 +2,7 @@
 "use client"
 
 import type React from "react" // Nhập type React để định kiểu cho TypeScript
-import { useState } from "react" // Nhập useState để quản lý trạng thái
+import { useState, useEffect } from "react" // Nhập useState, useEffect để quản lý trạng thái và hiệu ứng
 import Image from "next/image" // Nhập Image từ Next.js để hiển thị hình ảnh tối ưu
 import Link from "next/link" // Nhập Link từ Next.js để điều hướng phía client
 import { useRouter } from "next/navigation" // Nhập useRouter để xử lý điều hướng
@@ -18,9 +18,6 @@ export default function LoginPage() {
   const [name, setName] = useState("") // Lưu giá trị họ tên (dùng khi đăng ký)
   const [showPassword, setShowPassword] = useState(false) // Quản lý trạng thái hiển thị/ẩn mật khẩu
   const [error, setError] = useState("") // Lưu thông báo lỗi nếu đăng nhập thất bại
-
-  // Khởi tạo router để điều hướng
-  const router = useRouter()
 
   // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
   const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
@@ -66,8 +63,8 @@ export default function LoginPage() {
       const isValid = await checkLogin(loginId, password)
 
       if (isValid) {
-        // Nếu đăng nhập thành công, chuyển hướng đến trang inventory-management
-        router.push("/inventory-management-with_reDux_ToolKit")
+        // Nếu đăng nhập thành công, chuyển hướng đến trang inventory-management (full reload để middleware chạy)
+        window.location.href = "/inventory-management-with_reDux_ToolKit"
       } else {
         // Nếu đăng nhập thất bại, hiển thị lỗi
         setError("Tên đăng nhập hoặc mật khẩu không đúng.")
@@ -78,6 +75,24 @@ export default function LoginPage() {
       console.log("Đăng ký")
       // Bạn có thể thêm logic gọi API đăng ký ở đây
     }
+  }
+
+  // Ẩn popup sau 3 giây nếu có lỗi
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError("") , 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [error])
+
+  // Thêm style cho hiệu ứng fade in/out
+  if (typeof window !== 'undefined') {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .fade-popup-in { opacity: 1; transition: opacity 0.5s; }
+      .fade-popup-out { opacity: 0; transition: opacity 0.5s; }
+    `;
+    document.head.appendChild(style);
   }
 
   return (
@@ -115,6 +130,36 @@ export default function LoginPage() {
                   {isLogin ? "Sign in to access your account" : "Subscribe to get started with our service"}
                 </p>
               </div>
+
+              {/* Hiển thị thông báo lỗi dạng popup nếu có */}
+              {error && (
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: 32,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    zIndex: 9999,
+                    minWidth: 260,
+                    background: '#ffebee',
+                    color: '#c0392b',
+                    border: '1px solid #e57373',
+                    borderRadius: 12,
+                    padding: '12px 32px',
+                    fontWeight: 600,
+                    fontSize: 15,
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.12)',
+                    textAlign: 'center',
+                    opacity: 1,
+                    transition: 'opacity 0.5s',
+                    pointerEvents: 'none',
+                  }}
+                  className={error ? 'fade-popup-in' : 'fade-popup-out'}
+                  role="alert"
+                >
+                  {error}
+                </div>
+              )}
 
               {/* Form xử lý đăng nhập hoặc đăng ký */}
               <form onSubmit={handleSubmit}>

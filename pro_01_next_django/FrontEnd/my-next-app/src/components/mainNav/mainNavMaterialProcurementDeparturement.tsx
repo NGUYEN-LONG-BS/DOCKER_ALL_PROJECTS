@@ -85,56 +85,56 @@ const menuItems = [
 export function MainNav({ className }: { className?: string }) {
 	return (
 		<nav className={`navbar navbar-expand ${className}`}>
-			<ul className="navbar-nav">
-				{menuItems.map((item, index) => (
-					<li key={index} className={item.submenu ? "nav-item dropdown" : "nav-item"}>
-						{item.submenu ? (
-							<>
-								<a
-									className="nav-link dropdown-toggle"
-									href="#"
-									role="button"
-									data-bs-toggle="dropdown"
-									aria-expanded="false"
-								>
-									{item.label}
-								</a>
-								<ul className="dropdown-menu">
-									{item.submenu.map((subItem, subIndex) => (
-										<li key={subIndex}>
-											{subItem.submenu ? (
-												<div className="dropdown-submenu">
-													<a className="dropdown-item" href="#">
+			<div style={{display: 'flex', width: '100%', alignItems: 'center'}}>
+				<ul className="navbar-nav" style={{flex: 1}}>
+					{menuItems.map((item, index) => (
+						<li key={index} className={item.submenu ? "nav-item dropdown" : "nav-item"}>
+							{item.submenu ? (
+								<>
+									<a
+										className="nav-link dropdown-toggle"
+										href="#"
+										role="button"
+										data-bs-toggle="dropdown"
+										aria-expanded="false"
+									>
+										{item.label}
+									</a>
+									<ul className="dropdown-menu">
+										{item.submenu.map((subItem, subIndex) => (
+											<li key={subIndex}>
+												{subItem.submenu ? (
+													<div className="dropdown-submenu">
+														<a className="dropdown-item" href="#">
+															{subItem.label}
+														</a>
+														<ul className="dropdown-menu">
+															{subItem.submenu.map((subSubItem, subSubIndex) => (
+																<li key={subSubIndex}>
+																	<Link className="dropdown-item" href={subSubItem.href}>
+																		{subSubItem.label}
+																	</Link>
+																</li>
+															))}
+														</ul>
+													</div>
+												) : (
+													<Link className="dropdown-item" href={subItem.href || "#"}>
 														{subItem.label}
-													</a>
-													<ul className="dropdown-menu">
-														{subItem.submenu.map((subSubItem, subSubIndex) => (
-															<li key={subSubIndex}>
-																<Link className="dropdown-item" href={subSubItem.href}>
-																	{subSubItem.label}
-																</Link>
-															</li>
-														))}
-													</ul>
-												</div>
-											) : (
-												<Link className="dropdown-item" href={subItem.href || "#"}>
-													{subItem.label}
-												</Link>
-											)}
-										</li>
-									))}
-								</ul>
-							</>
-						) : (
-							<Link className="nav-link" href={item.href}>
-								{item.label}
-							</Link>
-						)}
-					</li>
-				))}
-			</ul>
-			<div className="ms-auto">
+													</Link>
+												)}
+											</li>
+										))}
+									</ul>
+								</>
+							) : (
+								<Link className="nav-link" href={item.href}>
+									{item.label}
+								</Link>
+							)}
+						</li>
+					))}
+				</ul>
 				<LogoutButton />
 			</div>
 		</nav>

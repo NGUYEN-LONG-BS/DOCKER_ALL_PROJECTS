@@ -107,11 +107,8 @@ const Navbar = () => {
               </ul>
             </li>
 
-            <li className="nav-item">
-              <LogoutButton />
-            </li>
-
           </ul>
+          <LogoutButton />
         </div>
       </div>
     </nav>

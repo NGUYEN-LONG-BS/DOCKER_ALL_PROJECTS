@@ -16,7 +16,24 @@ export default function LogoutButton() {
   }
 
   return (
-    <button className="btn btn-link nav-link" onClick={handleLogout} style={{cursor: 'pointer'}}>
+    <button
+      className="logout-btn-custom"
+      onClick={handleLogout}
+      style={{
+        background: '#ffe5e5', // đỏ nhạt
+        color: '#c0392b', // chữ đỏ đậm
+        border: 'none',
+        borderRadius: '20px',
+        padding: '6px 20px',
+        fontWeight: 600,
+        boxShadow: '0 1px 4px rgba(0,0,0,0.04)',
+        transition: 'background 0.2s',
+        cursor: 'pointer',
+        marginLeft: 8
+      }}
+      onMouseOver={e => (e.currentTarget.style.background = '#ffd6d6')}
+      onMouseOut={e => (e.currentTarget.style.background = '#ffe5e5')}
+    >
       Logout
     </button>
   )
