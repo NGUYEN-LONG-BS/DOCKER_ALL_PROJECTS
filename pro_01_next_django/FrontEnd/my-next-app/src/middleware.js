@@ -1,17 +1,22 @@
 const { NextResponse } = require('next/server');
 
-function middleware(request) {
-  console.log('MIDDLEWARE RUN:', request.nextUrl.pathname, request.cookies.get('isAuthenticated')?.value);
+console.log('MIDDLEWARE FILE LOADED');
 
+function middleware(request) {
+  const path = request.nextUrl.pathname;
   // Bỏ qua check cho trang login và static files
   if (
     request.nextUrl.pathname.startsWith('/login') ||
     request.nextUrl.pathname.startsWith('/_next') ||
     request.nextUrl.pathname.startsWith('/api') ||
-    request.nextUrl.pathname.startsWith('/favicon.ico')
+    request.nextUrl.pathname.startsWith('/favicon.ico') ||
+    path.startsWith('/images')
   ) {
     return NextResponse.next();
   }
+
+  // Chỉ log các route thật
+  console.log('MIDDLEWARE RUN:', path, request.cookies.get('isAuthenticated')?.value);
 
   // Kiểm tra cookie (ví dụ: 'isAuthenticated' hoặc token)
   const isAuthenticated = request.cookies.get('isAuthenticated')?.value === 'true';
@@ -23,6 +28,10 @@ function middleware(request) {
 
   // Nếu đã login, cho phép truy cập
   return NextResponse.next();
+
+  // ================================================================
+  // return new NextResponse('BLOCKED BY MIDDLEWARE', { status: 403 });
+  // ================================================================
 }
 
 module.exports = {
