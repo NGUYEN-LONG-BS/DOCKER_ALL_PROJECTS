@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -8,8 +9,15 @@ import { logout } from '@/features/userSlice';
 import { useRouter } from 'next/navigation';
 import LogoutButton from "@/components/LogoutButton";
 
-// Gom tất cả menuItems và dropdowns vào một mảng, dùng trường submenu cho dropdown, thêm permission nếu cần
-const menuItems = [
+// Define a type for menu items
+interface MenuItem {
+  label: string;
+  href?: string;
+  permission?: string | string[];
+  submenu?: MenuItem[];
+}
+
+const menuItems: MenuItem[] = [
   { label: 'Home', href: '/home' },
   { label: 'BP Kinh Doanh', href: '/bpkinhdoanh', permission: 'KinhDoanh' },
   { label: 'BP Vật Tư', href: '/bpvattu', permission: 'VatTu' },
@@ -17,7 +25,7 @@ const menuItems = [
   { label: 'BP Nhân Sự', href: '/bpnhansu', permission: 'NhanSu' },
   {
     label: 'Test link',
-    permission: 'admin',
+    permission: 'Admin',
     submenu: [
       { label: 'test inventory V0', href: '/inventory-management' },
       { label: 'test inventory with reDux', href: '/inventory-management-with_reDux_ToolKit' },
@@ -30,7 +38,7 @@ const menuItems = [
   },
   {
     label: 'Report',
-    permission: 'admin',
+    permission: 'Admin',
     submenu: [
       { label: 'Báo cáo', href: '/my-reports' },
       { label: 'dashboard', href: '/dashboard' },
@@ -40,7 +48,7 @@ const menuItems = [
   },
   {
     label: 'Admin',
-    permission: 'admin',
+    permission: 'Admin',
     submenu: [
       {
         label: 'User',
@@ -99,14 +107,14 @@ const Navbar = () => {
   const [departments, setDepartments] = useState<string[]>([]);
 
   useEffect(() => {
-    // Lấy user_id từ localStorage (đã lưu khi login thành công)
     const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') : null;
     if (!userId) return;
-    fetch(`http://localhost:8000//api/get-user-permission-info/?user_id=${userId}`)
+
+    fetch(`http://localhost:8000/api/get-user-permission-info/?user_id=${userId}`)
       .then(res => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          setDepartments(data.map((item: any) => item.department));
+          setDepartments(data.map((item: { department: string }) => item.department));
         }
       })
       .catch(() => setDepartments([]));
@@ -114,68 +122,69 @@ const Navbar = () => {
 
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
-    // Xóa cookie isAuthenticated
     document.cookie = 'isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     dispatch(logout());
     router.push('/login');
   };
 
-  // Hàm kiểm tra quyền cho từng menu item
   const hasPermission = (permission: string | string[] | undefined) => {
     if (!permission) return true;
-    if (Array.isArray(permission)) {
-      return permission.some(p => departments.includes(p));
+    if (typeof permission === 'string') {
+      return departments.includes(permission);
     }
-    return departments.includes(permission);
+    return permission.some((perm) => departments.includes(perm));
   };
 
-  // Hàm render menu đệ quy
-  function renderMenu(items: any[], departments: string[], hasPermission: (p: any) => boolean, parentKey = '') {
+  const renderMenu = (items: MenuItem[], parentKey = '') => {
     return items.map((item, idx) => {
-      if (!hasPermission(item.permission)) return null;
-      if (item.label === '---') {
-        return <li key={parentKey + idx}><hr className="dropdown-divider" /></li>;
-      }
+      const key = `${parentKey}${idx}`;
+      const isTopLevel = parentKey === '';
+
       if (item.submenu) {
+        // Nếu là submenu nhiều cấp, cần thêm class dropdown-submenu cho các cấp lồng nhau (không phải cấp 1)
+        const isSubmenuVisible = item.submenu.some((subItem: MenuItem) => subItem.label !== '---' && hasPermission(subItem.permission));
+        if (!isSubmenuVisible) return null;
+
         return (
-          <li className="nav-item dropdown" key={parentKey + item.label + idx}>
+          <li className={isTopLevel ? "nav-item dropdown" : "dropdown-submenu"} key={key}>
             <a
-              className="nav-link dropdown-toggle"
+              className={isTopLevel ? "nav-link dropdown-toggle" : "dropdown-item dropdown-toggle"}
               href="#"
-              id={`navbarDropdown${parentKey + idx}`}
+              id={`navbarDropdown${key}`}
               role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
               {item.label}
             </a>
-            <ul className="dropdown-menu dropdown-menu-end" aria-labelledby={`navbarDropdown${parentKey + idx}`}>
-              {renderMenu(item.submenu, departments, hasPermission, parentKey + idx + '-')}
+            <ul className={isTopLevel ? "dropdown-menu dropdown-menu-end" : "dropdown-menu"} aria-labelledby={`navbarDropdown${key}`}>
+              {/* Đệ quy render submenu */}
+              {renderMenu(item.submenu, key + '-')}
             </ul>
           </li>
         );
       }
-      return (
-        <li className="nav-item" key={parentKey + item.label + idx}>
-          <Link className="nav-link" href={item.href}>{item.label}</Link>
-        </li>
-      );
+
+      if (hasPermission(item.permission)) {
+        return (
+          <li className="nav-item" key={key}>
+            <Link className="nav-link" href={item.href || '#'}>
+              {item.label}
+            </Link>
+          </li>
+        );
+      }
+
+      return null;
     });
-  }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
-        <Link className="navbar-brand" href="/">
-          <Image src="/logo.png" alt="Logo" width={30} height={30} className="d-inline-block align-text-top" />
-          {' '}My Website
-        </Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
-            {renderMenu(menuItems, departments, hasPermission)}
+            {renderMenu(menuItems)}
           </ul>
           <LogoutButton />
         </div>

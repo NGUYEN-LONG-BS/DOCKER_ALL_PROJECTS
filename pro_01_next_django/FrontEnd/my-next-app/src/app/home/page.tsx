@@ -1,7 +1,6 @@
 'use client'; // Đảm bảo đây là một component client-side
 
-import Head from "next/head";
-import Navbar from '@/components/header/Navbar';
+import Header from '@/components/header/header_Home';
 import Footer from '@/components/footer/Footer';
 import { useEffect } from 'react';
 
@@ -17,11 +16,7 @@ export default function Home() {
 
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Head>
-        <title>TAG-Home</title>
-        <meta name="description" content="Trang chủ của công ty XYZ, nơi bạn có thể tìm thấy thông tin về sản phẩm và dịch vụ của chúng tôi." />
-      </Head>
-      <Navbar />
+      <Header />
       <main className="container py-5 flex-grow-1">
         
       </main>
