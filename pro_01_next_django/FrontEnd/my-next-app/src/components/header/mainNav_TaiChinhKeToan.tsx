@@ -24,15 +24,8 @@ const menuItems = [
 		],
 	},
 	{
-		label: "Admin",
+		label: "My Notes",
 		submenu: [
-			{
-				label: "User",
-				submenu: [
-					{ label: "Tạo mới user", href: "/admin/user" },
-					{ label: "Phân quyền user", href: "/admin/user" },
-				],
-			},
 			{
 				label: "Django",
 				submenu: [
@@ -75,7 +68,10 @@ const menuItems = [
 			},
 		],
 	},
-	
+	{
+		label: "Admin",
+		href: "/admin/user",
+	},
 ]
 
 export function MainNav({ className }: { className?: string }) {

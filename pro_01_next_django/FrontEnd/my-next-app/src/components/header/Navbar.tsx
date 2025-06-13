@@ -75,7 +75,7 @@ const Navbar = () => {
                 <Link className="nav-link" href="/bpvattu">BP Vật Tư</Link>
               </li>
             )}
-            {departments.includes('TaiChinh') && (
+            {(departments.includes('TaiChinh') || departments.includes('KeToan')) && (
               <li className="nav-item">
                 <Link className="nav-link" href="/bpkttc">BP Kế Toán - Tài Chính</Link>
               </li>
