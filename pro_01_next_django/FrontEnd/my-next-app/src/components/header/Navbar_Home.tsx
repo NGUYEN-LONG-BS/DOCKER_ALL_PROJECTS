@@ -25,10 +25,11 @@ const menuItems: MenuItem[] = [
   { label: 'BP Nhân Sự', href: '/bpnhansu', permission: 'NhanSu' },
   {
     label: 'Admin',
-    permission: 'Admin',
+    permission: ['Admin'],
     submenu: [
       {
         label: 'User',
+        permission: ['Admin'],
         submenu_02: [
           { label: 'Tạo mới user', href: '/admin/user' },
           { label: 'Phân quyền user', href: '/admin/user' },
@@ -36,6 +37,7 @@ const menuItems: MenuItem[] = [
       },
       {
         label: 'Django',
+        permission: ['Admin'],
         submenu_02: [
           { label: 'Docker 01', href: '/html/django/start_dijango_with_docker_step_01.html' },
           { label: 'Docker 02', href: '/html/django/start_dijango_with_docker_step_02.html' },
@@ -45,6 +47,7 @@ const menuItems: MenuItem[] = [
       },
       {
         label: 'nextjs',
+        permission: ['Admin'],
         submenu_02: [
           { label: 'flow-redux-toolkit', href: '/html/nextjs/flow-redux-toolkit.html' },
           { label: 'next-link-to-html-static', href: '/html/nextjs/next-link-to-html-static.html' },
@@ -56,12 +59,14 @@ const menuItems: MenuItem[] = [
       },
       {
         label: 'economic',
+        permission: ['Admin'],
         submenu_02: [
           { label: 'Lãi suất Việt Nam', href: '/html/economic/eco-interest_rates_full.html' },
         ],
       },
       {
         label: 'orther-projects',
+        permission: ['Admin'],
         submenu_02: [
           { label: 'base', href: '/html/orther-projects/base.html' },
           { label: 'danh_muc_san_pham', href: '/html/orther-projects/danh_muc_san_pham.html' },
@@ -76,6 +81,7 @@ const menuItems: MenuItem[] = [
       },
       {
         label: 'Test link',
+        permission: ['Admin'],
         submenu: [
           { label: 'test inventory V0', href: '/inventory-management' },
           { label: 'test inventory with reDux', href: '/inventory-management-with_reDux_ToolKit' },
@@ -88,7 +94,7 @@ const menuItems: MenuItem[] = [
       },
       {
         label: 'Report',
-        permission: 'Admin',
+        permission: ['Admin'],
         submenu: [
           { label: 'Báo cáo', href: '/my-reports' },
           { label: 'dashboard', href: '/dashboard' },
