@@ -21,7 +21,21 @@ const menuItems: MenuItem[] = [
   { label: 'Home', href: '/home' },
   { label: 'BP Kinh Doanh', href: '/bpkinhdoanh', permission: 'KinhDoanh' },
   { label: 'BP Vật Tư', href: '/bpvattu', permission: 'VatTu' },
-  { label: 'BP Kế Toán - Tài Chính', href: '/bpkttc', permission: ['TaiChinh', 'KeToan'] },
+  // { label: 'BP Kế Toán - Tài Chính', href: '/bpkttc', permission: ['TaiChinh', 'KeToan'] },
+  {
+    label: 'BP Kế Toán - Tài Chính',
+    permission: ['TaiChinh', 'KeToan'],
+    submenu: [
+      {
+        label: 'Kế toán kho',
+        permission: ['TaiChinh', 'KeToan'],
+        submenu_02: [
+          { label: 'Xuất nhập tồn', href: '/inventory-management-with_reDux_ToolKit' },
+          { label: 'Báo cáo kho', href: '/dashboard' },
+        ],
+      },
+    ],
+  },
   { label: 'BP Nhân Sự', href: '/bpnhansu', permission: 'NhanSu' },
   {
     label: 'Admin',
@@ -82,7 +96,7 @@ const menuItems: MenuItem[] = [
       {
         label: 'Test link',
         permission: ['Admin'],
-        submenu: [
+        submenu_02: [
           { label: 'test inventory V0', href: '/inventory-management' },
           { label: 'test inventory with reDux', href: '/inventory-management-with_reDux_ToolKit' },
           { label: 'test trang thêm mã hàng', href: '/bpvattu/inventory' },
@@ -95,7 +109,7 @@ const menuItems: MenuItem[] = [
       {
         label: 'Report',
         permission: ['Admin'],
-        submenu: [
+        submenu_02: [
           { label: 'Báo cáo', href: '/my-reports' },
           { label: 'dashboard', href: '/dashboard' },
           { label: 'report-warehouse', href: '/report-warehouse' },
