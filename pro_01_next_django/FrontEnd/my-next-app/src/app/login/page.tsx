@@ -70,7 +70,7 @@ export default function LoginPage() {
           localStorage.setItem('user_id', loginId);
         }
         // Chuyển hướng đến trang inventory-management (full reload để middleware chạy)
-        window.location.href = "/inventory-management-with_reDux_ToolKit";
+        window.location.href = "/home";
       } else {
         // Nếu đăng nhập thất bại, hiển thị lỗi
         setError("Tên đăng nhập hoặc mật khẩu không đúng.")
