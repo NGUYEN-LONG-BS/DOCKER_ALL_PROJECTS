@@ -17,7 +17,7 @@ const menuItems = [
   { label: 'BP Nhân Sự', href: '/bpnhansu', permission: 'NhanSu' },
   {
     label: 'Test link',
-    permission: 'Admin',
+    permission: 'admin',
     submenu: [
       { label: 'test inventory V0', href: '/inventory-management' },
       { label: 'test inventory with reDux', href: '/inventory-management-with_reDux_ToolKit' },
@@ -30,7 +30,7 @@ const menuItems = [
   },
   {
     label: 'Report',
-    permission: 'Admin',
+    permission: 'admin',
     submenu: [
       { label: 'Báo cáo', href: '/my-reports' },
       { label: 'dashboard', href: '/dashboard' },
@@ -40,7 +40,7 @@ const menuItems = [
   },
   {
     label: 'Admin',
-    permission: 'Admin',
+    permission: 'admin',
     submenu: [
       {
         label: 'User',
