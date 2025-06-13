@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
+import { API_BASE_URL } from '@/api/api';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000";
-const API_URL = `${API_BASE}/api/user-permissions/`;
+const API_URL = `${API_BASE_URL}/api/user-permissions/`;
 
 interface UserPermission {
   id: number;
