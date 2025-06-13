@@ -1,6 +1,5 @@
 "use client"
 
-import { MainNav } from "@/components/mainNav/mainNavMaterialProcurementDeparturement"
 import HeaderHome from "@/components/header/header_Home"
 import { TabNav } from "@/components/inventoryManagementWithRedux/tab-nav"
 import RightBar from "@/components/rightBarNotification/rightBarComponent";
