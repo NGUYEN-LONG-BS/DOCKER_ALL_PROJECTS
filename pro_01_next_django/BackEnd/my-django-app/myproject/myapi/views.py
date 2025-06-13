@@ -327,18 +327,6 @@ from rest_framework import status
 from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .serializers import InventoryStockSerializer
 
-# class InventoryStockListView(APIView):
-#     def get(self, request, format=None):
-#         # Lấy tất cả bản ghi từ model
-#         inventory_items = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all().order_by('-so_phieu')
-#         # Serialize dữ liệu, truyền index cho mỗi bản ghi
-#         serialized_data = []
-#         for index, item in enumerate(inventory_items):
-#             serializer = InventoryStockSerializer(item, context={'index': index})
-#             serialized_data.append(serializer.data)
-#         # Trả về response với status 200
-#         return Response(serialized_data, status=status.HTTP_200_OK)
-
 class InventoryStockListView(APIView):
     def get(self, request, format=None):
         from_date = request.query_params.get('from_date')

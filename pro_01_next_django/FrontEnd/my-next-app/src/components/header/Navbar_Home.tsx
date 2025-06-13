@@ -18,12 +18,11 @@ interface MenuItem {
 }
 
 const menuItems: MenuItem[] = [
-  { label: 'Home', href: '/home' },
-  { label: 'BP Kinh Doanh', href: '/bpkinhdoanh', permission: 'KinhDoanh' },
-  { label: 'BP Vật Tư', href: '/bpvattu', permission: 'VatTu' },
-  // { label: 'BP Kế Toán - Tài Chính', href: '/bpkttc', permission: ['TaiChinh', 'KeToan'] },
+  { label: 'BP Kinh Doanh', href: '#', permission: 'KinhDoanh' },
+  { label: 'BP Vật Tư', href: '#', permission: 'VatTu' },
+  { label: 'BP Kế Hoạch', href: '#', permission: 'KeHoach' },
   {
-    label: 'BP Kế Toán - Tài Chính',
+    label: 'BP Tài Chính - Kế Toán',
     permission: ['TaiChinh', 'KeToan'],
     submenu: [
       {
