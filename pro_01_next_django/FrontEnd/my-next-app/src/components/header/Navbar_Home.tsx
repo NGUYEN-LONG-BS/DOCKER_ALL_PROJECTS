@@ -100,10 +100,6 @@ const menuItems: MenuItem[] = [
           { label: 'test inventory V0', href: '/inventory-management' },
           { label: 'test inventory with reDux', href: '/inventory-management-with_reDux_ToolKit' },
           { label: 'test trang thêm mã hàng', href: '/bpvattu/inventory' },
-          { label: 'test form', href: '/form' },
-          { label: 'test add item', href: '/add-item' },
-          { label: '---' },
-          { label: 'Something else here', href: '#' },
         ],
       },
       {

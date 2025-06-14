@@ -1,6 +1,7 @@
 'use client';
 import { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
+import { API_submit_login_info } from '@/api/api';
 
 // Định nghĩa kiểu dữ liệu cho formData
 interface FormData {
@@ -33,7 +34,7 @@ const Form: React.FC = () => {
 
     try {
       // Gửi dữ liệu tới backend để thêm vào bảng login_info
-      const response = await axios.post('/api/submit-login-info', formData);
+      const response = await axios.post(API_submit_login_info, formData);
       setSuccess(true);
       setLoading(false);
     } catch (err) {
