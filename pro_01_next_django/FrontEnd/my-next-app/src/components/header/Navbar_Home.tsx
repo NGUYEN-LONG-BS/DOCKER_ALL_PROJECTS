@@ -8,113 +8,7 @@ import { useRouter } from 'next/navigation';
 import LogoutButton from "@/components/LogoutButton";
 import './navbar_Home.css';
 import { API_get_user_permission_info } from '@/api/api';
-
-// Update MenuItem type to support submenu_02
-interface MenuItem {
-  label: string;
-  href?: string;
-  permission?: string | string[];
-  submenu?: MenuItem[];
-  submenu_02?: MenuItem[];
-}
-
-const menuItems: MenuItem[] = [
-  { label: 'BP Kinh Doanh', href: '#', permission: 'KinhDoanh' },
-  { label: 'BP Vật Tư', href: '#', permission: 'VatTu' },
-  { label: 'BP Kế Hoạch', href: '#', permission: 'KeHoach' },
-  {
-    label: 'BP Tài Chính - Kế Toán',
-    permission: ['TaiChinh', 'KeToan'],
-    submenu: [
-      {
-        label: 'Kế toán kho',
-        permission: ['TaiChinh', 'KeToan'],
-        submenu_02: [
-          { label: 'Xuất nhập tồn', href: '/inventory-management-with_reDux_ToolKit' },
-          { label: 'Báo cáo kho', href: '/dashboard' },
-        ],
-      },
-    ],
-  },
-  { label: 'BP Nhân Sự', href: '/bpnhansu', permission: 'NhanSu' },
-  {
-    label: 'Admin',
-    permission: ['Admin'],
-    submenu: [
-      {
-        label: 'User',
-        permission: ['Admin'],
-        submenu_02: [
-          { label: 'Tạo mới user', href: '/admin/user' },
-          { label: 'Phân quyền user', href: '/admin/user' },
-        ],
-      },
-      {
-        label: 'Django',
-        permission: ['Admin'],
-        submenu_02: [
-          { label: 'Docker 01', href: '/html/django/start_dijango_with_docker_step_01.html' },
-          { label: 'Docker 02', href: '/html/django/start_dijango_with_docker_step_02.html' },
-          { label: 'Docker 03', href: '/html/django/start_dijango_with_docker_step_03.html' },
-          { label: 'Docker 04', href: '/html/django/start_dijango_with_docker_step_04.html' },
-        ],
-      },
-      {
-        label: 'nextjs',
-        permission: ['Admin'],
-        submenu_02: [
-          { label: 'flow-redux-toolkit', href: '/html/nextjs/flow-redux-toolkit.html' },
-          { label: 'next-link-to-html-static', href: '/html/nextjs/next-link-to-html-static.html' },
-          { label: 'react-hooks', href: '/html/nextjs/react-hooks.html' },
-          { label: 'react-redux', href: '/html/nextjs/react-redux.html' },
-          { label: 'redux-toolkit', href: '/html/nextjs/redux-toolkit.html' },
-          { label: 'useState-useReducer', href: '/html/nextjs/useState-useReducer.html' },
-        ],
-      },
-      {
-        label: 'economic',
-        permission: ['Admin'],
-        submenu_02: [
-          { label: 'Lãi suất Việt Nam', href: '/html/economic/eco-interest_rates_full.html' },
-        ],
-      },
-      {
-        label: 'orther-projects',
-        permission: ['Admin'],
-        submenu_02: [
-          { label: 'base', href: '/html/orther-projects/base.html' },
-          { label: 'danh_muc_san_pham', href: '/html/orther-projects/danh_muc_san_pham.html' },
-          { label: 'home', href: '/html/orther-projects/home.html' },
-          { label: 'index', href: '/html/orther-projects/index.html' },
-          { label: 'login', href: '/html/orther-projects/login.html' },
-          { label: 'mychart', href: '/html/orther-projects/mychart.html' },
-          { label: 'ngay_quan_trong', href: '/html/orther-projects/ngay_quan_trong.html' },
-          { label: 'postGreSQL-config-remote-connecttion', href: '/html/orther-projects/postGreSQL-config-remote-connecttion.html' },
-          { label: 'user', href: '/html/orther-projects/user.html' },
-        ],
-      },
-      {
-        label: 'Test link',
-        permission: ['Admin'],
-        submenu_02: [
-          { label: 'test inventory V0', href: '/inventory-management' },
-          { label: 'test inventory with reDux', href: '/inventory-management-with_reDux_ToolKit' },
-          { label: 'test trang thêm mã hàng', href: '/bpvattu/inventory' },
-        ],
-      },
-      {
-        label: 'Report',
-        permission: ['Admin'],
-        submenu_02: [
-          { label: 'Báo cáo', href: '/my-reports' },
-          { label: 'dashboard', href: '/dashboard' },
-          { label: 'report-warehouse', href: '/report-warehouse' },
-          { label: 'my-report-bao-cao-tong-quan', href: '/my-report-bao-cao-tong-quan' },
-        ],
-      },
-    ],
-  },
-];
+import { MenuItem, menuItems } from './Navbar_data';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -165,8 +59,7 @@ const Navbar = () => {
             <ul className="dropdown-menu">
               {item.submenu_02.map((subItem, subIdx) => (
                 <li key={key + '-' + subIdx}>
-                  <Link className="dropdown-item" href={subItem.href || '#'}
-                  >
+                  <Link className="dropdown-item" href={subItem.href || '#'}>
                     {subItem.label}
                   </Link>
                 </li>
@@ -204,8 +97,7 @@ const Navbar = () => {
       if (hasPermission(item.permission)) {
         return (
           <li className="nav-item" key={key}>
-            <Link className="nav-link" href={item.href || '#'}
-            >
+            <Link className="nav-link" href={item.href || '#'}>
               {item.label}
             </Link>
           </li>
