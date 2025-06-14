@@ -7,16 +7,18 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
-  { label: 'BP Kinh Doanh', href: '#', permission: 'KinhDoanh' },
-  { label: 'BP Vật Tư', href: '#', permission: 'VatTu' },
-  { label: 'BP Kế Hoạch', href: '#', permission: 'KeHoach' },
+  { label: 'BP Kinh Doanh TM', href: '#', permission: 'KinhDoanhTM' },
+  { label: 'BP Kinh Doanh SX', href: '#', permission: 'KinhDoanhSX' },
+  { label: 'BP Vật Tư TM', href: '#', permission: 'VatTuTM' },
+  { label: 'BP Vật Tư SX', href: '#', permission: 'VatTuSX' },
+  { label: 'BP Kế Hoạch SX', href: '#', permission: 'KeHoachSX' },
   {
-    label: 'BP Tài Chính - Kế Toán',
-    permission: ['TaiChinh', 'KeToan'],
+    label: 'BP Tài Chính - Kế Toán SX',
+    permission: ['TaiChinhSX', 'KeToanSX'],
     submenu: [
       {
         label: 'Kế toán kho',
-        permission: ['TaiChinh', 'KeToan'],
+        permission: ['TaiChinhSX', 'KeToanSX'],
         submenu_02: [
           { label: 'Xuất nhập tồn', href: '/inventory-management-with_reDux_ToolKit' },
           { label: 'Báo cáo kho', href: '/dashboard' },
@@ -24,7 +26,7 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  { label: 'BP Nhân Sự', href: '/bpnhansu', permission: 'NhanSu' },
+  { label: 'BP Nhân Sự SX', href: '/bpnhansu', permission: 'NhanSuSX' },
   {
     label: 'Admin',
     permission: ['Admin'],
