@@ -60,7 +60,6 @@ const initialState: ProductState = {
   errorMessage: null,
 };
 
-const API_URL = API_get_inventory_categories;
 // ==== 3. AsyncThunk gọi API lấy danh sách sản phẩm ====
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts', // Tên định danh cho thunk, được dùng để theo dõi trạng thái (pending, fulfilled, rejected)
@@ -70,7 +69,7 @@ export const fetchProducts = createAsyncThunk(
     try {
       // Gửi request GET đến API để lấy danh sách mặt hàng
       
-      const response = await fetch(API_URL);
+      const response = await fetch(API_get_inventory_categories);
       
       // Kiểm tra nếu phản hồi không hợp lệ (status không nằm trong khoảng 200-299)
       if (!response.ok) {

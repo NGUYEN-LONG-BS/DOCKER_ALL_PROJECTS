@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { DateComponent } from "../date/date-component";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component";
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
@@ -13,9 +12,6 @@ import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 import { API_save_inventory, API_download_import_template, API_download_print_template } from '@/api/api';
 import { API_import_data } from '@/api/api';
-const API_URL_01 = API_save_inventory;
-const API_URL_02 = API_download_import_template;
-const API_URL_03 = API_download_print_template;
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -113,7 +109,7 @@ export function InventoryFormStockReceiveSlip() {
       console.log('Sending data:', JSON.stringify(data, null, 2));  // Kiểm tra dữ liệu trước khi gửi
 
       try {
-        const response = await axios.post(API_URL_01, data, {
+        const response = await axios.post(API_save_inventory, data, {
           headers: {
             'Content-Type': 'application/json', // Chỉ cần định nghĩa headers nếu cần
           },
@@ -131,7 +127,7 @@ export function InventoryFormStockReceiveSlip() {
     // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
     // Bước 2: tiến hành download file
     try {
-      const response = await axios.get(API_URL_02, {
+      const response = await axios.get(API_download_import_template, {
         responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
       });
 
@@ -154,7 +150,7 @@ export function InventoryFormStockReceiveSlip() {
     // Bước 1: gửi dữ liệu đi là muốn down file gì, thông tin cần cung cấp là gì, backend sẽ xử lý và trả file về thư mục static/downloads
     // Bước 2: tiến hành download file
     try {
-      const response = await axios.get(API_URL_03, {
+      const response = await axios.get(API_download_print_template, {
         responseType: 'blob',  // Đảm bảo file được trả về dưới dạng blob
       });
 

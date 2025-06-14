@@ -6,7 +6,6 @@ import { API_get_json_data } from '@/api/api';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-const API_URL = API_get_json_data;
 
 interface ColumnConfig {
   name: string;

@@ -21,4 +21,7 @@ export const API_download_import_template = `${API_BASE_URL}/api/download-import
 export const API_download_print_template = `${API_BASE_URL}/api/download-print-template/`;
 export const API_import_inventory_categories = `${API_BASE_URL}/api/import-inventory-categories/`;
 export const API_inventory_stock_by_so_phieu = `${API_BASE_URL}/api/inventory-stock-by-so-phieu/`;
+export const API_user_permissions = `${API_BASE_URL}/api/user-permissions/`;
+
+
 

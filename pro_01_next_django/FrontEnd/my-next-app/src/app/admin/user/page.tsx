@@ -1,9 +1,8 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { API_BASE_URL } from '@/api/api';
+import { API_user_permissions } from '@/api/api';
 
-const API_URL = `${API_BASE_URL}/api/user-permissions/`;
 
 interface UserPermission {
   id: number;
@@ -24,7 +23,7 @@ export default function UserPermissionPage() {
   const fetchPermissions = async () => {
     setLoading(true);
     try {
-      const res = await fetch(API_URL);
+      const res = await fetch(API_user_permissions);
       if (!res.ok) throw new Error("Không thể tải dữ liệu");
       const data = await res.json();
       setPermissions(data);
@@ -45,7 +44,7 @@ export default function UserPermissionPage() {
     setError("");
     try {
       const method = editing ? "PUT" : "POST";
-      const url = editing ? `${API_URL}${editing.id}/` : API_URL;
+      const url = editing ? `${API_user_permissions}${editing.id}/` : API_user_permissions;
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -65,7 +64,7 @@ export default function UserPermissionPage() {
     if (!confirm("Bạn có chắc muốn xoá?")) return;
     setError("");
     try {
-      const res = await fetch(`${API_URL}${id}/`, { method: "DELETE" });
+      const res = await fetch(`${API_user_permissions}${id}/`, { method: "DELETE" });
       if (!res.ok) throw new Error("Xoá thất bại");
       fetchPermissions();
     } catch (err: any) {

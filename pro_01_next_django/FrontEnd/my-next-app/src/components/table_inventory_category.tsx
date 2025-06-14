@@ -13,10 +13,9 @@ interface LoginInfo {
   dvt: string;
 }
 
-const API_URL = API_get_inventory_categories;
 const table_inventory_category: React.FC<{ refreshKey?: number }> = ({ refreshKey }) => {
   // Fetch dữ liệu từ API
-  const { data, error } = useSWR<LoginInfo[]>(API_URL, fetcher, { refreshInterval: 0 });
+  const { data, error } = useSWR<LoginInfo[]>(API_get_inventory_categories, fetcher, { refreshInterval: 0 });
 
   // Kiểm tra lỗi hoặc trạng thái loading
   if (error) return <div>Error loading data...</div>;
@@ -57,6 +56,6 @@ const table_inventory_category: React.FC<{ refreshKey?: number }> = ({ refreshKe
   );
 };
 
-// Để cập nhật bảng từ component cha, hãy gọi mutate(API_URL) sau khi thêm/sửa/xóa thành công.
+// Để cập nhật bảng từ component cha, hãy gọi mutate(API_get_inventory_categories) sau khi thêm/sửa/xóa thành công.
 
 export default table_inventory_category;

@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react"
 import { API_get_inventory_categories } from '@/api/api';
-const API_URL_01 = API_get_inventory_categories;
 
 // Define InventoryItemExport interface if it's not imported from another file
 interface InventoryItemExport { 
@@ -64,7 +63,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(API_URL_01);
+        const response = await fetch(API_get_inventory_categories);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

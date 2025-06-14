@@ -8,7 +8,6 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { API_get_user_permission_info } from '@/api/api';
 
-const API_URL = API_get_user_permission_info;
 export default function Home() {
   const router = useRouter();
   useEffect(() => {
@@ -18,7 +17,7 @@ export default function Home() {
       router.replace('/login');
       return;
     }
-    fetch(`${API_URL}?user_id=${userId}`)
+    fetch(`${API_get_user_permission_info}?user_id=${userId}`)
       .then(res => res.json())
       .then((data) => {
         if (!Array.isArray(data) || !data.some((item: any) => (item.department || '').toLowerCase() === 'ketoan')) {

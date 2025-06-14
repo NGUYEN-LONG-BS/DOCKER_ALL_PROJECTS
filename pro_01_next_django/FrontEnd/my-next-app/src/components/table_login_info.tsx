@@ -7,7 +7,6 @@ import { API_get_login_info } from '@/api/api';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
-const API_URL = API_get_login_info;
 
 interface LoginInfo {
   login_id: string;
@@ -16,7 +15,7 @@ interface LoginInfo {
 
 const Table_login_info: React.FC = () => {
   // Fetch dữ liệu từ API
-  const { data, error } = useSWR<LoginInfo[]>(API_URL, fetcher);
+  const { data, error } = useSWR<LoginInfo[]>(API_get_login_info, fetcher);
 
   // Kiểm tra lỗi hoặc trạng thái loading
   if (error) return <div>Error loading data...</div>;
