@@ -1,6 +1,9 @@
 'use client';
 import React from 'react';
 import useSWR from 'swr';
+import { API_get_json_data, API_get_inventory_categories } from '@/api/api';
+const API_URL_01 = API_get_json_data;
+const API_URL_02 = API_get_inventory_categories;
 
 // Định nghĩa các kiểu dữ liệu
 interface FontConfig {
@@ -85,11 +88,11 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
 // Component Table_TestCategory
 const Table_TestCategory = () => {
   // Fetch dữ liệu từ API
-  const { data: tableConfig, error: tableError } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/', fetcher);
-  const { data: inventoryData, error: inventoryError } = useSWR<InventoryRow[]>('http://localhost:8000/api/get-inventory-categories/', fetcher);
+  const { data: tableConfig, error: tableError } = useSWR<TableConfig>(API_URL_01, fetcher);
+  const { data: inventoryData, error: inventoryError } = useSWR<InventoryRow[]>(API_URL_02, fetcher);
   console.log(inventoryData);
   console.log(inventoryError);
-  console.log(useSWR<InventoryRow[]>('http://localhost:8000/api/get-inventory-categories/', fetcher));
+  console.log(useSWR<InventoryRow[]>(API_URL_02, fetcher));
 
   // Kiểm tra lỗi
   if (tableError || inventoryError) {

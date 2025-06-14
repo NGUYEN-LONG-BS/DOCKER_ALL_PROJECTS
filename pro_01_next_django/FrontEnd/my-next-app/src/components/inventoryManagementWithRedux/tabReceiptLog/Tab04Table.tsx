@@ -11,6 +11,8 @@ import { clearDocumentNumber } from "@/features/formReceiptLog/documentNumberFil
 import { clearDocumentRequestNumber } from "@/features/formReceiptLog/documentRequestNumberFilterFormSlice";
 import { clearSupplier } from "@/features/formReceiptLog/supplierFilterFormSlice";
 import { resetProductState } from "@/features/formReceiptLog/objectProductFilterFormSlice";
+import { API_inventory_stock } from '@/api/api';
+
 
 // Define interface for API data
 interface InventoryItem {
@@ -96,7 +98,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
     if (supplierCode) params.append("ma_doi_tuong", supplierCode);
     if (productCode) params.append("ma_hang", productCode);
 
-    const apiUrl = `http://127.0.0.1:8000/api/inventory-stock/?${params.toString()}`;
+    const apiUrl = `${API_inventory_stock}?${params.toString()}`;
     // console.log("API URL:", apiUrl);
 
     // Nếu muốn gọi API thực tế, bạn có thể fetch(apiUrl) ở đây

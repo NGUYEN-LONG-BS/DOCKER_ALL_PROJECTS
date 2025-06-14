@@ -2,9 +2,11 @@
 
 import React from 'react';
 import useSWR from 'swr';
+import { API_get_json_data } from '@/api/api';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const API_URL = API_get_json_data;
 
 interface ColumnConfig {
   name: string;
@@ -51,8 +53,7 @@ interface TableConfig {
 
 const TableInventory: React.FC = () => {
   // Fetch dữ liệu từ API để lấy cấu hình bảng
-  const { data, error } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/', fetcher);
-  // const { data, error } = useSWR<TableConfig>('http://localhost:8000/api/get-json-data/VT_QUAN_LY_HANG_HOA/inventoies_categoried.json', fetcher);
+  const { data, error } = useSWR<TableConfig>(API_get_json_data, fetcher);
 
   // Kiểm tra lỗi hoặc trạng thái loading
   if (error) return <div>Error loading data...</div>;

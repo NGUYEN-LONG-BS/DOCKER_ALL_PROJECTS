@@ -1,6 +1,7 @@
 // src/features/objectProductComponent/objectProductComponentSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import * as Utils from '@/utils';
+import { API_get_inventory_categories } from '@/api/api';
 
 // ==== 1. Định nghĩa kiểu dữ liệu ====
 
@@ -67,7 +68,7 @@ export const fetchProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       // Gửi request GET đến API để lấy danh sách mặt hàng
-      const response = await fetch('http://localhost:8000/api/get-inventory-categories/');
+      const response = await fetch(API_get_inventory_categories);
       
       // Kiểm tra nếu phản hồi không hợp lệ (status không nằm trong khoảng 200-299)
       if (!response.ok) {

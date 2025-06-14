@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { mutate } from 'swr';
+import { API_get_inventory_categories, API_submit_inventory_categories } from '@/api/api';
+const API_URL_01 = API_get_inventory_categories;
+const API_URL_02 = API_submit_inventory_categories;
 
 // Định nghĩa kiểu dữ liệu cho form
 interface InventoryFormData {
@@ -19,8 +22,6 @@ interface InventoryFormProps {
   onSuccess?: (msg: string) => void;
   onError?: (msg: string) => void;
 }
-
-const API_URL = 'http://localhost:8000/api/get-inventory-categories/';
 
 const InventoryForm: React.FC<InventoryFormProps> = ({ onSuccess, onError }) => {
   // State để lưu trữ dữ liệu form
@@ -49,13 +50,13 @@ const InventoryForm: React.FC<InventoryFormProps> = ({ onSuccess, onError }) => 
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/submit-inventory-categories/', formData, {
+      const response = await axios.post(API_URL_02, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       // Nếu thành công
-      mutate(API_URL); // Cập nhật lại bảng inventory khi thêm mới thành công
+      mutate(API_URL_01); // Cập nhật lại bảng inventory khi thêm mới thành công
       if (onSuccess) onSuccess('Dữ liệu đã được gửi thành công!');
       console.log(response.data);
     } catch (error: any) {

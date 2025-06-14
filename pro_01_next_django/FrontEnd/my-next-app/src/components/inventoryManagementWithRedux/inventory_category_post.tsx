@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_submit_inventory_categories } from '@/api/api';
 
 // Định nghĩa kiểu dữ liệu cho form
 interface InventoryFormData {
@@ -44,7 +45,7 @@ const InventoryForm: React.FC = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post('http://localhost:8000/api/submit-inventory-categories/', formData, {
+      const response = await axios.post(API_submit_inventory_categories, formData, {
         headers: {
           'Content-Type': 'application/json',
         },

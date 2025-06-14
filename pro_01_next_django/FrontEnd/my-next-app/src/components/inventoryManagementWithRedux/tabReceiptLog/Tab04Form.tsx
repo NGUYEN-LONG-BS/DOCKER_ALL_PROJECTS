@@ -18,6 +18,7 @@ import { setDocumentRequestNumber as setDocumentRequestNumberRedux } from "@/fea
 import { setSupplier as setSupplierRedux } from "@/features/formReceiptSlip/supplierInputFormSlice";
 import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";
 import { setSlipNote } from "@/features/formReceiptSlip/slipNoteSlice";
+import { API_import_data, API_inventory_stock_by_so_phieu } from '@/api/api';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -118,7 +119,7 @@ export function InventoryLogStockReceiveSlip() {
     console.log("Sending file:"); // Kiểm tra dữ liệu trước khi gửi
 
     try {
-      const response = await axios.post("http://localhost:8000/api/import-data/", formData, {
+      const response = await axios.post(API_import_data, formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Cần set content-type là multipart/form-data để gửi file
         },
@@ -239,7 +240,7 @@ export function InventoryLogStockReceiveSlip() {
     }
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/inventory-stock-by-so-phieu/?so_phieu=${selectedSoPhieu}`
+        `${API_inventory_stock_by_so_phieu}?so_phieu=${selectedSoPhieu}`
       );
       if (!response.ok) throw new Error("API error");
       const data = await response.json();

@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import LogoutButton from "@/components/LogoutButton";
 import './navbar_Home.css';
+import { API_get_user_permission_info } from '@/api/api';
+const API_URL = API_get_user_permission_info;
 
 // Update MenuItem type to support submenu_02
 interface MenuItem {
@@ -128,7 +130,7 @@ const Navbar = () => {
     const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') : null;
     if (!userId) return;
 
-    fetch(`http://localhost:8000/api/get-user-permission-info/?user_id=${userId}`)
+    fetch(`${API_URL}?user_id=${userId}`)
       .then(res => res.json())
       .then((data) => {
         if (Array.isArray(data)) {

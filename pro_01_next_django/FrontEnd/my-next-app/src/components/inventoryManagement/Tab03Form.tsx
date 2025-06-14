@@ -14,7 +14,7 @@ import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
 import Table_inventory_category from '@/components/table_inventory_category';
 import Inventory_category_post from '@/components/inventoryManagement/inventory_category_post';
-
+import { API_import_data } from '@/api/api';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -117,7 +117,7 @@ export function InventoryCategoryTab() {
     console.log("Sending file:"); // Kiểm tra dữ liệu trước khi gửi
 
     try {
-      const response = await axios.post("http://localhost:8000/api/import-data/", formData, {
+      const response = await axios.post(API_import_data, formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Cần set content-type là multipart/form-data để gửi file
         },

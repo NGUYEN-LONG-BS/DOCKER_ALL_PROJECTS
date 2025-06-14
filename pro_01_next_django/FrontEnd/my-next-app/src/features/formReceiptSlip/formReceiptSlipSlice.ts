@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { AppDispatch, RootState } from '../../store/store';
+import { API_import_data, API_download_print_template, API_download_import_template, API_save_inventory } from '@/api/api';
 
 interface InventoryItemExport {
   id: number;
@@ -74,7 +75,7 @@ export const saveInventory = createAsyncThunk<any, any[], ThunkConfig>(
   'inventory/saveInventory',
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:8000/api/save-inventory/', data, {
+      const response = await axios.post(API_save_inventory, data, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -91,7 +92,7 @@ export const downloadImportTemplate = createAsyncThunk<Blob, void, ThunkConfig>(
   'inventory/downloadImportTemplate',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/download-import-template/', {
+      const response = await axios.get(API_download_import_template, {
         responseType: 'blob',
       });
       return response.data;
@@ -106,7 +107,7 @@ export const downloadPrintTemplate = createAsyncThunk<Blob, void, ThunkConfig>(
   'inventory/downloadPrintTemplate',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/download-print-template/', {
+      const response = await axios.get(API_download_print_template, {
         responseType: 'blob',
       });
       return response.data;
@@ -123,7 +124,7 @@ export const importFile = createAsyncThunk<any, File, ThunkConfig>(
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const response = await axios.post('http://localhost:8000/api/import-data/', formData, {
+      const response = await axios.post(API_import_data, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

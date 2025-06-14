@@ -13,4 +13,12 @@ export const API_check_login = `${API_BASE_URL}/api/check-login/`;
 export const API_submit_form = `${API_BASE_URL}/api/submit-form/`;
 export const API_submit_login_info = `${API_BASE_URL}/api/submit-login-info/`;
 export const API_get_user_permission_info = `${API_BASE_URL}/api/get-user-permission-info/`;
+export const API_get_json_data = `${API_BASE_URL}/api/get-json-data/`;
+export const API_get_login_info = `${API_BASE_URL}/api/get-login-info/`;
+export const API_submit_inventory_categories = `${API_BASE_URL}/api/submit-inventory-categories/`;
+export const API_save_inventory = `${API_BASE_URL}/api/save-inventory/`;
+export const API_download_import_template = `${API_BASE_URL}/api/download-import-template/`;
+export const API_download_print_template = `${API_BASE_URL}/api/download-print-template/`;
+export const API_import_inventory_categories = `${API_BASE_URL}/api/import-inventory-categories/`;
+export const API_inventory_stock_by_so_phieu = `${API_BASE_URL}/api/inventory-stock-by-so-phieu/`;
 

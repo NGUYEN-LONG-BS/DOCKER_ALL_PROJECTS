@@ -1,6 +1,8 @@
 // src/features/formReceiptLog/formReceiptLogSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_import_data, API_inventory_stock } from '@/api/api';
+
 
 // Define interfaces
 interface Supplier {
@@ -88,7 +90,7 @@ export const importFile = createAsyncThunk(
     const formData = new FormData();
     formData.append('file', file);
     try {
-      const response = await axios.post('http://localhost:8000/api/import-data/', formData, {
+      const response = await axios.post(API_import_data, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -105,7 +107,7 @@ export const fetchInventoryData = createAsyncThunk(
   'form/fetchInventoryData',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/inventory-stock/');
+      const response = await axios.get(API_inventory_stock);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Error fetching inventory data');
