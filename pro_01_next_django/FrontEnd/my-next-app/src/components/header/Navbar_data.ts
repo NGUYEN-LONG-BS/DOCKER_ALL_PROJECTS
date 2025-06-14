@@ -7,18 +7,14 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
-  { label: 'BP Kinh Doanh TM', href: '#', permission: 'KinhDoanhTM' },
-  { label: 'BP Kinh Doanh SX', href: '#', permission: 'KinhDoanhSX' },
-  { label: 'BP Vật Tư TM', href: '#', permission: 'VatTuTM' },
-  { label: 'BP Vật Tư SX', href: '#', permission: 'VatTuSX' },
-  { label: 'BP Kế Hoạch SX', href: '#', permission: 'KeHoachSX' },
+  { label: 'Kinh Doanh TM', href: '#', permission: ['Admin', 'KinhDoanhTM'] },
   {
-    label: 'BP Tài Chính - Kế Toán SX',
-    permission: ['TaiChinhSX', 'KeToanSX'],
+    label: 'Vật Tư TM',
+    permission: ['Admin', 'VatTuTM'],
     submenu: [
       {
         label: 'Kế toán kho',
-        permission: ['TaiChinhSX', 'KeToanSX'],
+        permission: ['Admin', 'TaiChinhTM', 'KeToanTM'],
         submenu_02: [
           { label: 'Xuất nhập tồn', href: '/inventory-management-with_reDux_ToolKit' },
           { label: 'Báo cáo kho', href: '/dashboard' },
@@ -26,7 +22,26 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  { label: 'BP Nhân Sự SX', href: '/bpnhansu', permission: 'NhanSuSX' },
+  { label: 'Tài Chính - Kế Toán TM', href: '#', permission: ['Admin', 'TaiChinhTM', 'KeToanTM'] },
+
+  { label: 'Kinh Doanh SX', href: '#', permission: ['Admin', 'KinhDoanhSX'] },
+  { label: 'Vật Tư SX', href: '#', permission: ['Admin', 'VatTuSX'] },
+  { label: 'Kế Hoạch SX', href: '#', permission: ['Admin', 'KeHoachSX'] },
+  {
+    label: 'Tài Chính - Kế Toán SX',
+    permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],
+    submenu: [
+      {
+        label: 'Kế toán kho',
+        permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],
+        submenu_02: [
+          { label: 'Xuất nhập tồn', href: '/inventory-management-with_reDux_ToolKit' },
+          { label: 'Báo cáo kho', href: '/dashboard' },
+        ],
+      },
+    ],
+  },
+  { label: 'Nhân Sự SX', href: '/bpnhansu', permission: ['Admin', 'NhanSuSX'] },
   {
     label: 'Admin',
     permission: ['Admin'],

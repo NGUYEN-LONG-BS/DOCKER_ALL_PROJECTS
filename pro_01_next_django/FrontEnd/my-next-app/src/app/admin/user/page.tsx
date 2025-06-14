@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { API_user_permissions } from '@/api/api';
+import Header from "@/components/header/header_Home";
+import Footer from '@/components/footer/Footer';
 
 
 interface UserPermission {
@@ -79,7 +81,11 @@ export default function UserPermissionPage() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="d-flex flex-column min-vh-100">
+      <Header />
+      <main className="container py-5 flex-grow-1">
+        
+        <div className="container py-4">
       <h2 className="mb-4">Quản lý User Permissions</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit} className="mb-4 row g-2 align-items-end">
@@ -163,5 +169,10 @@ export default function UserPermissionPage() {
         </div>
       )}
     </div>
+
+      </main>
+      <Footer />
+    </div>
+    
   );
 }

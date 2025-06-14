@@ -3,10 +3,10 @@
 import HeaderHome from "@/components/header/header_Home";
 import { TabNav } from "@/components/inventoryManagementWithRedux/tab-nav";
 import RightBar from "@/components/rightBarNotification/rightBarComponent";
-import LeftBar from "@/components/leftBarNavigator/leftBarComponent"; 
+import LeftBar from "@/components/leftBarNavigator/leftBarComponent";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { checkPermission } from "@/utils/checkPermission";
+import { API_get_user_permission_info } from "@/api/api";
 
 const permission = ["Admin", "TaiChinhTM", "KeToanTM"];
 
@@ -14,7 +14,29 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    checkPermission(permission, router);
+    // Lấy user_id từ localStorage
+    const userId = typeof window !== "undefined" ? localStorage.getItem("user_id") : null;
+
+    if (!userId) {
+      router.replace("/login");
+      return;
+    }
+
+    fetch(`${API_get_user_permission_info}?user_id=${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!Array.isArray(data) || !data.some((item) => permission.includes(item.department))) {
+          // Xoá user_id và cookie, sign out ngay
+          localStorage.removeItem("user_id");
+          document.cookie = "isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          router.replace("/login");
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem("user_id");
+        document.cookie = "isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        router.replace("/login");
+      });
   }, [router]);
 
   return (
