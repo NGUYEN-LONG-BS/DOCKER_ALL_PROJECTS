@@ -30,7 +30,7 @@ import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNum01";
-import { API_CHECK_SO_PHIEU_ENDPOINT } from '@/api/api';
+import { API_check_so_phieu } from '@/api/api';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -128,7 +128,7 @@ export function InventoryFormStockReceiveSlip() {
 
     // Kiểm tra số phiếu qua API
     try {
-      const myApi = `${API_CHECK_SO_PHIEU_ENDPOINT}?so_phieu=${encodeURIComponent(documentNumber)}`;
+      const myApi = `${API_check_so_phieu}?so_phieu=${encodeURIComponent(documentNumber)}`;
       console.log("myApi:", myApi);
       const response = await axios.get(myApi, {
         headers: { 'Content-Type': 'application/json' },

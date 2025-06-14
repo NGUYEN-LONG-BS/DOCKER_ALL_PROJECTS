@@ -7,7 +7,7 @@ import Image from "next/image" // Nhập Image từ Next.js để hiển thị h
 import Link from "next/link" // Nhập Link từ Next.js để điều hướng phía client
 import { useRouter } from "next/navigation" // Nhập useRouter để xử lý điều hướng
 import "bootstrap/dist/css/bootstrap.min.css" // Nhập CSS của Bootstrap để định dạng giao diện
-import { API_CHECK_LOGIN } from "@/api/api"
+import { API_check_login } from "@/api/api"
 
 // Định nghĩa component LoginPage
 export default function LoginPage() {
@@ -22,7 +22,7 @@ export default function LoginPage() {
   // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
   const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch(API_CHECK_LOGIN, {
+      const response = await fetch(API_check_login, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import useSWR, { mutate } from 'swr';
-import { API_GET_INVENTORY_CATEGORIES } from '@/api/api';
+import { API_get_inventory_categories } from '@/api/api';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -13,8 +13,7 @@ interface LoginInfo {
   dvt: string;
 }
 
-const API_URL = API_GET_INVENTORY_CATEGORIES;
-
+const API_URL = API_get_inventory_categories;
 const table_inventory_category: React.FC<{ refreshKey?: number }> = ({ refreshKey }) => {
   // Fetch dữ liệu từ API
   const { data, error } = useSWR<LoginInfo[]>(API_URL, fetcher, { refreshInterval: 0 });

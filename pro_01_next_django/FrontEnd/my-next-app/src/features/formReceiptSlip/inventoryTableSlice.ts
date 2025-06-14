@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppDispatch, RootState } from '../../store/store';
 import axios from 'axios';
-import { API_CHECK_INVENTORY_CODE_EXIST } from '@/api/api';
+import { API_check_ma_hang } from '@/api/api';
 
 export interface InventoryItemExport {
   id: number;
@@ -83,7 +83,7 @@ export const addItemWithValidation = (item: InventoryItemExport) => {
     // Kiểm tra ma_hang qua API
     try {
       const response = await axios.get(
-        `${API_CHECK_INVENTORY_CODE_EXIST}?ma_hang=${encodeURIComponent(item.code)}`,
+        `${API_check_ma_hang}?ma_hang=${encodeURIComponent(item.code)}`,
         { headers: { 'Content-Type': 'application/json' } }
       );
 

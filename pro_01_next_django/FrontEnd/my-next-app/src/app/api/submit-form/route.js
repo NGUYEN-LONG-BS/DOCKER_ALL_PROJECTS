@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_SUBMIT_FORM } from '@/api/api';
+import { API_submit_form } from '@/api/api';
 
 export async function POST(request) {
   try {
@@ -7,7 +7,7 @@ export async function POST(request) {
     const data = await request.json();
 
     // Gửi dữ liệu từ form tới backend Django
-    const response = await axios.post(API_SUBMIT_FORM, data, {
+    const response = await axios.post(API_submit_form, data, {
       headers: {
         'Content-Type': 'application/json',
       },

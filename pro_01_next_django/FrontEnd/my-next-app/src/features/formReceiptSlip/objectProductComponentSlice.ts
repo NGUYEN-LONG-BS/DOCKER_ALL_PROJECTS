@@ -1,6 +1,7 @@
 // src/features/objectProductComponent/objectProductComponentSlice.ts
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import * as Utils from '@/utils';
+import { API_get_inventory_categories } from '@/api/api';
 
 // ==== 1. Định nghĩa kiểu dữ liệu ====
 
@@ -59,6 +60,7 @@ const initialState: ProductState = {
   errorMessage: null,
 };
 
+const API_URL = API_get_inventory_categories;
 // ==== 3. AsyncThunk gọi API lấy danh sách sản phẩm ====
 export const fetchProducts = createAsyncThunk(
   'product/fetchProducts', // Tên định danh cho thunk, được dùng để theo dõi trạng thái (pending, fulfilled, rejected)
@@ -67,7 +69,8 @@ export const fetchProducts = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       // Gửi request GET đến API để lấy danh sách mặt hàng
-      const response = await fetch('http://localhost:8000/api/get-inventory-categories/');
+      
+      const response = await fetch(API_URL);
       
       // Kiểm tra nếu phản hồi không hợp lệ (status không nằm trong khoảng 200-299)
       if (!response.ok) {
