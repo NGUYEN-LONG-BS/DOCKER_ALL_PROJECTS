@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import { API_user_permissions } from '@/api/api';
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
+import { useRouter } from "next/navigation";
+import { checkPermission } from "@/utils/checkPermission";
 
+const permission = ["Admin"];
 
 interface UserPermission {
   id: number;
@@ -14,6 +17,11 @@ interface UserPermission {
 }
 
 export default function UserPermissionPage() {
+  const router = useRouter();
+  useEffect(() => {
+      checkPermission(permission, router);
+    }, [router]);
+
   const [permissions, setPermissions] = useState<UserPermission[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
