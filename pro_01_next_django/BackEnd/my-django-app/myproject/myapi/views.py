@@ -425,7 +425,7 @@ from .models import TB_INVENTORY_CATEGORIES
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
-def import_inventory_categories(request):
+def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
     file_obj = request.FILES.get('file')
     if not file_obj:
         return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)

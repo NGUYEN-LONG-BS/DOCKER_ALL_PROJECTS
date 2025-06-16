@@ -20,6 +20,12 @@ ALLOWED_HOSTS = [
     '172.16.0.53',
 ]
 
+# ALLOWED_HOSTS = ['*']  # Cho phép tất cả các máy con kết nối
+
+# Nếu bạn muốn chỉ cho phép các IP cụ thể, thay thế '*' bằng danh sách IP:
+# ALLOWED_HOSTS = ['192.168.1.100', '192.168.1.101']
+# Mặc định, lệnh python manage.py runserver chỉ lắng nghe trên 127.0.0.1 (localhost). Máy con không thể kết nối qua địa chỉ này.
+
 
 # Application definition
 
@@ -85,6 +91,14 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
         }
+    },
+    'tala': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'TALA_2025',
+        'USER': 'postgres',
+        'PASSWORD': 'Ta#9999',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -143,4 +157,9 @@ CORS_ALLOWED_ORIGINS = [
     'http://172.16.0.4:3101',      # IP LAN của máy con
     'http://172.16.0.53:3101', 
     'http://172.16.0.*:3101',  # Chỉ định mạng LAN
+]
+
+DATABASE_ROUTERS = [
+    'myproject.database_router.TALA_DatabaseRouter',
+    'myproject.database_router.PA_DatabaseRouter',
 ]

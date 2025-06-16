@@ -8,9 +8,13 @@ export const API_check_so_phieu = `${API_BASE_URL}/api/check-so-phieu/`;
 // Invenory reveived log
 export const API_inventory_stock = `${API_BASE_URL}/api/inventory-stock/`;
 export const API_import_data = `${API_BASE_URL}/api/import-data/`;
-// Invenory category
+
+
+// TB_INVENTORY_CATEGORIES
 export const API_check_ma_hang = `${API_BASE_URL}/api/check-ma-hang/`;
 export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;
+export const API_import_bulk_data_TB_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_TB_INVENTORY_CATEGORIES/`;
+
 // Login
 export const API_check_login = `${API_BASE_URL}/api/check-login/`;
 export const API_submit_form = `${API_BASE_URL}/api/submit-form/`;
