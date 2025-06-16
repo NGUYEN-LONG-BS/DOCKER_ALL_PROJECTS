@@ -99,6 +99,14 @@ DATABASES = {
         'PASSWORD': 'Ta#9999',
         'HOST': 'localhost',
         'PORT': '5432',
+    },
+    'pa': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'PA_2025',
+        'USER': 'postgres',
+        'PASSWORD': 'Ta#9999',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
