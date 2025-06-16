@@ -15,8 +15,8 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   allowedDevOrigins: [
-    'http://localhost:3000',
-    'http://172.16.0.4:3000', // Cho phép truy cập từ máy LAN
+    'http://localhost:3101',  // Máy chủ Next.js
+    'http://172.16.0.4:3101', // Cho phép truy cập từ máy LAN
   ],
 };
 

@@ -13,9 +13,12 @@ SECRET_KEY = 'django-insecure-^2a&lr4l&k*7v^p508gw_8eb@5sv1hrpky27g8i&c&t4p+h2e6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', 
-                 '127.0.0.1', 
-                 '172.16.0.53']
+ALLOWED_HOSTS = [
+    'localhost', 
+    '172.0.0.1', 
+    '172.16.0.4',
+    '172.16.0.53',
+]
 
 
 # Application definition
@@ -136,5 +139,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True  # Cho phép tất cả các domain
 CORS_ALLOWED_ORIGINS = [
-    "http://172.16.0.4:3000",  # Thay bằng IP và port frontend thực tế
+    'http://localhost:3101',        # Máy chủ Next.js trên cổng 3101
+    'http://172.16.0.4:3101',      # IP LAN của máy con
+    'http://172.16.0.53:3101', 
+    'http://172.16.0.*:3101',  # Chỉ định mạng LAN
 ]
