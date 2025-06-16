@@ -1,5 +1,8 @@
 // src/api/api.ts
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://172.0.0.1:8000';
+const isLocalhost = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
+                            (isLocalhost ? 'http://127.0.0.1:8000' : 'http://172.16.0.4:8000');
+
 export const API_new_number_slip_pnk = `${API_BASE_URL}/api/new-number-slip-pnk/`;
 export const API_check_so_phieu = `${API_BASE_URL}/api/check-so-phieu/`;
 // Invenory reveived log
