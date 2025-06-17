@@ -2,11 +2,32 @@
 
 import React, { useState } from "react";
 import axios from "axios";
+import {
+    API_import_bulk_data_TB_INVENTORY_CATEGORIES,
+    API_import_bulk_data_LA_INVENTORY_CATEGORIES,
+    API_import_bulk_data_PA_INVENTORY_CATEGORIES,
+} from "@/api/api"
 
-const API_BASE_URL = "http://localhost:8000"; // Thay đổi URL nếu cần
-export const API_import_bulk_data_TB_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_TB_INVENTORY_CATEGORIES/`;
-export const API_import_bulk_data_LA_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_LA_INVENTORY_CATEGORIES/`;
-export const API_import_bulk_data_PA_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_PA_INVENTORY_CATEGORIES/`;
+const categoryData: Record<string, { apiUrl: string; table_name: string; combobox_label: string; combobox_value: string }> = {
+  TB: {
+    apiUrl: API_import_bulk_data_TB_INVENTORY_CATEGORIES,
+    table_name: "TB_INVENTORY_CATEGORIES",
+    combobox_label: "TB",
+    combobox_value: "TB",
+  },
+  LA: {
+    apiUrl: API_import_bulk_data_LA_INVENTORY_CATEGORIES,
+    table_name: "LA_INVENTORY_CATEGORIES",
+    combobox_label: "LA",
+    combobox_value: "LA",
+  },
+  PA: {
+    apiUrl: API_import_bulk_data_PA_INVENTORY_CATEGORIES,
+    table_name: "PA_INVENTORY_CATEGORIES",
+    combobox_label: "PA",
+    combobox_value: "PA",
+  },
+};
 
 const ImportBulkDataPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("TB");
@@ -31,20 +52,10 @@ const ImportBulkDataPage = () => {
       return;
     }
 
-    let apiUrl = "";
-    switch (selectedCategory) {
-      case "TB":
-        apiUrl = API_import_bulk_data_TB_INVENTORY_CATEGORIES;
-        break;
-      case "LA":
-        apiUrl = API_import_bulk_data_LA_INVENTORY_CATEGORIES;
-        break;
-      case "PA":
-        apiUrl = API_import_bulk_data_PA_INVENTORY_CATEGORIES;
-        break;
-      default:
-        setMessage("Loại dữ liệu không hợp lệ.");
-        return;
+    const apiUrl = categoryData[selectedCategory]?.apiUrl;
+    if (!apiUrl) {
+      setMessage("Loại dữ liệu không hợp lệ.");
+      return;
     }
 
     const formData = new FormData();
@@ -64,22 +75,10 @@ const ImportBulkDataPage = () => {
     }
   };
 
-  const getTitle = () => {
-    switch (selectedCategory) {
-      case "TB":
-        return "Import Bulk Data to table: TB_INVENTORY_CATEGORIES";
-      case "LA":
-        return "Import Bulk Data to table: LA_INVENTORY_CATEGORIES";
-      case "PA":
-        return "Import Bulk Data to table: PA_INVENTORY_CATEGORIES";
-      default:
-        return "Import Bulk Data";
-    }
-  };
-
   return (
     <div>
-      <h1>{getTitle()}</h1>
+      <h1>Import Bulk Data</h1>
+      <p>{categoryData[selectedCategory]?.table_name || "---"}</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="category">Chọn loại dữ liệu:</label>
@@ -88,9 +87,11 @@ const ImportBulkDataPage = () => {
             value={selectedCategory}
             onChange={handleCategoryChange}
           >
-            <option value="TB">TB</option>
-            <option value="LA">LA</option>
-            <option value="PA">PA</option>
+            {Object.values(categoryData).map((option) => (
+              <option key={option.combobox_value} value={option.combobox_value}>
+                {option.combobox_label}
+              </option>
+            ))}
           </select>
         </div>
         <div>
