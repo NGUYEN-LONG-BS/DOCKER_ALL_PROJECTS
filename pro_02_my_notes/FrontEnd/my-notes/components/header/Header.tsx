@@ -158,6 +158,26 @@ export default function Header() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/html/django/start_dijango_with_docker_step_01.html" className="dropdown-item">
+                    Django
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/html/nextjs/flow-redux-toolkit.html" className="dropdown-item">
+                    NEXT
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/html/orther-projects/danh_muc_san_pham.html" className="dropdown-item">
+                    orther projects from flask
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/html/economic/eco-interest_rates_full.html" className="dropdown-item">
+                    economic
+                  </Link>
+                </li>
+                <li>
                   <Link href="/trang-diem-co-dau" className="dropdown-item">
                     Trang điểm cô dâu
                   </Link>
