@@ -5,7 +5,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import openpyxl
 from .models_Ha_Noi import HANOI_INVENTORY_CATEGORIES
 
-DATABASE_NAME = 'pa'
+DATABASE_NAME = 'hanoi'
 
 # ==============================================================================
 # import inventory categories

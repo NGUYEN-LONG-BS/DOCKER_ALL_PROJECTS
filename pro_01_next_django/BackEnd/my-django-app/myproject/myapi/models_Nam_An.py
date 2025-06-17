@@ -15,5 +15,5 @@ class NAMAN_INVENTORY_CATEGORIES(models.Model):
 
     class Meta:
         db_table = 'NAMAN_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
-        managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
-        # managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+        # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
+        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).

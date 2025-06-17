@@ -5,7 +5,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import openpyxl
 from .models_Mien_Tay import MIENTAY_INVENTORY_CATEGORIES
 
-DATABASE_NAME = 'pa'
+DATABASE_NAME = 'mientay'
 
 # ==============================================================================
 # import inventory categories

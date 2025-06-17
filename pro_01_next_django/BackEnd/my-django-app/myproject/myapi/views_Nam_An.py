@@ -5,7 +5,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 import openpyxl
 from .models_Nam_An import NAMAN_INVENTORY_CATEGORIES
 
-DATABASE_NAME = 'pa'
+DATABASE_NAME = 'naman'
 
 # ==============================================================================
 # import inventory categories
