@@ -35,7 +35,7 @@ const categoryData: Record<string, { apiUrl: string; table_name: string; combobo
 const ImportBulkDataPage = () => {
   const router = useRouter();
   useEffect(() => {
-    const currentPage = "INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED"; // Update dynamically if needed
+    const currentPage = "admin___import_bulk_data___INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED"; // Update dynamically if needed
     const permissions = permissionData[currentPage];
     checkPermission(permissions, router);
   }, [router]);

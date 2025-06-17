@@ -6,12 +6,14 @@ import { checkPermission } from "@/utils/checkPermission";
 import { permissionData } from "@/permission/data";
 
 const Page = () => {
+    // ========== Permission Check =========
     const router = useRouter();
     useEffect(() => {
-        const currentPage = "import_bulk_data"; // Update dynamically if needed
+        const currentPage = "admin___import_bulk_data"; // Update dynamically if needed
         const permissions = permissionData[currentPage];
         checkPermission(permissions, router);
     }, [router]);
+    // =====================================
 
   const navigateToPage = (category: string) => {
     const pageMapping: Record<string, string> = {

@@ -39,7 +39,7 @@ const ImportBulkDataPage = () => {
 
   const router = useRouter();
     useEffect(() => {
-      const currentPage = "INVENTORY_CATEGORIES"; // Update dynamically if needed
+      const currentPage = "admin___import_bulk_data___INVENTORY_CATEGORIES"; // Update dynamically if needed
       const permissions = permissionData[currentPage];
       checkPermission(permissions, router);
     }, [router]);
