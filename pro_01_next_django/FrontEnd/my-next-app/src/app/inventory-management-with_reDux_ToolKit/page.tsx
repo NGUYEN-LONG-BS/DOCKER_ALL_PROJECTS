@@ -7,15 +7,17 @@ import LeftBar from "@/components/leftBarNavigator/leftBarComponent";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { checkPermission } from "@/utils/checkPermission";
-
-const permission = ["Admin", "TaiChinhTM", "KeToanTM"];
+import { permissionData } from "@/permission/data";
 
 export default function Home() {
+  // ========== Permission Check =========
   const router = useRouter();
-
   useEffect(() => {
-    checkPermission(permission, router);
+      const currentPage = "inventory_management"; // Update dynamically if needed
+      const permissions = permissionData[currentPage];
+      checkPermission(permissions, router);
   }, [router]);
+  // =====================================
 
   return (
     <div className="d-flex flex-column min-vh-100">

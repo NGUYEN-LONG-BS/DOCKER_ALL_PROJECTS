@@ -6,10 +6,12 @@ import { logout } from '@/features/userSlice';
 
 interface UserInactivityProviderProps {
   children: React.ReactNode;
-  timeoutMinutes?: number; // default 10
+  timeoutMinutes?: number;
 }
 
-const UserInactivityProvider: React.FC<UserInactivityProviderProps> = ({ children, timeoutMinutes = 10 }) => {
+const DEFAULT_TIMEOUT_MINUTES = 5;
+
+const UserInactivityProvider: React.FC<UserInactivityProviderProps> = ({ children, timeoutMinutes = DEFAULT_TIMEOUT_MINUTES }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
