@@ -1,0 +1,10 @@
+B1: Tạo thêm database mới
+B2: Tạo thêm views mới từ views cũ, nhớ chỉnh database_name
+B3: chỉnh trong database_router.py
+B4: chỉnh trong settings.py:
+    DATABASES
+    DATABASE_ROUTERS
+
+B5: chạy migration
+    python manage.py makemigrations
+    python manage.py migrate --fake
