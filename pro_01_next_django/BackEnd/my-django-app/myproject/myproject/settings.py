@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',  # Django REST Framework
     'corsheaders',  # CORS support
-    'myapi',  # Ứng dụng của bạn
+    'myapi',
 ]
 
 MIDDLEWARE = [

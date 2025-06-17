@@ -16,4 +16,3 @@ class LA_INVENTORY_CATEGORIES(models.Model):
     class Meta:
         db_table = 'LA_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
-        app_label = 'tala_app'
