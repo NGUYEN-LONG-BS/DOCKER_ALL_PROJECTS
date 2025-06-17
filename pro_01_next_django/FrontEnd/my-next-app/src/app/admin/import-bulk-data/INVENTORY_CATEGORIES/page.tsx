@@ -6,6 +6,9 @@ import {
     API_import_bulk_data_TB_INVENTORY_CATEGORIES,
     API_import_bulk_data_LA_INVENTORY_CATEGORIES,
     API_import_bulk_data_PA_INVENTORY_CATEGORIES,
+    API_import_bulk_data_HANOI_INVENTORY_CATEGORIES,
+    API_import_bulk_data_MIENTAY_INVENTORY_CATEGORIES,
+    API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES,
 } from "@/api/api"
 
 import { useEffect } from "react";
@@ -32,6 +35,24 @@ const categoryData: Record<string, { apiUrl: string; table_name: string; combobo
     table_name: "PA_INVENTORY_CATEGORIES",
     combobox_label: "PA",
     combobox_value: "PA",
+  },
+  HANOI: {
+    apiUrl: API_import_bulk_data_HANOI_INVENTORY_CATEGORIES,
+    table_name: "HANOI_INVENTORY_CATEGORIES",
+    combobox_label: "HANOI",
+    combobox_value: "HANOI",
+  },
+  MIENTAY: {
+    apiUrl: API_import_bulk_data_MIENTAY_INVENTORY_CATEGORIES,
+    table_name: "MIENTAY_INVENTORY_CATEGORIES",
+    combobox_label: "MIENTAY",
+    combobox_value: "MIENTAY",
+  },
+  NAMAN: {
+    apiUrl: API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES,
+    table_name: "NAMAN_INVENTORY_CATEGORIES",
+    combobox_label: "NAMAN",
+    combobox_value: "NAMAN",
   },
 };
 

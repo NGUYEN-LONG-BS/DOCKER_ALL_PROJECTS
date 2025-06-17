@@ -5,34 +5,42 @@ import { useRouter } from "next/navigation";
 import { checkPermission } from "@/utils/checkPermission";
 import { permissionData } from "@/permission/data";
 
+const pageData = [
+  {
+    category: "INVENTORY_CATEGORIES",
+    label: "Bảng INVENTORY_CATEGORIES",
+    path: "/admin/import-bulk-data/INVENTORY_CATEGORIES",
+  },
+  {
+    category: "INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED",
+    label: "Bảng INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED",
+    path: "/admin/import-bulk-data/INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED",
+  },
+];
+
 const Page = () => {
-    // ========== Permission Check =========
-    const router = useRouter();
-    useEffect(() => {
-        const currentPage = "admin___import_bulk_data"; // Update dynamically if needed
-        const permissions = permissionData[currentPage];
-        checkPermission(permissions, router);
-    }, [router]);
-    // =====================================
+  // ========== Permission Check =========
+  const router = useRouter();
+  useEffect(() => {
+    const currentPage = "admin___import_bulk_data"; // Update dynamically if needed
+    const permissions = permissionData[currentPage];
+    checkPermission(permissions, router);
+  }, [router]);
+  // =====================================
 
-  const navigateToPage = (category: string) => {
-    const pageMapping: Record<string, string> = {
-      INVENTORY_CATEGORIES: "/admin/import-bulk-data/INVENTORY_CATEGORIES",
-      INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED: "/admin/import-bulk-data/INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED",
-    };
-
-    const targetPage = pageMapping[category];
-    if (targetPage) {
-      router.push(targetPage);
-    } else {
-      console.error("Invalid category selected.");
-    }
+  // Updated code to use `pageData` JSON for dynamic routing
+  const navigateToPage = (path: string) => {
+    router.push(path);
   };
 
   return (
     <div>
-      <button onClick={() => navigateToPage("INVENTORY_CATEGORIES")}>Go to Inventory Categories</button>
-      <button onClick={() => navigateToPage("INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED")}>Go to Inventory Stock</button>
+      {/* Updated code to use `pageData` JSON for dynamic button rendering */}
+      {pageData.map((page) => (
+        <button key={page.category} onClick={() => navigateToPage(page.path)}>
+          {page.label}
+        </button>
+      ))}
     </div>
   );
 };

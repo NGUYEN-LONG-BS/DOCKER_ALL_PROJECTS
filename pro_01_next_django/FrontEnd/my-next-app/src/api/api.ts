@@ -18,6 +18,9 @@ export const API_import_inventory_categories = `${API_BASE_URL}/api/import-inven
 export const API_import_bulk_data_TB_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_TB_INVENTORY_CATEGORIES/`;
 export const API_import_bulk_data_LA_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_LA_INVENTORY_CATEGORIES/`;
 export const API_import_bulk_data_PA_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_PA_INVENTORY_CATEGORIES/`;
+export const API_import_bulk_data_HANOI_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_HANOI_INVENTORY_CATEGORIES/`;
+export const API_import_bulk_data_MIENTAY_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_MIENTAY_INVENTORY_CATEGORIES/`;
+export const API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_NAMAN_INVENTORY_CATEGORIES/`;
 
 
 // Login

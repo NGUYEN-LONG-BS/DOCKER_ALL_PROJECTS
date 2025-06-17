@@ -113,6 +113,39 @@ DATABASES = {
         'OPTIONS': {
             'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
         }
+    },
+    'hanoi': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'HANOI_2025',
+        'USER': 'postgres',
+        'PASSWORD': 'Ta#9999',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
+        }
+    },
+    'mientay': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'MIENTAY_2025',
+        'USER': 'postgres',
+        'PASSWORD': 'Ta#9999',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
+        }
+    },
+    'naman': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'NAMAN_2025',
+        'USER': 'postgres',
+        'PASSWORD': 'Ta#9999',
+        'HOST': 'localhost',
+        'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
+        }
     }
 }
 
@@ -176,4 +209,7 @@ CORS_ALLOWED_ORIGINS = [
 DATABASE_ROUTERS = [
     'myproject.database_router.TALA_DatabaseRouter',
     'myproject.database_router.PA_DatabaseRouter',
+    'myproject.database_router.HANOI_DatabaseRouter',
+    'myproject.database_router.MIENTAY_DatabaseRouter',
+    'myproject.database_router.NAMAN_DatabaseRouter',
 ]

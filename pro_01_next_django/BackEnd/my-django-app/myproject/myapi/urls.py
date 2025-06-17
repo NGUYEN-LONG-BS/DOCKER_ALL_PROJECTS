@@ -11,9 +11,14 @@ from .views import check_login
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+# ===========================================================================
 from .views import import_bulk_data_TB_INVENTORY_CATEGORIES
 from .views_LA import import_bulk_data_LA_INVENTORY_CATEGORIES
 from .views_PA import import_bulk_data_PA_INVENTORY_CATEGORIES
+from .views_Ha_Noi import import_bulk_data_HANOI_INVENTORY_CATEGORIES
+from .views_Mien_Tay import import_bulk_data_MIENTAY_INVENTORY_CATEGORIES
+from .views_Nam_An import import_bulk_data_NAMAN_INVENTORY_CATEGORIES
+# ===========================================================================
 from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet
 
@@ -46,6 +51,9 @@ urlpatterns = [
     path('import_bulk_data_TB_INVENTORY_CATEGORIES/', import_bulk_data_TB_INVENTORY_CATEGORIES, name='import_bulk_data_TB_INVENTORY_CATEGORIES'),
     path('import_bulk_data_LA_INVENTORY_CATEGORIES/', import_bulk_data_LA_INVENTORY_CATEGORIES, name='import_bulk_data_LA_INVENTORY_CATEGORIES'),
     path('import_bulk_data_PA_INVENTORY_CATEGORIES/', import_bulk_data_PA_INVENTORY_CATEGORIES, name='import_bulk_data_PA_INVENTORY_CATEGORIES'),
+    path('import_bulk_data_HANOI_INVENTORY_CATEGORIES/', import_bulk_data_HANOI_INVENTORY_CATEGORIES, name='import_bulk_data_HANOI_INVENTORY_CATEGORIES'),
+    path('import_bulk_data_MIENTAY_INVENTORY_CATEGORIES/', import_bulk_data_MIENTAY_INVENTORY_CATEGORIES, name='import_bulk_data_MIENTAY_INVENTORY_CATEGORIES'),
+    path('import_bulk_data_NAMAN_INVENTORY_CATEGORIES/', import_bulk_data_NAMAN_INVENTORY_CATEGORIES, name='import_bulk_data_NAMAN_INVENTORY_CATEGORIES'),
     
     
     path('get-user-permission-info/', views.get_user_permission_info, name='get_user_permission_info'),
