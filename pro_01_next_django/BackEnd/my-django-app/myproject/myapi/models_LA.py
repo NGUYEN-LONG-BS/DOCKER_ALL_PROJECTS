@@ -15,4 +15,10 @@ class LA_INVENTORY_CATEGORIES(models.Model):
 
     class Meta:
         db_table = 'LA_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
-        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+        managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
+        # managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+
+def some_function():
+    from myapi.models_LA import LA_INVENTORY_CATEGORIES
+    print(LA_INVENTORY_CATEGORIES.objects.using('tala').all())
+

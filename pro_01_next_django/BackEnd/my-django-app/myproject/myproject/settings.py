@@ -99,6 +99,9 @@ DATABASES = {
         'PASSWORD': 'Ta#9999',
         'HOST': 'localhost',
         'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
+        }
     },
     'pa': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -107,6 +110,9 @@ DATABASES = {
         'PASSWORD': 'Ta#9999',
         'HOST': 'localhost',
         'PORT': '5432',
+        'OPTIONS': {
+            'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
+        }
     }
 }
 

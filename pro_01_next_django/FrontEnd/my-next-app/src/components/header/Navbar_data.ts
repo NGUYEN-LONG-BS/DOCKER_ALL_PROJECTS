@@ -55,6 +55,13 @@ export const menuItems: MenuItem[] = [
         ],
       },
       {
+        label: 'import bulk data',
+        permission: ['Admin'],
+        submenu_02: [
+          { label: 'Import bulk Data', href: '/admin/import-bulk-data' },
+        ],
+      },
+      {
         label: 'Django',
         permission: ['Admin'],
         submenu_02: [

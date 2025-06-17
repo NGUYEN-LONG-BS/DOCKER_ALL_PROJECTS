@@ -26,6 +26,8 @@ from django.conf import settings
 import os
 import openpyxl
 
+DATABASE_NAME = 'default'
+
 #========================================================================================================================
 #========================================================================================================================
 #========================================================================================================================
@@ -447,8 +449,8 @@ def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
         for idx, row in enumerate(rows[1:], start=2):
             ma_hang = row[header_map['ma_hang']]
             # xoa_sua = row[header_map['xoa_sua']]
-            if ma_hang and TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=ma_hang, xoa_sua="new").exists():
-                return Response({'error': f'Mã hàng "{ma_hang}" ở dòng {idx} đã tồn tại, vui lòng kiểm tra lại.'}, status=status.HTTP_400_BAD_REQUEST)
+            if ma_hang and TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME).filter(ma_hang=ma_hang, xoa_sua="new").exists():
+                return Response({'error': f'Mã hàng "{ma_hang}" đã tồn tại.'}, status=status.HTTP_400_BAD_REQUEST)
         count = 0
         errors = []
         for idx, row in enumerate(rows[1:], start=2):
@@ -477,7 +479,7 @@ def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
                 errors.append(f'Dòng {idx}: Cột "don_gia_ton_dau_ky" phải là số.')
                 continue
             # Nếu không có lỗi, tạo bản ghi
-            TB_INVENTORY_CATEGORIES.objects.create(
+            TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME).create(
                 id_nhan_vien=row[header_map['id_nhan_vien']],
                 xoa_sua=row[header_map['xoa_sua']],
                 ma_hang=row[header_map['ma_hang']],

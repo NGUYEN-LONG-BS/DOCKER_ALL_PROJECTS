@@ -12,6 +12,8 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import import_bulk_data_TB_INVENTORY_CATEGORIES
+from .views_LA import import_bulk_data_LA_INVENTORY_CATEGORIES
+from .views_PA import import_bulk_data_PA_INVENTORY_CATEGORIES
 from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet
 
@@ -42,6 +44,10 @@ urlpatterns = [
     path('inventory-stock-by-so-phieu/', InventoryStockBySoPhieuView.as_view(), name='inventory_stock_by_so_phieu'),
     path('import-inventory-categories/', import_bulk_data_TB_INVENTORY_CATEGORIES, name='import_bulk_data_TB_INVENTORY_CATEGORIES'),
     path('import_bulk_data_TB_INVENTORY_CATEGORIES/', import_bulk_data_TB_INVENTORY_CATEGORIES, name='import_bulk_data_TB_INVENTORY_CATEGORIES'),
+    path('import_bulk_data_LA_INVENTORY_CATEGORIES/', import_bulk_data_LA_INVENTORY_CATEGORIES, name='import_bulk_data_LA_INVENTORY_CATEGORIES'),
+    path('import_bulk_data_PA_INVENTORY_CATEGORIES/', import_bulk_data_PA_INVENTORY_CATEGORIES, name='import_bulk_data_PA_INVENTORY_CATEGORIES'),
+    
+    
     path('get-user-permission-info/', views.get_user_permission_info, name='get_user_permission_info'),
 ]
 
