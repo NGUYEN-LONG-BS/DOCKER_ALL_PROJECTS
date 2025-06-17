@@ -1,4 +1,5 @@
-B1: Tạo thêm database mới
+B1: Tạo thêm database mới trên database
+B1: Tạo thêm models mới tương ứng
 B2: Tạo thêm views mới từ views cũ, nhớ chỉnh database_name
 B3: chỉnh trong database_router.py
 B4: chỉnh trong settings.py:
