@@ -8,28 +8,21 @@ import { useRouter } from "next/navigation";
 import { checkPermission } from "@/utils/checkPermission";
 import { permissionData } from "@/permission/data";
 
-interface UserPermission {
-  id: number;
-  user_id: string;
-  subsidiary: string;
-  department: string;
-}
-
 export default function UserPermissionPage() {
   // ========== Permission Check =========
-    const router = useRouter();
-    useEffect(() => {
-        const currentPage = "admin___user"; // Update dynamically if needed
-        const permissions = permissionData[currentPage];
-        checkPermission(permissions, router);
-    }, [router]);
-    // =====================================
+  const router = useRouter();
+  useEffect(() => {
+      const currentPage = "admin___user"; // Update dynamically if needed
+      const permissions = permissionData[currentPage];
+      checkPermission(permissions, router);
+  }, [router]);
+  // =====================================
 
 
-  const [permissions, setPermissions] = useState<UserPermission[]>([]);
+  const [permissions, setPermissions] = useState<Record<string, any>[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [editing, setEditing] = useState<UserPermission | null>(null);
+  const [editing, setEditing] = useState<Record<string, any> | null>(null);
   const [form, setForm] = useState({ user_id: "", subsidiary: "", department: "" });
   const [filter, setFilter] = useState({ user_id: "", subsidiary: "", department: "" });
 
@@ -87,7 +80,7 @@ export default function UserPermissionPage() {
   };
 
   // Sửa
-  const handleEdit = (perm: UserPermission) => {
+  const handleEdit = (perm: any) => {
     setEditing(perm);
     setForm({ user_id: perm.user_id, subsidiary: perm.subsidiary, department: perm.department });
   };
