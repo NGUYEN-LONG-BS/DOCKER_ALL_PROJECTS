@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Phân biệt TCP/IP và HTTPS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📌 Phân biệt TCP/IP và HTTPS</h2>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title"><span class="icon">🚀</span>TCP/IP</h4>
+            <p>TCP/IP là <strong>bộ giao thức nền tảng của internet</strong>, giúp truyền dữ liệu giữa các thiết bị mạng.</p>
+            <ul>
+                <li><strong>TCP (Transmission Control Protocol)</strong>: Đảm bảo dữ liệu được gửi đi chính xác, không bị mất.</li>
+                <li><strong>IP (Internet Protocol)</strong>: Xác định địa chỉ mạng của thiết bị để dữ liệu đi đến đúng nơi.</li>
+                <li>Hoạt động ở <strong>cấp độ thấp</strong>, giúp thiết bị có thể giao tiếp mà không cần biết ứng dụng phía trên.</li>
+                <li>Không có <strong>cơ chế mã hóa</strong>, nên dữ liệu gửi đi có thể bị chặn hoặc đọc nếu không được bảo mật.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title"><span class="icon">🔐</span>HTTPS</h4>
+            <p>HTTPS (Hypertext Transfer Protocol Secure) là <strong>giao thức ứng dụng hoạt động trên TCP/IP</strong>, giúp truyền tải dữ liệu web an toàn.</p>
+            <ul>
+                <li>Sử dụng <strong>SSL/TLS</strong> để <strong>mã hóa dữ liệu</strong>, bảo vệ khỏi nghe lén hoặc giả mạo.</li>
+                <li>Là phiên bản bảo mật của <strong>HTTP</strong>, thường thấy trên các website (<code>https://</code> thay vì <code>http://</code>).</li>
+                <li>HTTPS dùng <strong>TCP</strong> làm giao thức truyền tải nhưng có <strong>lớp bảo mật</strong> bổ sung.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"><span class="icon">⚡</span> Sự khác biệt</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Đặc điểm</th>
+                            <th>TCP/IP</th>
+                            <th>HTTPS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Vai trò</strong></td>
+                            <td>Giao thức mạng, nền tảng</td>
+                            <td>Giao thức ứng dụng, truyền tải web</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mã hóa</strong></td>
+                            <td>Không có</td>
+                            <td>Có mã hóa bằng SSL/TLS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cấp độ hoạt động</strong></td>
+                            <td>Hoạt động ở tầng mạng</td>
+                            <td>Hoạt động ở tầng ứng dụng (HTTP trên TCP/IP)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Mục tiêu</strong></td>
+                            <td>Truyền dữ liệu giữa thiết bị</td>
+                            <td>Truyền dữ liệu web an toàn</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-center mt-4"><strong>📌 Tóm lại:</strong> TCP/IP là nền tảng giúp kết nối các thiết bị mạng, còn HTTPS giúp bảo mật nội dung web khi truyền qua TCP/IP.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
