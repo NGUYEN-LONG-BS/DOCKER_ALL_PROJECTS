@@ -121,30 +121,6 @@ class TB_CLIENT_CATEGORIES(models.Model):
         db_table = 'inventory.TB_CLIENT_CATEGORIES'
         # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
-        
-class TB_CLIENT_CATEGORIES_DJANGO(models.Model):
-    id = models.UUIDField(primary_key=True)
-    date = models.DateTimeField()
-    id_nhan_vien = models.CharField(max_length=10)
-    xoa_sua = models.CharField(max_length=10)
-    ma_khach_hang = models.CharField(max_length=50)
-    ten_khach_hang = models.TextField()
-    ma_phan_loai_01 = models.CharField(max_length=50)
-    ma_phan_loai_02 = models.CharField(max_length=50)
-    ma_phan_loai_03 = models.CharField(max_length=50)
-    ma_phan_loai_04 = models.CharField(max_length=50)
-    ma_phan_loai_05 = models.CharField(max_length=50)
-    ma_phan_loai_06 = models.CharField(max_length=50)
-    ma_phan_loai_07 = models.CharField(max_length=50)
-    ma_phan_loai_08 = models.CharField(max_length=50)
-    mst = models.CharField(max_length=20)
-    dia_chi = models.TextField()
-
-    class Meta:
-        db_table = 'inventory.TB_CLIENT_CATEGORIES'
-        # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
-        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
-            
     
 class TB_SUPPLIER_CATEGORIES(models.Model):
     id = models.UUIDField(primary_key=True)

@@ -231,3 +231,5 @@ DATABASE_ROUTERS = [
     'myproject.database_router.MIENTAY_DatabaseRouter',
     'myproject.database_router.NAMAN_DatabaseRouter',
 ]
+
+APPEND_SLASH = False

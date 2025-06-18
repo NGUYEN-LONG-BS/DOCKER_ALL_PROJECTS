@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import FormSubmission, LoginInfo, UserPermission
 from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models import TB_CLIENT_CATEGORIES
-from .models import TB_CLIENT_CATEGORIES_DJANGO
 
 class FormSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,9 +80,4 @@ class TB_CLIENT_CATEGORIES_Serializer(serializers.ModelSerializer):
 class TBClientCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = TB_CLIENT_CATEGORIES
-        fields = '__all__'
-        
-class TBClientCategoriesSerializer_DJANGO(serializers.ModelSerializer):
-    class Meta:
-        model = TB_CLIENT_CATEGORIES_DJANGO
         fields = '__all__'

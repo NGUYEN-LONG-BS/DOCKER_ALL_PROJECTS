@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import FormSubmissionView, LoginInfoListView, TBInventoryCategoriesView
 # from .views import SaveInventoryView
 from .views import InventoryStockReceivedIssuedReturnedView
@@ -20,13 +20,10 @@ from .views_Mien_Tay import import_bulk_data_MIENTAY_INVENTORY_CATEGORIES
 from .views_Nam_An import import_bulk_data_NAMAN_INVENTORY_CATEGORIES
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
-from .views import UserPermissionViewSet, ClientViewSet, TBClientCategoriesViewSet, TBClientCategoriesViewSet_Django
+from .views import UserPermissionViewSet, get_data_TB_CLIENT_CATEGORIES
 
 router = DefaultRouter()
 router.register(r'user-permissions', UserPermissionViewSet, basename='user-permission')
-router.register(r'client-categories', ClientViewSet, basename='clientViewSet')
-router.register(r'tb-client-categories', TBClientCategoriesViewSet, basename='tb-client-categories')
-router.register(r'tb-client-categories-django', TBClientCategoriesViewSet_Django, basename='tb-client-categories_django')
 
 urlpatterns = [
     path('submit-form/', FormSubmissionView.as_view(), name='submit-form'),
@@ -58,6 +55,7 @@ urlpatterns = [
     path('import_bulk_data_MIENTAY_INVENTORY_CATEGORIES/', import_bulk_data_MIENTAY_INVENTORY_CATEGORIES, name='import_bulk_data_MIENTAY_INVENTORY_CATEGORIES'),
     path('import_bulk_data_NAMAN_INVENTORY_CATEGORIES/', import_bulk_data_NAMAN_INVENTORY_CATEGORIES, name='import_bulk_data_NAMAN_INVENTORY_CATEGORIES'),
     
+    path('get_data_TB_CLIENT_CATEGORIES/', get_data_TB_CLIENT_CATEGORIES.as_view(), name='get_data_TB_CLIENT_CATEGORIES'),
     
     path('get-user-permission-info/', views.get_user_permission_info, name='get_user_permission_info'),
 ]

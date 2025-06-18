@@ -16,7 +16,7 @@ from rest_framework.generics import ListAPIView
 from .models import FormSubmission
 from .models import LoginInfo, UserPermission
 from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-from .models import TB_CLIENT_CATEGORIES, TB_CLIENT_CATEGORIES_DJANGO
+from .models import TB_CLIENT_CATEGORIES
 
 from .serializers import FormSubmissionSerializer
 from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
@@ -25,7 +25,7 @@ from .serializers import TBInventoryCategoriesSerializer
 from .serializers import UserPermissionSerializer, TB_CLIENT_CATEGORIES_Serializer
 from .serializers import InventoryStockReceivedIssuedReturnedSerializer
 from .serializers import InventoryStockSerializer
-from .serializers import TBClientCategoriesSerializer, TBClientCategoriesSerializer_DJANGO
+from .serializers import TBClientCategoriesSerializer
 
 import json
 import openpyxl
@@ -502,46 +502,12 @@ def get_user_permission_info(request):
 # Client CRUD
 # ==============================================================================
 
-class ClientViewSet(viewsets.ModelViewSet):
-    serializer_class = TB_CLIENT_CATEGORIES_Serializer
-
-    def get_queryset(self):
-        queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).all().order_by('ma_khach_hang')
-        # Đánh lại số thứ tự (STT) cho từng bản ghi
-        for idx, obj in enumerate(queryset, start=1):
-            obj.stt = idx
-        return queryset
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        # Thêm trường STT vào từng bản ghi trả về
-        data = serializer.data
-        for idx, item in enumerate(data, start=1):
-            item['stt'] = idx
-        return Response(data)
-    
-@api_view(['GET'])
-def get_client_info(request):
-    ma_khach_hang = request.query_params.get('ma_khach_hang')
-    if not ma_khach_hang:
-        return Response({'error': 'Thiếu ma_khach_hang'}, status=400)
-    client = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).filter(ma_khach_hang=ma_khach_hang)
-    if not client.exists():
-        return Response({'error': 'Không tìm thấy ma_khach_hang này'}, status=404)
-    data = [
-        {
-            'ma_khach_hang': up.ma_khach_hang,
-            'ten_khach_hang': up.ten_khach_hang
-        }
-        for up in client
-    ]
-    return Response(data, status=200)
-
-class TBClientCategoriesViewSet(viewsets.ModelViewSet):
-    queryset = TB_CLIENT_CATEGORIES.objects.all()
+class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
+    queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).all()
     serializer_class = TBClientCategoriesSerializer
-    
-class TBClientCategoriesViewSet_Django(viewsets.ModelViewSet):
-    queryset = TB_CLIENT_CATEGORIES_DJANGO.objects.all()
-    serializer_class = TBClientCategoriesSerializer_DJANGO
+
+    @classmethod
+    def as_view(cls, actions=None, **initkwargs):
+        if actions is None:
+            actions = {'get': 'list'}
+        return super().as_view(actions, **initkwargs)
