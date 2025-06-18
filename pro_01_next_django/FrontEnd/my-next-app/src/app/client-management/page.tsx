@@ -44,6 +44,21 @@ const ClientManagementPage = () => {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("tab1");
 
+  const tableColumns = [
+    { label: "Mã KH", width: "150px" },
+    { label: "Tên khách hàng", width: "600px" },
+    { label: "Địa chỉ", width: "500px" },
+    { label: "MST", width: "100px" },
+    { label: "Mã phân loại 01", width: "150px" },
+    { label: "Mã phân loại 02", width: "150px" },
+    { label: "Mã phân loại 03", width: "150px" },
+    { label: "Mã phân loại 04", width: "150px" },
+    { label: "Mã phân loại 05", width: "150px" },
+    { label: "Mã phân loại 06", width: "150px" },
+    { label: "Mã phân loại 07", width: "150px" },
+    { label: "Mã phân loại 08", width: "150px" },
+  ];
+
   // Fetch clients
   const fetchClients = async () => {
     setLoading(true);
@@ -325,22 +340,13 @@ const ClientManagementPage = () => {
                 </div>
             </form>
 
-            <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-              <table className="table table-bordered table-responsive" style={{ position: "relative" }}>
+            <div style={{ maxHeight: "400px", overflowY: "auto", overflowX: "auto" }}>
+              <table className="table table-bordered table-responsive" style={{ position: "relative", width: "1500px" }}>
                 <thead className="thead-dark" style={{ position: "sticky", top: 0, zIndex: 1, backgroundColor: "#343a40" }}>
                 <tr>
-                    <th>Mã khách hàng</th>
-                    <th>Tên khách hàng</th>
-                    <th>Địa chỉ</th>
-                    <th>MST</th>
-                    <th>Mã phân loại 01</th>
-                    <th>Mã phân loại 02</th>
-                    <th>Mã phân loại 03</th>
-                    <th>Mã phân loại 04</th>
-                    <th>Mã phân loại 05</th>
-                    <th>Mã phân loại 06</th>
-                    <th>Mã phân loại 07</th>
-                    <th>Mã phân loại 08</th>
+                  {tableColumns.map((column, index) => (
+                    <th key={index} style={{ width: column.width }}>{column.label}</th>
+                  ))}
                 </tr>
                 </thead>
                 <tbody>
@@ -361,7 +367,14 @@ const ClientManagementPage = () => {
                     </tr>
                 ))}
                 </tbody>
-            </table>
+              </table>
+            </div>
+            <div className="d-flex gap-1 mt-3">
+              <button 
+                type="submit" 
+                className="btn btn-primary">
+                All data
+              </button>
             </div>
             </div>
         </main>
