@@ -20,10 +20,11 @@ from .views_Mien_Tay import import_bulk_data_MIENTAY_INVENTORY_CATEGORIES
 from .views_Nam_An import import_bulk_data_NAMAN_INVENTORY_CATEGORIES
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
-from .views import UserPermissionViewSet
+from .views import UserPermissionViewSet, ClientViewSet
 
 router = DefaultRouter()
 router.register(r'user-permissions', UserPermissionViewSet, basename='user-permission')
+router.register(r'client-categories', ClientViewSet, basename='clientViewSet')
 
 urlpatterns = [
     path('submit-form/', FormSubmissionView.as_view(), name='submit-form'),

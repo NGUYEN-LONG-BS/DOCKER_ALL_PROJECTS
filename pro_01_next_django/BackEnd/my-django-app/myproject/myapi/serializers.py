@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from .models import FormSubmission, LoginInfo, TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, UserPermission
+from .models import FormSubmission, LoginInfo, UserPermission
+from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models import TB_CLIENT_CATEGORIES
 
 class FormSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,4 +70,9 @@ class InventoryStockSerializer(serializers.ModelSerializer):
 class UserPermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPermission
+        fields = '__all__'
+        
+class TB_CLIENT_CATEGORIES_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = TB_CLIENT_CATEGORIES
         fields = '__all__'

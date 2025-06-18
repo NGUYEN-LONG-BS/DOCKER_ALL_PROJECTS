@@ -117,7 +117,8 @@ class TB_CLIENT_CATEGORIES(models.Model):
 
     class Meta:
         db_table = 'inventory.TB_CLIENT_CATEGORIES'
-        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+        managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
+        # managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
         
 class TB_SUPPLIER_CATEGORIES(models.Model):
     id = models.UUIDField(primary_key=True)
@@ -137,4 +138,5 @@ class TB_SUPPLIER_CATEGORIES(models.Model):
 
     class Meta:
         db_table = 'inventory.TB_SUPPLIER_CATEGORIES'
-        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+        managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
+        # managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
