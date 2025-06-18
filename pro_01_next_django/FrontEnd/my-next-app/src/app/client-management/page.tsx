@@ -94,7 +94,7 @@ const ClientManagementPage = () => {
       });
       setEditingId(null);
     } catch (err) {
-      setError("Failed to save client.");
+      // Removed setError("Failed to save client.")
     }
   };
 
@@ -151,7 +151,7 @@ const ClientManagementPage = () => {
     <div className="d-flex flex-column min-vh-100">
         <Header />
         <main className="container py-5 flex-grow-1">
-            <div className="container mt-5">
+            <div className="container">
             <h1 className="text-center mb-4">Quản lý khách hàng</h1>
             {loading && <p>Loading...</p>}
             {error && <p className="text-danger">{error}</p>}
@@ -311,13 +311,23 @@ const ClientManagementPage = () => {
                     </div>
                   </div>
                 )}
-                <button type="submit" className="btn btn-primary">
-                {editingId ? "Cập nhật" : "Thêm mới"}
-                </button>
+                <div className="d-flex gap-1">
+                  <button 
+                    type="submit" 
+                    className="btn btn-primary">
+                    Thêm mới
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-warning">
+                    Cập nhật
+                  </button>
+                </div>
             </form>
 
-            <table className="table table-bordered table-responsive">
-                <thead className="thead-dark">
+            <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+              <table className="table table-bordered table-responsive" style={{ position: "relative" }}>
+                <thead className="thead-dark" style={{ position: "sticky", top: 0, zIndex: 1, backgroundColor: "#343a40" }}>
                 <tr>
                     <th>Mã khách hàng</th>
                     <th>Tên khách hàng</th>
@@ -352,6 +362,7 @@ const ClientManagementPage = () => {
                 ))}
                 </tbody>
             </table>
+            </div>
             </div>
         </main>
         <Footer />
