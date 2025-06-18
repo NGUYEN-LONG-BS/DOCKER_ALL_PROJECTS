@@ -1,30 +1,32 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.http import FileResponse, HttpResponseNotFound
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+
+from rest_framework import status
+from rest_framework import viewsets
+from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework import viewsets
-
-from .models import FormSubmission
-from .serializers import FormSubmissionSerializer
-
-from .models import LoginInfo, TB_INVENTORY_CATEGORIES
-from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
-
-from .models import LoginInfo
-from .serializers import LoginInfoSerializer
-
-from .models import TB_INVENTORY_CATEGORIES
-from .serializers import TBInventoryCategoriesSerializer
-
 from rest_framework.generics import ListAPIView
 
+from .models import FormSubmission
+from .models import LoginInfo, TB_INVENTORY_CATEGORIES, UserPermission, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+
+from .serializers import FormSubmissionSerializer
+from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
+from .serializers import LoginInfoSerializer
+from .serializers import TBInventoryCategoriesSerializer
+from .serializers import UserPermissionSerializer
+from .serializers import InventoryStockReceivedIssuedReturnedSerializer
+from .serializers import InventoryStockSerializer
+
 import json
-from django.http import JsonResponse
-from django.conf import settings
-import os
 import openpyxl
+import os
 
 DATABASE_NAME = 'default'
 
@@ -122,10 +124,6 @@ def get_json_data(request):
 # Save inventory
 # ==============================================================================
 
-from rest_framework import generics
-from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-from .serializers import InventoryStockReceivedIssuedReturnedSerializer
-
 class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
     queryset = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
     serializer_class = InventoryStockReceivedIssuedReturnedSerializer
@@ -152,9 +150,6 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
 # Download file
 # ==============================================================================
 # myproject/views.py
-from django.http import FileResponse, HttpResponseNotFound
-from django.conf import settings
-import os
 
 def download_file_PRINT_TEMPLATE(request):
     # Đường dẫn tới file Excel
@@ -183,17 +178,6 @@ def download_file_IMPORT_TEMPLATE(request):
 # ==============================================================================
 # Upload file
 # ==============================================================================
-
-import os
-from django.conf import settings
-from django.http import JsonResponse
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-import os
-from django.conf import settings
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 
 @api_view(['POST'])
 def import_data(request):
@@ -231,15 +215,9 @@ def import_data(request):
         print(f"Lỗi khi lưu file: {str(e)}")
         return Response({'error': f'Error saving file: {str(e)}'}, status=500)
 
-
 # ==============================================================================
 # Get max number of slip
 # ==============================================================================
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 
 class MaxSoPhieuView(APIView):
 
@@ -280,10 +258,6 @@ class MaxSoPhieuView(APIView):
 # ==============================================================================
 # Check number slip exist
 # ==============================================================================
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
         
 class CheckSoPhieuExistView(APIView):
     def get(self, request, format=None):
@@ -323,12 +297,6 @@ class CheckMaHangExistView(APIView):
 # List inventory stock
 # ==============================================================================
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-from .serializers import InventoryStockSerializer
-
 class InventoryStockListView(APIView):
     def get(self, request, format=None):
         from_date = request.query_params.get('from_date')
@@ -361,16 +329,10 @@ class InventoryStockListView(APIView):
             serializer = InventoryStockSerializer(item, context={'index': index})
             serialized_data.append(serializer.data)
         return Response(serialized_data, status=status.HTTP_200_OK)
-
-
+    
 # ==============================================================================
 # check login
 # ==============================================================================
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import LoginInfo
-import json
 
 @csrf_exempt
 def check_login(request):
@@ -401,12 +363,6 @@ def check_login(request):
 # inherit slip
 # ==============================================================================
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-from .serializers import InventoryStockSerializer
-
 class InventoryStockBySoPhieuView(APIView):
     def get(self, request, format=None):
         so_phieu = request.query_params.get('so_phieu')
@@ -422,8 +378,6 @@ class InventoryStockBySoPhieuView(APIView):
 # ==============================================================================
 # import inventory categories
 # ==============================================================================
-
-from .models import TB_INVENTORY_CATEGORIES
 
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
@@ -505,9 +459,6 @@ def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
 # User Permission
 # ==============================================================================
 
-from .models import UserPermission
-from .serializers import UserPermissionSerializer
-
 class UserPermissionViewSet(viewsets.ModelViewSet):
     serializer_class = UserPermissionSerializer
 
@@ -526,10 +477,6 @@ class UserPermissionViewSet(viewsets.ModelViewSet):
         for idx, item in enumerate(data, start=1):
             item['stt'] = idx
         return Response(data)
-
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .models import UserPermission
     
 @api_view(['GET'])
 def get_user_permission_info(request):
