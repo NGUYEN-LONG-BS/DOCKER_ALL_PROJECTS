@@ -465,7 +465,7 @@ class UserPermissionViewSet(viewsets.ModelViewSet):
     serializer_class = UserPermissionSerializer
 
     def get_queryset(self):
-        queryset = UserPermission.objects.all().order_by('user_id')
+        queryset = UserPermission.objects.using(DATABASE_NAME).all().order_by('user_id')
         # Đánh lại số thứ tự (STT) cho từng bản ghi
         for idx, obj in enumerate(queryset, start=1):
             obj.stt = idx
@@ -485,7 +485,7 @@ def get_user_permission_info(request):
     user_id = request.query_params.get('user_id')
     if not user_id:
         return Response({'error': 'Thiếu user_id'}, status=400)
-    user_permissions = UserPermission.objects.filter(user_id=user_id)
+    user_permissions = UserPermission.objects.using(DATABASE_NAME).filter(user_id=user_id)
     if not user_permissions.exists():
         return Response({'error': 'Không tìm thấy user_id này'}, status=404)
     data = [
@@ -505,7 +505,7 @@ class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = TB_CLIENT_CATEGORIES_Serializer
 
     def get_queryset(self):
-        queryset = TB_CLIENT_CATEGORIES.objects.all().order_by('ma_khach_hang')
+        queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).all().order_by('ma_khach_hang')
         # Đánh lại số thứ tự (STT) cho từng bản ghi
         for idx, obj in enumerate(queryset, start=1):
             obj.stt = idx
@@ -525,7 +525,7 @@ def get_client_info(request):
     ma_khach_hang = request.query_params.get('ma_khach_hang')
     if not ma_khach_hang:
         return Response({'error': 'Thiếu ma_khach_hang'}, status=400)
-    client = TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang)
+    client = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).filter(ma_khach_hang=ma_khach_hang)
     if not client.exists():
         return Response({'error': 'Không tìm thấy ma_khach_hang này'}, status=404)
     data = [
