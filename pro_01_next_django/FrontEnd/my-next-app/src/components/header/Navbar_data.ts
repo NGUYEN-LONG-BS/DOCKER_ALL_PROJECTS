@@ -55,6 +55,13 @@ export const menuItems: MenuItem[] = [
         ],
       },
       {
+        label: 'Client',
+        permission: ['Admin'],
+        submenu_02: [
+          { label: 'Tạo mới Client', href: '/client-management' },
+        ],
+      },
+      {
         label: 'import bulk data',
         permission: ['Admin'],
         submenu_02: [

@@ -118,7 +118,7 @@ class TB_CLIENT_CATEGORIES(models.Model):
     dia_chi = models.TextField()
 
     class Meta:
-        db_table = 'inventory.TB_CLIENT_CATEGORIES'
+        db_table = 'inventory"."TB_CLIENT_CATEGORIES'
         # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
     
@@ -141,6 +141,6 @@ class TB_SUPPLIER_CATEGORIES(models.Model):
     dia_chi = models.TextField()
 
     class Meta:
-        db_table = 'inventory.TB_SUPPLIER_CATEGORIES'
+        db_table = 'inventory"."TB_SUPPLIER_CATEGORIES'
         # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
