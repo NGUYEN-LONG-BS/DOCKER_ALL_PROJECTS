@@ -16,7 +16,7 @@ from rest_framework.generics import ListAPIView
 from .models import FormSubmission
 from .models import LoginInfo, UserPermission
 from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-from .models import TB_CLIENT_CATEGORIES
+from .models import TB_CLIENT_CATEGORIES, TB_CLIENT_CATEGORIES_DJANGO
 
 from .serializers import FormSubmissionSerializer
 from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
@@ -25,6 +25,7 @@ from .serializers import TBInventoryCategoriesSerializer
 from .serializers import UserPermissionSerializer, TB_CLIENT_CATEGORIES_Serializer
 from .serializers import InventoryStockReceivedIssuedReturnedSerializer
 from .serializers import InventoryStockSerializer
+from .serializers import TBClientCategoriesSerializer, TBClientCategoriesSerializer_DJANGO
 
 import json
 import openpyxl
@@ -536,3 +537,11 @@ def get_client_info(request):
         for up in client
     ]
     return Response(data, status=200)
+
+class TBClientCategoriesViewSet(viewsets.ModelViewSet):
+    queryset = TB_CLIENT_CATEGORIES.objects.all()
+    serializer_class = TBClientCategoriesSerializer
+    
+class TBClientCategoriesViewSet_Django(viewsets.ModelViewSet):
+    queryset = TB_CLIENT_CATEGORIES_DJANGO.objects.all()
+    serializer_class = TBClientCategoriesSerializer_DJANGO

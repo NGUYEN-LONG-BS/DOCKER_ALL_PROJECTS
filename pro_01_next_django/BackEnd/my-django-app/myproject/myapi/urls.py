@@ -20,11 +20,13 @@ from .views_Mien_Tay import import_bulk_data_MIENTAY_INVENTORY_CATEGORIES
 from .views_Nam_An import import_bulk_data_NAMAN_INVENTORY_CATEGORIES
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
-from .views import UserPermissionViewSet, ClientViewSet
+from .views import UserPermissionViewSet, ClientViewSet, TBClientCategoriesViewSet, TBClientCategoriesViewSet_Django
 
 router = DefaultRouter()
 router.register(r'user-permissions', UserPermissionViewSet, basename='user-permission')
 router.register(r'client-categories', ClientViewSet, basename='clientViewSet')
+router.register(r'tb-client-categories', TBClientCategoriesViewSet, basename='tb-client-categories')
+router.register(r'tb-client-categories-django', TBClientCategoriesViewSet_Django, basename='tb-client-categories_django')
 
 urlpatterns = [
     path('submit-form/', FormSubmissionView.as_view(), name='submit-form'),
