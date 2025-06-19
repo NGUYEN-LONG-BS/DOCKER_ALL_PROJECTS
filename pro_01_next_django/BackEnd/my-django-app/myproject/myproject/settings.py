@@ -149,7 +149,7 @@ DATABASES = {
     }
 }
 
-# Add the LOGGING configuration here
+# LOGGING configuration
 # ===========================================================================
 # LOGGING = {
 #     'version': 1,

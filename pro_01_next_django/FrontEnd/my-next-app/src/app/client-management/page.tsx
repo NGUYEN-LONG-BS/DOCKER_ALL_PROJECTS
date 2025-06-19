@@ -43,6 +43,16 @@ const ClientManagementPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("tab1");
+  const [filter, setFilter] = useState({
+    ma_khach_hang: "",
+    ten_khach_hang: "",
+    mst: "",
+    ma_phan_loai_01: "",
+    ma_phan_loai_02: "",
+    ma_phan_loai_03: "",
+  });
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const tableColumns = [
     { label: "Mã KH", width: "150px" },
@@ -72,8 +82,30 @@ const ClientManagementPage = () => {
     }
   };
 
+  const fetchClientsLazy = async () => {
+    if (!hasMore) return;
+    setLoading(true);
+    try {
+      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=${page}`);
+      if (response.data.length === 0) {
+        setHasMore(false);
+      } else {
+        setClients((prev) => [...prev, ...response.data]);
+        setPage((prev) => prev + 1);
+      }
+    } catch (err) {
+      setError("Failed to fetch clients.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchClients();
+  }, []);
+
+  useEffect(() => {
+    fetchClientsLazy();
   }, []);
 
   // Handle form change
@@ -162,12 +194,29 @@ const ClientManagementPage = () => {
     setEditingId(client.id ?? null);
   };
 
+  const filteredClients = clients.filter(client => {
+    return (
+      (!filter.ma_khach_hang || client.ma_khach_hang.includes(filter.ma_khach_hang)) &&
+      (!filter.ten_khach_hang || client.ten_khach_hang.includes(filter.ten_khach_hang)) &&
+      (!filter.mst || client.mst.includes(filter.mst)) &&
+      (!filter.ma_phan_loai_01 || client.ma_phan_loai_01.includes(filter.ma_phan_loai_01)) &&
+      (!filter.ma_phan_loai_02 || client.ma_phan_loai_02.includes(filter.ma_phan_loai_02))
+    );
+  });
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollTop + clientHeight >= scrollHeight - 10 && hasMore && !loading) {
+      fetchClientsLazy();
+    }
+  };
+
   return (
     <div className="d-flex flex-column min-vh-100">
         <Header />
-        <main className="container py-5 flex-grow-1">
+        <main className="container py-1 flex-grow-1">
             <div className="container">
-            <h1 className="text-center mb-4">Quản lý khách hàng</h1>
+            <h1 className="text-center">Quản lý khách hàng</h1>
             {loading && <p>Loading...</p>}
             {error && <p className="text-danger">{error}</p>}
 
@@ -244,7 +293,7 @@ const ClientManagementPage = () => {
                   <div className="tab-content mt-3">
                     <div className="row">
                       <div className="col-md-6 mb-3">
-                          <label>Mã phân loại 01:</label>
+                          <label>PL01 - Khu Vực:</label>
                           <input
                           type="text"
                           name="ma_phan_loai_01"
@@ -254,7 +303,7 @@ const ClientManagementPage = () => {
                           />
                       </div>
                       <div className="col-md-6 mb-3">
-                          <label>Mã phân loại 02:</label>
+                          <label>PL02 - Điện lực/Xây lắp:</label>
                           <input
                           type="text"
                           name="ma_phan_loai_02"
@@ -340,7 +389,62 @@ const ClientManagementPage = () => {
                 </div>
             </form>
 
-            <div style={{ maxHeight: "400px", overflowY: "auto", overflowX: "auto" }}>
+            {/* Bộ lọc */}
+            <div className="row mb-4 g-2">
+              <div className="col-md-4">
+                <input
+                  className="form-control"
+                  placeholder="Lọc theo Mã khách hàng"
+                  value={filter.ma_khach_hang}
+                  onChange={e => setFilter(f => ({ ...f, ma_khach_hang: e.target.value }))}
+                />
+              </div>
+              <div className="col-md-4">
+                <input
+                  className="form-control"
+                  placeholder="Lọc theo Tên khách hàng"
+                  value={filter.ten_khach_hang}
+                  onChange={e => setFilter(f => ({ ...f, ten_khach_hang: e.target.value }))}
+                />
+              </div>
+              <div className="col-md-4">
+                <input
+                  className="form-control"
+                  placeholder="Lọc theo MST"
+                  value={filter.mst}
+                  onChange={e => setFilter(f => ({ ...f, mst: e.target.value }))}
+                />
+              </div>
+              <div className="col-md-4">
+                <input
+                  className="form-control"
+                  placeholder="Lọc theo Mã phân loại 1"
+                  value={filter.ma_phan_loai_01}
+                  onChange={e => setFilter(f => ({ ...f, ma_phan_loai_01: e.target.value }))}
+                />
+              </div>
+              <div className="col-md-4">
+                <input
+                  className="form-control"
+                  placeholder="Lọc theo Mã phân loại 2"
+                  value={filter.ma_phan_loai_02}
+                  onChange={e => setFilter(f => ({ ...f, ma_phan_loai_02: e.target.value }))}
+                />
+              </div>
+              <div className="col-md-4">
+                <input
+                  className="form-control"
+                  placeholder="Lọc theo Mã phân loại 3"
+                  value={filter.ma_phan_loai_03}
+                  onChange={e => setFilter(f => ({ ...f, ma_phan_loai_03: e.target.value }))}
+                />
+              </div>
+            </div>
+
+            <div
+              style={{ maxHeight: "400px", overflowY: "auto", overflowX: "auto" }}
+              onScroll={handleScroll}
+            >
               <table className="table table-bordered table-responsive" style={{ position: "relative", width: "1500px" }}>
                 <thead className="thead-dark" style={{ position: "sticky", top: 0, zIndex: 1, backgroundColor: "#343a40" }}>
                 <tr>
@@ -373,7 +477,7 @@ const ClientManagementPage = () => {
               <button 
                 type="submit" 
                 className="btn btn-primary">
-                All data
+                All data to Excel
               </button>
             </div>
             </div>
