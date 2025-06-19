@@ -12,6 +12,11 @@ const pageData = [
     path: "/admin/import-bulk-data/INVENTORY_CATEGORIES",
   },
   {
+    category: "TB_CLIENT_CATEGORIES",
+    label: "Bảng TB_CLIENT_CATEGORIES",
+    path: "/admin/import-bulk-data/CLIENT_CATEGORIES",
+  },
+  {
     category: "INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED",
     label: "Bảng INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED",
     path: "/admin/import-bulk-data/INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED",

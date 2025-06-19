@@ -24,6 +24,7 @@ export const API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES = `${API_BASE_URL}/
 
 // TB_CLIENT_CATEGORIES
 export const API_get_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
+export const API_import_bulk_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_TB_CLIENT_CATEGORIES/`;
 
 // Login
 export const API_check_login = `${API_BASE_URL}/api/check-login/`;

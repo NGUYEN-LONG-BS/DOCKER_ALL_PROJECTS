@@ -19,6 +19,8 @@ from .views_Ha_Noi import import_bulk_data_HANOI_INVENTORY_CATEGORIES
 from .views_Mien_Tay import import_bulk_data_MIENTAY_INVENTORY_CATEGORIES
 from .views_Nam_An import import_bulk_data_NAMAN_INVENTORY_CATEGORIES
 # ===========================================================================
+from .views import import_bulk_data_TB_CLIENT_CATEGORIES
+# ===========================================================================
 from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet, get_data_TB_CLIENT_CATEGORIES
 
@@ -65,3 +67,7 @@ urlpatterns += router.urls
 if settings.DEBUG:  # Only serve static and media files during development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  # Serve media files
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)  # Serve static files
+
+urlpatterns += [
+    path('import_bulk_data_TB_CLIENT_CATEGORIES/', import_bulk_data_TB_CLIENT_CATEGORIES, name='import_bulk_data_TB_CLIENT_CATEGORIES'),
+]

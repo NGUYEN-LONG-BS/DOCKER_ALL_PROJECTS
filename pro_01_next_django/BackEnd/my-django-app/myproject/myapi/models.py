@@ -100,22 +100,22 @@ class UserPermission(models.Model):
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
 
 class TB_CLIENT_CATEGORIES(models.Model):
-    id = models.UUIDField(primary_key=True)
-    date = models.DateTimeField()
-    id_nhan_vien = models.CharField(max_length=10)
-    xoa_sua = models.CharField(max_length=10)
-    ma_khach_hang = models.CharField(max_length=50)
-    ten_khach_hang = models.TextField()
-    ma_phan_loai_01 = models.CharField(max_length=50)
-    ma_phan_loai_02 = models.CharField(max_length=50)
-    ma_phan_loai_03 = models.CharField(max_length=50)
-    ma_phan_loai_04 = models.CharField(max_length=50)
-    ma_phan_loai_05 = models.CharField(max_length=50)
-    ma_phan_loai_06 = models.CharField(max_length=50)
-    ma_phan_loai_07 = models.CharField(max_length=50)
-    ma_phan_loai_08 = models.CharField(max_length=50)
-    mst = models.CharField(max_length=20)
-    dia_chi = models.TextField()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateTimeField(auto_now_add=True)
+    id_nhan_vien = models.CharField(max_length=10, default="")
+    xoa_sua = models.CharField(max_length=10, default="")
+    ma_khach_hang = models.CharField(max_length=50, default="")
+    ten_khach_hang = models.TextField(default="")
+    ma_phan_loai_01 = models.CharField(max_length=50, default="")
+    ma_phan_loai_02 = models.CharField(max_length=50, default="")
+    ma_phan_loai_03 = models.CharField(max_length=50, default="")
+    ma_phan_loai_04 = models.CharField(max_length=50, default="")
+    ma_phan_loai_05 = models.CharField(max_length=50, default="")
+    ma_phan_loai_06 = models.CharField(max_length=50, default="")
+    ma_phan_loai_07 = models.CharField(max_length=50, default="")
+    ma_phan_loai_08 = models.CharField(max_length=50, default="")
+    mst = models.CharField(max_length=20, default="")
+    dia_chi = models.TextField(default="")
 
     class Meta:
         db_table = 'inventory"."TB_CLIENT_CATEGORIES'
