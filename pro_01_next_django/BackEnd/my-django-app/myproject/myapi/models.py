@@ -122,6 +122,10 @@ class TB_CLIENT_CATEGORIES(models.Model):
         # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
     
+    @staticmethod
+    def is_duplicate(ma_khach_hang):
+        return TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").exists()
+
 class TB_SUPPLIER_CATEGORIES(models.Model):
     id = models.UUIDField(primary_key=True)
     date = models.DateTimeField()

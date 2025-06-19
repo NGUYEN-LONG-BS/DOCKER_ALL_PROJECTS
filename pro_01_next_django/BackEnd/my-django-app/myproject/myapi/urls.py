@@ -70,3 +70,9 @@ if settings.DEBUG:  # Only serve static and media files during development
 urlpatterns += [
     path('import_bulk_data_TB_CLIENT_CATEGORIES/', import_bulk_data_TB_CLIENT_CATEGORIES, name='import_bulk_data_TB_CLIENT_CATEGORIES'),
 ]
+
+from .views import TBClientCategoriesCreateView
+
+urlpatterns += [
+    path('create-client-category/', TBClientCategoriesCreateView.as_view(), name='create-client-category'),
+]

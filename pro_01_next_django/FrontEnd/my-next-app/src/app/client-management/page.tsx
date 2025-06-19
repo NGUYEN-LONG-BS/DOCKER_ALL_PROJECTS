@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { API_get_data_TB_CLIENT_CATEGORIES } from '@/api/api';
+import { 
+  API_get_data_TB_CLIENT_CATEGORIES,
+  API_create_client_category,
+} from '@/api/api';
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
 import axios from "axios";
@@ -140,15 +143,76 @@ const ClientManagementPage = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submit
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  // Fix the handleSubmit function to separate create and edit actions
+  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const payload = {
+      id_nhan_vien: "admin",
+      xoa_sua: "new",
+      ma_khach_hang: form.ma_khach_hang,
+      ten_khach_hang: form.ten_khach_hang,
+      dia_chi: form.dia_chi,
+      mst: form.mst,
+      ma_phan_loai_01: form.ma_phan_loai_01,
+      ma_phan_loai_02: form.ma_phan_loai_02,
+      ma_phan_loai_03: form.ma_phan_loai_03,
+      ma_phan_loai_04: form.ma_phan_loai_04,
+      ma_phan_loai_05: form.ma_phan_loai_05,
+      ma_phan_loai_06: form.ma_phan_loai_06,
+      ma_phan_loai_07: form.ma_phan_loai_07,
+      ma_phan_loai_08: form.ma_phan_loai_08,
+      action: "create",
+    };
+    console.log("Data to be sent:", payload);
     try {
-      if (editingId) {
-        await axios.put(`${API_get_data_TB_CLIENT_CATEGORIES}/${editingId}/`, form);
-      } else {
-        await axios.post(API_get_data_TB_CLIENT_CATEGORIES, form);
-      }
+      await axios.post(API_create_client_category, payload);
+      setClients([]);
+      setPage(1);
+      setHasMore(true);
+      fetchClients();
+      setForm({
+        id: 0,
+        ma_khach_hang: "",
+        ten_khach_hang: "",
+        dia_chi: "",
+        mst: "",
+        ma_phan_loai_01: "",
+        ma_phan_loai_02: "",
+        ma_phan_loai_03: "",
+        ma_phan_loai_04: "",
+        ma_phan_loai_05: "",
+        ma_phan_loai_06: "",
+        ma_phan_loai_07: "",
+        ma_phan_loai_08: "",
+      });
+      setEditingId(null);
+    } catch (err) {
+      setError("Failed to save client.");
+    }
+  };
+
+  // Fix type mismatch for handleEdit
+  const handleEditButtonClick = async () => {
+    const payload = {
+      id_nhan_vien: "admin",
+      xoa_sua: "new",
+      ma_khach_hang: form.ma_khach_hang,
+      ten_khach_hang: form.ten_khach_hang,
+      dia_chi: form.dia_chi,
+      mst: form.mst,
+      ma_phan_loai_01: form.ma_phan_loai_01,
+      ma_phan_loai_02: form.ma_phan_loai_02,
+      ma_phan_loai_03: form.ma_phan_loai_03,
+      ma_phan_loai_04: form.ma_phan_loai_04,
+      ma_phan_loai_05: form.ma_phan_loai_05,
+      ma_phan_loai_06: form.ma_phan_loai_06,
+      ma_phan_loai_07: form.ma_phan_loai_07,
+      ma_phan_loai_08: form.ma_phan_loai_08,
+      action: "edit",
+    };
+    console.log("Data to be sent:", payload);
+    try {
+      await axios.post(API_create_client_category, payload);
       setClients([]);
       setPage(1);
       setHasMore(true);
@@ -223,7 +287,7 @@ const ClientManagementPage = () => {
           {loading && <p>Loading...</p>}
           {error && <p className="text-danger">{error}</p>}
 
-          <form onSubmit={handleSubmit} className="mb-4">
+          <form onSubmit={handleCreate} className="mb-4">
             <ul className="nav nav-tabs">
               <li className="nav-item">
                 <button
@@ -384,9 +448,10 @@ const ClientManagementPage = () => {
                 className="btn btn-primary">
                 Thêm mới
               </button>
-              <button
-                type="button"
-                className="btn btn-warning">
+              <button 
+                type="button" 
+                className="btn btn-primary" 
+                onClick={handleEditButtonClick}>
                 Cập nhật
               </button>
             </div>

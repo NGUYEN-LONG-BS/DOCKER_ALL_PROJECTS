@@ -577,3 +577,52 @@ class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
         if actions is None:
             actions = {'get': 'list'}
         return super().as_view(actions, **initkwargs)
+
+# ==============================================================================
+# Create TB_CLIENT_CATEGORIES
+# ==============================================================================
+
+class TBClientCategoriesCreateView(APIView):
+    def post(self, request):
+        data = request.data
+        ma_khach_hang = data.get("ma_khach_hang")
+        action = data.pop("action", None)  # Remove 'action' from data
+
+        # Check if a record with ma_khach_hang exists
+        existing_record = TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang).first()
+
+        if action == "create":
+            if existing_record:
+                if existing_record.xoa_sua != "new":
+                    # Create a new record with xoa_sua = "new"
+                    data["xoa_sua"] = "new"
+                    TB_CLIENT_CATEGORIES.objects.create(**data)
+                    return Response({"message": "New record created successfully."}, status=status.HTTP_201_CREATED)
+                else:
+                    # Return an error if the record already exists with xoa_sua = "new"
+                    return Response({"error": "Record with ma_khach_hang already exists and xoa_sua is 'new'."}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                # Create a new record since ma_khach_hang does not exist
+                TB_CLIENT_CATEGORIES.objects.create(**data)
+                return Response({"message": "Record created successfully."}, status=status.HTTP_201_CREATED)
+        elif action == "edit":
+            if existing_record:
+                if existing_record.xoa_sua == "new":
+                    # Update existing record's xoa_sua to "old"
+                    existing_record.xoa_sua = "old"
+                    existing_record.save()
+                    # Create a new record with xoa_sua = "new"
+                    data["xoa_sua"] = "new"
+                    TB_CLIENT_CATEGORIES.objects.create(**data)
+                    return Response({"message": "Record updated and new record created successfully."}, status=status.HTTP_200_OK)
+                else:
+                    # Update the existing record directly
+                    for key, value in data.items():
+                        setattr(existing_record, key, value)
+                    existing_record.save()
+                    return Response({"message": "Record updated successfully."}, status=status.HTTP_200_OK)
+            else:
+                # Return an error if the record does not exist
+                return Response({"error": "Record with ma_khach_hang does not exist."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"error": "Invalid action specified."}, status=status.HTTP_400_BAD_REQUEST)
