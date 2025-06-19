@@ -9,6 +9,7 @@ import {
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
 import axios from "axios";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 interface Client {
   id: number;
