@@ -3,6 +3,7 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import global_style from "@/styles/globals.module.css";
 import style_01 from "@/styles/style_01.module.css";
 import ReduxProvider from "@/components/ReduxProvider";
