@@ -91,11 +91,16 @@ const ClientManagementPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=${page}`);
-      const fetchedData = response.data;
+      const fetchedData: Client[] = response.data;
       if (!fetchedData || fetchedData.length === 0) {
         setHasMore(false); // No more data to load
       } else {
-        setClients((prev) => [...prev, ...fetchedData]);
+        setClients((prev) => {
+          const newData = fetchedData.filter(
+            (item: Client) => !prev.some((existing) => existing.id === item.id)
+          );
+          return [...prev, ...newData];
+        });
         setPage((prev) => prev + 1); // Increment page for next fetch
       }
     } catch (err) {
