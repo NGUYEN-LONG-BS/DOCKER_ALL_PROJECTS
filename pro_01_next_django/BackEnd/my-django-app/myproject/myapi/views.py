@@ -30,6 +30,7 @@ from .serializers import TBClientCategoriesSerializer
 import json
 import openpyxl
 import os
+import re
 
 DATABASE_NAME = 'default'
 
@@ -569,7 +570,7 @@ def get_user_permission_info(request):
 # ==============================================================================
 
 class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
-    queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).all()
+    queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).filter(xoa_sua="new").order_by("-ma_khach_hang")
     serializer_class = TBClientCategoriesSerializer
 
     @classmethod
@@ -626,3 +627,24 @@ class TBClientCategoriesCreateView(APIView):
                 return Response({"error": "Record with ma_khach_hang does not exist."}, status=status.HTTP_404_NOT_FOUND)
         else:
             return Response({"error": "Invalid action specified."}, status=status.HTTP_400_BAD_REQUEST)
+
+# ==============================================================================
+# Get next ma_khach_hang
+# ==============================================================================
+
+class GetNextMaKhachHangView(APIView):
+    def get(self, request):
+        # Get the latest ma_khach_hang in the format KH00000
+        latest_record = TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang__startswith="KH").order_by("-ma_khach_hang").first()
+        
+        if latest_record:
+            latest_ma_khach_hang = latest_record.ma_khach_hang
+            # Extract the numeric part and increment it
+            match = re.match(r"KH(\d+)", latest_ma_khach_hang)
+            if match:
+                next_number = int(match.group(1)) + 1
+                next_ma_khach_hang = f"KH{next_number:05d}"
+                return Response({"next_ma_khach_hang": next_ma_khach_hang}, status=status.HTTP_200_OK)
+        
+        # If no records exist, return KH00001
+        return Response({"next_ma_khach_hang": "KH00001"}, status=status.HTTP_200_OK)

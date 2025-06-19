@@ -26,6 +26,7 @@ export const API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES = `${API_BASE_URL}/
 export const API_get_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
 export const API_import_bulk_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_TB_CLIENT_CATEGORIES/`;
 export const API_create_client_category = `${API_BASE_URL}/api/create-client-category/`;
+export const API_get_next_ma_khach_hang = `${API_BASE_URL}/api/get-next-ma-khach-hang/`;
 
 
 // Login

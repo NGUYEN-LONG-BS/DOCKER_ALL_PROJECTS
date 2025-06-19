@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { 
   API_get_data_TB_CLIENT_CATEGORIES,
   API_create_client_category,
+  API_get_next_ma_khach_hang,
 } from '@/api/api';
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
@@ -278,6 +279,22 @@ const ClientManagementPage = () => {
     }
   };
 
+  // Prevent form state loss during tab switches
+  const handleTabSwitch = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  // Add refresh icon and functionality for Mã khách hàng
+  const handleRefreshMaKhachHang = async () => {
+    try {
+      const response = await axios.get(API_get_next_ma_khach_hang);
+      const nextMaKhachHang = response.data.next_ma_khach_hang;
+      setForm((prev) => ({ ...prev, ma_khach_hang: nextMaKhachHang }));
+    } catch (err) {
+      setError("Failed to fetch next Mã khách hàng.");
+    }
+  };
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />
@@ -291,16 +308,18 @@ const ClientManagementPage = () => {
             <ul className="nav nav-tabs">
               <li className="nav-item">
                 <button
+                  type="button" // Change type to button to avoid form submission
                   className={`nav-link ${activeTab === "tab1" ? "active" : ""}`}
-                  onClick={() => setActiveTab("tab1")}
+                  onClick={() => handleTabSwitch("tab1")}
                 >
                   Thông tin khách hàng
                 </button>
               </li>
               <li className="nav-item">
                 <button
+                  type="button" // Change type to button to avoid form submission
                   className={`nav-link ${activeTab === "tab2" ? "active" : ""}`}
-                  onClick={() => setActiveTab("tab2")}
+                  onClick={() => handleTabSwitch("tab2")}
                 >
                   Chỉ tiêu phân loại
                 </button>
@@ -312,14 +331,23 @@ const ClientManagementPage = () => {
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label>Mã khách hàng:</label>
-                    <input
-                      type="text"
-                      name="ma_khach_hang"
-                      value={form.ma_khach_hang}
-                      onChange={handleChange}
-                      className="form-control"
-                      required
-                    />
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        name="ma_khach_hang"
+                        value={form.ma_khach_hang}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary"
+                        onClick={handleRefreshMaKhachHang}
+                      >
+                        <i className="bi bi-arrow-clockwise"></i> {/* Bootstrap icon for refresh */}
+                      </button>
+                    </div>
                   </div>
                   <div className="col-md-6 mb-3">
                     <label>Tên khách hàng:</label>

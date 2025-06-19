@@ -76,3 +76,9 @@ from .views import TBClientCategoriesCreateView
 urlpatterns += [
     path('create-client-category/', TBClientCategoriesCreateView.as_view(), name='create-client-category'),
 ]
+
+from .views import GetNextMaKhachHangView
+
+urlpatterns += [
+    path('get-next-ma-khach-hang/', GetNextMaKhachHangView.as_view(), name='get-next-ma-khach-hang'),
+]
