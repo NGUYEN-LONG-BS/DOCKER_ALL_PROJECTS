@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
 
 from .models import FormSubmission
 from .models import LoginInfo, UserPermission
@@ -569,9 +570,15 @@ def get_user_permission_info(request):
 # Client CRUD
 # ==============================================================================
 
+class ClientPagination(PageNumberPagination):
+    page_size = 25  # Default number of records per page
+    page_size_query_param = 'limit'  # Allow the client to specify the page size
+    max_page_size = 100  # Maximum number of records per page
+
 class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
     queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).filter(xoa_sua="new").order_by("-ma_khach_hang")
     serializer_class = TBClientCategoriesSerializer
+    pagination_class = ClientPagination  # Add pagination support
 
     @classmethod
     def as_view(cls, actions=None, **initkwargs):

@@ -79,9 +79,9 @@ const ClientManagementPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
-      setClients(response.data);
+      setClients(response.data.results); // Access the `results` field for the list of records
       setPage(2); // Set next page for lazy loading
-      setHasMore(response.data.length === 25); // Update hasMore based on data length
+      setHasMore(response.data.results.length === 25); // Update hasMore based on data length
     } catch (err) {
       setError("Failed to fetch clients.");
     } finally {
@@ -94,8 +94,8 @@ const ClientManagementPage = () => {
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=${page}`);
-      const fetchedData: Client[] = response.data;
+      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=${page}&limit=25`);
+      const fetchedData: Client[] = response.data.results; // Explicitly type fetchedData
       if (!fetchedData || fetchedData.length === 0) {
         setHasMore(false); // No more data to load
       } else {
