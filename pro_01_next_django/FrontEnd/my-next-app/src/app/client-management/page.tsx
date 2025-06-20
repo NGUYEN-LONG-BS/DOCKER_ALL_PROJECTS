@@ -66,9 +66,9 @@ const ClientManagementPage = () => {
     { label: "Tên khách hàng", width: "600px" },
     { label: "Địa chỉ", width: "500px" },
     { label: "MST", width: "100px" },
-    { label: "Mã phân loại 01", width: "150px" },
-    { label: "Mã phân loại 02", width: "150px" },
-    { label: "Mã phân loại 03", width: "150px" },
+    { label: "Khu vực", width: "150px" },
+    { label: "DL/XL", width: "150px" },
+    { label: "Mã cũ", width: "150px" },
     { label: "Mã phân loại 04", width: "150px" },
     { label: "Mã phân loại 05", width: "150px" },
     { label: "Mã phân loại 06", width: "150px" },
@@ -411,6 +411,8 @@ const ClientManagementPage = () => {
                         onChange={handleChange}
                         className="form-control"
                         required
+                        readOnly
+                        style={{ backgroundColor: "#d3d3d3" }} // Set a darker background color
                       />
                       <button
                         type="button"
