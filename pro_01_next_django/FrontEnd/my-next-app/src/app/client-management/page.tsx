@@ -10,6 +10,8 @@ import {
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
 import axios from "axios";
+import { useUserId } from '@/utils/useUserId';
+import { getCreateStatus } from '@/utils/getRecordStatus';
 
 interface Client {
   id: number;
@@ -29,6 +31,8 @@ interface Client {
 }
 
 const ClientManagementPage = () => {
+  const userId = useUserId();
+
   const [clients, setClients] = useState<Client[]>([]);
   const [form, setForm] = useState<Client>({
     id: 0,
@@ -150,8 +154,8 @@ const ClientManagementPage = () => {
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const payload = {
-      id_nhan_vien: "admin",
-      xoa_sua: "new",
+      id_nhan_vien: userId,
+      xoa_sua: getCreateStatus(),
       ma_khach_hang: form.ma_khach_hang,
       ten_khach_hang: form.ten_khach_hang,
       dia_chi: form.dia_chi,
@@ -197,8 +201,8 @@ const ClientManagementPage = () => {
   // Fix type mismatch for handleEdit
   const handleEditButtonClick = async () => {
     const payload = {
-      id_nhan_vien: "admin",
-      xoa_sua: "new",
+      id_nhan_vien: userId, // Use userId from the hook,
+      xoa_sua: getCreateStatus(),
       ma_khach_hang: form.ma_khach_hang,
       ten_khach_hang: form.ten_khach_hang,
       dia_chi: form.dia_chi,

@@ -20,7 +20,7 @@ import productFilterFormReducer from '../features/formReceiptLog/objectProductFi
 import dateFilterFormReducer from '../features/formReceiptLog/dateFilterFormSlice';
 import userReducer from '../features/userSlice';
 
-// Cấu hình store với tất cả các reducer
+// Configure the Redux store with all reducers
 export const store = configureStore({
   reducer: {
     inventory: inventoryReducer,
@@ -45,12 +45,12 @@ export const store = configureStore({
   },
 });
 
-// Tạo type RootState và AppDispatch cho Redux Toolkit
+// Define RootState and AppDispatch types for type safety
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-// Custom hook cho dispatch với type an toàn
+// Custom hook for typed dispatch
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 
-// Custom hook cho selector với type an toàn
+// Custom hook for typed selector
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

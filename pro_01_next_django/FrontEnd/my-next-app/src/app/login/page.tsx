@@ -8,6 +8,8 @@ import Link from "next/link" // Nhập Link từ Next.js để điều hướng 
 import { useRouter } from "next/navigation" // Nhập useRouter để xử lý điều hướng
 import "bootstrap/dist/css/bootstrap.min.css" // Nhập CSS của Bootstrap để định dạng giao diện
 import { API_check_login } from "@/api/api"
+import { useDispatch } from "react-redux"; // Import useDispatch từ Redux
+import { login } from "@/features/userSlice"; // Import action login từ userSlice
 
 // Định nghĩa component LoginPage
 export default function LoginPage() {
@@ -18,6 +20,8 @@ export default function LoginPage() {
   const [name, setName] = useState("") // Lưu giá trị họ tên (dùng khi đăng ký)
   const [showPassword, setShowPassword] = useState(false) // Quản lý trạng thái hiển thị/ẩn mật khẩu
   const [error, setError] = useState("") // Lưu thông báo lỗi nếu đăng nhập thất bại
+
+  const dispatch = useDispatch(); // Khởi tạo dispatch để gọi action Redux
 
   // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
   const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
@@ -51,11 +55,10 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault() // Ngăn chặn hành vi mặc định của form (tải lại trang)
     setError("")
-    // In dữ liệu form ra console để kiểm tra
-    console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name })
-
-    // Ghi log loginId và password
-    console.log("Login Info:", { loginId, password })
+    // ========================================================================
+    // console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name }) // In dữ liệu form ra console để kiểm tra
+    // console.log("Login Info:", { loginId, password }) // Ghi log loginId và password
+    // ========================================================================
 
     // Nếu ở chế độ đăng nhập, chuyển hướng đến trang inventory-management
     if (isLogin) {
@@ -69,6 +72,10 @@ export default function LoginPage() {
         if (typeof window !== 'undefined') {
           localStorage.setItem('user_id', loginId);
         }
+
+        // Dispatch action login để lưu thông tin người dùng vào Redux
+        dispatch(login({ userId: loginId }));
+
         // Chuyển hướng đến trang inventory-management (full reload để middleware chạy)
         window.location.href = "/home";
       } else {

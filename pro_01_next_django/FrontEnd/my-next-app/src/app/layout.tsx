@@ -9,6 +9,7 @@ import style_01 from "@/styles/style_01.module.css";
 import ReduxProvider from "@/components/ReduxProvider";
 import UserInactivityProvider from "@/components/UserInactivityProvider";
 import { useEffect } from "react";
+import { NextPage } from "next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +21,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+const RootLayout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
-    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+    import("bootstrap/dist/js/bootstrap.bundle.min.js").catch((err) =>
+      console.error("Failed to load Bootstrap JS:", err)
+    );
   }, []);
 
   return (
@@ -40,4 +39,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
