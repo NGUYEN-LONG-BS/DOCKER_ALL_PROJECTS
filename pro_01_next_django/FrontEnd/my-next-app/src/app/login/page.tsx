@@ -8,8 +8,8 @@ import Link from "next/link" // Nhập Link từ Next.js để điều hướng 
 import { useRouter } from "next/navigation" // Nhập useRouter để xử lý điều hướng
 import "bootstrap/dist/css/bootstrap.min.css" // Nhập CSS của Bootstrap để định dạng giao diện
 import { API_check_login } from "@/api/api"
-import { useDispatch, useSelector } from "react-redux"; // Import useDispatch, useSelector từ Redux
-import { login } from "@/features/userSlice"; // Import action login từ userSlice
+import { useAppDispatch, useAppSelector } from "@/store/store"; // Sử dụng useAppDispatch và useAppSelector
+import { login, logout } from "@/features/userSlice"; // Import action login, logout từ userSlice
 
 // Định nghĩa component LoginPage
 export default function LoginPage() {
@@ -21,8 +21,8 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false) // Quản lý trạng thái hiển thị/ẩn mật khẩu
   const [error, setError] = useState("") // Lưu thông báo lỗi nếu đăng nhập thất bại
 
-  const dispatch = useDispatch(); // Khởi tạo dispatch để gọi action Redux
-  const userState = useSelector((state: any) => state.user); // Lấy Redux state
+  const dispatch = useAppDispatch(); // Sử dụng useAppDispatch
+  const userState = useAppSelector((state) => state.user); // Sử dụng useAppSelector
 
   // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
   const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
@@ -54,47 +54,31 @@ export default function LoginPage() {
 
   // Hàm xử lý khi submit form
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault() // Ngăn chặn hành vi mặc định của form (tải lại trang)
-    setError("")
-    // ========================================================================
-    // console.log(isLogin ? "Login" : "Subscribe", { loginId, password, name }) // In dữ liệu form ra console để kiểm tra
-    // console.log("Login Info:", { loginId, password }) // Ghi log loginId và password
-    // ========================================================================
-
-    // Nếu ở chế độ đăng nhập, chuyển trang
+    e.preventDefault();
+    setError("");
     if (isLogin) {
-      // Kiểm tra thông tin đăng nhập
-      const isValid = await checkLogin(loginId, password)
-
+      const isValid = await checkLogin(loginId, password);
       if (isValid) {
-        // Nếu đăng nhập thành công, set cookie isAuthenticated=true cho middleware đọc được
         document.cookie = "isAuthenticated=true; path=/; max-age=86400";
-        // Lưu user_id vào localStorage để Navbar dùng fetch quyền
         if (typeof window !== 'undefined') {
           localStorage.setItem('user_id', loginId);
         }
-
-        // Dispatch action login để lưu thông tin người dùng vào Redux
-        console.log("Dispatching login action with payload:", { userId: loginId });
         dispatch(login({ userId: loginId }));
-        console.log("Login action dispatched successfully.");
-        console.log("Redux state after login:", userState);
-        // ====================================================================
-        // await new Promise(resolve => setTimeout(resolve, 5000)); // Dừng 5 giây trước khi thực hiện tiếp
-        // ====================================================================
-
-        // Chuyển hướng đến trang inventory-management (full reload để middleware chạy)
         window.location.href = "/home";
       } else {
-        // Nếu đăng nhập thất bại, hiển thị lỗi
-        setError("Tên đăng nhập hoặc mật khẩu không đúng.")
+        setError("Tên đăng nhập hoặc mật khẩu không đúng.");
       }
     } else {
-      // Xử lý đăng ký (chưa triển khai API đăng ký)
-      // console.log("Đăng ký:", { name, loginId, password })
-      console.log("Đăng ký")
-      // Bạn có thể thêm logic gọi API đăng ký ở đây
+      console.log("Đăng ký");
     }
+  };
+
+  // Hàm xử lý logout
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('user_id');
+    }
+    dispatch(logout());
   }
 
   // Ẩn popup sau 3 giây nếu có lỗi

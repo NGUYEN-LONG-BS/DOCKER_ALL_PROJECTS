@@ -1,9 +1,8 @@
 // utils/useUserId.ts
-import { useSelector } from 'react-redux';
+import { useAppSelector } from "@/store/store"; // Sử dụng useAppSelector thay vì useSelector
 
 export const useUserId = () => {
-  const userInfo = useSelector((state: any) => state.user.userInfo);
-  console.log("Current userInfo in Redux:", userInfo); // Log userInfo for debugging
-  console.log("Does userInfo contain userId?", userInfo?.userId ? "Yes" : "No"); // Check if userId exists
-  return userInfo?.userId || 'unknown'; // Return user ID or fallback to "unknown"
+  const userId = useAppSelector((state) => state.user.userId); // Truy cập trực tiếp userId từ Redux state
+  console.log("Current userId in Redux:", userId); // Log userId để kiểm tra
+  return userId || 'unknown'; // Trả về userId hoặc giá trị mặc định 'unknown'
 };

@@ -3,16 +3,24 @@
 import Header from '@/components/header/header_Home';
 import Footer from '@/components/footer/Footer';
 import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { login } from "@/features/userSlice";
 
 export default function Home() {
-  // =============================================================
-  // useEffect(() => {
-  //   // Debug: In ra id và pass từ localStorage/sessionStorage/cookie nếu có
-  //   const id = localStorage.getItem('login_id') || sessionStorage.getItem('login_id') || '';
-  //   const pass = localStorage.getItem('pass_field') || sessionStorage.getItem('pass_field') || '';
-  //   console.log('login_id:', id, 'pass_field:', pass);
-  // }, []);
-  // =============================================================
+  const dispatch = useAppDispatch();
+  const userId = useAppSelector((state) => state.user.userId);
+
+  useEffect(() => {
+    // Khi app khởi động, lấy userId từ localStorage và cập nhật vào Redux nếu có
+    const storedUserId = localStorage.getItem('user_id');
+    if (storedUserId && !userId) {
+      dispatch(login({ userId: storedUserId }));
+    }
+  }, [dispatch, userId]);
+
+  useEffect(() => {
+    console.log("userId in Redux after render:", userId);
+  }, [userId]);
 
   return (
     <div className="d-flex flex-column min-vh-100">
