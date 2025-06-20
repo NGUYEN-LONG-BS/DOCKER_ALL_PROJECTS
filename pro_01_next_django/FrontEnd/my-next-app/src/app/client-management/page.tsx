@@ -25,6 +25,7 @@ interface Client {
   ma_phan_loai_06: string;
   ma_phan_loai_07: string;
   ma_phan_loai_08: string;
+  pass_field?: string; // Add optional pass_field property
 }
 
 const ClientManagementPage = () => {
@@ -240,6 +241,46 @@ const ClientManagementPage = () => {
     }
   };
 
+  // Add modal for password input
+  const [showModal, setShowModal] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleDelete = async () => {
+    if (!form.ma_khach_hang) {
+      setError("Vui lòng chọn đối tượng cần xoá.");
+      return;
+    }
+    if (!password) {
+      setError("Vui lòng nhập mật khẩu.");
+      return;
+    }
+    try {
+      const response = await axios.post('http://localhost:8000/api/update-xoa-sua/', {
+        ma_khach_hang: form.ma_khach_hang,
+        pass_field: password,
+      });
+      if (response.status === 200) {
+        alert("Record updated successfully.");
+        fetchClients(); // Refresh the table
+        setShowModal(false); // Close modal
+      } else {
+        const errorMessage = response.data?.error;
+        if (errorMessage === "overtime to delete") {
+          setError("Quá thời gian xoá, vui lòng liên hệ admin để được hỗ trợ.");
+        } else {
+          setError(errorMessage || "Failed to delete record.");
+        }
+      }
+    } catch (err: any) {
+      const backendError = err.response?.data?.error;
+      if (backendError === "overtime to delete") {
+        setError("Quá thời gian xoá, vui lòng liên hệ admin để được hỗ trợ.");
+      } else {
+        setError("Failed to delete record.");
+      }
+    }
+  };
+
   // Handle row click
   const handleRowClick = (client: Client) => {
     setForm({
@@ -312,6 +353,18 @@ const ClientManagementPage = () => {
     } catch (err) {
       setError("Failed to export data to Excel.");
     }
+  };
+
+  // Close modal and then call handleDelete
+  const handleConfirmPassword = () => {
+    setShowModal(false);
+    handleDelete();
+  };
+
+  // Close modal function
+  const closeModal = () => {
+    setShowModal(false);
+    setPassword(""); // Clear password when modal closes
   };
 
   return (
@@ -501,6 +554,12 @@ const ClientManagementPage = () => {
                 onClick={handleEditButtonClick}>
                 Cập nhật
               </button>
+              <button 
+                type="button" 
+                className="btn btn-danger" 
+                onClick={() => setShowModal(true)}>
+                Xoá
+              </button>
             </div>
           </form>
 
@@ -600,6 +659,36 @@ const ClientManagementPage = () => {
         </div>
       </main>
       <Footer />
+
+      {showModal && (
+        <div className="modal" style={{ display: "block" }}>
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Nhập mật khẩu</h5>
+                <button type="button" className="btn-close" onClick={closeModal}></button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="password"
+                  className="form-control"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Nhập mật khẩu"
+                />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={closeModal}>
+                  Đóng
+                </button>
+                <button type="button" className="btn btn-primary" onClick={handleConfirmPassword}>
+                  Xác nhận pass
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

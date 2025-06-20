@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.http import FileResponse, HttpResponseNotFound
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.timezone import now
 
 from rest_framework import status
 from rest_framework import viewsets
@@ -34,6 +35,7 @@ import os
 import re
 from openpyxl.utils import get_column_letter
 from django.http import HttpResponse
+from datetime import timedelta
 
 DATABASE_NAME = 'default'
 
@@ -705,3 +707,32 @@ class ExportTBClientCategoriesToExcel(APIView):
         response["Content-Disposition"] = 'attachment; filename="TB_CLIENT_CATEGORIES.xlsx"'
         workbook.save(response)
         return response
+
+# ==============================================================================
+# Update xoa_sua field
+# ==============================================================================
+
+class UpdateXoaSuaView(APIView):
+    def post(self, request):
+        ma_khach_hang = request.data.get("ma_khach_hang")
+        pass_field = request.data.get("pass_field")
+        if not pass_field or pass_field != "admincome":
+            return Response({"error": "Invalid or missing password."}, status=status.HTTP_403_FORBIDDEN)
+
+        if not ma_khach_hang:
+            return Response({"error": "ma_khach_hang is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Check if the record exists with xoa_sua = "new"
+        record = TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").first()
+        if not record:
+            return Response({"error": "Record with ma_khach_hang does not exist or xoa_sua is not 'new'."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Check the time difference
+        time_difference = now() - record.date
+        if time_difference < timedelta(hours=0, minutes=2):
+            # Update xoa_sua to "delete"
+            record.xoa_sua = "delete"
+            record.save()
+            return Response({"message": "Record updated successfully."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "overtime to delete"}, status=status.HTTP_400_BAD_REQUEST)

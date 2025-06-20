@@ -88,3 +88,9 @@ from .views import ExportTBClientCategoriesToExcel
 urlpatterns += [
     path('export-tb-client-categories/', ExportTBClientCategoriesToExcel.as_view(), name='export-tb-client-categories'),
 ]
+
+from .views import UpdateXoaSuaView
+
+urlpatterns += [
+    path('update-xoa-sua/', UpdateXoaSuaView.as_view(), name='update-xoa-sua'),
+]
