@@ -5,6 +5,7 @@ import {
   API_get_data_TB_CLIENT_CATEGORIES,
   API_create_client_category,
   API_get_next_ma_khach_hang,
+  API_export_tb_client_categories,
 } from '@/api/api';
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
@@ -298,7 +299,7 @@ const ClientManagementPage = () => {
   // Add functionality to download Excel file
   const handleExportToExcel = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/export-tb-client-categories/', {
+      const response = await axios.get(API_export_tb_client_categories, {
         responseType: 'blob', // Ensure the response is treated as a binary file
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
