@@ -78,10 +78,10 @@ const ClientManagementPage = () => {
   const fetchClients = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=1`);
+      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
       setClients(response.data);
       setPage(2); // Set next page for lazy loading
-      setHasMore(response.data.length > 0); // Update hasMore based on data
+      setHasMore(response.data.length === 25); // Update hasMore based on data length
     } catch (err) {
       setError("Failed to fetch clients.");
     } finally {
