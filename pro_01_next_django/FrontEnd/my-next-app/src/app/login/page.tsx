@@ -1,4 +1,4 @@
-// Khai báo đây là Client Component để sử dụng các tính năng phía client như hooks
+// src/app/login/page.tsx
 "use client"
 
 import type React from "react" // Nhập type React để định kiểu cho TypeScript
@@ -8,7 +8,7 @@ import Link from "next/link" // Nhập Link từ Next.js để điều hướng 
 import { useRouter } from "next/navigation" // Nhập useRouter để xử lý điều hướng
 import "bootstrap/dist/css/bootstrap.min.css" // Nhập CSS của Bootstrap để định dạng giao diện
 import { API_check_login } from "@/api/api"
-import { useDispatch } from "react-redux"; // Import useDispatch từ Redux
+import { useDispatch, useSelector } from "react-redux"; // Import useDispatch, useSelector từ Redux
 import { login } from "@/features/userSlice"; // Import action login từ userSlice
 
 // Định nghĩa component LoginPage
@@ -22,6 +22,7 @@ export default function LoginPage() {
   const [error, setError] = useState("") // Lưu thông báo lỗi nếu đăng nhập thất bại
 
   const dispatch = useDispatch(); // Khởi tạo dispatch để gọi action Redux
+  const userState = useSelector((state: any) => state.user); // Lấy Redux state
 
   // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
   const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
@@ -74,7 +75,13 @@ export default function LoginPage() {
         }
 
         // Dispatch action login để lưu thông tin người dùng vào Redux
+        console.log("Dispatching login action with payload:", { userId: loginId });
         dispatch(login({ userId: loginId }));
+        console.log("Login action dispatched successfully.");
+        console.log("Redux state after login:", userState);
+        // ====================================================================
+        // await new Promise(resolve => setTimeout(resolve, 5000)); // Dừng 5 giây trước khi thực hiện tiếp
+        // ====================================================================
 
         // Chuyển hướng đến trang inventory-management (full reload để middleware chạy)
         window.location.href = "/home";
@@ -107,6 +114,11 @@ export default function LoginPage() {
     `;
     document.head.appendChild(style);
   }
+
+  // Log Redux state mỗi khi nó thay đổi
+  useEffect(() => {
+    console.log("Redux state in LoginPage:", userState);
+  }, [userState]);
 
   return (
     // Container chính chiếm toàn bộ chiều cao màn hình
@@ -259,7 +271,7 @@ export default function LoginPage() {
                           viewBox="0 0 16 16"
                         >
                           {/* Vẽ viền ngoài của mắt */}
-                          <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                          <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                           {/* Vẽ đồng tử */}
                           <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                         </svg>
