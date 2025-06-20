@@ -32,6 +32,8 @@ import json
 import openpyxl
 import os
 import re
+from openpyxl.utils import get_column_letter
+from django.http import HttpResponse
 
 DATABASE_NAME = 'default'
 
@@ -655,3 +657,51 @@ class GetNextMaKhachHangView(APIView):
         
         # If no records exist, return KH00001
         return Response({"next_ma_khach_hang": "KH00001"}, status=status.HTTP_200_OK)
+
+# ==============================================================================
+# Export TB_CLIENT_CATEGORIES to Excel
+# ==============================================================================
+
+class ExportTBClientCategoriesToExcel(APIView):
+    def get(self, request):
+        # Create a workbook and worksheet
+        workbook = openpyxl.Workbook()
+        worksheet = workbook.active
+        worksheet.title = "TB_CLIENT_CATEGORIES"
+
+        # Define the headers
+        headers = [
+            "ID", "Date", "ID Nhân Viên", "Xóa/Sửa", "Mã Khách Hàng", "Tên Khách Hàng",
+            "Mã Phân Loại 01", "Mã Phân Loại 02", "Mã Phân Loại 03", "Mã Phân Loại 04",
+            "Mã Phân Loại 05", "Mã Phân Loại 06", "Mã Phân Loại 07", "Mã Phân Loại 08",
+            "MST", "Địa Chỉ"
+        ]
+        worksheet.append(headers)
+
+        # Fetch all data from the model
+        clients = TB_CLIENT_CATEGORIES.objects.all()
+
+        # Add data rows
+        for client in clients:
+            worksheet.append([
+                str(client.id),  # Convert UUID to string
+                client.date.replace(tzinfo=None),  # Remove timezone from datetime
+                client.id_nhan_vien, client.xoa_sua, client.ma_khach_hang,
+                client.ten_khach_hang, client.ma_phan_loai_01, client.ma_phan_loai_02,
+                client.ma_phan_loai_03, client.ma_phan_loai_04, client.ma_phan_loai_05,
+                client.ma_phan_loai_06, client.ma_phan_loai_07, client.ma_phan_loai_08,
+                client.mst, client.dia_chi
+            ])
+
+        # Adjust column widths
+        for col_num, col_title in enumerate(headers, 1):
+            column_letter = get_column_letter(col_num)
+            worksheet.column_dimensions[column_letter].width = 20
+
+        # Create a response with the Excel file
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response["Content-Disposition"] = 'attachment; filename="TB_CLIENT_CATEGORIES.xlsx"'
+        workbook.save(response)
+        return response

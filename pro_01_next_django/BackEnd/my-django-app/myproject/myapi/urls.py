@@ -82,3 +82,9 @@ from .views import GetNextMaKhachHangView
 urlpatterns += [
     path('get-next-ma-khach-hang/', GetNextMaKhachHangView.as_view(), name='get-next-ma-khach-hang'),
 ]
+
+from .views import ExportTBClientCategoriesToExcel
+
+urlpatterns += [
+    path('export-tb-client-categories/', ExportTBClientCategoriesToExcel.as_view(), name='export-tb-client-categories'),
+]

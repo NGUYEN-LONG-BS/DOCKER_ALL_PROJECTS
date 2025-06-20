@@ -295,6 +295,24 @@ const ClientManagementPage = () => {
     }
   };
 
+  // Add functionality to download Excel file
+  const handleExportToExcel = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/api/export-tb-client-categories/', {
+        responseType: 'blob', // Ensure the response is treated as a binary file
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'TB_CLIENT_CATEGORIES.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      setError("Failed to export data to Excel.");
+    }
+  };
+
   return (
     <div className="d-flex flex-column min-vh-100">
       <Header />
@@ -573,7 +591,8 @@ const ClientManagementPage = () => {
           <div className="d-flex gap-1 mt-3">
             <button 
               type="button" 
-              className="btn btn-primary">
+              className="btn btn-primary"
+              onClick={handleExportToExcel}>
               All data to Excel
             </button>
           </div>
