@@ -7,7 +7,22 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
-  { label: 'Kinh Doanh TM', href: '#', permission: ['Admin', 'KinhDoanhTM'] },
+  // { label: 'Kinh Doanh TM', href: '#', permission: ['Admin', 'KinhDoanhTM'] },
+  {
+    label: 'Kinh Doanh TM',
+    href: '#',
+    permission: ['Admin', 'KinhDoanhTM'],
+    submenu: [
+      {
+        label: 'Danh sách khách hàng',
+        permission: ['Admin', 'KinhDoanhTM'],
+        submenu_02: [
+          { label: 'Danh sách khác hàng', href: '/client-management' },
+          
+        ],
+      },
+    ],
+  },
   {
     label: 'Vật Tư TM',
     permission: ['Admin', 'VatTuTM'],

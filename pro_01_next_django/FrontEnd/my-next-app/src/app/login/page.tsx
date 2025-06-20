@@ -61,7 +61,7 @@ export default function LoginPage() {
     // console.log("Login Info:", { loginId, password }) // Ghi log loginId và password
     // ========================================================================
 
-    // Nếu ở chế độ đăng nhập, chuyển hướng đến trang inventory-management
+    // Nếu ở chế độ đăng nhập, chuyển trang
     if (isLogin) {
       // Kiểm tra thông tin đăng nhập
       const isValid = await checkLogin(loginId, password)
