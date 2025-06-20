@@ -427,7 +427,7 @@ const ClientManagementPage = () => {
                     />
                   </div>
                   <div className="col-md-6 mb-3">
-                    <label>Mã phân loại 03:</label>
+                    <label>PL03 - Mã cũ:</label>
                     <input
                       type="text"
                       name="ma_phan_loai_03"

@@ -603,14 +603,14 @@ class TBClientCategoriesCreateView(APIView):
 
         if action == "create":
             if existing_record:
-                if existing_record.xoa_sua != "new":
+                if TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").exists():
+                    # Return an error if the record already exists with xoa_sua = "new"
+                    return Response({"error": "Record with ma_khach_hang already exists and xoa_sua is 'new'."}, status=status.HTTP_400_BAD_REQUEST)
+                else:
                     # Create a new record with xoa_sua = "new"
                     data["xoa_sua"] = "new"
                     TB_CLIENT_CATEGORIES.objects.create(**data)
-                    return Response({"message": "New record created successfully."}, status=status.HTTP_201_CREATED)
-                else:
-                    # Return an error if the record already exists with xoa_sua = "new"
-                    return Response({"error": "Record with ma_khach_hang already exists and xoa_sua is 'new'."}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({"message": "New record created successfully."}, status=status.HTTP_201_CREATED)                    
             else:
                 # Create a new record since ma_khach_hang does not exist
                 TB_CLIENT_CATEGORIES.objects.create(**data)
