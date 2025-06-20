@@ -16,7 +16,7 @@ export const menuItems: MenuItem[] = [
         label: 'Kế toán kho',
         permission: ['Admin', 'TaiChinhTM', 'KeToanTM'],
         submenu_02: [
-          { label: 'Xuất nhập tồn', href: '/inventory-management-with_reDux_ToolKit' },
+          { label: 'Xuất nhập tồn', href: '/inventory-management' },
           { label: 'Báo cáo kho', href: '/dashboard' },
         ],
       },
@@ -35,7 +35,7 @@ export const menuItems: MenuItem[] = [
         label: 'Kế toán kho',
         permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],
         submenu_02: [
-          { label: 'Xuất nhập tồn', href: '/inventory-management-with_reDux_ToolKit' },
+          { label: 'Xuất nhập tồn', href: '/inventory-management' },
           { label: 'Báo cáo kho', href: '/dashboard' },
         ],
       },
@@ -73,7 +73,7 @@ export const menuItems: MenuItem[] = [
         permission: ['Admin'],
         submenu_02: [
           { label: 'test inventory V0', href: '/inventory-management' },
-          { label: 'test inventory with reDux', href: '/inventory-management-with_reDux_ToolKit' },
+          { label: 'test inventory with reDux', href: '/inventory-management' },
           { label: 'test trang thêm mã hàng', href: '/bpvattu/inventory' },
         ],
       },
