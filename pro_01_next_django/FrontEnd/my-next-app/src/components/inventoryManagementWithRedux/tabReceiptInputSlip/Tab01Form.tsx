@@ -31,6 +31,8 @@ import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip"
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNum01";
 import { API_check_so_phieu } from '@/api/api';
+import { useSyncUserIdFromLocalStorage } from '@/utils/useSyncUserIdFromLocalStorage';
+import { getCreateStatus } from '@/utils/getRecordStatus';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -52,6 +54,9 @@ interface Supplier {
 }
 
 export function InventoryFormStockReceiveSlip() {
+  useSyncUserIdFromLocalStorage();
+  const userId = useAppSelector((state: RootState) => state.user.userId);
+
   const dispatch = useAppDispatch();
   // Select state from different slices
   const date = useAppSelector((state: RootState) => state.date.date);
@@ -163,8 +168,8 @@ export function InventoryFormStockReceiveSlip() {
       return {
         date,
         so_phieu: documentNumber,
-        id_nhan_vien: "NV01",
-        xoa_sua: "new",
+        id_nhan_vien: userId,
+        xoa_sua: getCreateStatus(),
         phan_loai_nhap_xuat_hoan: "receipt",
         ma_doi_tuong: supplier.code || "",
         ngay_tren_phieu: date,
