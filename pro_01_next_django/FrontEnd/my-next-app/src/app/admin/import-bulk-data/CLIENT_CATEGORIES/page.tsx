@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import {
     API_import_bulk_data_TB_CLIENT_CATEGORIES,
+    API_import_bulk_data_LA_CLIENT_CATEGORIES,
     
 } from "@/api/api"
 
@@ -19,6 +20,12 @@ const categoryData: Record<string, { apiUrl: string; table_name: string; combobo
     table_name: "TB_CLIENT_CATEGORIES",
     combobox_label: "TB",
     combobox_value: "TB",
+  },
+  LA: {
+    apiUrl: API_import_bulk_data_LA_CLIENT_CATEGORIES,
+    table_name: "LA_CLIENT_CATEGORIES",
+    combobox_label: "LA",
+    combobox_value: "LA",
   },
 };
 
