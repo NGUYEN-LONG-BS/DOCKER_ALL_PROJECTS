@@ -203,6 +203,7 @@ export default function LoginPage() {
                     value={loginId}
                     onChange={(e) => setLoginId(e.target.value)} // Cập nhật trạng thái loginId
                     required
+                    autoComplete="off" // Không gợi ý lịch sử nhập liệu
                   />
                 </div>
 
