@@ -13,8 +13,12 @@ import { checkPermission } from "@/utils/checkPermission";
 import { permissionData } from "@/permission/data";
 
 const PAGE_TITLE: Record<string, string> = {
-  TB: "Import TB_CLIENT_CATEGORIES",
-  LA: "Import LA_CLIENT_CATEGORIES",
+  TB: "TB_CLIENT_CATEGORIES",
+  LA: "LA_CLIENT_CATEGORIES",
+  PA: "PA_CLIENT_CATEGORIES",
+  MIENTAY: "MIENTAY_CLIENT_CATEGORIES",
+  HANOI: "HANOI_CLIENT_CATEGORIES",
+  NAMAN: "NAMAN_CLIENT_CATEGORIES",
 };
 
 const categoryData: Record<string, { table_name: string; combobox_label: string; combobox_value: string }> = {
@@ -27,6 +31,26 @@ const categoryData: Record<string, { table_name: string; combobox_label: string;
     table_name: "LA_CLIENT_CATEGORIES",
     combobox_label: "LA",
     combobox_value: "LA",
+  },
+  PA: {
+    table_name: "PA_CLIENT_CATEGORIES",
+    combobox_label: "PA",
+    combobox_value: "PA",
+  },
+  MIENTAY: {
+    table_name: "MIENTAY_CLIENT_CATEGORIES",
+    combobox_label: "MIENTAY",
+    combobox_value: "MIENTAY",
+  },
+  HANOI: {
+    table_name: "HANOI_CLIENT_CATEGORIES",
+    combobox_label: "HANOI",
+    combobox_value: "HANOI",
+  },
+  NAMAN: {
+    table_name: "NAMAN_CLIENT_CATEGORIES",
+    combobox_label: "NAMAN",
+    combobox_value: "NAMAN",
   },
 };
 

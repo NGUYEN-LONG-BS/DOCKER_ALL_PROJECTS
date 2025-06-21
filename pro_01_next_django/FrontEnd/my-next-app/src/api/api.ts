@@ -20,10 +20,7 @@ export const API_import_bulk_data_HANOI_INVENTORY_CATEGORIES = `${API_BASE_URL}/
 export const API_import_bulk_data_MIENTAY_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_MIENTAY_INVENTORY_CATEGORIES/`;
 export const API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_NAMAN_INVENTORY_CATEGORIES/`;
 // client
-
 export const API_import_bulk_data_to_all_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_CLIENT_CATEGORIES/`;
-export const API_import_bulk_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_TB_CLIENT_CATEGORIES/`;
-export const API_import_bulk_data_LA_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_LA_CLIENT_CATEGORIES/`;
 // =======================================================================================================
 // INVENTORY MANAGEMENT
 // TB

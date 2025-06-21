@@ -17,3 +17,30 @@ class MIENTAY_INVENTORY_CATEGORIES(models.Model):
         db_table = 'MIENTAY_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
         # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+        
+class MIENTAY_CLIENT_CATEGORIES(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateTimeField(auto_now_add=True)
+    id_nhan_vien = models.CharField(max_length=10, default="")
+    xoa_sua = models.CharField(max_length=10, default="")
+    ma_khach_hang = models.CharField(max_length=50, default="")
+    ten_khach_hang = models.TextField(default="")
+    ma_phan_loai_01 = models.CharField(max_length=50, default="")
+    ma_phan_loai_02 = models.CharField(max_length=50, default="")
+    ma_phan_loai_03 = models.CharField(max_length=50, default="")
+    ma_phan_loai_04 = models.CharField(max_length=50, default="")
+    ma_phan_loai_05 = models.CharField(max_length=50, default="")
+    ma_phan_loai_06 = models.CharField(max_length=50, default="")
+    ma_phan_loai_07 = models.CharField(max_length=50, default="")
+    ma_phan_loai_08 = models.CharField(max_length=50, default="")
+    mst = models.CharField(max_length=20, default="")
+    dia_chi = models.TextField(default="")
+
+    class Meta:
+        db_table = 'inventory"."MIENTAY_CLIENT_CATEGORIES'
+        # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
+        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+    
+    @staticmethod
+    def is_duplicate(ma_khach_hang):
+        return MIENTAY_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").exists()

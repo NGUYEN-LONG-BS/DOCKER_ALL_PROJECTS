@@ -19,7 +19,12 @@ from .models import FormSubmission
 from .models import LoginInfo, UserPermission
 from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models import TB_CLIENT_CATEGORIES
+# CLIENT CATEGORIES
 from .models_LA import LA_CLIENT_CATEGORIES
+from .models_Ha_Noi import HANOI_CLIENT_CATEGORIES
+from .models_Mien_Tay import MIENTAY_CLIENT_CATEGORIES
+from .models_PA import PA_CLIENT_CATEGORIES
+from .models_Nam_An import NAMAN_CLIENT_CATEGORIES
 
 from .serializers import FormSubmissionSerializer
 from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
@@ -513,9 +518,13 @@ def get_user_permission_info(request):
 # ==============================================================================
 
 # Import bulk data
-MODEL_MAP = {
+MODEL_MAP_CLIENT_CATEGORIES = {
     "TB": (TB_CLIENT_CATEGORIES, "default"),
     "LA": (LA_CLIENT_CATEGORIES, "tala"),
+    "PA": (PA_CLIENT_CATEGORIES, "pa"),
+    "NAMAN": (NAMAN_CLIENT_CATEGORIES, "naman"),
+    "HANOI": (HANOI_CLIENT_CATEGORIES, "hanoi"),
+    "MIENTAY": (MIENTAY_CLIENT_CATEGORIES, "mientay"),
 }
 
 @api_view(['POST'])
@@ -523,7 +532,7 @@ MODEL_MAP = {
 def import_bulk_data_to_all_CLIENT_CATEGORIES(request):
     file_obj = request.FILES.get('file')
     model_key = request.data.get("model_key", "TB")
-    model_tuple = MODEL_MAP.get(model_key)
+    model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
     ModelClass, db_name = model_tuple
@@ -558,69 +567,6 @@ def import_bulk_data_to_all_CLIENT_CATEGORIES(request):
                 errors.append(f'Dòng {idx}: Cột "xoa_sua" không được rỗng.')
                 continue
             ModelClass.objects.using(db_name).create(
-                id_nhan_vien=row[header_map['id_nhan_vien']],
-                xoa_sua=row[header_map['xoa_sua']],
-                ma_khach_hang=row[header_map['ma_khach_hang']],
-                ten_khach_hang=row[header_map['ten_khach_hang']],
-                ma_phan_loai_01=row[header_map['ma_phan_loai_01']],
-                ma_phan_loai_02=row[header_map['ma_phan_loai_02']],
-                ma_phan_loai_03=row[header_map['ma_phan_loai_03']],
-                ma_phan_loai_04=row[header_map['ma_phan_loai_04']],
-                ma_phan_loai_05=row[header_map['ma_phan_loai_05']],
-                ma_phan_loai_06=row[header_map['ma_phan_loai_06']],
-                ma_phan_loai_07=row[header_map['ma_phan_loai_07']],
-                ma_phan_loai_08=row[header_map['ma_phan_loai_08']],
-                mst=row[header_map['mst']],
-                dia_chi=row[header_map['dia_chi']],
-            )
-            count += 1
-        if errors:
-            return Response({
-                'message': f'Đã import {count} dòng thành công, nhưng có lỗi:',
-                'errors': errors
-            }, status=status.HTTP_400_BAD_REQUEST)
-        return Response({'message': f'Import thành công {count} dòng!'}, status=status.HTTP_201_CREATED)
-    except Exception as e:
-        import traceback
-        print(traceback.format_exc())
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-# Import bulk data
-@api_view(['POST'])
-@parser_classes([MultiPartParser, FormParser])
-def import_bulk_data_TB_CLIENT_CATEGORIES(request):
-    file_obj = request.FILES.get('file')
-    if not file_obj:
-        return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
-    try:
-        wb = openpyxl.load_workbook(file_obj, data_only=True)
-        if 'import-data' not in wb.sheetnames:
-            return Response({'error': 'Không tìm thấy sheet "import-data" trong file Excel.'}, status=status.HTTP_400_BAD_REQUEST)
-        ws = wb['import-data']
-        rows = list(ws.iter_rows(values_only=True))
-        if not rows or len(rows) < 2:
-            return Response({'error': 'Sheet "import-data" không có dữ liệu.'}, status=status.HTTP_400_BAD_REQUEST)
-        header = rows[0]
-        header_map = {col: idx for idx, col in enumerate(header)}
-        required_fields = ['id_nhan_vien', 'xoa_sua', 'ma_khach_hang', 'ten_khach_hang', 'ma_phan_loai_01', 'ma_phan_loai_02', 'ma_phan_loai_03', 'ma_phan_loai_04', 'ma_phan_loai_05', 'ma_phan_loai_06', 'ma_phan_loai_07', 'ma_phan_loai_08', 'mst', 'dia_chi']
-        for field in required_fields:
-            if field not in header_map:
-                return Response({'error': f'Thiếu cột bắt buộc: {field}'}, status=status.HTTP_400_BAD_REQUEST)
-        # Kiểm tra mã khách hàng trùng trước khi import
-        for idx, row in enumerate(rows[1:], start=2):
-            ma_khach_hang = row[header_map['ma_khach_hang']]
-            if ma_khach_hang and TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").exists():
-                return Response({'error': f'Mã khách hàng "{ma_khach_hang}" đã tồn tại.'}, status=status.HTTP_400_BAD_REQUEST)
-        count = 0
-        errors = []
-        for idx, row in enumerate(rows[1:], start=2):
-            if not row or not row[header_map['ma_khach_hang']]:
-                errors.append(f'Dòng {idx}: Cột "ma_khach_hang" không được rỗng.')
-                continue
-            if not row[header_map['xoa_sua']]:
-                errors.append(f'Dòng {idx}: Cột "xoa_sua" không được rỗng.')
-                continue
-            TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).create(
                 id_nhan_vien=row[header_map['id_nhan_vien']],
                 xoa_sua=row[header_map['xoa_sua']],
                 ma_khach_hang=row[header_map['ma_khach_hang']],
