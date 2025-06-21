@@ -11,15 +11,7 @@ export const API_submit_login_info = `${API_BASE_URL}/api/submit-login-info/`;
 export const API_user_permissions = `${API_BASE_URL}/api/user-permissions/`;
 // =======================================================================================================
 // IMPORT BULK DATA
-// inventory
-export const API_import_inventory_categories = `${API_BASE_URL}/api/import-inventory-categories/`;
-export const API_import_bulk_data_TB_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_TB_INVENTORY_CATEGORIES/`;
-export const API_import_bulk_data_LA_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_LA_INVENTORY_CATEGORIES/`;
-export const API_import_bulk_data_PA_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_PA_INVENTORY_CATEGORIES/`;
-export const API_import_bulk_data_HANOI_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_HANOI_INVENTORY_CATEGORIES/`;
-export const API_import_bulk_data_MIENTAY_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_MIENTAY_INVENTORY_CATEGORIES/`;
-export const API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_NAMAN_INVENTORY_CATEGORIES/`;
-// client
+export const API_import_bulk_data_to_all_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_INVENTORY_CATEGORIES/`;
 export const API_import_bulk_data_to_all_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_CLIENT_CATEGORIES/`;
 // =======================================================================================================
 // INVENTORY MANAGEMENT

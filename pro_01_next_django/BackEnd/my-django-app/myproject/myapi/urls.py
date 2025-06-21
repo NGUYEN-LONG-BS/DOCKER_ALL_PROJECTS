@@ -12,13 +12,7 @@ from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 # ===========================================================================
-from .views import import_bulk_data_TB_INVENTORY_CATEGORIES
-from .views_LA import import_bulk_data_LA_INVENTORY_CATEGORIES
-from .views_PA import import_bulk_data_PA_INVENTORY_CATEGORIES
-from .views_Ha_Noi import import_bulk_data_HANOI_INVENTORY_CATEGORIES
-from .views_Mien_Tay import import_bulk_data_MIENTAY_INVENTORY_CATEGORIES
-from .views_Nam_An import import_bulk_data_NAMAN_INVENTORY_CATEGORIES
-# ===========================================================================
+from .views import import_bulk_data_to_all_INVENTORY_CATEGORIES
 from .views import import_bulk_data_to_all_CLIENT_CATEGORIES
 # ===========================================================================
 from .views import TBClientCategoriesCreateView
@@ -41,15 +35,7 @@ urlpatterns = [
     path('submit-login-info/', views.submit_login_info, name='submit-login-info'),
     # ========================================================================
     # IMPORT BULK DATA
-    # inventory
-    path('import-inventory-categories/', import_bulk_data_TB_INVENTORY_CATEGORIES, name='import_bulk_data_TB_INVENTORY_CATEGORIES'),
-    path('import_bulk_data_TB_INVENTORY_CATEGORIES/', import_bulk_data_TB_INVENTORY_CATEGORIES, name='import_bulk_data_TB_INVENTORY_CATEGORIES'),
-    path('import_bulk_data_LA_INVENTORY_CATEGORIES/', import_bulk_data_LA_INVENTORY_CATEGORIES, name='import_bulk_data_LA_INVENTORY_CATEGORIES'),
-    path('import_bulk_data_PA_INVENTORY_CATEGORIES/', import_bulk_data_PA_INVENTORY_CATEGORIES, name='import_bulk_data_PA_INVENTORY_CATEGORIES'),
-    path('import_bulk_data_HANOI_INVENTORY_CATEGORIES/', import_bulk_data_HANOI_INVENTORY_CATEGORIES, name='import_bulk_data_HANOI_INVENTORY_CATEGORIES'),
-    path('import_bulk_data_MIENTAY_INVENTORY_CATEGORIES/', import_bulk_data_MIENTAY_INVENTORY_CATEGORIES, name='import_bulk_data_MIENTAY_INVENTORY_CATEGORIES'),
-    path('import_bulk_data_NAMAN_INVENTORY_CATEGORIES/', import_bulk_data_NAMAN_INVENTORY_CATEGORIES, name='import_bulk_data_NAMAN_INVENTORY_CATEGORIES'),
-    # client
+    path('import_bulk_data_to_all_INVENTORY_CATEGORIES/', import_bulk_data_to_all_INVENTORY_CATEGORIES, name='import_bulk_data_to_all_INVENTORY_CATEGORIES'),
     path('import_bulk_data_to_all_CLIENT_CATEGORIES/', import_bulk_data_to_all_CLIENT_CATEGORIES, name='import_bulk_data_to_all_CLIENT_CATEGORIES'),
     # ========================================================================
     # INVENTORY MANAGEMENT
@@ -65,6 +51,7 @@ urlpatterns = [
     path('download-print-template/', download_file_PRINT_TEMPLATE, name='download_file'),
     path('import-data/', import_data, name='import_data'),
     path('submit-inventory-categories/', views.submit_inventory_categories, name='submit-inventory-categories'),
+    
     # ========================================================================
     # CLIENT MANAGEMENT
     # TB

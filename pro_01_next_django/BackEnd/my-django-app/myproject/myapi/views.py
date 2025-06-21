@@ -20,11 +20,11 @@ from .models import LoginInfo, UserPermission
 from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models import TB_CLIENT_CATEGORIES
 # CLIENT CATEGORIES
-from .models_LA import LA_CLIENT_CATEGORIES
-from .models_Ha_Noi import HANOI_CLIENT_CATEGORIES
-from .models_Mien_Tay import MIENTAY_CLIENT_CATEGORIES
-from .models_PA import PA_CLIENT_CATEGORIES
-from .models_Nam_An import NAMAN_CLIENT_CATEGORIES
+from .models_LA import LA_CLIENT_CATEGORIES, LA_INVENTORY_CATEGORIES
+from .models_Ha_Noi import HANOI_CLIENT_CATEGORIES, HANOI_INVENTORY_CATEGORIES
+from .models_Mien_Tay import MIENTAY_CLIENT_CATEGORIES, MIENTAY_INVENTORY_CATEGORIES
+from .models_PA import PA_CLIENT_CATEGORIES, PA_INVENTORY_CATEGORIES
+from .models_Nam_An import NAMAN_CLIENT_CATEGORIES, NAMAN_INVENTORY_CATEGORIES
 
 from .serializers import FormSubmissionSerializer
 from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
@@ -394,11 +394,25 @@ class InventoryStockBySoPhieuView(APIView):
 # INVENTORY CATEGORIES
 # ==============================================================================
 
+MODEL_MAP_INVENTORY_CATEGORIES = {
+    "TB": (TB_INVENTORY_CATEGORIES, "default"),
+    "LA": (LA_INVENTORY_CATEGORIES, "tala"),
+    "PA": (PA_INVENTORY_CATEGORIES, "pa"),
+    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, "naman"),
+    "HANOI": (HANOI_INVENTORY_CATEGORIES, "hanoi"),
+    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, "mientay"),
+}
+
 # Import bulk data
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
-def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
+def import_bulk_data_to_all_INVENTORY_CATEGORIES(request):
     file_obj = request.FILES.get('file')
+    model_key = request.data.get("model_key", "TB")
+    model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+    if not model_tuple:
+        return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
+    ModelClass, db_name = model_tuple
     if not file_obj:
         return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
@@ -418,8 +432,7 @@ def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
         # Kiểm tra mã hàng trùng trước khi import
         for idx, row in enumerate(rows[1:], start=2):
             ma_hang = row[header_map['ma_hang']]
-            # xoa_sua = row[header_map['xoa_sua']]
-            if ma_hang and TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME).filter(ma_hang=ma_hang, xoa_sua="new").exists():
+            if ma_hang and ModelClass.objects.using(db_name).filter(ma_hang=ma_hang, xoa_sua="new").exists():
                 return Response({'error': f'Mã hàng "{ma_hang}" đã tồn tại.'}, status=status.HTTP_400_BAD_REQUEST)
         count = 0
         errors = []
@@ -448,8 +461,7 @@ def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
             except Exception:
                 errors.append(f'Dòng {idx}: Cột "don_gia_ton_dau_ky" phải là số.')
                 continue
-            # Nếu không có lỗi, tạo bản ghi
-            TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME).create(
+            ModelClass.objects.using(db_name).create(
                 id_nhan_vien=row[header_map['id_nhan_vien']],
                 xoa_sua=row[header_map['xoa_sua']],
                 ma_hang=row[header_map['ma_hang']],
@@ -470,8 +482,6 @@ def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
         import traceback
         print(traceback.format_exc())
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 # ==============================================================================
 # Login and Permission

@@ -3,12 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
-    API_import_bulk_data_TB_INVENTORY_CATEGORIES,
-    API_import_bulk_data_LA_INVENTORY_CATEGORIES,
-    API_import_bulk_data_PA_INVENTORY_CATEGORIES,
-    API_import_bulk_data_HANOI_INVENTORY_CATEGORIES,
-    API_import_bulk_data_MIENTAY_INVENTORY_CATEGORIES,
-    API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES,
+    API_import_bulk_data_to_all_INVENTORY_CATEGORIES
 } from "@/api/api"
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
@@ -18,44 +13,40 @@ import { checkPermission } from "@/utils/checkPermission";
 import { permissionData } from "@/permission/data";
 
 
-const categoryData: Record<string, { apiUrl: string; table_name: string; combobox_label: string; combobox_value: string }> = {
+const categoryData: Record<string, { table_name: string; combobox_label: string; combobox_value: string }> = {
   TB: {
-    apiUrl: API_import_bulk_data_TB_INVENTORY_CATEGORIES,
     table_name: "TB_INVENTORY_CATEGORIES",
     combobox_label: "TB",
     combobox_value: "TB",
   },
   LA: {
-    apiUrl: API_import_bulk_data_LA_INVENTORY_CATEGORIES,
     table_name: "LA_INVENTORY_CATEGORIES",
     combobox_label: "LA",
     combobox_value: "LA",
   },
   PA: {
-    apiUrl: API_import_bulk_data_PA_INVENTORY_CATEGORIES,
     table_name: "PA_INVENTORY_CATEGORIES",
     combobox_label: "PA",
     combobox_value: "PA",
   },
   HANOI: {
-    apiUrl: API_import_bulk_data_HANOI_INVENTORY_CATEGORIES,
     table_name: "HANOI_INVENTORY_CATEGORIES",
     combobox_label: "HANOI",
     combobox_value: "HANOI",
   },
   MIENTAY: {
-    apiUrl: API_import_bulk_data_MIENTAY_INVENTORY_CATEGORIES,
     table_name: "MIENTAY_INVENTORY_CATEGORIES",
     combobox_label: "MIENTAY",
     combobox_value: "MIENTAY",
   },
   NAMAN: {
-    apiUrl: API_import_bulk_data_NAMAN_INVENTORY_CATEGORIES,
     table_name: "NAMAN_INVENTORY_CATEGORIES",
     combobox_label: "NAMAN",
     combobox_value: "NAMAN",
   },
 };
+
+const API_URL = API_import_bulk_data_to_all_INVENTORY_CATEGORIES;
 
 const PAGE_TITLE: Record<string, string> = {
   TB: "Import TB_INVENTORY_CATEGORIES",
@@ -97,7 +88,7 @@ const ImportBulkDataPage = () => {
       return;
     }
 
-    const apiUrl = categoryData[selectedCategory]?.apiUrl;
+    const apiUrl = API_URL;
     if (!apiUrl) {
       setMessage("Loại dữ liệu không hợp lệ.");
       return;
@@ -105,6 +96,7 @@ const ImportBulkDataPage = () => {
 
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("model_key", selectedCategory); // Gửi thêm model_key cho backend
 
     try {
       const response = await axios.post(apiUrl, formData, {
