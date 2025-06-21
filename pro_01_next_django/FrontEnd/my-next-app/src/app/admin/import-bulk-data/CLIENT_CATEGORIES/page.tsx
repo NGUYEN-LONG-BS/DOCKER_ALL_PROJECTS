@@ -7,12 +7,17 @@ import {
     API_import_bulk_data_LA_CLIENT_CATEGORIES,
     
 } from "@/api/api"
-
+import Header from "@/components/header/header_Home";
+import Footer from '@/components/footer/Footer';
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { checkPermission } from "@/utils/checkPermission";
 import { permissionData } from "@/permission/data";
 
+const PAGE_TITLE: Record<string, string> = {
+  TB: "Import TB_CLIENT_CATEGORIES",
+  LA: "Import LA_CLIENT_CATEGORIES",
+};
 
 const categoryData: Record<string, { apiUrl: string; table_name: string; combobox_label: string; combobox_value: string }> = {
   TB: {
@@ -84,36 +89,44 @@ const ImportBulkDataPage = () => {
   };
 
   return (
-    <div>
-      <h1>TB_CLIENT_CATEGORIES</h1>
-      <p>{categoryData[selectedCategory]?.table_name || "---"}</p>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="category">Chọn loại dữ liệu:</label>
-          <select
-            id="category"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-          >
-            {Object.values(categoryData).map((option) => (
-              <option key={option.combobox_value} value={option.combobox_value}>
-                {option.combobox_label}
-              </option>
-            ))}
-          </select>
+    <div className="d-flex flex-column min-vh-100">
+      <Header />
+      <main className="container py-5 flex-grow-1">
+        <div className="card shadow-sm p-4 mx-auto" style={{ maxWidth: 500, marginTop: 40 }}>
+          <h1 className="h4 text-center mb-3">{PAGE_TITLE[selectedCategory]}</h1>
+          <p className="text-center text-muted mb-4">{categoryData[selectedCategory]?.table_name || "---"}</p>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label htmlFor="category" className="form-label fw-semibold">Chọn loại dữ liệu</label>
+              <select
+                id="category"
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className="form-select"
+              >
+                {Object.values(categoryData).map((option) => (
+                  <option key={option.combobox_value} value={option.combobox_value}>
+                    {option.combobox_label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="file" className="form-label fw-semibold">Chọn file Excel</label>
+              <input
+                type="file"
+                id="file"
+                accept=".xlsx"
+                onChange={handleFileChange}
+                className="form-control"
+              />
+            </div>
+            <button type="submit" className="btn btn-primary w-100">Gửi</button>
+          </form>
+          {message && <div className={`alert mt-3 ${message.toLowerCase().includes('thành công') ? 'alert-success' : 'alert-danger'}`}>{message}</div>}
         </div>
-        <div>
-          <label htmlFor="file">Chọn file Excel:</label>
-          <input
-            type="file"
-            id="file"
-            accept=".xlsx"
-            onChange={handleFileChange}
-          />
-        </div>
-        <button type="submit">Gửi</button>
-      </form>
-      {message && <p>{message}</p>}
+      </main>
+      <Footer />
     </div>
   );
 };
