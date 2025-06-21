@@ -77,7 +77,7 @@ const ClientManagementPage = () => {
     { label: "Mã phân loại 05", width: "150px" },
     { label: "Mã phân loại 06", width: "150px" },
     { label: "Mã phân loại 07", width: "150px" },
-    { label: "Mã phân loại 08", width: "150px" },
+    { label: "Mã thành viên", width: "150px" },
   ];
 
   // Fetch initial clients
@@ -598,7 +598,7 @@ const ClientManagementPage = () => {
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo Mã phân loại 1"
+                placeholder="Lọc theo khu vực"
                 value={filter.ma_phan_loai_01}
                 onChange={e => setFilter(f => ({ ...f, ma_phan_loai_01: e.target.value }))}
               />
@@ -606,7 +606,7 @@ const ClientManagementPage = () => {
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo Mã phân loại 2"
+                placeholder="Lọc theo DL/XL"
                 value={filter.ma_phan_loai_02}
                 onChange={e => setFilter(f => ({ ...f, ma_phan_loai_02: e.target.value }))}
               />
@@ -614,7 +614,7 @@ const ClientManagementPage = () => {
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo Mã phân loại 3"
+                placeholder="Lọc theo mã cũ"
                 value={filter.ma_phan_loai_03}
                 onChange={e => setFilter(f => ({ ...f, ma_phan_loai_03: e.target.value }))}
               />
