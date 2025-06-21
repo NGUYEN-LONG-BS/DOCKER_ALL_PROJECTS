@@ -385,9 +385,10 @@ class InventoryStockBySoPhieuView(APIView):
         return Response(serialized_data, status=status.HTTP_200_OK)
 
 # ==============================================================================
-# import inventory categories
+# INVENTORY CATEGORIES
 # ==============================================================================
 
+# Import bulk data
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
@@ -464,10 +465,53 @@ def import_bulk_data_TB_INVENTORY_CATEGORIES(request):
         print(traceback.format_exc())
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+
 # ==============================================================================
-# import client categories
+# Login and Permission
 # ==============================================================================
 
+class UserPermissionViewSet(viewsets.ModelViewSet):
+    serializer_class = UserPermissionSerializer
+
+    def get_queryset(self):
+        queryset = UserPermission.objects.using(DATABASE_NAME).all().order_by('user_id')
+        # Đánh lại số thứ tự (STT) cho từng bản ghi
+        for idx, obj in enumerate(queryset, start=1):
+            obj.stt = idx
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        # Thêm trường STT vào từng bản ghi trả về
+        data = serializer.data
+        for idx, item in enumerate(data, start=1):
+            item['stt'] = idx
+        return Response(data)
+    
+@api_view(['GET'])
+def get_user_permission_info(request):
+    user_id = request.query_params.get('user_id')
+    if not user_id:
+        return Response({'error': 'Thiếu user_id'}, status=400)
+    user_permissions = UserPermission.objects.using(DATABASE_NAME).filter(user_id=user_id)
+    if not user_permissions.exists():
+        return Response({'error': 'Không tìm thấy user_id này'}, status=404)
+    data = [
+        {
+            'subsidiary': up.subsidiary,
+            'department': up.department
+        }
+        for up in user_permissions
+    ]
+    return Response(data, status=200)
+
+# ==============================================================================
+# TB_CLIENT_CATEGORIES
+# ==============================================================================
+
+# Import bulk data
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
 def import_bulk_data_TB_CLIENT_CATEGORIES(request):
@@ -530,55 +574,13 @@ def import_bulk_data_TB_CLIENT_CATEGORIES(request):
         print(traceback.format_exc())
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-# ==============================================================================
-# User Permission
-# ==============================================================================
-
-class UserPermissionViewSet(viewsets.ModelViewSet):
-    serializer_class = UserPermissionSerializer
-
-    def get_queryset(self):
-        queryset = UserPermission.objects.using(DATABASE_NAME).all().order_by('user_id')
-        # Đánh lại số thứ tự (STT) cho từng bản ghi
-        for idx, obj in enumerate(queryset, start=1):
-            obj.stt = idx
-        return queryset
-
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
-        # Thêm trường STT vào từng bản ghi trả về
-        data = serializer.data
-        for idx, item in enumerate(data, start=1):
-            item['stt'] = idx
-        return Response(data)
-    
-@api_view(['GET'])
-def get_user_permission_info(request):
-    user_id = request.query_params.get('user_id')
-    if not user_id:
-        return Response({'error': 'Thiếu user_id'}, status=400)
-    user_permissions = UserPermission.objects.using(DATABASE_NAME).filter(user_id=user_id)
-    if not user_permissions.exists():
-        return Response({'error': 'Không tìm thấy user_id này'}, status=404)
-    data = [
-        {
-            'subsidiary': up.subsidiary,
-            'department': up.department
-        }
-        for up in user_permissions
-    ]
-    return Response(data, status=200)
-
-# ==============================================================================
-# Client CRUD
-# ==============================================================================
-
+# Lazy loading pagination class
 class ClientPagination(PageNumberPagination):
     page_size = 25  # Default number of records per page
     page_size_query_param = 'limit'  # Allow the client to specify the page size
     max_page_size = 100  # Maximum number of records per page
 
+# Get all data
 class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
     queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).filter(xoa_sua="new").order_by("-ma_khach_hang")
     serializer_class = TBClientCategoriesSerializer
@@ -590,10 +592,8 @@ class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
             actions = {'get': 'list'}
         return super().as_view(actions, **initkwargs)
 
-# ==============================================================================
-# Create TB_CLIENT_CATEGORIES
-# ==============================================================================
 
+# Create TB_CLIENT_CATEGORIES
 class TBClientCategoriesCreateView(APIView):
     def post(self, request):
         data = request.data
@@ -639,10 +639,7 @@ class TBClientCategoriesCreateView(APIView):
         else:
             return Response({"error": "Invalid action specified."}, status=status.HTTP_400_BAD_REQUEST)
 
-# ==============================================================================
 # Get next ma_khach_hang
-# ==============================================================================
-
 class GetNextMaKhachHangView(APIView):
     def get(self, request):
         # Get the latest ma_khach_hang in the format KH00000
@@ -660,10 +657,7 @@ class GetNextMaKhachHangView(APIView):
         # If no records exist, return KH00001
         return Response({"next_ma_khach_hang": "KH00001"}, status=status.HTTP_200_OK)
 
-# ==============================================================================
 # Export TB_CLIENT_CATEGORIES to Excel
-# ==============================================================================
-
 class ExportTBClientCategoriesToExcel(APIView):
     def get(self, request):
         # Create a workbook and worksheet
@@ -708,10 +702,7 @@ class ExportTBClientCategoriesToExcel(APIView):
         workbook.save(response)
         return response
 
-# ==============================================================================
 # Update xoa_sua field
-# ==============================================================================
-
 class UpdateXoaSuaView(APIView):
     def post(self, request):
         ma_khach_hang = request.data.get("ma_khach_hang")

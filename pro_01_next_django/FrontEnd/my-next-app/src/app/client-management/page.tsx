@@ -6,6 +6,7 @@ import {
   API_create_client_category,
   API_get_next_ma_khach_hang,
   API_export_tb_client_categories,
+  API_update_xoa_sua,
 } from '@/api/api';
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
@@ -259,7 +260,7 @@ const ClientManagementPage = () => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8000/api/update-xoa-sua/', {
+      const response = await axios.post(API_update_xoa_sua, {
         ma_khach_hang: form.ma_khach_hang,
         pass_field: password,
       });
