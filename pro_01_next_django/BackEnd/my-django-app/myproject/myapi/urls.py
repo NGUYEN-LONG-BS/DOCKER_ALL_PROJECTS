@@ -19,6 +19,7 @@ from .views_Ha_Noi import import_bulk_data_HANOI_INVENTORY_CATEGORIES
 from .views_Mien_Tay import import_bulk_data_MIENTAY_INVENTORY_CATEGORIES
 from .views_Nam_An import import_bulk_data_NAMAN_INVENTORY_CATEGORIES
 # ===========================================================================
+from .views import import_bulk_data_to_all_CLIENT_CATEGORIES
 from .views import import_bulk_data_TB_CLIENT_CATEGORIES
 from .views_LA import import_bulk_data_LA_CLIENT_CATEGORIES
 # ===========================================================================
@@ -51,6 +52,7 @@ urlpatterns = [
     path('import_bulk_data_MIENTAY_INVENTORY_CATEGORIES/', import_bulk_data_MIENTAY_INVENTORY_CATEGORIES, name='import_bulk_data_MIENTAY_INVENTORY_CATEGORIES'),
     path('import_bulk_data_NAMAN_INVENTORY_CATEGORIES/', import_bulk_data_NAMAN_INVENTORY_CATEGORIES, name='import_bulk_data_NAMAN_INVENTORY_CATEGORIES'),
     # client
+    path('import_bulk_data_to_all_CLIENT_CATEGORIES/', import_bulk_data_to_all_CLIENT_CATEGORIES, name='import_bulk_data_to_all_CLIENT_CATEGORIES'),
     path('import_bulk_data_TB_CLIENT_CATEGORIES/', import_bulk_data_TB_CLIENT_CATEGORIES, name='import_bulk_data_TB_CLIENT_CATEGORIES'),
     path('import_bulk_data_LA_CLIENT_CATEGORIES/', import_bulk_data_LA_CLIENT_CATEGORIES, name='import_bulk_data_LA_CLIENT_CATEGORIES'),
     # ========================================================================

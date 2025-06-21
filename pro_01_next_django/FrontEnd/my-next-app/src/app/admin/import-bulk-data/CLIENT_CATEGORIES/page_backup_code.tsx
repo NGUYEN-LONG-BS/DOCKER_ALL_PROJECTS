@@ -3,7 +3,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
-    API_import_bulk_data_to_all_CLIENT_CATEGORIES,
+    API_import_bulk_data_TB_CLIENT_CATEGORIES,
+    API_import_bulk_data_LA_CLIENT_CATEGORIES,
+    
 } from "@/api/api"
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
@@ -17,20 +19,20 @@ const PAGE_TITLE: Record<string, string> = {
   LA: "Import LA_CLIENT_CATEGORIES",
 };
 
-const categoryData: Record<string, { table_name: string; combobox_label: string; combobox_value: string }> = {
+const categoryData: Record<string, { apiUrl: string; table_name: string; combobox_label: string; combobox_value: string }> = {
   TB: {
+    apiUrl: API_import_bulk_data_TB_CLIENT_CATEGORIES,
     table_name: "TB_CLIENT_CATEGORIES",
     combobox_label: "TB",
     combobox_value: "TB",
   },
   LA: {
+    apiUrl: API_import_bulk_data_LA_CLIENT_CATEGORIES,
     table_name: "LA_CLIENT_CATEGORIES",
     combobox_label: "LA",
     combobox_value: "LA",
   },
 };
-
-const API_URL = API_import_bulk_data_to_all_CLIENT_CATEGORIES;
 
 const ImportBulkDataPage = () => {
 
@@ -63,7 +65,7 @@ const ImportBulkDataPage = () => {
       return;
     }
 
-    const apiUrl = API_URL;
+    const apiUrl = categoryData[selectedCategory]?.apiUrl;
     if (!apiUrl) {
       setMessage("Loại dữ liệu không hợp lệ.");
       return;
@@ -71,7 +73,6 @@ const ImportBulkDataPage = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("model_key", selectedCategory); // Gửi thêm model_key cho backend
 
     try {
       const response = await axios.post(apiUrl, formData, {
