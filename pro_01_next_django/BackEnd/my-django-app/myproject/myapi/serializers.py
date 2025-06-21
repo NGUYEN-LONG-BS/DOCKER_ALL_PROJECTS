@@ -71,11 +71,6 @@ class UserPermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPermission
         fields = '__all__'
-        
-class TB_CLIENT_CATEGORIES_Serializer(serializers.ModelSerializer):
-    class Meta:
-        model = TB_CLIENT_CATEGORIES
-        fields = '__all__'
 
 class TBClientCategoriesSerializer(serializers.ModelSerializer):
     class Meta:

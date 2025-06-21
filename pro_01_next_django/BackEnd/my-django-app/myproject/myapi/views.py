@@ -30,7 +30,7 @@ from .serializers import FormSubmissionSerializer
 from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
 from .serializers import LoginInfoSerializer
 from .serializers import TBInventoryCategoriesSerializer
-from .serializers import UserPermissionSerializer, TB_CLIENT_CATEGORIES_Serializer
+from .serializers import UserPermissionSerializer
 from .serializers import InventoryStockReceivedIssuedReturnedSerializer
 from .serializers import InventoryStockSerializer
 from .serializers import TBClientCategoriesSerializer
