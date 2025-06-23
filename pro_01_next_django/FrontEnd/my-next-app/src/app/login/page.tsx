@@ -23,6 +23,7 @@ export default function LoginPage() {
 
   const dispatch = useAppDispatch(); // Sử dụng useAppDispatch
   const userState = useAppSelector((state) => state.user); // Sử dụng useAppSelector
+  const router = useRouter(); // Thêm router để chuyển trang không reload
 
   // Hàm kiểm tra thông tin đăng nhập bằng cách gọi API
   const checkLogin = async (loginId: string, password: string): Promise<boolean> => {
@@ -64,7 +65,7 @@ export default function LoginPage() {
           localStorage.setItem('user_id', loginId);
         }
         dispatch(login({ userId: loginId }));
-        window.location.href = "/home";
+        router.push("/home"); // Chuyển trang không reload
       } else {
         setError("Tên đăng nhập hoặc mật khẩu không đúng.");
       }

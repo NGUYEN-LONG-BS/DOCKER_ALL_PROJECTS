@@ -1,9 +1,12 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { useAppDispatch } from "@/store/store";
+import { logout } from "@/features/userSlice";
 
 export default function LogoutButton() {
   const router = useRouter()
+  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     // Xóa cookie xác thực (nếu dùng cookie)
@@ -12,6 +15,7 @@ export default function LogoutButton() {
     // Có thể thêm các bước xóa localStorage/sessionStorage nếu cần
     // localStorage.removeItem('token')
     // sessionStorage.removeItem('token')
+    dispatch(logout()); // Reset userId trong Redux
     router.push("/login")
   }
 
