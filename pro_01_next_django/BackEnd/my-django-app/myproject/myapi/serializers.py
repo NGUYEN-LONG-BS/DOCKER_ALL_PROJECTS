@@ -3,6 +3,9 @@ from .models import LoginInfo, UserPermission
 from .models_TB import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_TB import TB_CLIENT_CATEGORIES
 
+DATABASE_NAME_default = 'default'
+DATABASE_NAME_tb = 'tb'
+
 class LoginInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginInfo
@@ -43,7 +46,7 @@ class InventoryStockSerializer(serializers.ModelSerializer):
     
     def get_ten_hang(self, obj):
         # Fetch ten_hang from TB_INVENTORY_CATEGORIES based on ma_hang
-        category = TB_INVENTORY_CATEGORIES.objects.using("tb").filter(ma_hang=obj.ma_hang).first()
+        category = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=obj.ma_hang).first()
         return category.ten_hang if category else 'N/A'
 
     class Meta:
