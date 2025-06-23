@@ -36,7 +36,6 @@ export const API_update_xoa_sua = `${API_BASE_URL}/api/update-xoa-sua/`;
 export const API_get_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
 // ========================================================================
 // TEST
-export const API_submit_form = `${API_BASE_URL}/api/submit-form/`;
 export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;
 export const API_get_json_data = `${API_BASE_URL}/api/get-json-data/`;
 

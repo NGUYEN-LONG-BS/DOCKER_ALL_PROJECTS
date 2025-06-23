@@ -1,17 +1,5 @@
 from django.db import models
-# import uuid
 import re
-
-class FormSubmission(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-
-    class Meta:
-        db_table = 'myconfiguration"."FormSubmission'  # Đúng chuẩn schema.table
-        managed = True  # Django sẽ quản lý bảng này trong migration
-
-    def __str__(self):
-        return f"{self.name} - {self.email}"
     
 class LoginInfo(models.Model):
     login_id = models.CharField(max_length=100, unique=True)

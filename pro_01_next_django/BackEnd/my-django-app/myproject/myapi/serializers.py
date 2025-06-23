@@ -1,12 +1,7 @@
 from rest_framework import serializers
-from .models import FormSubmission, LoginInfo, UserPermission
+from .models import LoginInfo, UserPermission
 from .models_TB import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_TB import TB_CLIENT_CATEGORIES
-
-class FormSubmissionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FormSubmission
-        fields = ['id', 'name', 'email']
 
 class LoginInfoSerializer(serializers.ModelSerializer):
     class Meta:

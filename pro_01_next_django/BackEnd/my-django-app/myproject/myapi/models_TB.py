@@ -14,7 +14,7 @@ class TB_INVENTORY_CATEGORIES(models.Model):
     ma_kho_luu_tru = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
-        db_table = 'TB_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
+        db_table = 'inventory"."TB_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
 
 class TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED(models.Model):
@@ -38,7 +38,7 @@ class TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED(models.Model):
     ma_kho_xuat = models.CharField(max_length=50, null=False, blank=False)
 
     class Meta:
-        db_table = 'TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
+        db_table = 'inventory"."TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
 
 class VIEW_INVENTORY_REPORT_QUANTITY(models.Model):
@@ -52,7 +52,7 @@ class VIEW_INVENTORY_REPORT_QUANTITY(models.Model):
 
     class Meta:
         managed = False  # Django chỉ dùng để truy vấn, không can thiệp tạo/xóa/sửa bảng đó.
-        db_table = 'inventory."VIEW_INVENTORY_REPORT_QUANTITY"'  # Tên view trong PostgreSQL
+        db_table = 'inventory"."VIEW_INVENTORY_REPORT_QUANTITY"'  # Tên view trong PostgreSQL
 
 class TB_CLIENT_CATEGORIES(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import FormSubmissionView, LoginInfoListView, TBInventoryCategoriesView
+from .views import LoginInfoListView, TBInventoryCategoriesView
 # from .views import SaveInventoryView
 from .views import InventoryStockReceivedIssuedReturnedView
 from .views import get_json_data, download_file_IMPORT_TEMPLATE, download_file_PRINT_TEMPLATE, import_data
@@ -61,10 +61,8 @@ urlpatterns = [
     path('update-xoa-sua/', UpdateXoaSuaView.as_view(), name='update-xoa-sua'),
     # ========================================================================
     # TEST
-    path('submit-form/', FormSubmissionView.as_view(), name='submit-form'),
     path('get-inventory-categories/', TBInventoryCategoriesView.as_view(), name='get-inventory-categories'),
     path('get-json-data/', get_json_data, name='get-json-data'),
-    # path('get-json-data/<str:file_path>/', get_json_data, name='get-json-data'),
 ]
 
 urlpatterns += router.urls

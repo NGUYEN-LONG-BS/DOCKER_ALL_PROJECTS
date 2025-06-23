@@ -14,7 +14,7 @@ class LA_INVENTORY_CATEGORIES(models.Model):
     ma_kho_luu_tru = models.CharField(max_length=50, null=True, blank=True)
 
     class Meta:
-        db_table = 'LA_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
+        db_table = 'inventory"."LA_INVENTORY_CATEGORIES'  # Chỉ định schema, tạo bảng trước, sau đó đổi lại tên
         # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
 

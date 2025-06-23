@@ -15,7 +15,6 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 
-from .models import FormSubmission
 from .models import LoginInfo, UserPermission
 from .models_TB import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_TB import TB_CLIENT_CATEGORIES
@@ -26,7 +25,6 @@ from .models_Mien_Tay import MIENTAY_CLIENT_CATEGORIES, MIENTAY_INVENTORY_CATEGO
 from .models_PA import PA_CLIENT_CATEGORIES, PA_INVENTORY_CATEGORIES
 from .models_Nam_An import NAMAN_CLIENT_CATEGORIES, NAMAN_INVENTORY_CATEGORIES
 
-from .serializers import FormSubmissionSerializer
 from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, InventoryCategoriesSerializer
 from .serializers import LoginInfoSerializer
 from .serializers import TBInventoryCategoriesSerializer
@@ -45,28 +43,6 @@ from datetime import timedelta
 
 DATABASE_NAME_default = 'default'
 DATABASE_NAME_tb = 'tb'
-
-#========================================================================================================================
-#========================================================================================================================
-#========================================================================================================================
-#========================================================================================================================
-#========================================================================================================================
-#========================================================================================================================
-#========================================================================================================================
-
-class FormSubmissionView(APIView):
-    def post(self, request):
-        try:
-            serializer = FormSubmissionSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()  # Lưu dữ liệu vào database
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        except Exception as e:
-            # Ghi lại lỗi chi tiết để giúp bạn debug
-            print(f"Error: {e}")
-            return Response({"error": "Đã có lỗi xảy ra, vui lòng thử lại!"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #========================================================================================================================
 #========================================================================================================================
