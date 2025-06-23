@@ -17,8 +17,8 @@ from rest_framework.pagination import PageNumberPagination
 
 from .models import FormSubmission
 from .models import LoginInfo, UserPermission
-from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-from .models import TB_CLIENT_CATEGORIES
+from .models_TB import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_TB import TB_CLIENT_CATEGORIES
 # CLIENT CATEGORIES
 from .models_LA import LA_CLIENT_CATEGORIES, LA_INVENTORY_CATEGORIES
 from .models_Ha_Noi import HANOI_CLIENT_CATEGORIES, HANOI_INVENTORY_CATEGORIES
@@ -43,7 +43,8 @@ from openpyxl.utils import get_column_letter
 from django.http import HttpResponse
 from datetime import timedelta
 
-DATABASE_NAME = 'default'
+DATABASE_NAME_default = 'default'
+DATABASE_NAME_tb = 'tb'
 
 #========================================================================================================================
 #========================================================================================================================
@@ -370,6 +371,7 @@ def check_login(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Dữ liệu JSON không hợp lệ'}, status=400)
         except Exception as e:
+            print(e)  # In lỗi ra console
             return JsonResponse({'error': str(e)}, status=500)
     
     return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)
@@ -395,7 +397,7 @@ class InventoryStockBySoPhieuView(APIView):
 # ==============================================================================
 
 MODEL_MAP_INVENTORY_CATEGORIES = {
-    "TB": (TB_INVENTORY_CATEGORIES, "default"),
+    "TB": (TB_INVENTORY_CATEGORIES, "tb"),
     "LA": (LA_INVENTORY_CATEGORIES, "tala"),
     "PA": (PA_INVENTORY_CATEGORIES, "pa"),
     "NAMAN": (NAMAN_INVENTORY_CATEGORIES, "naman"),
@@ -491,7 +493,7 @@ class UserPermissionViewSet(viewsets.ModelViewSet):
     serializer_class = UserPermissionSerializer
 
     def get_queryset(self):
-        queryset = UserPermission.objects.using(DATABASE_NAME).all().order_by('user_id')
+        queryset = UserPermission.objects.using(DATABASE_NAME_default).all().order_by('user_id')
         # Đánh lại số thứ tự (STT) cho từng bản ghi
         for idx, obj in enumerate(queryset, start=1):
             obj.stt = idx
@@ -511,7 +513,7 @@ def get_user_permission_info(request):
     user_id = request.query_params.get('user_id')
     if not user_id:
         return Response({'error': 'Thiếu user_id'}, status=400)
-    user_permissions = UserPermission.objects.using(DATABASE_NAME).filter(user_id=user_id)
+    user_permissions = UserPermission.objects.using(DATABASE_NAME_default).filter(user_id=user_id)
     if not user_permissions.exists():
         return Response({'error': 'Không tìm thấy user_id này'}, status=404)
     data = [
@@ -529,7 +531,7 @@ def get_user_permission_info(request):
 
 # Import bulk data
 MODEL_MAP_CLIENT_CATEGORIES = {
-    "TB": (TB_CLIENT_CATEGORIES, "default"),
+    "TB": (TB_CLIENT_CATEGORIES, "tb"),
     "LA": (LA_CLIENT_CATEGORIES, "tala"),
     "PA": (PA_CLIENT_CATEGORIES, "pa"),
     "NAMAN": (NAMAN_CLIENT_CATEGORIES, "naman"),
@@ -612,7 +614,7 @@ class ClientPagination(PageNumberPagination):
 
 # Get all data
 class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
-    queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME).filter(xoa_sua="new").order_by("-ma_khach_hang")
+    queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(xoa_sua="new").order_by("-ma_khach_hang")
     serializer_class = TBClientCategoriesSerializer
     pagination_class = ClientPagination  # Add pagination support
 

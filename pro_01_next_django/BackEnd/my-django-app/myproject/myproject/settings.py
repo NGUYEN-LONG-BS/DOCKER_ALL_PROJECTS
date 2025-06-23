@@ -83,11 +83,22 @@ DATABASES = {
     
     'default': {
         'ENGINE': 'django.db.backends.postgresql',  # Chỉnh sửa thành PostgreSQL
-        'NAME': 'TBD_2025',  # Tên cơ sở dữ liệu PostgreSQL
+        'NAME': 'CONFIGURATION',  # Tên cơ sở dữ liệu PostgreSQL
         'USER': 'postgres',  # Tên người dùng PostgreSQL
         'PASSWORD': 'Ta#9999',  # Mật khẩu người dùng PostgreSQL
         'HOST': 'localhost',  # Máy chủ PostgreSQL (localhost nếu là máy cục bộ)
         'PORT': '5432',  # Cổng PostgreSQL (mặc định là 5432)
+        'OPTIONS': {
+            'options': '-c search_path=myconfiguration,public'  # Chỉ định schema tìm kiếm trong DB
+        }
+    },
+    'tb': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'TBD_2025',
+        'USER': 'postgres',
+        'PASSWORD': 'Ta#9999',
+        'HOST': 'localhost',
+        'PORT': '5432',
         'OPTIONS': {
             'options': '-c search_path=inventory,public'  # Chỉ định schema tìm kiếm trong DB
         }

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import FormSubmission, LoginInfo, UserPermission
-from .models import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
-from .models import TB_CLIENT_CATEGORIES
+from .models_TB import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_TB import TB_CLIENT_CATEGORIES
 
 class FormSubmissionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,9 +36,7 @@ class InventoryStockReceivedIssuedReturnedSerializer(serializers.ModelSerializer
 # log of inventory stock
 # ==============================================================================
 
-# your_app/serializers.py
-from rest_framework import serializers
-from .models import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_INVENTORY_CATEGORIES
+
 
 class InventoryStockSerializer(serializers.ModelSerializer):
     STT = serializers.SerializerMethodField()
