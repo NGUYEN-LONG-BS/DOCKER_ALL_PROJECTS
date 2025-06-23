@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hướng dẫn xuất schema SQL Server</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light text-dark">
+
+    <div class="container py-5">
+        <h1 class="text-center mb-4">📊 Hướng dẫn Xuất Toàn Bộ Schema SQL Server Cho AI Đọc Hiểu</h1>
+
+        <!-- 1. Mục tiêu -->
+        <div class="mb-4">
+            <h4>🎯 Mục tiêu</h4>
+            <p>Để AI hoặc bất kỳ hệ thống phân tích dữ liệu nào có thể hiểu toàn bộ cơ sở dữ liệu SQL Server, bạn cần xuất ra đầy đủ <strong>các bảng</strong>, <strong>tên cột</strong>, <strong>kiểu dữ liệu</strong>, <strong>khóa chính</strong>, <strong>khóa ngoại</strong>, v.v. Sau đó có thể trích xuất dưới dạng <code>CSV</code> hoặc <code>JSON</code>.</p>
+        </div>
+
+        <!-- 2. Câu lệnh SQL -->
+        <div class="mb-4">
+            <h4>💻 2. Câu lệnh SQL để lấy thông tin</h4>
+
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">📋 Liệt kê tất cả bảng</div>
+                <div class="card-body bg-light">
+<pre><code>SELECT TABLE_SCHEMA, TABLE_NAME
+FROM INFORMATION_SCHEMA.TABLES
+WHERE TABLE_TYPE = 'BASE TABLE'
+ORDER BY TABLE_SCHEMA, TABLE_NAME;
+</code></pre>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">📄 Liệt kê thông tin cột</div>
+                <div class="card-body bg-light">
+<pre><code>SELECT 
+    TABLE_SCHEMA,
+    TABLE_NAME,
+    COLUMN_NAME,
+    DATA_TYPE,
+    CHARACTER_MAXIMUM_LENGTH,
+    IS_NULLABLE
+FROM INFORMATION_SCHEMA.COLUMNS
+ORDER BY TABLE_SCHEMA, TABLE_NAME, ORDINAL_POSITION;
+</code></pre>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header bg-warning text-dark">🔐 Liệt kê khóa chính</div>
+                <div class="card-body bg-light">
+<pre><code>SELECT 
+    tc.TABLE_SCHEMA, 
+    tc.TABLE_NAME, 
+    kc.COLUMN_NAME
+FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
+JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS kc
+  ON tc.CONSTRAINT_NAME = kc.CONSTRAINT_NAME
+WHERE tc.CONSTRAINT_TYPE = 'PRIMARY KEY';
+</code></pre>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header bg-danger text-white">🔗 Liệt kê khóa ngoại</div>
+                <div class="card-body bg-light">
+<pre><code>SELECT 
+    fk.name AS ForeignKey,
+    tp.name AS ParentTable,
+    cp.name AS ParentColumn,
+    tr.name AS ReferencedTable,
+    cr.name AS ReferencedColumn
+FROM 
+    sys.foreign_keys fk
+INNER JOIN 
+    sys.foreign_key_columns fkc ON fkc.constraint_object_id = fk.object_id
+INNER JOIN 
+    sys.tables tp ON fkc.parent_object_id = tp.object_id
+INNER JOIN 
+    sys.columns cp ON fkc.parent_object_id = cp.object_id AND fkc.parent_column_id = cp.column_id
+INNER JOIN 
+    sys.tables tr ON fkc.referenced_object_id = tr.object_id
+INNER JOIN 
+    sys.columns cr ON fkc.referenced_object_id = cr.object_id AND fkc.referenced_column_id = cr.column_id;
+</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Xuất kết quả -->
+        <div class="mb-4">
+            <h4>📤 3. Cách xuất kết quả để AI đọc</h4>
+            <ul>
+                <li><strong>Dùng SQL Server Management Studio (SSMS):</strong> Chạy truy vấn ➝ Chuột phải vào kết quả ➝ <code>Save Results As...</code> ➝ chọn <code>CSV</code>.</li>
+                <li><strong>Dùng Python / PowerShell:</strong> Có thể tự động hóa việc export sang CSV hoặc JSON.</li>
+            </ul>
+        </div>
+
+        <!-- 4. Gợi ý định dạng -->
+        <div class="mb-4">
+            <h4>🧠 4. Gợi ý định dạng để gửi cho AI</h4>
+            <p>Bạn nên xuất dữ liệu ở dạng <code>JSON</code> như sau để AI dễ hiểu:</p>
+<pre><code>[
+  {
+    "table": "Users",
+    "columns": [
+      { "name": "UserID", "type": "INT", "primary_key": true },
+      { "name": "Username", "type": "VARCHAR(100)", "nullable": false },
+      { "name": "Email", "type": "VARCHAR(255)", "nullable": true }
+    ]
+  }
+]</code></pre>
+        </div>
+
+        <!-- 5. Ví dụ kết quả -->
+        <div class="mb-4">
+            <h4>📌 5. Ví dụ minh họa kết quả</h4>
+
+            <!-- Danh sách bảng -->
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">📋 Danh sách bảng</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-responsive table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Schema</th>
+                                <th>Tên bảng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>dbo</td><td>Users</td></tr>
+                            <tr><td>dbo</td><td>Orders</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Thông tin cột -->
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">📄 Thông tin cột</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-responsive table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Schema</th>
+                                <th>Bảng</th>
+                                <th>Cột</th>
+                                <th>Kiểu dữ liệu</th>
+                                <th>Chiều dài</th>
+                                <th>Cho phép NULL?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>dbo</td><td>Users</td><td>UserID</td><td>INT</td><td>-</td><td>NO</td></tr>
+                            <tr><td>dbo</td><td>Users</td><td>Email</td><td>VARCHAR</td><td>255</td><td>YES</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Khóa chính -->
+            <div class="card mb-3">
+                <div class="card-header bg-warning text-dark">🔐 Khóa chính</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-responsive table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Schema</th>
+                                <th>Bảng</th>
+                                <th>Cột</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>dbo</td><td>Users</td><td>UserID</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Khóa ngoại -->
+            <div class="card mb-3">
+                <div class="card-header bg-danger text-white">🔗 Khóa ngoại</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-responsive table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tên khóa</th>
+                                <th>Bảng cha</th>
+                                <th>Cột cha</th>
+                                <th>Bảng tham chiếu</th>
+                                <th>Cột tham chiếu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>FK_Orders_Users</td>
+                                <td>Orders</td>
+                                <td>UserID</td>
+                                <td>Users</td>
+                                <td>UserID</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. Gợi ý tiếp -->
+        <div class="mb-5">
+            <h4>🚀 6. Gợi ý tiếp theo</h4>
+            <ul>
+                <li>Bạn có thể dùng Flask + Jinja2 để render dữ liệu từ cơ sở dữ liệu trực tiếp thành HTML.</li>
+                <li>Có thể tạo Python script để kết nối SQL Server và xuất schema thành <code>JSON</code>/<code>CSV</code>.</li>
+                <li>Nếu bạn cần mình giúp xây dựng tool tự động hóa điều này, hãy yêu cầu nhé!</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

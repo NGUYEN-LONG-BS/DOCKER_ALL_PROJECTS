@@ -13,6 +13,11 @@ step 04: Chạy server backend nằm trong folder myproject
 (venv) C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG>cd myproject  
 step 04: PS C:\Users\ADMIN\Desktop\ICONS\GITHUB\DOCKER_ALL_PROJECTS\django-docker-TAG\myproject> python manage.py runserver 0.0.0.0:8000
 
+python manage.py createsuperuser
+admin
+nguyenlongbs2012@gmail.com
+123456789
+
 HƯỚNG DẪN QUAY LẠI CODE TỪ COMMIT CŨ
 Quay lại code cũ
 git checkout de9a8225f7239ffa9c1bea147fa8c65031df4171 -- .
