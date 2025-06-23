@@ -68,7 +68,7 @@ def submit_inventory_categories(request):
         if not ma_hang:
             return Response({"error": "Trường 'ma_hang' không được để trống."}, status=status.HTTP_400_BAD_REQUEST)
         # Kiểm tra điều kiện: ma_hang chưa tồn tại hoặc đã tồn tại nhưng xoa_sua khác 'new'
-        exists_new = TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=ma_hang, xoa_sua="new").exists()
+        exists_new = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=ma_hang, xoa_sua="new").exists()
         if exists_new:
             return Response({"error": f"Mã hàng '{ma_hang}' đã tồn tại, không thể thêm mới."}, status=status.HTTP_400_BAD_REQUEST)
         serializer = InventoryCategoriesSerializer(data=request.data)
@@ -82,7 +82,7 @@ class LoginInfoListView(ListAPIView):
     serializer_class = LoginInfoSerializer
 
 class TBInventoryCategoriesView(ListAPIView):
-    queryset = TB_INVENTORY_CATEGORIES.objects.all()
+    queryset = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).all()
     serializer_class = TBInventoryCategoriesSerializer
 
 #========================================================================================================================
@@ -117,7 +117,7 @@ def get_json_data(request):
 # ==============================================================================
 
 class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
-    queryset = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
+    queryset = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).all()
     serializer_class = InventoryStockReceivedIssuedReturnedSerializer
     
     # Override create method to handle multiple objects in a single request
@@ -215,7 +215,7 @@ class MaxSoPhieuView(APIView):
 
     def get(self, request, format=None):
         # Lấy tất cả các số phiếu từ bảng
-        phieu_list = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
+        phieu_list = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).all()
         
         # Danh sách chứa các số phiếu và 6 số cuối của chúng
         max_phieu = None
@@ -263,7 +263,7 @@ class CheckSoPhieuExistView(APIView):
             )
 
         # Kiểm tra xem số phiếu đã tồn tại trong cơ sở dữ liệu chưa
-        exists = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.filter(so_phieu=value_to_search).exists()
+        exists = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).filter(so_phieu=value_to_search).exists()
 
         # Trả về kết quả với status 200, bất kể số phiếu tồn tại hay không
         return Response({'existed': exists}, status=status.HTTP_200_OK)
@@ -280,7 +280,7 @@ class CheckMaHangExistView(APIView):
             )
 
         # Kiểm tra xem giá trị có tồn tại trong cột ma_hang của bảng không
-        exists = TB_INVENTORY_CATEGORIES.objects.filter(ma_hang=value_to_search).exists()
+        exists = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=value_to_search).exists()
 
         # Trả về kết quả với status 200
         return Response({'existed': exists}, status=status.HTTP_200_OK)
@@ -298,7 +298,7 @@ class InventoryStockListView(APIView):
         ma_doi_tuong = request.query_params.get('ma_doi_tuong')
         ma_hang = request.query_params.get('ma_hang')
 
-        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.all()
+        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).all()
 
         # Đúng tên trường ngày
         if from_date:
@@ -361,7 +361,7 @@ class InventoryStockBySoPhieuView(APIView):
         so_phieu = request.query_params.get('so_phieu')
         if not so_phieu:
             return Response({'error': 'Thiếu tham số so_phieu'}, status=status.HTTP_400_BAD_REQUEST)
-        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.filter(so_phieu=so_phieu, xoa_sua="new")
+        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).filter(so_phieu=so_phieu, xoa_sua="new")
         serialized_data = []
         for index, item in enumerate(qs):
             serializer = InventoryStockSerializer(item, context={'index': index})
