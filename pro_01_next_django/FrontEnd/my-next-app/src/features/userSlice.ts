@@ -2,14 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface UserState {
   isAuthenticated: boolean;
-  userInfo: any; // Bạn có thể thay bằng kiểu dữ liệu user thực tế
-  userId: string | null; // Thêm userId để lưu ID người dùng
+  userInfo: {
+    userId: string | null;
+    department?: string | null;
+    subsidiary?: string | null;
+  } | null;
+  userId: string | null;
 }
 
 const initialState: UserState = {
   isAuthenticated: false,
   userInfo: null,
-  userId: null, // Khởi tạo userId là null
+  userId: null,
 };
 
 const userSlice = createSlice({
@@ -18,13 +22,17 @@ const userSlice = createSlice({
   reducers: {
     login(state, action) {
       state.isAuthenticated = true;
-      state.userInfo = action.payload;
-      state.userId = action.payload.userId; // Lưu userId khi đăng nhập
+      state.userInfo = {
+        userId: action.payload.userId,
+        department: action.payload.department || null,
+        subsidiary: action.payload.subsidiary || null,
+      };
+      state.userId = action.payload.userId;
     },
     logout(state) {
       state.isAuthenticated = false;
       state.userInfo = null;
-      state.userId = null; // Xóa userId khi đăng xuất
+      state.userId = null;
     },
   },
 });

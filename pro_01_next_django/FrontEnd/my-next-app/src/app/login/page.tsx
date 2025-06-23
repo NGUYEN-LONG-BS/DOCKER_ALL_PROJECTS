@@ -64,7 +64,18 @@ export default function LoginPage() {
         if (typeof window !== 'undefined') {
           localStorage.setItem('user_id', loginId);
         }
-        dispatch(login({ userId: loginId }));
+        // Gọi API lấy quyền để lấy cả department và subsidiary
+        try {
+          const res = await fetch(`/api/get-user-permission-info/?user_id=${loginId}`);
+          const data = await res.json();
+          dispatch(login({
+            userId: loginId,
+            department: data && data[0] ? data[0].department : null,
+            subsidiary: data && data[0] ? data[0].subsidiary : null,
+          }));
+        } catch {
+          dispatch(login({ userId: loginId }));
+        }
         router.push("/home"); // Chuyển trang không reload
       } else {
         setError("Tên đăng nhập hoặc mật khẩu không đúng.");
