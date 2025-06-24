@@ -19,6 +19,7 @@ from .views import TBClientCategoriesCreateView
 from .views import GetNextMaKhachHangView
 from .views import ExportTBClientCategoriesToExcel
 from .views import UpdateXoaSuaView
+from .views import search_client_categories
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet, get_data_TB_CLIENT_CATEGORIES
@@ -59,6 +60,7 @@ urlpatterns = [
     path('get-next-ma-khach-hang/', GetNextMaKhachHangView.as_view(), name='get-next-ma-khach-hang'),
     path('export-tb-client-categories/', ExportTBClientCategoriesToExcel.as_view(), name='export-tb-client-categories'),
     path('update-xoa-sua/', UpdateXoaSuaView.as_view(), name='update-xoa-sua'),
+    path('search-client-categories/', search_client_categories),
     # ========================================================================
     # TEST
     path('get-inventory-categories/', TBInventoryCategoriesView.as_view(), name='get-inventory-categories'),

@@ -4,6 +4,7 @@ from django.http import FileResponse, HttpResponseNotFound
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import now
+from django.db import models
 
 from rest_framework import status
 from rest_framework import viewsets
@@ -735,3 +736,32 @@ class UpdateXoaSuaView(APIView):
             return Response({"message": "Record updated successfully."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "overtime to delete"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def search_client_categories(request):
+    query = request.GET.get('q', '').strip()
+    model_key = request.GET.get('model_key', 'TB')
+    model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
+    if not model_tuple:
+        return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
+    ModelClass, db_name = model_tuple
+    if not query:
+        return Response({'results': []})
+    qs = ModelClass.objects.using(db_name).filter(
+        models.Q(ma_khach_hang__icontains=query) |
+        models.Q(ten_khach_hang__icontains=query) |
+        models.Q(mst__icontains=query)
+    )
+    results = [
+        {
+            'ma_khach_hang': c.ma_khach_hang,
+            'ten_khach_hang': c.ten_khach_hang,
+            'mst': c.mst,
+            'dia_chi': c.dia_chi
+        }
+        for c in qs[:20]
+    ]
+    if not results:
+        return Response({'results': [], 'message': 'no data'})
+    return Response({'results': results})
