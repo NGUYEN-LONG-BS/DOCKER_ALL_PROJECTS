@@ -976,20 +976,20 @@ class TBSupplierCategoriesCreateView(APIView):
 # Get next ma_nha_cung_cap
 class GetNextMaNhaCungCapView(APIView):
     def get(self, request):
-        # Get the latest ma_nha_cung_cap in the format KH00000
-        latest_record = TB_SUPPLIER_CATEGORIES.objects.filter(ma_nha_cung_cap__startswith="KH").order_by("-ma_nha_cung_cap").first()
+        # Get the latest ma_nha_cung_cap in the format NCC00000
+        latest_record = TB_SUPPLIER_CATEGORIES.objects.filter(ma_nha_cung_cap__startswith="NCC").order_by("-ma_nha_cung_cap").first()
         
         if latest_record:
             latest_ma_nha_cung_cap = latest_record.ma_nha_cung_cap
             # Extract the numeric part and increment it
-            match = re.match(r"KH(\d+)", latest_ma_nha_cung_cap)
+            match = re.match(r"NCC(\d+)", latest_ma_nha_cung_cap)
             if match:
                 next_number = int(match.group(1)) + 1
-                next_ma_nha_cung_cap = f"KH{next_number:05d}"
+                next_ma_nha_cung_cap = f"NCC{next_number:05d}"
                 return Response({"next_ma_nha_cung_cap": next_ma_nha_cung_cap}, status=status.HTTP_200_OK)
         
-        # If no records exist, return KH00001
-        return Response({"next_ma_nha_cung_cap": "KH00001"}, status=status.HTTP_200_OK)
+        # If no records exist, return NCC00001
+        return Response({"next_ma_nha_cung_cap": "NCC00001"}, status=status.HTTP_200_OK)
 
 # Export TB_SUPPLIER_CATEGORIES to Excel
 class ExportTBSupplierCategoriesToExcel(APIView):

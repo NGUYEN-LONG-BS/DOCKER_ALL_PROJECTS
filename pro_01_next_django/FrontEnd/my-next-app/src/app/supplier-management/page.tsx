@@ -71,9 +71,9 @@ const supplierManagementPage = () => {
     { label: "Tên nhà cung cấp", width: "600px" },
     { label: "Địa chỉ", width: "500px" },
     { label: "MST", width: "100px" },
-    { label: "Khu vực", width: "150px" },
-    { label: "DL/XL", width: "150px" },
     { label: "Mã cũ", width: "150px" },
+    { label: "Mã phân loại 02", width: "150px" },
+    { label: "Mã phân loại 03", width: "150px" },
     { label: "Mã phân loại 04", width: "150px" },
     { label: "Mã phân loại 05", width: "150px" },
     { label: "Mã phân loại 06", width: "150px" },
@@ -467,7 +467,7 @@ const supplierManagementPage = () => {
               <div className="tab-content mt-3">
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label>PL01 - Khu Vực:</label>
+                    <label>PL01 - Mã cũ:</label>
                     <input
                       type="text"
                       name="ma_phan_loai_01"
@@ -477,7 +477,7 @@ const supplierManagementPage = () => {
                     />
                   </div>
                   <div className="col-md-6 mb-3">
-                    <label>PL02 - Điện lực/Xây lắp:</label>
+                    <label>Mã phân loại 02:</label>
                     <input
                       type="text"
                       name="ma_phan_loai_02"
@@ -487,7 +487,7 @@ const supplierManagementPage = () => {
                     />
                   </div>
                   <div className="col-md-6 mb-3">
-                    <label>PL03 - Mã cũ:</label>
+                    <label>Mã phân loại 03:</label>
                     <input
                       type="text"
                       name="ma_phan_loai_03"
@@ -599,7 +599,7 @@ const supplierManagementPage = () => {
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo khu vực"
+                placeholder="Lọc theo mã cũ"
                 value={filter.ma_phan_loai_01}
                 onChange={e => setFilter(f => ({ ...f, ma_phan_loai_01: e.target.value }))}
               />
@@ -607,7 +607,7 @@ const supplierManagementPage = () => {
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo DL/XL"
+                placeholder="Lọc theo PL02"
                 value={filter.ma_phan_loai_02}
                 onChange={e => setFilter(f => ({ ...f, ma_phan_loai_02: e.target.value }))}
               />
@@ -615,7 +615,7 @@ const supplierManagementPage = () => {
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo mã cũ"
+                placeholder="Lọc theo PL03"
                 value={filter.ma_phan_loai_03}
                 onChange={e => setFilter(f => ({ ...f, ma_phan_loai_03: e.target.value }))}
               />
