@@ -737,7 +737,7 @@ class UpdateXoaSuaView(APIView):
         else:
             return Response({"error": "overtime to delete"}, status=status.HTTP_400_BAD_REQUEST)
 
-
+# api to search client categories
 @api_view(['GET'])
 def search_client_categories(request):
     query = request.GET.get('q', '').strip()
