@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { 
-  API_get_data_TB_CLIENT_CATEGORIES,
-  API_create_client_category,
-  API_get_next_ma_khach_hang,
-  API_export_tb_client_categories,
-  API_update_xoa_sua_client_categories,
+  API_get_data_TB_SUPPLIER_CATEGORIES,
+  API_create_supplier_category,
+  API_get_next_ma_nha_cung_cap,
+  API_export_tb_supplier_categories,
+  API_update_xoa_sua_supplier_categories,
 } from '@/api/api';
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
@@ -14,10 +14,10 @@ import axios from "axios";
 import { useUserId } from '@/utils/useUserId';
 import { getCreateStatus } from '@/utils/getRecordStatus';
 
-interface Client {
+interface supplier {
   id: number;
-  ma_khach_hang: string;
-  ten_khach_hang: string;
+  ma_nha_cung_cap: string;
+  ten_nha_cung_cap: string;
   dia_chi: string;
   mst: string;
   ma_phan_loai_01: string;
@@ -31,14 +31,14 @@ interface Client {
   pass_field?: string; // Add optional pass_field property
 }
 
-const ClientManagementPage = () => {
+const supplierManagementPage = () => {
   const userId = useUserId();
 
-  const [clients, setClients] = useState<Client[]>([]);
-  const [form, setForm] = useState<Client>({
+  const [suppliers, setsuppliers] = useState<supplier[]>([]);
+  const [form, setForm] = useState<supplier>({
     id: 0,
-    ma_khach_hang: "",
-    ten_khach_hang: "",
+    ma_nha_cung_cap: "",
+    ten_nha_cung_cap: "",
     dia_chi: "",
     mst: "",
     ma_phan_loai_01: "",
@@ -55,8 +55,8 @@ const ClientManagementPage = () => {
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("tab1");
   const [filter, setFilter] = useState({
-    ma_khach_hang: "",
-    ten_khach_hang: "",
+    ma_nha_cung_cap: "",
+    ten_nha_cung_cap: "",
     mst: "",
     ma_phan_loai_01: "",
     ma_phan_loai_02: "",
@@ -68,7 +68,7 @@ const ClientManagementPage = () => {
 
   const tableColumns = [
     { label: "Mã KH", width: "150px" },
-    { label: "Tên khách hàng", width: "600px" },
+    { label: "Tên nhà cung cấp", width: "600px" },
     { label: "Địa chỉ", width: "500px" },
     { label: "MST", width: "100px" },
     { label: "Khu vực", width: "150px" },
@@ -81,41 +81,41 @@ const ClientManagementPage = () => {
     { label: "Mã thành viên", width: "150px" },
   ];
 
-  // Fetch initial clients
-  const fetchClients = async () => {
+  // Fetch initial suppliers
+  const fetchsuppliers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
-      setClients(response.data.results); // Access the `results` field for the list of records
+      const response = await axios.get(`${API_get_data_TB_SUPPLIER_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
+      setsuppliers(response.data.results); // Access the `results` field for the list of records
       setPage(2); // Set next page for lazy loading
       setHasMore(response.data.results.length === 25); // Update hasMore based on data length
     } catch (err) {
-      setError("Failed to fetch clients.");
+      setError("Failed to fetch suppliers.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch more clients on scroll
-  const fetchClientsLazy = async () => {
+  // Fetch more suppliers on scroll
+  const fetchsuppliersLazy = async () => {
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=${page}&limit=25`);
-      const fetchedData: Client[] = response.data.results; // Explicitly type fetchedData
+      const response = await axios.get(`${API_get_data_TB_SUPPLIER_CATEGORIES}?page=${page}&limit=25`);
+      const fetchedData: supplier[] = response.data.results; // Explicitly type fetchedData
       if (!fetchedData || fetchedData.length === 0) {
         setHasMore(false); // No more data to load
       } else {
-        setClients((prev) => {
+        setsuppliers((prev) => {
           const newData = fetchedData.filter(
-            (item: Client) => !prev.some((existing) => existing.id === item.id)
+            (item: supplier) => !prev.some((existing) => existing.id === item.id)
           );
           return [...prev, ...newData];
         });
         setPage((prev) => prev + 1); // Increment page for next fetch
       }
     } catch (err) {
-      setError("Failed to fetch clients.");
+      setError("Failed to fetch suppliers.");
     } finally {
       setLoading(false);
     }
@@ -123,15 +123,15 @@ const ClientManagementPage = () => {
 
   // Fetch initial data on mount
   useEffect(() => {
-    fetchClients();
+    fetchsuppliers();
   }, []);
 
   // Reset pagination and fetch data when filters change
   useEffect(() => {
-    setClients([]);
+    setsuppliers([]);
     setPage(1);
     setHasMore(true);
-    fetchClients();
+    fetchsuppliers();
   }, [debouncedFilter]);
 
   // Debounce filter input
@@ -157,8 +157,8 @@ const ClientManagementPage = () => {
     const payload = {
       id_nhan_vien: userId,
       xoa_sua: getCreateStatus(),
-      ma_khach_hang: form.ma_khach_hang,
-      ten_khach_hang: form.ten_khach_hang,
+      ma_nha_cung_cap: form.ma_nha_cung_cap,
+      ten_nha_cung_cap: form.ten_nha_cung_cap,
       dia_chi: form.dia_chi,
       mst: form.mst,
       ma_phan_loai_01: form.ma_phan_loai_01,
@@ -173,15 +173,15 @@ const ClientManagementPage = () => {
     };
     console.log("Data to be sent:", payload);
     try {
-      await axios.post(API_create_client_category, payload);
-      setClients([]);
+      await axios.post(API_create_supplier_category, payload);
+      setsuppliers([]);
       setPage(1);
       setHasMore(true);
-      fetchClients();
+      fetchsuppliers();
       setForm({
         id: 0,
-        ma_khach_hang: "",
-        ten_khach_hang: "",
+        ma_nha_cung_cap: "",
+        ten_nha_cung_cap: "",
         dia_chi: "",
         mst: "",
         ma_phan_loai_01: "",
@@ -195,7 +195,7 @@ const ClientManagementPage = () => {
       });
       setEditingId(null);
     } catch (err) {
-      setError("Failed to save client.");
+      setError("Failed to save supplier.");
     }
   };
 
@@ -204,8 +204,8 @@ const ClientManagementPage = () => {
     const payload = {
       id_nhan_vien: userId, // Use userId from the hook,
       xoa_sua: getCreateStatus(),
-      ma_khach_hang: form.ma_khach_hang,
-      ten_khach_hang: form.ten_khach_hang,
+      ma_nha_cung_cap: form.ma_nha_cung_cap,
+      ten_nha_cung_cap: form.ten_nha_cung_cap,
       dia_chi: form.dia_chi,
       mst: form.mst,
       ma_phan_loai_01: form.ma_phan_loai_01,
@@ -220,15 +220,15 @@ const ClientManagementPage = () => {
     };
     console.log("Data to be sent:", payload);
     try {
-      await axios.post(API_create_client_category, payload);
-      setClients([]);
+      await axios.post(API_create_supplier_category, payload);
+      setsuppliers([]);
       setPage(1);
       setHasMore(true);
-      fetchClients();
+      fetchsuppliers();
       setForm({
         id: 0,
-        ma_khach_hang: "",
-        ten_khach_hang: "",
+        ma_nha_cung_cap: "",
+        ten_nha_cung_cap: "",
         dia_chi: "",
         mst: "",
         ma_phan_loai_01: "",
@@ -242,7 +242,7 @@ const ClientManagementPage = () => {
       });
       setEditingId(null);
     } catch (err) {
-      setError("Failed to save client.");
+      setError("Failed to save supplier.");
     }
   };
 
@@ -251,7 +251,7 @@ const ClientManagementPage = () => {
   const [password, setPassword] = useState("");
 
   const handleDelete = async () => {
-    if (!form.ma_khach_hang) {
+    if (!form.ma_nha_cung_cap) {
       setError("Vui lòng chọn đối tượng cần xoá.");
       return;
     }
@@ -260,13 +260,13 @@ const ClientManagementPage = () => {
       return;
     }
     try {
-      const response = await axios.post(API_update_xoa_sua_client_categories, {
-        ma_khach_hang: form.ma_khach_hang,
+      const response = await axios.post(API_update_xoa_sua_supplier_categories, {
+        ma_nha_cung_cap: form.ma_nha_cung_cap,
         pass_field: password,
       });
       if (response.status === 200) {
         alert("Record updated successfully.");
-        fetchClients(); // Refresh the table
+        fetchsuppliers(); // Refresh the table
         setShowModal(false); // Close modal
       } else {
         const errorMessage = response.data?.error;
@@ -287,34 +287,34 @@ const ClientManagementPage = () => {
   };
 
   // Handle row click
-  const handleRowClick = (client: Client) => {
+  const handleRowClick = (supplier: supplier) => {
     setForm({
-      id: client.id || 0,
-      ma_khach_hang: client.ma_khach_hang ?? "",
-      ten_khach_hang: client.ten_khach_hang ?? "",
-      dia_chi: client.dia_chi ?? "",
-      mst: client.mst ?? "",
-      ma_phan_loai_01: client.ma_phan_loai_01 ?? "",
-      ma_phan_loai_02: client.ma_phan_loai_02 ?? "",
-      ma_phan_loai_03: client.ma_phan_loai_03 ?? "",
-      ma_phan_loai_04: client.ma_phan_loai_04 ?? "",
-      ma_phan_loai_05: client.ma_phan_loai_05 ?? "",
-      ma_phan_loai_06: client.ma_phan_loai_06 ?? "",
-      ma_phan_loai_07: client.ma_phan_loai_07 ?? "",
-      ma_phan_loai_08: client.ma_phan_loai_08 ?? "",
+      id: supplier.id || 0,
+      ma_nha_cung_cap: supplier.ma_nha_cung_cap ?? "",
+      ten_nha_cung_cap: supplier.ten_nha_cung_cap ?? "",
+      dia_chi: supplier.dia_chi ?? "",
+      mst: supplier.mst ?? "",
+      ma_phan_loai_01: supplier.ma_phan_loai_01 ?? "",
+      ma_phan_loai_02: supplier.ma_phan_loai_02 ?? "",
+      ma_phan_loai_03: supplier.ma_phan_loai_03 ?? "",
+      ma_phan_loai_04: supplier.ma_phan_loai_04 ?? "",
+      ma_phan_loai_05: supplier.ma_phan_loai_05 ?? "",
+      ma_phan_loai_06: supplier.ma_phan_loai_06 ?? "",
+      ma_phan_loai_07: supplier.ma_phan_loai_07 ?? "",
+      ma_phan_loai_08: supplier.ma_phan_loai_08 ?? "",
     });
-    setEditingId(client.id ?? null);
+    setEditingId(supplier.id ?? null);
   };
 
-  // Filter clients
-  const filteredClients = clients.filter(client => {
+  // Filter suppliers
+  const filteredsuppliers = suppliers.filter(supplier => {
     return (
-      (!debouncedFilter.ma_khach_hang || client.ma_khach_hang.includes(debouncedFilter.ma_khach_hang)) &&
-      (!debouncedFilter.ten_khach_hang || client.ten_khach_hang.includes(debouncedFilter.ten_khach_hang)) &&
-      (!debouncedFilter.mst || client.mst.includes(debouncedFilter.mst)) &&
-      (!debouncedFilter.ma_phan_loai_01 || client.ma_phan_loai_01.includes(debouncedFilter.ma_phan_loai_01)) &&
-      (!debouncedFilter.ma_phan_loai_02 || client.ma_phan_loai_02.includes(debouncedFilter.ma_phan_loai_02)) &&
-      (!debouncedFilter.ma_phan_loai_03 || client.ma_phan_loai_03.includes(debouncedFilter.ma_phan_loai_03))
+      (!debouncedFilter.ma_nha_cung_cap || supplier.ma_nha_cung_cap.includes(debouncedFilter.ma_nha_cung_cap)) &&
+      (!debouncedFilter.ten_nha_cung_cap || supplier.ten_nha_cung_cap.includes(debouncedFilter.ten_nha_cung_cap)) &&
+      (!debouncedFilter.mst || supplier.mst.includes(debouncedFilter.mst)) &&
+      (!debouncedFilter.ma_phan_loai_01 || supplier.ma_phan_loai_01.includes(debouncedFilter.ma_phan_loai_01)) &&
+      (!debouncedFilter.ma_phan_loai_02 || supplier.ma_phan_loai_02.includes(debouncedFilter.ma_phan_loai_02)) &&
+      (!debouncedFilter.ma_phan_loai_03 || supplier.ma_phan_loai_03.includes(debouncedFilter.ma_phan_loai_03))
     );
   });
 
@@ -322,7 +322,7 @@ const ClientManagementPage = () => {
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if (scrollTop + clientHeight >= scrollHeight - 10 && hasMore && !loading) {
-      fetchClientsLazy();
+      fetchsuppliersLazy();
     }
   };
 
@@ -331,27 +331,27 @@ const ClientManagementPage = () => {
     setActiveTab(tab);
   };
 
-  // Add refresh icon and functionality for Mã khách hàng
-  const handleRefreshMaKhachHang = async () => {
+  // Add refresh icon and functionality for Mã nhà cung cấp
+  const handleRefreshMaNhaCungCap = async () => {
     try {
-      const response = await axios.get(API_get_next_ma_khach_hang);
-      const nextMaKhachHang = response.data.next_ma_khach_hang;
-      setForm((prev) => ({ ...prev, ma_khach_hang: nextMaKhachHang }));
+      const response = await axios.get(API_get_next_ma_nha_cung_cap);
+      const nextMaNhaCungCap = response.data.next_ma_nha_cung_cap;
+      setForm((prev) => ({ ...prev, ma_nha_cung_cap: nextMaNhaCungCap }));
     } catch (err) {
-      setError("Failed to fetch next Mã khách hàng.");
+      setError("Failed to fetch next Mã nhà cung cấp.");
     }
   };
 
   // Add functionality to download Excel file
   const handleExportToExcel = async () => {
     try {
-      const response = await axios.get(API_export_tb_client_categories, {
+      const response = await axios.get(API_export_tb_supplier_categories, {
         responseType: 'blob', // Ensure the response is treated as a binary file
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'TB_CLIENT_CATEGORIES.xlsx');
+      link.setAttribute('download', 'TB_supplier_CATEGORIES.xlsx');
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -377,7 +377,7 @@ const ClientManagementPage = () => {
       <Header />
       <main className="container py-1 flex-grow-1">
         <div className="container">
-          <h1 className="text-center">Quản lý khách hàng</h1>
+          <h1 className="text-center">Quản lý nhà cung cấp</h1>
           {loading && <p>Loading...</p>}
           {error && <p className="text-danger">{error}</p>}
 
@@ -389,7 +389,7 @@ const ClientManagementPage = () => {
                   className={`nav-link ${activeTab === "tab1" ? "active" : ""}`}
                   onClick={() => handleTabSwitch("tab1")}
                 >
-                  Thông tin khách hàng
+                  Thông tin nhà cung cấp
                 </button>
               </li>
               <li className="nav-item">
@@ -407,12 +407,12 @@ const ClientManagementPage = () => {
               <div className="tab-content mt-3">
                 <div className="row">
                   <div className="col-md-6 mb-3">
-                    <label>Mã khách hàng:</label>
+                    <label>Mã nhà cung cấp:</label>
                     <div className="input-group">
                       <input
                         type="text"
-                        name="ma_khach_hang"
-                        value={form.ma_khach_hang}
+                        name="ma_nha_cung_cap"
+                        value={form.ma_nha_cung_cap}
                         onChange={handleChange}
                         className="form-control"
                         required
@@ -422,18 +422,18 @@ const ClientManagementPage = () => {
                       <button
                         type="button"
                         className="btn btn-outline-secondary"
-                        onClick={handleRefreshMaKhachHang}
+                        onClick={handleRefreshMaNhaCungCap}
                       >
                         <i className="bi bi-arrow-clockwise"></i> {/* Bootstrap icon for refresh */}
                       </button>
                     </div>
                   </div>
                   <div className="col-md-6 mb-3">
-                    <label>Tên khách hàng:</label>
+                    <label>Tên nhà cung cấp:</label>
                     <input
                       type="text"
-                      name="ten_khach_hang"
-                      value={form.ten_khach_hang}
+                      name="ten_nha_cung_cap"
+                      value={form.ten_nha_cung_cap}
                       onChange={handleChange}
                       className="form-control"
                       required
@@ -575,17 +575,17 @@ const ClientManagementPage = () => {
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo Mã khách hàng"
-                value={filter.ma_khach_hang}
-                onChange={e => setFilter(f => ({ ...f, ma_khach_hang: e.target.value }))}
+                placeholder="Lọc theo Mã nhà cung cấp"
+                value={filter.ma_nha_cung_cap}
+                onChange={e => setFilter(f => ({ ...f, ma_nha_cung_cap: e.target.value }))}
               />
             </div>
             <div className="col-md-4">
               <input
                 className="form-control"
-                placeholder="Lọc theo Tên khách hàng"
-                value={filter.ten_khach_hang}
-                onChange={e => setFilter(f => ({ ...f, ten_khach_hang: e.target.value }))}
+                placeholder="Lọc theo Tên nhà cung cấp"
+                value={filter.ten_nha_cung_cap}
+                onChange={e => setFilter(f => ({ ...f, ten_nha_cung_cap: e.target.value }))}
               />
             </div>
             <div className="col-md-4">
@@ -635,20 +635,20 @@ const ClientManagementPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredClients.map((client) => (
-                  <tr key={client.id} onClick={() => handleRowClick(client)} style={{ cursor: "pointer" }}>
-                    <td>{client.ma_khach_hang}</td>
-                    <td>{client.ten_khach_hang}</td>
-                    <td>{client.dia_chi}</td>
-                    <td>{client.mst}</td>
-                    <td>{client.ma_phan_loai_01}</td>
-                    <td>{client.ma_phan_loai_02}</td>
-                    <td>{client.ma_phan_loai_03}</td>
-                    <td>{client.ma_phan_loai_04}</td>
-                    <td>{client.ma_phan_loai_05}</td>
-                    <td>{client.ma_phan_loai_06}</td>
-                    <td>{client.ma_phan_loai_07}</td>
-                    <td>{client.ma_phan_loai_08}</td>
+                {filteredsuppliers.map((supplier) => (
+                  <tr key={supplier.id} onClick={() => handleRowClick(supplier)} style={{ cursor: "pointer" }}>
+                    <td>{supplier.ma_nha_cung_cap}</td>
+                    <td>{supplier.ten_nha_cung_cap}</td>
+                    <td>{supplier.dia_chi}</td>
+                    <td>{supplier.mst}</td>
+                    <td>{supplier.ma_phan_loai_01}</td>
+                    <td>{supplier.ma_phan_loai_02}</td>
+                    <td>{supplier.ma_phan_loai_03}</td>
+                    <td>{supplier.ma_phan_loai_04}</td>
+                    <td>{supplier.ma_phan_loai_05}</td>
+                    <td>{supplier.ma_phan_loai_06}</td>
+                    <td>{supplier.ma_phan_loai_07}</td>
+                    <td>{supplier.ma_phan_loai_08}</td>
                   </tr>
                 ))}
               </tbody>
@@ -700,4 +700,4 @@ const ClientManagementPage = () => {
   );
 };
 
-export default ClientManagementPage;
+export default supplierManagementPage;

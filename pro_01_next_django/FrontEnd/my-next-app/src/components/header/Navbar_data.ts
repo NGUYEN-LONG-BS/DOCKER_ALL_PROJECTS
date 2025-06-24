@@ -17,7 +17,7 @@ export const menuItems: MenuItem[] = [
         label: 'Danh sách khách hàng',
         permission: ['Admin', 'KinhDoanhTM'],
         submenu_02: [
-          { label: 'Danh sách khác hàng', href: '/client-management' },
+          { label: 'Danh sách khách hàng', href: '/client-management' },
           
         ],
       },
@@ -33,6 +33,14 @@ export const menuItems: MenuItem[] = [
         submenu_02: [
           { label: 'Xuất nhập tồn', href: '/inventory-management' },
           { label: 'Báo cáo kho', href: '/dashboard' },
+        ],
+      },
+      {
+        label: 'Danh sách nhà cung cấp',
+        permission: ['Admin', 'VatTuTM'],
+        submenu_02: [
+          { label: 'Danh sách nhà cung cấp', href: '/supplier-management' },
+          
         ],
       },
     ],

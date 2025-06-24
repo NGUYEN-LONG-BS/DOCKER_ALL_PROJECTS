@@ -14,11 +14,13 @@ from django.conf.urls.static import static
 # ===========================================================================
 from .views import import_bulk_data_to_all_INVENTORY_CATEGORIES
 from .views import import_bulk_data_to_all_CLIENT_CATEGORIES
+from .views import import_bulk_data_to_all_SUPPLIER_CATEGORIES
 # ===========================================================================
 from .views import TBClientCategoriesCreateView
 from .views import GetNextMaKhachHangView
 from .views import ExportTBClientCategoriesToExcel
-from .views import UpdateXoaSuaView
+from .views import UpdateXoaSuaClientView
+from .views import UpdateXoaSuaSupplierView
 from .views import search_client_categories, search_inventory_categories
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
@@ -38,6 +40,7 @@ urlpatterns = [
     # IMPORT BULK DATA
     path('import_bulk_data_to_all_INVENTORY_CATEGORIES/', import_bulk_data_to_all_INVENTORY_CATEGORIES, name='import_bulk_data_to_all_INVENTORY_CATEGORIES'),
     path('import_bulk_data_to_all_CLIENT_CATEGORIES/', import_bulk_data_to_all_CLIENT_CATEGORIES, name='import_bulk_data_to_all_CLIENT_CATEGORIES'),
+    path('import_bulk_data_to_all_SUPPLIER_CATEGORIES/', import_bulk_data_to_all_SUPPLIER_CATEGORIES, name='import_bulk_data_to_all_SUPPLIER_CATEGORIES'),
     # ========================================================================
     # INVENTORY MANAGEMENT
     # TB
@@ -60,7 +63,8 @@ urlpatterns = [
     path('create-client-category/', TBClientCategoriesCreateView.as_view(), name='create-client-category'),
     path('get-next-ma-khach-hang/', GetNextMaKhachHangView.as_view(), name='get-next-ma-khach-hang'),
     path('export-tb-client-categories/', ExportTBClientCategoriesToExcel.as_view(), name='export-tb-client-categories'),
-    path('update-xoa-sua/', UpdateXoaSuaView.as_view(), name='update-xoa-sua'),
+    path('update-xoa-sua-client-categories/', UpdateXoaSuaClientView.as_view(), name='update-xoa-sua-client-categories'),
+    path('update-xoa-sua-supplier-categories/', UpdateXoaSuaSupplierView.as_view(), name='update-xoa-sua-supplier-categories'),
     path('search-client-categories/', search_client_categories),
     # ========================================================================
     # TEST

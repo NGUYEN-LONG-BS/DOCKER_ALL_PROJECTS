@@ -13,10 +13,9 @@ export const API_user_permissions = `${API_BASE_URL}/api/user-permissions/`;
 // IMPORT BULK DATA
 export const API_import_bulk_data_to_all_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_INVENTORY_CATEGORIES/`;
 export const API_import_bulk_data_to_all_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_CLIENT_CATEGORIES/`;
-export const API_import_bulk_data_to_all_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_CLIENT_CATEGORIES/`;
+export const API_import_bulk_data_to_all_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_SUPPLIER_CATEGORIES/`;
 // =======================================================================================================
 // INVENTORY MANAGEMENT
-// TB
 export const API_inventory_stock = `${API_BASE_URL}/api/inventory-stock/`;
 export const API_import_data = `${API_BASE_URL}/api/import-data/`;
 export const API_check_ma_hang = `${API_BASE_URL}/api/check-ma-hang/`;
@@ -29,14 +28,20 @@ export const API_download_print_template = `${API_BASE_URL}/api/download-print-t
 export const API_new_number_slip_pnk = `${API_BASE_URL}/api/new-number-slip-pnk/`;
 // =======================================================================================================
 // CLIENT MANAGEMENT
-// TB
 export const API_create_client_category = `${API_BASE_URL}/api/create-client-category/`;
 export const API_get_next_ma_khach_hang = `${API_BASE_URL}/api/get-next-ma-khach-hang/`;
 export const API_export_tb_client_categories = `${API_BASE_URL}/api/export-tb-client-categories/`;
-export const API_update_xoa_sua = `${API_BASE_URL}/api/update-xoa-sua/`;
+export const API_update_xoa_sua_client_categories = `${API_BASE_URL}/api/update-xoa-sua-client-categories/`;
 export const API_get_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
 export const API_search_client_categories = `${API_BASE_URL}/api/search-client-categories/`;
-
+// =======================================================================================================
+// SUPPLIER MANAGEMENT
+export const API_create_supplier_category = `${API_BASE_URL}/api/create-client-category/`;
+export const API_get_next_ma_nha_cung_cap = `${API_BASE_URL}/api/get-next-ma-khach-hang/`;
+export const API_export_tb_supplier_categories = `${API_BASE_URL}/api/export-tb-client-categories/`;
+export const API_update_xoa_sua_supplier_categories = `${API_BASE_URL}/api/update-xoa-sua-supplier-categories/`;
+export const API_get_data_TB_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
+export const API_search_supplier_categories = `${API_BASE_URL}/api/search-client-categories/`;
 // ========================================================================
 // TEST
 export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;
