@@ -2,8 +2,8 @@
 
 import { DateComponent } from "../date/dateComponentInputForm";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
-import { ClientComponent } from "./SearchClientComponent"
-import { ProductComponent } from "../objectProduct/SearchInventoryComponentOnInputForm";
+import { ClientComponent } from "./SearchClientFromAPIComponent"
+import { ProductComponent } from "../objectProduct/SearchInventoryFromAPIComponentOnInputForm";
 import { InventoryTableStockIssuesSlip } from "./Tab02Table"
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 

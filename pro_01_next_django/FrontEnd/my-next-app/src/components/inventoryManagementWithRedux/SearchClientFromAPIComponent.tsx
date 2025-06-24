@@ -145,6 +145,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
               className="form-control"
               id="Client-code"
               placeholder="Search here"
+              autoComplete="off"
               value={searchText}
               onChange={(e) => handleFilter(e.target.value)} // Filter Clients when input changes
               onKeyDown={handleKeyDown} // Handle keyboard navigation
