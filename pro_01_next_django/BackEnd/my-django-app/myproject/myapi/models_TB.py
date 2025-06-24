@@ -82,24 +82,28 @@ class TB_CLIENT_CATEGORIES(models.Model):
         return TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").exists()
 
 class TB_SUPPLIER_CATEGORIES(models.Model):
-    id = models.UUIDField(primary_key=True)
-    date = models.DateTimeField()
-    id_nhan_vien = models.CharField(max_length=10)
-    xoa_sua = models.CharField(max_length=10)
-    ma_nha_cung_cap = models.CharField(max_length=50)
-    ten_nha_cung_cap = models.TextField()
-    ma_phan_loai_01 = models.CharField(max_length=50)
-    ma_phan_loai_02 = models.CharField(max_length=50)
-    ma_phan_loai_03 = models.CharField(max_length=50)
-    ma_phan_loai_04 = models.CharField(max_length=50)
-    ma_phan_loai_05 = models.CharField(max_length=50)
-    ma_phan_loai_06 = models.CharField(max_length=50)
-    ma_phan_loai_07 = models.CharField(max_length=50)
-    ma_phan_loai_08 = models.CharField(max_length=50)
-    mst = models.CharField(max_length=20)
-    dia_chi = models.TextField()
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateTimeField(auto_now_add=True)
+    id_nhan_vien = models.CharField(max_length=10, default="")
+    xoa_sua = models.CharField(max_length=10, default="")
+    ma_nha_cung_cap = models.CharField(max_length=50, default="")
+    ten_nha_cung_cap = models.TextField(default="")
+    ma_phan_loai_01 = models.CharField(max_length=50, default="")
+    ma_phan_loai_02 = models.CharField(max_length=50, default="")
+    ma_phan_loai_03 = models.CharField(max_length=50, default="")
+    ma_phan_loai_04 = models.CharField(max_length=50, default="")
+    ma_phan_loai_05 = models.CharField(max_length=50, default="")
+    ma_phan_loai_06 = models.CharField(max_length=50, default="")
+    ma_phan_loai_07 = models.CharField(max_length=50, default="")
+    ma_phan_loai_08 = models.CharField(max_length=50, default="")
+    mst = models.CharField(max_length=20, default="")
+    dia_chi = models.TextField(default="")
 
     class Meta:
         db_table = 'inventory"."TB_SUPPLIER_CATEGORIES'
-        # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
-        managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+        # managed = False  # Django sẽ không quản lý bảng này (không tạo, xóa, sửa)
+        managed = True # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
+    
+    @staticmethod
+    def is_duplicate(ma_nha_cung_cap):
+        return TB_SUPPLIER_CATEGORIES.objects.filter(ma_nha_cung_cap=ma_nha_cung_cap, xoa_sua="new").exists()

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {
-    API_import_bulk_data_to_all_CLIENT_CATEGORIES,
+    API_import_bulk_data_to_all_SUPPLIER_CATEGORIES,
 } from "@/api/api"
 import Header from "@/components/header/header_Home";
 import Footer from '@/components/footer/Footer';
@@ -13,54 +13,54 @@ import { checkPermission } from "@/utils/checkPermission";
 import { permissionData } from "@/permission/data";
 
 const PAGE_TITLE: Record<string, string> = {
-  TB: "TB_CLIENT_CATEGORIES",
-  LA: "LA_CLIENT_CATEGORIES",
-  PA: "PA_CLIENT_CATEGORIES",
-  MIENTAY: "MIENTAY_CLIENT_CATEGORIES",
-  HANOI: "HANOI_CLIENT_CATEGORIES",
-  NAMAN: "NAMAN_CLIENT_CATEGORIES",
+  TB: "TB_SUPPLIER_CATEGORIES",
+  LA: "LA_SUPPLIER_CATEGORIES",
+  PA: "PA_SUPPLIER_CATEGORIES",
+  MIENTAY: "MIENTAY_SUPPLIER_CATEGORIES",
+  HANOI: "HANOI_SUPPLIER_CATEGORIES",
+  NAMAN: "NAMAN_SUPPLIER_CATEGORIES",
 };
 
 const categoryData: Record<string, { table_name: string; combobox_label: string; combobox_value: string }> = {
   TB: {
-    table_name: "TB_CLIENT_CATEGORIES",
+    table_name: "TB_SUPPLIER_CATEGORIES",
     combobox_label: "TB",
     combobox_value: "TB",
   },
   LA: {
-    table_name: "LA_CLIENT_CATEGORIES",
+    table_name: "LA_SUPPLIER_CATEGORIES",
     combobox_label: "LA",
     combobox_value: "LA",
   },
   PA: {
-    table_name: "PA_CLIENT_CATEGORIES",
+    table_name: "PA_SUPPLIER_CATEGORIES",
     combobox_label: "PA",
     combobox_value: "PA",
   },
   MIENTAY: {
-    table_name: "MIENTAY_CLIENT_CATEGORIES",
+    table_name: "MIENTAY_SUPPLIER_CATEGORIES",
     combobox_label: "MIENTAY",
     combobox_value: "MIENTAY",
   },
   HANOI: {
-    table_name: "HANOI_CLIENT_CATEGORIES",
+    table_name: "HANOI_SUPPLIER_CATEGORIES",
     combobox_label: "HANOI",
     combobox_value: "HANOI",
   },
   NAMAN: {
-    table_name: "NAMAN_CLIENT_CATEGORIES",
+    table_name: "NAMAN_SUPPLIER_CATEGORIES",
     combobox_label: "NAMAN",
     combobox_value: "NAMAN",
   },
 };
 
-const API_URL = API_import_bulk_data_to_all_CLIENT_CATEGORIES;
+const API_URL = API_import_bulk_data_to_all_SUPPLIER_CATEGORIES;
 
 const ImportBulkDataPage = () => {
 
   const router = useRouter();
     useEffect(() => {
-      const currentPage = "admin___import_bulk_data___CLIENT_CATEGORIES"; // Update dynamically if needed
+      const currentPage = "admin___import_bulk_data___SUPPLIER_CATEGORIES"; // Update dynamically if needed
       const permissions = permissionData[currentPage];
       checkPermission(permissions, router);
     }, [router]);

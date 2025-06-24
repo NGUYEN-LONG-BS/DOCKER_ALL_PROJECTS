@@ -6,4 +6,7 @@ admin___user: ["Admin"],
 
 inventory_management: ["Admin", "VatTuTM", "KeToanSX"],
 
+admin___import_bulk_data___CLIENT_CATEGORIES: ["Admin"],
+admin___import_bulk_data___SUPPLIER_CATEGORIES: ["Admin"],
+
 };

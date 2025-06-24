@@ -13,6 +13,7 @@ export const API_user_permissions = `${API_BASE_URL}/api/user-permissions/`;
 // IMPORT BULK DATA
 export const API_import_bulk_data_to_all_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_INVENTORY_CATEGORIES/`;
 export const API_import_bulk_data_to_all_CLIENT_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_CLIENT_CATEGORIES/`;
+export const API_import_bulk_data_to_all_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_CLIENT_CATEGORIES/`;
 // =======================================================================================================
 // INVENTORY MANAGEMENT
 // TB
