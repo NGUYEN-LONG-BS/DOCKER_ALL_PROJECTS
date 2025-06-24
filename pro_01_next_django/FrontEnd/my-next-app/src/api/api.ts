@@ -36,12 +36,12 @@ export const API_get_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_T
 export const API_search_client_categories = `${API_BASE_URL}/api/search-client-categories/`;
 // =======================================================================================================
 // SUPPLIER MANAGEMENT
-export const API_create_supplier_category = `${API_BASE_URL}/api/create-client-category/`;
-export const API_get_next_ma_nha_cung_cap = `${API_BASE_URL}/api/get-next-ma-khach-hang/`;
-export const API_export_tb_supplier_categories = `${API_BASE_URL}/api/export-tb-client-categories/`;
+export const API_create_supplier_category = `${API_BASE_URL}/api/create-supplier-category/`;
+export const API_get_next_ma_nha_cung_cap = `${API_BASE_URL}/api/get-next-ma-nha-cung-cap/`;
+export const API_export_tb_supplier_categories = `${API_BASE_URL}/api/export-tb-supplier-categories/`;
 export const API_update_xoa_sua_supplier_categories = `${API_BASE_URL}/api/update-xoa-sua-supplier-categories/`;
-export const API_get_data_TB_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
-export const API_search_supplier_categories = `${API_BASE_URL}/api/search-client-categories/`;
+export const API_get_data_TB_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_SUPPLIER_CATEGORIES/`;
+export const API_search_supplier_categories = `${API_BASE_URL}/api/search-supplier-categories/`;
 // ========================================================================
 // TEST
 export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;

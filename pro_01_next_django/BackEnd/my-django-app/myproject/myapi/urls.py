@@ -15,16 +15,24 @@ from django.conf.urls.static import static
 from .views import import_bulk_data_to_all_INVENTORY_CATEGORIES
 from .views import import_bulk_data_to_all_CLIENT_CATEGORIES
 from .views import import_bulk_data_to_all_SUPPLIER_CATEGORIES
+from .views import search_inventory_categories
 # ===========================================================================
 from .views import TBClientCategoriesCreateView
 from .views import GetNextMaKhachHangView
 from .views import ExportTBClientCategoriesToExcel
 from .views import UpdateXoaSuaClientView
+from .views import search_client_categories
+from .views import get_data_TB_CLIENT_CATEGORIES
+# ===========================================================================
+from .views import TBSupplierCategoriesCreateView
+from .views import GetNextMaNhaCungCapView
+from .views import ExportTBSupplierCategoriesToExcel
 from .views import UpdateXoaSuaSupplierView
-from .views import search_client_categories, search_inventory_categories
+from .views import search_supplier_categories
+from .views import get_data_TB_SUPPLIER_CATEGORIES
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
-from .views import UserPermissionViewSet, get_data_TB_CLIENT_CATEGORIES
+from .views import UserPermissionViewSet
 
 router = DefaultRouter()
 router.register(r'user-permissions', UserPermissionViewSet, basename='user-permission')
@@ -43,9 +51,7 @@ urlpatterns = [
     path('import_bulk_data_to_all_SUPPLIER_CATEGORIES/', import_bulk_data_to_all_SUPPLIER_CATEGORIES, name='import_bulk_data_to_all_SUPPLIER_CATEGORIES'),
     # ========================================================================
     # INVENTORY MANAGEMENT
-    # TB
     path('search-inventory-categories/', search_inventory_categories),
-    path('get_data_TB_CLIENT_CATEGORIES/', get_data_TB_CLIENT_CATEGORIES.as_view(), name='get_data_TB_CLIENT_CATEGORIES'),
     path('new-number-slip-pnk/', MaxSoPhieuView.as_view(), name='new-number-slip-pnk'),
     path('check-so-phieu/', CheckSoPhieuExistView.as_view(), name='check-so-phieu'),
     path('inventory-stock/', InventoryStockListView.as_view(), name='inventory_stock_list'),
@@ -56,16 +62,22 @@ urlpatterns = [
     path('download-print-template/', download_file_PRINT_TEMPLATE, name='download_file'),
     path('import-data/', import_data, name='import_data'),
     path('submit-inventory-categories/', views.submit_inventory_categories, name='submit-inventory-categories'),
-    
     # ========================================================================
     # CLIENT MANAGEMENT
-    # TB
     path('create-client-category/', TBClientCategoriesCreateView.as_view(), name='create-client-category'),
     path('get-next-ma-khach-hang/', GetNextMaKhachHangView.as_view(), name='get-next-ma-khach-hang'),
     path('export-tb-client-categories/', ExportTBClientCategoriesToExcel.as_view(), name='export-tb-client-categories'),
     path('update-xoa-sua-client-categories/', UpdateXoaSuaClientView.as_view(), name='update-xoa-sua-client-categories'),
-    path('update-xoa-sua-supplier-categories/', UpdateXoaSuaSupplierView.as_view(), name='update-xoa-sua-supplier-categories'),
     path('search-client-categories/', search_client_categories),
+    path('get_data_TB_CLIENT_CATEGORIES/', get_data_TB_CLIENT_CATEGORIES.as_view(), name='get_data_TB_CLIENT_CATEGORIES'),
+    # ========================================================================
+    # SUPPLIER MANAGEMENT
+    path('create-supplier-category/', TBSupplierCategoriesCreateView.as_view(), name='create-supplier-category'),
+    path('get-next-ma-nha-cung-cap/', GetNextMaNhaCungCapView.as_view(), name='get-next-ma-nha-cung-cap'),
+    path('export-tb-supplier-categories/', ExportTBSupplierCategoriesToExcel.as_view(), name='export-tb-supplier-categories'),
+    path('update-xoa-sua-supplier-categories/', UpdateXoaSuaSupplierView.as_view(), name='update-xoa-sua-supplier-categories'),
+    path('search-supplier-categories/', search_supplier_categories),
+    path('get_data_TB_SUPPLIER_CATEGORIES/', get_data_TB_SUPPLIER_CATEGORIES.as_view(), name='get_data_TB_SUPPLIER_CATEGORIES'),
     # ========================================================================
     # TEST
     path('get-inventory-categories/', TBInventoryCategoriesView.as_view(), name='get-inventory-categories'),
