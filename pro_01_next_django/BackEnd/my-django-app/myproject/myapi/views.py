@@ -462,6 +462,33 @@ def import_bulk_data_to_all_INVENTORY_CATEGORIES(request):
         print(traceback.format_exc())
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+# api to search inventory categories
+@api_view(['GET'])
+def search_inventory_categories(request):
+    query = request.GET.get('q', '').strip()
+    model_key = request.GET.get('model_key', 'TB')
+    model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+    if not model_tuple:
+        return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
+    ModelClass, db_name = model_tuple
+    if not query:
+        return Response({'results': []})
+    qs = ModelClass.objects.using(db_name).filter(
+        models.Q(ma_hang__icontains=query) |
+        models.Q(ten_hang__icontains=query)
+    )
+    results = [
+        {
+            'ma_hang': c.ma_hang,
+            'ten_hang': c.ten_hang,
+            'dvt': getattr(c, 'dvt', None)
+        }
+        for c in qs[:20]
+    ]
+    if not results:
+        return Response({'results': [], 'message': 'no data'})
+    return Response({'results': results})
+
 # ==============================================================================
 # Login and Permission
 # ==============================================================================
@@ -765,3 +792,5 @@ def search_client_categories(request):
     if not results:
         return Response({'results': [], 'message': 'no data'})
     return Response({'results': results})
+
+

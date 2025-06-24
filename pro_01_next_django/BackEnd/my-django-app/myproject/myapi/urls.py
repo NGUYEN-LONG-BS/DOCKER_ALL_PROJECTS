@@ -19,7 +19,7 @@ from .views import TBClientCategoriesCreateView
 from .views import GetNextMaKhachHangView
 from .views import ExportTBClientCategoriesToExcel
 from .views import UpdateXoaSuaView
-from .views import search_client_categories
+from .views import search_client_categories, search_inventory_categories
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet, get_data_TB_CLIENT_CATEGORIES
@@ -41,6 +41,7 @@ urlpatterns = [
     # ========================================================================
     # INVENTORY MANAGEMENT
     # TB
+    path('search-inventory-categories/', search_inventory_categories),
     path('get_data_TB_CLIENT_CATEGORIES/', get_data_TB_CLIENT_CATEGORIES.as_view(), name='get_data_TB_CLIENT_CATEGORIES'),
     path('new-number-slip-pnk/', MaxSoPhieuView.as_view(), name='new-number-slip-pnk'),
     path('check-so-phieu/', CheckSoPhieuExistView.as_view(), name='check-so-phieu'),
