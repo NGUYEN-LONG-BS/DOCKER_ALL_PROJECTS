@@ -25,7 +25,7 @@ import { DateComponent } from "@/components/date/dateComponentInputForm";
 import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-input-form";
 import { DocumentRequestNumberComponent } from "@/components/documentRequestNumber/document-request-number-component-input-form";
 import { SupplierComponent } from "@/components/objectSupplier/ObjectSupplierComponentInputForm";
-import { ProductComponent } from "@/components/objectProduct/ObjectProductComponentInputForm";
+import { ProductComponent } from "@/components/objectProduct/SearchInventoryFromAPIComponentOnInputForm";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
@@ -231,9 +231,20 @@ export function InventoryFormStockReceiveSlip() {
   };
 
   // Hàm xử lý khi sản phẩm thay đổi
-  const handleProductChange = (product: InventoryItemExport) => {
-    console.log("Tab01Form - Received product from ProductComponent:", product);
-    dispatch(setSelectedProduct(product));
+  const handleProductChange = (product: any) => {
+    // Map dữ liệu từ ProductComponent (API) sang InventoryItemExport
+    const mappedProduct: InventoryItemExport = {
+      id: 0, // hoặc có thể tạo id tự tăng nếu cần
+      code: product.ma_hang || product.code || "",
+      name: product.ten_hang || product.name || "",
+      unit: product.dvt || product.unit || "",
+      quantity: product.quantity ? Number(product.quantity) : 0,
+      price: product.unitPrice ? Number(product.unitPrice) : 0,
+      value: product.value ? Number(product.value) : 0,
+      notes: product.notes || "",
+    };
+    console.log("Tab01Form - Received product from ProductComponent (mapped):", mappedProduct);
+    dispatch(setSelectedProduct(mappedProduct));
   };
 
   return (
