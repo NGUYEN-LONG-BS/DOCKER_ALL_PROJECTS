@@ -160,12 +160,14 @@ export function InventoryFormStockReceiveSlip() {
     // Chuyển đổi date thành định dạng ISO (chỉ lấy phần ngày)
     const formattedDate = date ? new Date(date).toISOString().split('T')[0] + 'T00:00:00Z' : currentDate;
 
+    // Thêm model_key vào từng object gửi lên backend
     const data = tableItems.map((item, index) => {
       if (!item || typeof item !== "object") {
         console.warn(`Invalid item at index ${index}:`, item);
         return {};
       }
       return {
+        model_key: "TB", // Thêm model_key cố định
         date,
         so_phieu: documentNumber,
         id_nhan_vien: userId,

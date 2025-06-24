@@ -22,7 +22,7 @@ class TBInventoryCategoriesSerializer(serializers.ModelSerializer):
         fields = ['ma_hang', 'ten_hang', 'dvt']
         
 # ==============================================================================
-# Save inventory
+# INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 # ==============================================================================
 
 class InventoryStockReceivedIssuedReturnedSerializer(serializers.ModelSerializer):

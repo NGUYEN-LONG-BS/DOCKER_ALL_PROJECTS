@@ -17,8 +17,10 @@ from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
 
 from .models import LoginInfo, UserPermission
-from .models_TB import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_TB import TB_INVENTORY_CATEGORIES
 from .models_TB import TB_CLIENT_CATEGORIES
+from .models_TB import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_LA import LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 # CLIENT CATEGORIES
 from .models_LA import LA_CLIENT_CATEGORIES, LA_INVENTORY_CATEGORIES
 from .models_Ha_Noi import HANOI_CLIENT_CATEGORIES, HANOI_INVENTORY_CATEGORIES
@@ -30,9 +32,12 @@ from .serializers import LoginInfoSerializer, TBInventoryCategoriesSerializer, I
 from .serializers import LoginInfoSerializer
 from .serializers import TBInventoryCategoriesSerializer
 from .serializers import UserPermissionSerializer
-from .serializers import InventoryStockReceivedIssuedReturnedSerializer
+
 from .serializers import InventoryStockSerializer
 from .serializers import TBClientCategoriesSerializer
+
+from .serializers import InventoryStockReceivedIssuedReturnedSerializer
+from .serializers_LA import LA_InventoryStockReceivedIssuedReturnedSerializer
 
 import json
 import openpyxl
@@ -114,28 +119,62 @@ def get_json_data(request):
         return JsonResponse({"error": "Unicode decoding error in file"}, status=400)
 
 # ==============================================================================
-# Save inventory
+# INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 # ==============================================================================
-
+MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED = {
+    "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, InventoryStockReceivedIssuedReturnedSerializer, "tb"),
+    "LA": (LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, LA_InventoryStockReceivedIssuedReturnedSerializer, "tala"),
+}
 class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
-    queryset = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).all()
-    serializer_class = InventoryStockReceivedIssuedReturnedSerializer
-    
-    # Override create method to handle multiple objects in a single request
+    def get_queryset(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            # Nếu không có model phù hợp, trả về queryset rỗng của model đầu tiên trong mapping (không hard code)
+            first_model = list(MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.values())[0][0]
+            return first_model.objects.none()
+        ModelClass, _, db_name = model_tuple
+        return ModelClass.objects.using(db_name).all()
+
+    def get_serializer_class(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            # Không hard code serializer, lấy serializer đầu tiên trong mapping
+            first_serializer = list(MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.values())[0][1]
+            return first_serializer
+        _, SerializerClass, _ = model_tuple
+        return SerializerClass
+
     def create(self, request, *args, **kwargs):
+        # Lấy model_key từ query param, nếu không có thì lấy từ body nếu là dict, nếu là list thì mặc định 'TB'
+        model_key = request.query_params.get('model_key')
+        if not model_key:
+            if isinstance(request.data, dict):
+                model_key = request.data.get('model_key', 'TB')
+            else:
+                model_key = 'TB'
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, SerializerClass, db_name = model_tuple
         # Check if the request body contains a list of objects
         if isinstance(request.data, list):
-            # If it's a list, we need to serialize each item
-            serializer = self.get_serializer(data=request.data, many=True)
+            serializer = SerializerClass(data=request.data, many=True)
         else:
-            # Otherwise, we process it as a single object
-            serializer = self.get_serializer(data=request.data)
-
-        # Validate the data
+            serializer = SerializerClass(data=request.data)
         if serializer.is_valid():
-            # Save and return response
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # Save to correct database using bulk_create or save(using=...)
+            if isinstance(request.data, list):
+                # For many=True, create objects and bulk_create with using=db_name
+                objs = [ModelClass(**item) for item in serializer.validated_data]
+                ModelClass.objects.using(db_name).bulk_create(objs)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                # For single object, save with using=db_name
+                instance = serializer.save()
+                instance.save(using=db_name)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -29,7 +29,7 @@ export const menuItems: MenuItem[] = [
     submenu: [
       {
         label: 'Kế toán kho',
-        permission: ['Admin', 'TaiChinhTM', 'KeToanTM'],
+        permission: ['Admin', 'VatTuTM'],
         submenu_02: [
           { label: 'Xuất nhập tồn', href: '/inventory-management' },
           { label: 'Báo cáo kho', href: '/dashboard' },
