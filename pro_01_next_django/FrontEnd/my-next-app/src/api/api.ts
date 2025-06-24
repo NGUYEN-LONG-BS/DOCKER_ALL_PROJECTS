@@ -34,6 +34,8 @@ export const API_get_next_ma_khach_hang = `${API_BASE_URL}/api/get-next-ma-khach
 export const API_export_tb_client_categories = `${API_BASE_URL}/api/export-tb-client-categories/`;
 export const API_update_xoa_sua = `${API_BASE_URL}/api/update-xoa-sua/`;
 export const API_get_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
+export const API_search_client_categories = `${API_BASE_URL}/api/search-client-categories/`;
+
 // ========================================================================
 // TEST
 export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;

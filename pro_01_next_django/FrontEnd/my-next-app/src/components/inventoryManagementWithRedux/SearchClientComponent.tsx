@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { API_search_client_categories } from '@/api/api';
 
 interface ClientData {
   code: string;
@@ -19,8 +20,6 @@ interface ApiClient {
 interface ClientComponentProps {
   onClientChange?: (Client: ClientData) => void
 }
-
-const API_SEARCH_CLIENT = "http://localhost:8000/api/search-client-categories/";
 
 export function ClientComponent({ onClientChange }: ClientComponentProps) {
   // State variables to manage Client data, search input, and filtered Clients
@@ -50,7 +49,7 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
     debounceTimeout.current = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API_SEARCH_CLIENT}?q=${encodeURIComponent(text)}&model_key=TB`);
+        const res = await fetch(`${API_search_client_categories}?q=${encodeURIComponent(text)}&model_key=TB`);
         const data = await res.json();
         const filtered: ClientData[] = (data.results || []).map((item: ApiClient) => ({
           code: item.ma_khach_hang,
