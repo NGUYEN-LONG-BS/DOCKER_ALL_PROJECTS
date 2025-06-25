@@ -13,6 +13,7 @@ import Footer from '@/components/footer/Footer';
 import axios from "axios";
 import { useUserId } from '@/utils/useUserId';
 import { getCreateStatus } from '@/utils/getRecordStatus';
+import { getSupplierModelKey } from "@/utils/getPermissionOnDB";
 
 interface Client {
   id: number;
@@ -334,7 +335,9 @@ const ClientManagementPage = () => {
   // Add refresh icon and functionality for Mã khách hàng
   const handleRefreshMaKhachHang = async () => {
     try {
-      const response = await axios.get(API_get_next_ma_khach_hang);
+      const response = await axios.get(API_get_next_ma_khach_hang, {
+        params: { model_key: getSupplierModelKey() },
+      });
       const nextMaKhachHang = response.data.next_ma_khach_hang;
       setForm((prev) => ({ ...prev, ma_khach_hang: nextMaKhachHang }));
     } catch (err) {

@@ -735,14 +735,19 @@ class GetNextMaKhachHangView(APIView):
 # Export TB_CLIENT_CATEGORIES to Excel
 class ExportTBClientCategoriesToExcel(APIView):
     def get(self, request):
+        model_key = request.GET.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, db_name = model_tuple
         # Create a workbook and worksheet
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
-        worksheet.title = "TB_CLIENT_CATEGORIES"
+        worksheet.title = f"{model_key}_CLIENT_CATEGORIES"
 
         # Define the headers
         headers = [
-            "ID", "Date", "ID Nhân Viên", "Xóa/Sửa", "Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp",
+            "ID", "Date", "ID Nhân Viên", "Xóa/Sửa", "Mã Khách Hàng", "Tên Khách Hàng",
             "Mã Phân Loại 01", "Mã Phân Loại 02", "Mã Phân Loại 03", "Mã Phân Loại 04",
             "Mã Phân Loại 05", "Mã Phân Loại 06", "Mã Phân Loại 07", "Mã Phân Loại 08",
             "MST", "Địa Chỉ"
@@ -750,7 +755,7 @@ class ExportTBClientCategoriesToExcel(APIView):
         worksheet.append(headers)
 
         # Fetch all data from the model
-        clients = TB_CLIENT_CATEGORIES.objects.all()
+        clients = ModelClass.objects.using(db_name).all()
 
         # Add data rows
         for client in clients:
@@ -773,7 +778,7 @@ class ExportTBClientCategoriesToExcel(APIView):
         response = HttpResponse(
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
-        response["Content-Disposition"] = 'attachment; filename="TB_CLIENT_CATEGORIES.xlsx"'
+        response["Content-Disposition"] = f'attachment; filename="{model_key}_CLIENT_CATEGORIES.xlsx"'
         workbook.save(response)
         return response
 
