@@ -717,9 +717,13 @@ class TBClientCategoriesCreateView(APIView):
 # Get next ma_khach_hang
 class GetNextMaKhachHangView(APIView):
     def get(self, request):
+        model_key = request.GET.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, db_name = model_tuple
         # Get the latest ma_khach_hang in the format KH00000
-        latest_record = TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang__startswith="KH").order_by("-ma_khach_hang").first()
-        
+        latest_record = ModelClass.objects.using(db_name).filter(ma_khach_hang__startswith="KH").order_by("-ma_khach_hang").first()
         if latest_record:
             latest_ma_khach_hang = latest_record.ma_khach_hang
             # Extract the numeric part and increment it
@@ -728,7 +732,6 @@ class GetNextMaKhachHangView(APIView):
                 next_number = int(match.group(1)) + 1
                 next_ma_khach_hang = f"KH{next_number:05d}"
                 return Response({"next_ma_khach_hang": next_ma_khach_hang}, status=status.HTTP_200_OK)
-        
         # If no records exist, return KH00001
         return Response({"next_ma_khach_hang": "KH00001"}, status=status.HTTP_200_OK)
 
