@@ -25,7 +25,7 @@ from .views import search_client_categories
 from .views import get_data_TB_CLIENT_CATEGORIES
 # ===========================================================================
 from .views import TBSupplierCategoriesCreateView
-from .views import GetNextMaNhaCungCapView
+from .views import get_next_ma_nha_cung_cap
 from .views import ExportTBSupplierCategoriesToExcel
 from .views import UpdateXoaSuaSupplierView
 from .views import search_supplier_categories
@@ -73,7 +73,7 @@ urlpatterns = [
     # ========================================================================
     # SUPPLIER MANAGEMENT
     path('create-supplier-category/', TBSupplierCategoriesCreateView.as_view(), name='create-supplier-category'),
-    path('get-next-ma-nha-cung-cap/', GetNextMaNhaCungCapView.as_view(), name='get-next-ma-nha-cung-cap'),
+    path('get-next-ma-nha-cung-cap/', get_next_ma_nha_cung_cap, name='get-next-ma-nha-cung-cap'),
     path('export-tb-supplier-categories/', ExportTBSupplierCategoriesToExcel.as_view(), name='export-tb-supplier-categories'),
     path('update-xoa-sua-supplier-categories/', UpdateXoaSuaSupplierView.as_view(), name='update-xoa-sua-supplier-categories'),
     path('search-supplier-categories/', search_supplier_categories),

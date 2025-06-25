@@ -13,6 +13,7 @@ import Footer from '@/components/footer/Footer';
 import axios from "axios";
 import { useUserId } from '@/utils/useUserId';
 import { getCreateStatus } from '@/utils/getRecordStatus';
+import { getSupplierModelKey } from "@/utils/getPermissionOnDB";
 
 interface supplier {
   id: number;
@@ -67,7 +68,7 @@ const supplierManagementPage = () => {
   const [debouncedFilter, setDebouncedFilter] = useState(filter);
 
   const tableColumns = [
-    { label: "Mã KH", width: "150px" },
+    { label: "Mã NCC", width: "150px" },
     { label: "Tên nhà cung cấp", width: "600px" },
     { label: "Địa chỉ", width: "500px" },
     { label: "MST", width: "100px" },
@@ -334,7 +335,9 @@ const supplierManagementPage = () => {
   // Add refresh icon and functionality for Mã nhà cung cấp
   const handleRefreshMaNhaCungCap = async () => {
     try {
-      const response = await axios.get(API_get_next_ma_nha_cung_cap);
+      const response = await axios.get(API_get_next_ma_nha_cung_cap, {
+        params: { model_key: getSupplierModelKey() },
+      });
       const nextMaNhaCungCap = response.data.next_ma_nha_cung_cap;
       setForm((prev) => ({ ...prev, ma_nha_cung_cap: nextMaNhaCungCap }));
     } catch (err) {

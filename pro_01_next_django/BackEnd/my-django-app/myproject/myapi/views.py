@@ -742,7 +742,7 @@ class ExportTBClientCategoriesToExcel(APIView):
 
         # Define the headers
         headers = [
-            "ID", "Date", "ID Nhân Viên", "Xóa/Sửa", "Mã Khách Hàng", "Tên Khách Hàng",
+            "ID", "Date", "ID Nhân Viên", "Xóa/Sửa", "Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp",
             "Mã Phân Loại 01", "Mã Phân Loại 02", "Mã Phân Loại 03", "Mã Phân Loại 04",
             "Mã Phân Loại 05", "Mã Phân Loại 06", "Mã Phân Loại 07", "Mã Phân Loại 08",
             "MST", "Địa Chỉ"
@@ -974,30 +974,35 @@ class TBSupplierCategoriesCreateView(APIView):
             return Response({"error": "Invalid action specified."}, status=status.HTTP_400_BAD_REQUEST)
 
 # Get next ma_nha_cung_cap
-class GetNextMaNhaCungCapView(APIView):
-    def get(self, request):
-        # Get the latest ma_nha_cung_cap in the format NCC00000
-        latest_record = TB_SUPPLIER_CATEGORIES.objects.filter(ma_nha_cung_cap__startswith="NCC").order_by("-ma_nha_cung_cap").first()
-        
-        if latest_record:
-            latest_ma_nha_cung_cap = latest_record.ma_nha_cung_cap
-            # Extract the numeric part and increment it
-            match = re.match(r"NCC(\d+)", latest_ma_nha_cung_cap)
-            if match:
-                next_number = int(match.group(1)) + 1
-                next_ma_nha_cung_cap = f"NCC{next_number:05d}"
-                return Response({"next_ma_nha_cung_cap": next_ma_nha_cung_cap}, status=status.HTTP_200_OK)
-        
-        # If no records exist, return NCC00001
-        return Response({"next_ma_nha_cung_cap": "NCC00001"}, status=status.HTTP_200_OK)
+@api_view(['GET'])
+def get_next_ma_nha_cung_cap(request):
+    model_key = request.GET.get('model_key', 'TB')
+    model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
+    if not model_tuple:
+        return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+    ModelClass, db_name = model_tuple
+    latest_record = ModelClass.objects.using(db_name).filter(ma_nha_cung_cap__startswith="NCC").order_by("-ma_nha_cung_cap").first()
+    if latest_record:
+        latest_ma_nha_cung_cap = latest_record.ma_nha_cung_cap
+        match = re.match(r"NCC(\d+)", latest_ma_nha_cung_cap)
+        if match:
+            next_number = int(match.group(1)) + 1
+            next_ma_nha_cung_cap = f"NCC{next_number:05d}"
+            return Response({"next_ma_nha_cung_cap": next_ma_nha_cung_cap}, status=status.HTTP_200_OK)
+    return Response({"next_ma_nha_cung_cap": "NCC00001"}, status=status.HTTP_200_OK)
 
 # Export TB_SUPPLIER_CATEGORIES to Excel
 class ExportTBSupplierCategoriesToExcel(APIView):
     def get(self, request):
+        model_key = request.GET.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, db_name = model_tuple
         # Create a workbook and worksheet
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
-        worksheet.title = "TB_SUPPLIER_CATEGORIES"
+        worksheet.title = f"{model_key}_SUPPLIER_CATEGORIES"
 
         # Define the headers
         headers = [
@@ -1009,7 +1014,7 @@ class ExportTBSupplierCategoriesToExcel(APIView):
         worksheet.append(headers)
 
         # Fetch all data from the model
-        suppliers = TB_SUPPLIER_CATEGORIES.objects.all()
+        suppliers = ModelClass.objects.using(db_name).all()
 
         # Add data rows
         for supplier in suppliers:
@@ -1032,7 +1037,7 @@ class ExportTBSupplierCategoriesToExcel(APIView):
         response = HttpResponse(
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
-        response["Content-Disposition"] = 'attachment; filename="TB_SUPPLIER_CATEGORIES.xlsx"'
+        response["Content-Disposition"] = f'attachment; filename="{model_key}_SUPPLIER_CATEGORIES.xlsx"'
         workbook.save(response)
         return response
 
