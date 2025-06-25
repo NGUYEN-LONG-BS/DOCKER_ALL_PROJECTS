@@ -1,5 +1,15 @@
-// Hàm lấy params model_key cho API NCC, có thể mở rộng sau này
-export function getSupplierModelKey() {
-  // Có thể lấy từ config, env, hoặc truyền động từ props/context nếu cần
-  return "TB";
+import { API_get_user_permission_info } from "@/api/api";
+
+// Hàm lấy subsidiary đầu tiên từ API quyền user dựa vào userId
+export async function getSupplierModelKey(userId: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${API_get_user_permission_info}?user_id=${userId}`);
+    const data = await res.json();
+    if (Array.isArray(data) && data.length > 0 && data[0].subsidiary) {
+      return data[0].subsidiary;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 }

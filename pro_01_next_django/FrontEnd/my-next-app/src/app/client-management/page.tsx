@@ -66,6 +66,8 @@ const ClientManagementPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [debouncedFilter, setDebouncedFilter] = useState(filter);
+  // Lưu modelKey vào state để dùng lại nhiều nơi
+  const [modelKey, setModelKey] = useState<string | null>(null);
 
   const tableColumns = [
     { label: "Mã KH", width: "150px" },
@@ -145,6 +147,17 @@ const ClientManagementPage = () => {
       clearTimeout(handler);
     };
   }, [filter]);
+
+  // Fetch model key on mount
+  useEffect(() => {
+    async function fetchModelKey() {
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, [userId]);
 
   // Handle form change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -336,7 +349,7 @@ const ClientManagementPage = () => {
   const handleRefreshMaKhachHang = async () => {
     try {
       const response = await axios.get(API_get_next_ma_khach_hang, {
-        params: { model_key: getSupplierModelKey() },
+        params: { model_key: modelKey },
       });
       const nextMaKhachHang = response.data.next_ma_khach_hang;
       setForm((prev) => ({ ...prev, ma_khach_hang: nextMaKhachHang }));

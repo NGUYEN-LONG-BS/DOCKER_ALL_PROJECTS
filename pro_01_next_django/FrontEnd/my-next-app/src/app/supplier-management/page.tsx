@@ -66,6 +66,8 @@ const supplierManagementPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [debouncedFilter, setDebouncedFilter] = useState(filter);
+  // Lưu modelKey vào state để dùng lại nhiều nơi
+  const [modelKey, setModelKey] = useState<string | null>(null);
 
   const tableColumns = [
     { label: "Mã NCC", width: "150px" },
@@ -145,6 +147,17 @@ const supplierManagementPage = () => {
       clearTimeout(handler);
     };
   }, [filter]);
+
+  // Lấy modelKey khi userId thay đổi
+  useEffect(() => {
+    async function fetchModelKey() {
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, [userId]);
 
   // Handle form change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -336,7 +349,7 @@ const supplierManagementPage = () => {
   const handleRefreshMaNhaCungCap = async () => {
     try {
       const response = await axios.get(API_get_next_ma_nha_cung_cap, {
-        params: { model_key: getSupplierModelKey() },
+        params: { model_key: modelKey },
       });
       const nextMaNhaCungCap = response.data.next_ma_nha_cung_cap;
       setForm((prev) => ({ ...prev, ma_nha_cung_cap: nextMaNhaCungCap }));
