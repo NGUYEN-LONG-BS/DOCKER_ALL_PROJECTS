@@ -2,7 +2,16 @@
 import { useAppSelector } from "@/store/store"; // Sử dụng useAppSelector thay vì useSelector
 
 export const useUserId = () => {
-  const userId = useAppSelector((state) => state.user.userId); // Truy cập trực tiếp userId từ Redux state
-  console.log("Current userId in Redux:", userId); // Log userId để kiểm tra
-  return userId || 'unknown'; // Trả về userId hoặc giá trị mặc định 'unknown'
+  const userId = useAppSelector((state) => state.user.userId);
+  if (userId) {
+    return userId;
+  }
+  // Nếu Redux chưa có userId, lấy từ localStorage
+  if (typeof window !== 'undefined') {
+    const localUserId = localStorage.getItem('user_id');
+    if (localUserId) {
+      return localUserId;
+    }
+  }
+  return 'unknown';
 };
