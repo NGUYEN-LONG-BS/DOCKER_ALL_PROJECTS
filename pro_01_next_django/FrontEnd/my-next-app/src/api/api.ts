@@ -26,6 +26,7 @@ export const API_save_inventory = `${API_BASE_URL}/api/save-inventory/`;
 export const API_download_import_template = `${API_BASE_URL}/api/download-import-template/`;
 export const API_download_print_template = `${API_BASE_URL}/api/download-print-template/`;
 export const API_new_number_slip_pnk = `${API_BASE_URL}/api/new-number-slip-pnk/`;
+export const API_search_inventory_categories = `${API_BASE_URL}/api/search-inventory-categories/`;
 // =======================================================================================================
 // CLIENT MANAGEMENT
 export const API_create_client_category = `${API_BASE_URL}/api/create-client-category/`;

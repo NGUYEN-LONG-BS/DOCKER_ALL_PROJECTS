@@ -3,6 +3,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import * as Utils from '@/utils';
+import { API_search_inventory_categories } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 interface InventoryItem {
   ma_hang: string;
@@ -13,8 +15,6 @@ interface InventoryItem {
 interface ProductComponentProps {
   onProductChange?: (ProductProps: InventoryItem & { quantity: string; unitPrice: string; value: string; notes: string }) => void;
 }
-
-const API_SEARCH_INVENTORY = "http://localhost:8000/api/search-inventory-categories/";
 
 export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const [searchText, setSearchText] = useState("");
@@ -31,6 +31,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+  const modelKeyRef = useRef<string | null>(null);
 
   // Tính lại giá trị khi quantity hoặc unitPrice thay đổi
   useEffect(() => {
@@ -42,6 +43,18 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       setValue("");
     }
   }, [quantity, unitPrice]);
+
+  // Fetch model key from user permissions
+  useEffect(() => {
+    async function fetchModelKey() {
+      const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') || '' : '';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        modelKeyRef.current = key;
+      }
+    }
+    fetchModelKey();
+  }, []);
 
   // Fetch products from API when user types
   const handleFilter = (text: string) => {
@@ -56,7 +69,8 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
       }
       setLoading(true);
       try {
-        const res = await fetch(`${API_SEARCH_INVENTORY}?q=${encodeURIComponent(text)}&model_key=TB`);
+        const modelKey = modelKeyRef.current || '';
+        const res = await fetch(`${API_search_inventory_categories}?q=${encodeURIComponent(text)}&model_key=${modelKey}`);
         const data = await res.json();
         setFilteredProducts(data.results || []);
         setShowDropdown(true);
