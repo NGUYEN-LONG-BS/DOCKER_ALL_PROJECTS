@@ -15,6 +15,7 @@ from .models_Nam_An import NAMAN_INVENTORY_CATEGORIES
 
 from .serializers import InventoryCategoriesSerializer
 from .serializers import TBInventoryCategoriesSerializer
+from .serializers_LA import LAInventoryCategoriesSerializer
 import openpyxl
 
 DATABASE_NAME_default = 'default'
@@ -22,7 +23,7 @@ DATABASE_NAME_tb = 'tb'
 
 MODEL_MAP_INVENTORY_CATEGORIES = {
     "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
-    "LA": (LA_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tala"),
+    "LA": (LA_INVENTORY_CATEGORIES, LAInventoryCategoriesSerializer, "tala"),
     "PA": (PA_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "pa"),
     "NAMAN": (NAMAN_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "naman"),
     "HANOI": (HANOI_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "hanoi"),
@@ -159,18 +160,26 @@ def search_inventory_categories(request):
         return Response({'results': [], 'message': 'no data'})
     return Response({'results': results})
 
+# ==========================================================================
+# api to submit inventory categories
 @api_view(['POST'])
 def submit_inventory_categories(request):
     if request.method == 'POST':
         ma_hang = request.data.get('ma_hang')
+        model_key = request.data.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, SerializerClass, db_name = model_tuple
         if not ma_hang:
             return Response({"error": "Trường 'ma_hang' không được để trống."}, status=status.HTTP_400_BAD_REQUEST)
         # Kiểm tra điều kiện: ma_hang chưa tồn tại hoặc đã tồn tại nhưng xoa_sua khác 'new'
-        exists_new = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=ma_hang, xoa_sua="new").exists()
+        exists_new = ModelClass.objects.using(db_name).filter(ma_hang=ma_hang, xoa_sua="new").exists()
         if exists_new:
             return Response({"error": f"Mã hàng '{ma_hang}' đã tồn tại, không thể thêm mới."}, status=status.HTTP_400_BAD_REQUEST)
-        serializer = InventoryCategoriesSerializer(data=request.data)
+        serializer = SerializerClass(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            instance = ModelClass(**serializer.validated_data)
+            instance.save(using=db_name)
             return Response({"message": "Dữ liệu đã được thêm thành công!"}, status=status.HTTP_201_CREATED)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

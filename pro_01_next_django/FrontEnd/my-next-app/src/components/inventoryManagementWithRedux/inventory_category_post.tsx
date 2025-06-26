@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { API_submit_inventory_categories } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // Định nghĩa kiểu dữ liệu cho form
 interface InventoryFormData {
@@ -30,6 +31,18 @@ const InventoryForm: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
+  const [modelKey, setModelKey] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    async function fetchModelKey() {
+      const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') || '' : '';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, []);
 
   // Hàm xử lý thay đổi giá trị trong form
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +58,8 @@ const InventoryForm: React.FC = () => {
     setSuccess('');
 
     try {
-      const response = await axios.post(API_submit_inventory_categories, formData, {
+      const payload = { ...formData, model_key: modelKey };
+      const response = await axios.post(API_submit_inventory_categories, payload, {
         headers: {
           'Content-Type': 'application/json',
         },
