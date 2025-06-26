@@ -1,3 +1,5 @@
+import os
+
 from django.http import FileResponse, HttpResponseNotFound
 from django.conf import settings
 
@@ -10,14 +12,19 @@ from rest_framework.decorators import api_view
 from .models_TB import TB_INVENTORY_CATEGORIES
 from .models_TB import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_LA import LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_Ha_Noi import HANOI_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_Mien_Tay import MIENTAY_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_Nam_An import NAMAN_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+from .models_PA import PA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 
 from .serializers_TB import InventoryStockSerializer
 from .serializers_TB import TB_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_LA import LA_InventoryStockReceivedIssuedReturnedSerializer
+from .serializers_PA import PA_InventoryStockReceivedIssuedReturnedSerializer
+from .serializers_Ha_Noi import HANOI_InventoryStockReceivedIssuedReturnedSerializer
+from .serializers_Mien_Tay import MIENTAY_InventoryStockReceivedIssuedReturnedSerializer
+from .serializers_Nam_An import NAMAN_InventoryStockReceivedIssuedReturnedSerializer
 
-import os
-
-DATABASE_NAME_default = 'default'
 DATABASE_NAME_tb = 'tb'
 
 # ==============================================================================
@@ -25,6 +32,11 @@ DATABASE_NAME_tb = 'tb'
 MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED = {
     "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb"),
     "LA": (LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, LA_InventoryStockReceivedIssuedReturnedSerializer, "tala"),
+    "PA": (PA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, PA_InventoryStockReceivedIssuedReturnedSerializer, "pa"),
+    "HANOI": (HANOI_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, HANOI_InventoryStockReceivedIssuedReturnedSerializer, "hanoi"),
+    "MIENTAY": (MIENTAY_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, MIENTAY_InventoryStockReceivedIssuedReturnedSerializer, "mientay"),
+    "NAMAN": (NAMAN_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, NAMAN_InventoryStockReceivedIssuedReturnedSerializer, "naman"),
+    "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb"),
 }
 
 # ==============================================================================

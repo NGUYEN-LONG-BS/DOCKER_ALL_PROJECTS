@@ -11,6 +11,11 @@ from rest_framework.pagination import PageNumberPagination
 
 from .models_TB import TB_SUPPLIER_CATEGORIES
 from .models_LA import LA_SUPPLIER_CATEGORIES
+from .models_PA import PA_SUPPLIER_CATEGORIES
+from .models_Ha_Noi import HANOI_SUPPLIER_CATEGORIES
+from .models_Mien_Tay import MIENTAY_SUPPLIER_CATEGORIES
+from .models_Nam_An import NAMAN_SUPPLIER_CATEGORIES
+
 from .serializers_LA import LASupplierCategoriesSerializer
 
 import openpyxl
@@ -26,6 +31,10 @@ DATABASE_NAME_tb = 'tb'
 MODEL_MAP_SUPPLIER_CATEGORIES = {
     "TB": (TB_SUPPLIER_CATEGORIES, "tb"),
     "LA": (LA_SUPPLIER_CATEGORIES, "tala"),
+    "PA": (PA_SUPPLIER_CATEGORIES, "pa"),
+    "HANOI": (HANOI_SUPPLIER_CATEGORIES, "hanoi"),
+    "MIENTAY": (MIENTAY_SUPPLIER_CATEGORIES, "mientay"),
+    "NAMAN": (NAMAN_SUPPLIER_CATEGORIES, "naman"),
 }
 
 # ==========================================================================

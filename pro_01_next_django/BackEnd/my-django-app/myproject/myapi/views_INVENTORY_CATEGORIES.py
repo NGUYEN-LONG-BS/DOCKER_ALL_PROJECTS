@@ -21,9 +21,6 @@ from .serializers_Mien_Tay import MIENTAYInventoryCategoriesSerializer
 from .serializers_Ha_Noi import HANOIInventoryCategoriesSerializer
 import openpyxl
 
-DATABASE_NAME_default = 'default'
-DATABASE_NAME_tb = 'tb'
-
 MODEL_MAP_INVENTORY_CATEGORIES = {
     "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
     "LA": (LA_INVENTORY_CATEGORIES, LAInventoryCategoriesSerializer, "tala"),
