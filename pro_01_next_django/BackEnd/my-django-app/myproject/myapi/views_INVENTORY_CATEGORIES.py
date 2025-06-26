@@ -21,20 +21,36 @@ DATABASE_NAME_default = 'default'
 DATABASE_NAME_tb = 'tb'
 
 MODEL_MAP_INVENTORY_CATEGORIES = {
-    "TB": (TB_INVENTORY_CATEGORIES, "tb"),
-    "LA": (LA_INVENTORY_CATEGORIES, "tala"),
-    "PA": (PA_INVENTORY_CATEGORIES, "pa"),
-    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, "naman"),
-    "HANOI": (HANOI_INVENTORY_CATEGORIES, "hanoi"),
-    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, "mientay"),
+    "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
+    "LA": (LA_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tala"),
+    "PA": (PA_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "pa"),
+    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "naman"),
+    "HANOI": (HANOI_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "hanoi"),
+    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "mientay"),
 }
 
 # ==========================================================================
 # get inventory categories
 class TBInventoryCategoriesView(ListAPIView):
-    queryset = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).all()
-    serializer_class = TBInventoryCategoriesSerializer
+    def get_queryset(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+        if not model_tuple:
+            first_model = list(MODEL_MAP_INVENTORY_CATEGORIES.values())[0][0]
+            return first_model.objects.none()
+        ModelClass, _, db_name = model_tuple
+        return ModelClass.objects.using(db_name).all()
 
+    def get_serializer_class(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+        if not model_tuple:
+            first_serializer = list(MODEL_MAP_INVENTORY_CATEGORIES.values())[0][1]
+            return first_serializer
+        _, SerializerClass, _ = model_tuple
+        return SerializerClass
+
+# ==========================================================================
 # Import bulk data
 @api_view(['POST'])
 @parser_classes([MultiPartParser, FormParser])
@@ -115,6 +131,7 @@ def import_bulk_data_to_all_INVENTORY_CATEGORIES(request):
         print(traceback.format_exc())
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+# ==========================================================================
 # api to search inventory categories
 @api_view(['GET'])
 def search_inventory_categories(request):
@@ -123,7 +140,7 @@ def search_inventory_categories(request):
     model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
-    ModelClass, db_name = model_tuple
+    ModelClass, _, db_name = model_tuple
     if not query:
         return Response({'results': []})
     qs = ModelClass.objects.using(db_name).filter(

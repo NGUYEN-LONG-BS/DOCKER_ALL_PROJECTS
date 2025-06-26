@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { API_get_inventory_categories } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // Define InventoryItemExport interface if it's not imported from another file
 interface InventoryItemExport { 
@@ -63,7 +64,15 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(API_get_inventory_categories);
+        const userId = localStorage.getItem('user_id') || '';
+        let url = API_get_inventory_categories;
+        if (userId) {
+          const modelKey = await getSupplierModelKey(userId);
+          if (modelKey) {
+            url = `${API_get_inventory_categories}?model_key=${modelKey}`;
+          }
+        }
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }

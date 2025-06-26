@@ -3,6 +3,7 @@
 import React from 'react';
 import useSWR, { mutate } from 'swr';
 import { API_get_inventory_categories } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -14,8 +15,25 @@ interface LoginInfo {
 }
 
 const table_inventory_category: React.FC<{ refreshKey?: number }> = ({ refreshKey }) => {
-  // Fetch dữ liệu từ API
-  const { data, error } = useSWR<LoginInfo[]>(API_get_inventory_categories, fetcher, { refreshInterval: 0 });
+  const [modelKey, setModelKey] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    async function fetchModelKey() {
+      // Lấy userId từ localStorage hoặc context nếu cần
+      const userId = localStorage.getItem('user_id') || '';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, []);
+
+  // Fetch dữ liệu từ API (có model_key)
+  const { data, error } = useSWR<LoginInfo[]>(
+    modelKey ? `${API_get_inventory_categories}?model_key=${modelKey}` : null,
+    fetcher,
+    { refreshInterval: 0 }
+  );
 
   // Kiểm tra lỗi hoặc trạng thái loading
   if (error) return <div>Error loading data...</div>;

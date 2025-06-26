@@ -2,6 +2,7 @@
 import React from 'react';
 import useSWR from 'swr';
 import { API_get_json_data, API_get_inventory_categories } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // Định nghĩa các kiểu dữ liệu
 interface FontConfig {
@@ -85,9 +86,24 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
 
 // Component Table_TestCategory
 const Table_TestCategory = () => {
+  const [modelKey, setModelKey] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    async function fetchModelKey() {
+      const userId = localStorage.getItem('user_id') || '';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, []);
+
   // Fetch dữ liệu từ API
   const { data: tableConfig, error: tableError } = useSWR<TableConfig>(API_get_json_data, fetcher);
-  const { data: inventoryData, error: inventoryError } = useSWR<InventoryRow[]>(API_get_inventory_categories, fetcher);
+  const { data: inventoryData, error: inventoryError } = useSWR<InventoryRow[]>(
+    modelKey ? `${API_get_inventory_categories}?model_key=${modelKey}` : null,
+    fetcher
+  );
   console.log(inventoryData);
   console.log(inventoryError);
   console.log(useSWR<InventoryRow[]>(API_get_inventory_categories, fetcher));

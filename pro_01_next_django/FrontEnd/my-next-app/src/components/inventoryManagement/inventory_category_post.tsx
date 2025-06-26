@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { mutate } from 'swr';
 import { API_get_inventory_categories, API_submit_inventory_categories } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // Định nghĩa kiểu dữ liệu cho form
 interface InventoryFormData {
@@ -35,6 +36,17 @@ const InventoryForm: React.FC<InventoryFormProps> = ({ onSuccess, onError }) => 
   });
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [modelKey, setModelKey] = React.useState<string | null>(null);
+  React.useEffect(() => {
+    async function fetchModelKey() {
+      const userId = localStorage.getItem('user_id') || '';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, []);
 
   // Hàm xử lý thay đổi giá trị trong form
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -48,13 +60,14 @@ const InventoryForm: React.FC<InventoryFormProps> = ({ onSuccess, onError }) => 
     setLoading(true);
 
     try {
-      const response = await axios.post(API_submit_inventory_categories, formData, {
+      const payload = { ...formData, model_key: modelKey };
+      const response = await axios.post(API_submit_inventory_categories, payload, {
         headers: {
           'Content-Type': 'application/json',
         },
       });
       // Nếu thành công
-      mutate(API_get_inventory_categories); // Cập nhật lại bảng inventory khi thêm mới thành công
+      mutate(modelKey ? `${API_get_inventory_categories}?model_key=${modelKey}` : API_get_inventory_categories); // Cập nhật lại bảng inventory khi thêm mới thành công
       if (onSuccess) onSuccess('Dữ liệu đã được gửi thành công!');
       console.log(response.data);
     } catch (error: any) {

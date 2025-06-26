@@ -16,6 +16,7 @@ import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 import Table_inventory_category from '@/components/table_inventory_category';
 import Inventory_category_post from '@/components/inventoryManagement/inventory_category_post';
 import { API_import_data, API_get_inventory_categories, API_import_bulk_data_to_all_INVENTORY_CATEGORIES } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -214,6 +215,19 @@ export function InventoryCategoryTab() {
     }
   };
 
+  // Lưu modelKey vào state để dùng lại nhiều nơi
+  const [modelKey, setModelKey] = useState<string | null>(null);
+  useEffect(() => {
+    async function fetchModelKey() {
+      const userId = localStorage.getItem('user_id') || '';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, []);
+
   return (
     <div className="card mt-3">
       <div className="card-header text-center">
@@ -224,7 +238,7 @@ export function InventoryCategoryTab() {
           onSuccess={(msg) => setSuccessMessage(msg)}
           onError={(msg) => setErrorMessage(msg)}
         />
-        <Table_inventory_category />
+        <Table_inventory_category key={modelKey} />
         
         <div className="d-flex justify-content-end gap-2 mt-3">
           {/* Hidden file input for Excel import */}

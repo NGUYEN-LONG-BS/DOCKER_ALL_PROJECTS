@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import * as Utils from '@/utils';
 import { API_get_inventory_categories } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // ==== 1. Định nghĩa kiểu dữ liệu ====
 
@@ -62,17 +63,22 @@ const initialState: ProductState = {
 
 // ==== 3. AsyncThunk gọi API lấy danh sách sản phẩm ====
 export const fetchProducts = createAsyncThunk(
-  'product/fetchProducts', // Tên định danh cho thunk, được dùng để theo dõi trạng thái (pending, fulfilled, rejected)
-  
-  // Hàm async thực hiện logic gọi API
+  'product/fetchProducts',
   async (_, { rejectWithValue }) => {
     try {
+      // Lấy userId từ localStorage
+      const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') || '' : '';
+      let url = API_get_inventory_categories;
+      if (userId) {
+        const modelKey = await getSupplierModelKey(userId);
+        if (modelKey) {
+          url = `${API_get_inventory_categories}?model_key=${modelKey}`;
+        }
+      }
       // Gửi request GET đến API để lấy danh sách mặt hàng
-      const response = await fetch(API_get_inventory_categories);
-      
-      // Kiểm tra nếu phản hồi không hợp lệ (status không nằm trong khoảng 200-299)
+      const response = await fetch(url);
       if (!response.ok) {
-        throw new Error('Failed to fetch data'); // Ném lỗi để nhảy vào catch
+        throw new Error('Failed to fetch data');
       }
 
       // Chuyển dữ liệu phản hồi từ JSON thành object JavaScript
