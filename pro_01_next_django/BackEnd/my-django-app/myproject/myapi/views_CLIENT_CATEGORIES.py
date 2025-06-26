@@ -24,17 +24,14 @@ from openpyxl.utils import get_column_letter
 from django.http import HttpResponse
 from datetime import timedelta
 
-DATABASE_NAME_default = 'default'
-DATABASE_NAME_tb = 'tb'
-
 # Define model mappings
 MODEL_MAP_CLIENT_CATEGORIES = {
-    "TB": (TB_CLIENT_CATEGORIES, "tb"),
-    "LA": (LA_CLIENT_CATEGORIES, "tala"),
-    "PA": (PA_CLIENT_CATEGORIES, "pa"),
-    "NAMAN": (NAMAN_CLIENT_CATEGORIES, "naman"),
-    "HANOI": (HANOI_CLIENT_CATEGORIES, "hanoi"),
-    "MIENTAY": (MIENTAY_CLIENT_CATEGORIES, "mientay"),
+    "TB": (TB_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "tb"),
+    "LA": (LA_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "tala"),
+    "PA": (PA_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "pa"),
+    "NAMAN": (NAMAN_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "naman"),
+    "HANOI": (HANOI_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "hanoi"),
+    "MIENTAY": (MIENTAY_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "mientay"),
 }
 
 # Import bulk data
@@ -113,8 +110,24 @@ class ClientPagination(PageNumberPagination):
 
 # Get all data
 class get_data_ALL_CLIENT_CATEGORIES(viewsets.ModelViewSet):
-    queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(xoa_sua="new").order_by("-ma_khach_hang")
-    serializer_class = TBClientCategoriesSerializer
+    def get_queryset(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
+        if not model_tuple:
+            first_model = list(MODEL_MAP_CLIENT_CATEGORIES.values())[0][0]
+            return first_model.objects.none()
+        ModelClass, _, db_name = model_tuple
+        return ModelClass.objects.using(db_name).filter(xoa_sua="new").order_by("-ma_khach_hang")
+
+    def get_serializer_class(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
+        if not model_tuple:
+            first_serializer = list(MODEL_MAP_CLIENT_CATEGORIES.values())[0][1]
+            return first_serializer
+        _, SerializerClass, _ = model_tuple
+        return SerializerClass
+
     pagination_class = ClientPagination  # Add pagination support
 
     @classmethod

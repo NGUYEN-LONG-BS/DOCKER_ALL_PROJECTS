@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { 
-  API_get_data_TB_CLIENT_CATEGORIES,
+  API_get_data_ALL_CLIENT_CATEGORIES,
   API_create_client_category,
   API_get_next_ma_khach_hang,
   API_export_tb_client_categories,
@@ -88,7 +88,7 @@ const ClientManagementPage = () => {
   const fetchClients = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
+      const response = await axios.get(`${API_get_data_ALL_CLIENT_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
       setClients(response.data.results); // Access the `results` field for the list of records
       setPage(2); // Set next page for lazy loading
       setHasMore(response.data.results.length === 25); // Update hasMore based on data length
@@ -104,7 +104,7 @@ const ClientManagementPage = () => {
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_TB_CLIENT_CATEGORIES}?page=${page}&limit=25`);
+      const response = await axios.get(`${API_get_data_ALL_CLIENT_CATEGORIES}?page=${page}&limit=25`);
       const fetchedData: Client[] = response.data.results; // Explicitly type fetchedData
       if (!fetchedData || fetchedData.length === 0) {
         setHasMore(false); // No more data to load

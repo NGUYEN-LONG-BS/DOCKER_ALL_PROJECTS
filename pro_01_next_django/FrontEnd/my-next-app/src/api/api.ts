@@ -33,7 +33,7 @@ export const API_create_client_category = `${API_BASE_URL}/api/create-client-cat
 export const API_get_next_ma_khach_hang = `${API_BASE_URL}/api/get-next-ma-khach-hang/`;
 export const API_export_tb_client_categories = `${API_BASE_URL}/api/export-tb-client-categories/`;
 export const API_update_xoa_sua_client_categories = `${API_BASE_URL}/api/update-xoa-sua-client-categories/`;
-export const API_get_data_TB_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_CLIENT_CATEGORIES/`;
+export const API_get_data_ALL_CLIENT_CATEGORIES = `${API_BASE_URL}/api/get_data_ALL_CLIENT_CATEGORIES/`;
 export const API_search_client_categories = `${API_BASE_URL}/api/search-client-categories/`;
 // =======================================================================================================
 // SUPPLIER MANAGEMENT
