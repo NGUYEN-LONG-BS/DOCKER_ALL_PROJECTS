@@ -1,0 +1,159 @@
+from django.db import models
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, parser_classes
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.generics import ListAPIView
+
+from .models_TB import TB_INVENTORY_CATEGORIES
+from .models_LA import LA_INVENTORY_CATEGORIES
+from .models_Ha_Noi import HANOI_INVENTORY_CATEGORIES
+from .models_Mien_Tay import MIENTAY_INVENTORY_CATEGORIES
+from .models_PA import PA_INVENTORY_CATEGORIES
+from .models_Nam_An import NAMAN_INVENTORY_CATEGORIES
+
+from .serializers import InventoryCategoriesSerializer
+from .serializers import TBInventoryCategoriesSerializer
+import openpyxl
+
+DATABASE_NAME_default = 'default'
+DATABASE_NAME_tb = 'tb'
+
+MODEL_MAP_INVENTORY_CATEGORIES = {
+    "TB": (TB_INVENTORY_CATEGORIES, "tb"),
+    "LA": (LA_INVENTORY_CATEGORIES, "tala"),
+    "PA": (PA_INVENTORY_CATEGORIES, "pa"),
+    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, "naman"),
+    "HANOI": (HANOI_INVENTORY_CATEGORIES, "hanoi"),
+    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, "mientay"),
+}
+
+# ==========================================================================
+# get inventory categories
+class TBInventoryCategoriesView(ListAPIView):
+    queryset = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).all()
+    serializer_class = TBInventoryCategoriesSerializer
+
+# Import bulk data
+@api_view(['POST'])
+@parser_classes([MultiPartParser, FormParser])
+def import_bulk_data_to_all_INVENTORY_CATEGORIES(request):
+    file_obj = request.FILES.get('file')
+    model_key = request.data.get("model_key", "TB")
+    model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+    if not model_tuple:
+        return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
+    ModelClass, db_name = model_tuple
+    if not file_obj:
+        return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        wb = openpyxl.load_workbook(file_obj, data_only=True)
+        if 'import-data' not in wb.sheetnames:
+            return Response({'error': 'Không tìm thấy sheet "import-data" trong file Excel.'}, status=status.HTTP_400_BAD_REQUEST)
+        ws = wb['import-data']
+        rows = list(ws.iter_rows(values_only=True))
+        if not rows or len(rows) < 2:
+            return Response({'error': 'Sheet "import-data" không có dữ liệu.'}, status=status.HTTP_400_BAD_REQUEST)
+        header = rows[0]
+        header_map = {col: idx for idx, col in enumerate(header)}
+        required_fields = ['id_nhan_vien', 'xoa_sua', 'ma_hang', 'ten_hang', 'dvt', 'sl_ton_dau_ky', 'don_gia_ton_dau_ky', 'ma_kho_luu_tru']
+        for field in required_fields:
+            if field not in header_map:
+                return Response({'error': f'Thiếu cột bắt buộc: {field}'}, status=status.HTTP_400_BAD_REQUEST)
+        # Kiểm tra mã hàng trùng trước khi import
+        for idx, row in enumerate(rows[1:], start=2):
+            ma_hang = row[header_map['ma_hang']]
+            if ma_hang and ModelClass.objects.using(db_name).filter(ma_hang=ma_hang, xoa_sua="new").exists():
+                return Response({'error': f'Mã hàng "{ma_hang}" đã tồn tại.'}, status=status.HTTP_400_BAD_REQUEST)
+        count = 0
+        errors = []
+        for idx, row in enumerate(rows[1:], start=2):
+            # Kiểm tra dòng trống hoặc thiếu mã hàng
+            if not row or not row[header_map['ma_hang']]:
+                errors.append(f'Dòng {idx}: Cột "ma_hang" không được rỗng.')
+                continue
+            # Kiểm tra cột xoa_sua không được rỗng
+            if not row[header_map['xoa_sua']]:
+                errors.append(f'Dòng {idx}: Cột "xoa_sua" không được rỗng.')
+                continue
+            # Kiểm tra số lượng phải là số
+            sl_ton = row[header_map['sl_ton_dau_ky']]
+            try:
+                if sl_ton is not None and sl_ton != '':
+                    float(sl_ton)
+            except Exception:
+                errors.append(f'Dòng {idx}: Cột "sl_ton_dau_ky" phải là số.')
+                continue
+            # Kiểm tra đơn giá phải là số
+            don_gia = row[header_map['don_gia_ton_dau_ky']]
+            try:
+                if don_gia is not None and don_gia != '':
+                    float(don_gia)
+            except Exception:
+                errors.append(f'Dòng {idx}: Cột "don_gia_ton_dau_ky" phải là số.')
+                continue
+            ModelClass.objects.using(db_name).create(
+                id_nhan_vien=row[header_map['id_nhan_vien']],
+                xoa_sua=row[header_map['xoa_sua']],
+                ma_hang=row[header_map['ma_hang']],
+                ten_hang=row[header_map['ten_hang']],
+                dvt=row[header_map['dvt']],
+                sl_ton_dau_ky=sl_ton,
+                don_gia_ton_dau_ky=don_gia,
+                ma_kho_luu_tru=row[header_map['ma_kho_luu_tru']],
+            )
+            count += 1
+        if errors:
+            return Response({
+                'message': f'Đã import {count} dòng thành công, nhưng có lỗi:',
+                'errors': errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': f'Import thành công {count} dòng!'}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+# api to search inventory categories
+@api_view(['GET'])
+def search_inventory_categories(request):
+    query = request.GET.get('q', '').strip()
+    model_key = request.GET.get('model_key', 'TB')
+    model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+    if not model_tuple:
+        return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
+    ModelClass, db_name = model_tuple
+    if not query:
+        return Response({'results': []})
+    qs = ModelClass.objects.using(db_name).filter(
+        models.Q(ma_hang__icontains=query) |
+        models.Q(ten_hang__icontains=query)
+    )
+    results = [
+        {
+            'ma_hang': c.ma_hang,
+            'ten_hang': c.ten_hang,
+            'dvt': getattr(c, 'dvt', None)
+        }
+        for c in qs[:20]
+    ]
+    if not results:
+        return Response({'results': [], 'message': 'no data'})
+    return Response({'results': results})
+
+@api_view(['POST'])
+def submit_inventory_categories(request):
+    if request.method == 'POST':
+        ma_hang = request.data.get('ma_hang')
+        if not ma_hang:
+            return Response({"error": "Trường 'ma_hang' không được để trống."}, status=status.HTTP_400_BAD_REQUEST)
+        # Kiểm tra điều kiện: ma_hang chưa tồn tại hoặc đã tồn tại nhưng xoa_sua khác 'new'
+        exists_new = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=ma_hang, xoa_sua="new").exists()
+        if exists_new:
+            return Response({"error": f"Mã hàng '{ma_hang}' đã tồn tại, không thể thêm mới."}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = InventoryCategoriesSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Dữ liệu đã được thêm thành công!"}, status=status.HTTP_201_CREATED)
+        return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

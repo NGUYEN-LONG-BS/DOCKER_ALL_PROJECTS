@@ -1,35 +1,41 @@
 from django.urls import path, include
-from .views import LoginInfoListView, TBInventoryCategoriesView
-# from .views import SaveInventoryView
-from .views import InventoryStockReceivedIssuedReturnedView
-from .views import get_json_data, download_file_IMPORT_TEMPLATE, download_file_PRINT_TEMPLATE, import_data
-from .views import MaxSoPhieuView
-from .views import CheckSoPhieuExistView
-from .views import InventoryStockListView, CheckMaHangExistView
-from .views import InventoryStockBySoPhieuView
-from .views import check_login
-from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from . import views
+
+from .views import LoginInfoListView
+from .views_INVENTORY_CATEGORIES import TBInventoryCategoriesView
+from .views import get_json_data
+from .views import check_login
+
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import InventoryStockReceivedIssuedReturnedView
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import download_file_IMPORT_TEMPLATE
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import download_file_PRINT_TEMPLATE
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import import_data
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import MaxSoPhieuView
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import CheckSoPhieuExistView
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import InventoryStockListView, CheckMaHangExistView
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import InventoryStockBySoPhieuView
+
+from .views_INVENTORY_CATEGORIES import import_bulk_data_to_all_INVENTORY_CATEGORIES
+from .views_INVENTORY_CATEGORIES import search_inventory_categories
+from .views_INVENTORY_CATEGORIES import submit_inventory_categories
+
+from .views_CLIENT_CATEGORIES import import_bulk_data_to_all_CLIENT_CATEGORIES
+from .views_CLIENT_CATEGORIES import TBClientCategoriesCreateView
+from .views_CLIENT_CATEGORIES import GetNextMaKhachHangView
+from .views_CLIENT_CATEGORIES import ExportTBClientCategoriesToExcel
+from .views_CLIENT_CATEGORIES import UpdateXoaSuaClientView
+from .views_CLIENT_CATEGORIES import search_client_categories
+from .views_CLIENT_CATEGORIES import get_data_TB_CLIENT_CATEGORIES
 # ===========================================================================
-from .views import import_bulk_data_to_all_INVENTORY_CATEGORIES
-from .views import import_bulk_data_to_all_CLIENT_CATEGORIES
-from .views import import_bulk_data_to_all_SUPPLIER_CATEGORIES
-from .views import search_inventory_categories
-# ===========================================================================
-from .views import TBClientCategoriesCreateView
-from .views import GetNextMaKhachHangView
-from .views import ExportTBClientCategoriesToExcel
-from .views import UpdateXoaSuaClientView
-from .views import search_client_categories
-from .views import get_data_TB_CLIENT_CATEGORIES
-# ===========================================================================
-from .views import TBSupplierCategoriesCreateView
-from .views import get_next_ma_nha_cung_cap
-from .views import ExportTBSupplierCategoriesToExcel
-from .views import UpdateXoaSuaSupplierView
-from .views import search_supplier_categories
-from .views import get_data_TB_SUPPLIER_CATEGORIES
+from .views_SUPPLIER_CATEGORIES import import_bulk_data_to_all_SUPPLIER_CATEGORIES
+from .views_SUPPLIER_CATEGORIES import TBSupplierCategoriesCreateView
+from .views_SUPPLIER_CATEGORIES import get_next_ma_nha_cung_cap
+from .views_SUPPLIER_CATEGORIES import ExportTBSupplierCategoriesToExcel
+from .views_SUPPLIER_CATEGORIES import UpdateXoaSuaSupplierView
+from .views_SUPPLIER_CATEGORIES import search_supplier_categories
+from .views_SUPPLIER_CATEGORIES import get_data_TB_SUPPLIER_CATEGORIES
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet
@@ -61,7 +67,7 @@ urlpatterns = [
     path('download-import-template/', download_file_IMPORT_TEMPLATE, name='download_file'),
     path('download-print-template/', download_file_PRINT_TEMPLATE, name='download_file'),
     path('import-data/', import_data, name='import_data'),
-    path('submit-inventory-categories/', views.submit_inventory_categories, name='submit-inventory-categories'),
+    path('submit-inventory-categories/', submit_inventory_categories, name='submit-inventory-categories'),
     # ========================================================================
     # CLIENT MANAGEMENT
     path('create-client-category/', TBClientCategoriesCreateView.as_view(), name='create-client-category'),
