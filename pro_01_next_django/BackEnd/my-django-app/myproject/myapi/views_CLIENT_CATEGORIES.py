@@ -139,42 +139,50 @@ class get_data_ALL_CLIENT_CATEGORIES(viewsets.ModelViewSet):
 # Create CLIENT CATEGORIES
 class Client_Categories_Create_View(APIView):
     def post(self, request):
-        data = request.data
+        data = request.data.copy()
         ma_khach_hang = data.get("ma_khach_hang")
         action = data.pop("action", None)  # Remove 'action' from data
+        model_key = data.get("model_key", "TB")
+        model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name = model_tuple
+
+        # Remove model_key from data if present
+        data.pop("model_key", None)
 
         # Check if a record with ma_khach_hang exists
-        existing_record = TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang).first()
+        existing_record = ModelClass.objects.using(db_name).filter(ma_khach_hang=ma_khach_hang).first()
 
         if action == "create":
             if existing_record:
-                if TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").exists():
+                if ModelClass.objects.using(db_name).filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").exists():
                     # Return an error if the record already exists with xoa_sua = "new"
                     return Response({"error": "Record with ma_khach_hang already exists and xoa_sua is 'new'."}, status=status.HTTP_400_BAD_REQUEST)
                 else:
                     # Create a new record with xoa_sua = "new"
                     data["xoa_sua"] = "new"
-                    TB_CLIENT_CATEGORIES.objects.create(**data)
+                    ModelClass.objects.using(db_name).create(**data)
                     return Response({"message": "New record created successfully."}, status=status.HTTP_201_CREATED)                    
             else:
                 # Create a new record since ma_khach_hang does not exist
-                TB_CLIENT_CATEGORIES.objects.create(**data)
+                ModelClass.objects.using(db_name).create(**data)
                 return Response({"message": "Record created successfully."}, status=status.HTTP_201_CREATED)
         elif action == "edit":
             if existing_record:
                 if existing_record.xoa_sua == "new":
                     # Update existing record's xoa_sua to "old"
                     existing_record.xoa_sua = "old"
-                    existing_record.save()
+                    existing_record.save(using=db_name)
                     # Create a new record with xoa_sua = "new"
                     data["xoa_sua"] = "new"
-                    TB_CLIENT_CATEGORIES.objects.create(**data)
+                    ModelClass.objects.using(db_name).create(**data)
                     return Response({"message": "Record updated and new record created successfully."}, status=status.HTTP_200_OK)
                 else:
                     # Update the existing record directly
                     for key, value in data.items():
                         setattr(existing_record, key, value)
-                    existing_record.save()
+                    existing_record.save(using=db_name)
                     return Response({"message": "Record updated successfully."}, status=status.HTTP_200_OK)
             else:
                 # Return an error if the record does not exist
@@ -189,7 +197,7 @@ class GetNextMaKhachHangView(APIView):
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
-        ModelClass, db_name = model_tuple
+        ModelClass, _, db_name = model_tuple
         # Get the latest ma_khach_hang in the format KH00000
         latest_record = ModelClass.objects.using(db_name).filter(ma_khach_hang__startswith="KH").order_by("-ma_khach_hang").first()
         if latest_record:

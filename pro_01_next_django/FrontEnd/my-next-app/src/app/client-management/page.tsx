@@ -168,6 +168,10 @@ const ClientManagementPage = () => {
   // Fix the handleSubmit function to separate create and edit actions
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!modelKey || typeof modelKey !== 'string' || !modelKey.trim()) {
+      setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
+      return;
+    }
     const payload = {
       id_nhan_vien: userId,
       xoa_sua: getCreateStatus(),
@@ -184,8 +188,9 @@ const ClientManagementPage = () => {
       ma_phan_loai_07: form.ma_phan_loai_07,
       ma_phan_loai_08: form.ma_phan_loai_08,
       action: "create",
+      model_key: modelKey,
     };
-    console.log("Data to be sent:", payload);
+    console.log("Data to be sent (CREATE):", payload);
     try {
       await axios.post(API_create_client_category, payload);
       setClients([]);
@@ -215,8 +220,12 @@ const ClientManagementPage = () => {
 
   // Fix type mismatch for handleEdit
   const handleEditButtonClick = async () => {
+    if (!modelKey || typeof modelKey !== 'string' || !modelKey.trim()) {
+      setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
+      return;
+    }
     const payload = {
-      id_nhan_vien: userId, // Use userId from the hook,
+      id_nhan_vien: userId,
       xoa_sua: getCreateStatus(),
       ma_khach_hang: form.ma_khach_hang,
       ten_khach_hang: form.ten_khach_hang,
@@ -231,8 +240,9 @@ const ClientManagementPage = () => {
       ma_phan_loai_07: form.ma_phan_loai_07,
       ma_phan_loai_08: form.ma_phan_loai_08,
       action: "edit",
+      model_key: modelKey,
     };
-    console.log("Data to be sent:", payload);
+    console.log("Data to be sent (EDIT):", payload);
     try {
       await axios.post(API_create_client_category, payload);
       setClients([]);
@@ -568,13 +578,17 @@ const ClientManagementPage = () => {
             <div className="d-flex gap-1">
               <button 
                 type="submit" 
-                className="btn btn-primary">
+                className="btn btn-primary"
+                disabled={!modelKey || typeof modelKey !== 'string' || !modelKey.trim()}
+              >
                 Thêm mới
               </button>
               <button 
                 type="button" 
                 className="btn btn-primary" 
-                onClick={handleEditButtonClick}>
+                onClick={handleEditButtonClick}
+                disabled={!modelKey || typeof modelKey !== 'string' || !modelKey.trim()}
+              >
                 Cập nhật
               </button>
               <button 
