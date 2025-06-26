@@ -15,7 +15,7 @@ from .models_Ha_Noi import HANOI_CLIENT_CATEGORIES
 from .models_Mien_Tay import MIENTAY_CLIENT_CATEGORIES
 from .models_PA import PA_CLIENT_CATEGORIES
 from .models_Nam_An import NAMAN_CLIENT_CATEGORIES
-from .serializers import TBClientCategoriesSerializer
+from .serializers_TB import TBClientCategoriesSerializer
 
 import openpyxl
 import re

@@ -11,8 +11,8 @@ from .models_TB import TB_INVENTORY_CATEGORIES
 from .models_TB import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_LA import LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 
-from .serializers import InventoryStockSerializer
-from .serializers import InventoryStockReceivedIssuedReturnedSerializer
+from .serializers_TB import InventoryStockSerializer
+from .serializers_TB import TB_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_LA import LA_InventoryStockReceivedIssuedReturnedSerializer
 
 import os
@@ -23,7 +23,7 @@ DATABASE_NAME_tb = 'tb'
 # ==============================================================================
 # Model mapping
 MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED = {
-    "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, InventoryStockReceivedIssuedReturnedSerializer, "tb"),
+    "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb"),
     "LA": (LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, LA_InventoryStockReceivedIssuedReturnedSerializer, "tala"),
 }
 

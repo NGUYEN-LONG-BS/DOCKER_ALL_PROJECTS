@@ -13,9 +13,12 @@ from .models_Mien_Tay import MIENTAY_INVENTORY_CATEGORIES
 from .models_PA import PA_INVENTORY_CATEGORIES
 from .models_Nam_An import NAMAN_INVENTORY_CATEGORIES
 
-from .serializers import InventoryCategoriesSerializer
-from .serializers import TBInventoryCategoriesSerializer
+from .serializers_TB import TBInventoryCategoriesSerializer
 from .serializers_LA import LAInventoryCategoriesSerializer
+from .serializers_PA import PAInventoryCategoriesSerializer
+from .serializers_Nam_An import NAMANInventoryCategoriesSerializer
+from .serializers_Mien_Tay import MIENTAYInventoryCategoriesSerializer
+from .serializers_Ha_Noi import HANOIInventoryCategoriesSerializer
 import openpyxl
 
 DATABASE_NAME_default = 'default'
@@ -24,10 +27,10 @@ DATABASE_NAME_tb = 'tb'
 MODEL_MAP_INVENTORY_CATEGORIES = {
     "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
     "LA": (LA_INVENTORY_CATEGORIES, LAInventoryCategoriesSerializer, "tala"),
-    "PA": (PA_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "pa"),
-    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "naman"),
-    "HANOI": (HANOI_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "hanoi"),
-    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "mientay"),
+    "PA": (PA_INVENTORY_CATEGORIES, PAInventoryCategoriesSerializer, "pa"),
+    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, NAMANInventoryCategoriesSerializer, "naman"),
+    "HANOI": (HANOI_INVENTORY_CATEGORIES, HANOIInventoryCategoriesSerializer, "hanoi"),
+    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, MIENTAYInventoryCategoriesSerializer, "mientay"),
 }
 
 # ==========================================================================
