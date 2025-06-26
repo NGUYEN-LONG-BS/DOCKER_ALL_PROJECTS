@@ -112,7 +112,7 @@ class ClientPagination(PageNumberPagination):
     max_page_size = 100  # Maximum number of records per page
 
 # Get all data
-class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
+class get_data_ALL_CLIENT_CATEGORIES(viewsets.ModelViewSet):
     queryset = TB_CLIENT_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(xoa_sua="new").order_by("-ma_khach_hang")
     serializer_class = TBClientCategoriesSerializer
     pagination_class = ClientPagination  # Add pagination support
@@ -123,9 +123,8 @@ class get_data_TB_CLIENT_CATEGORIES(viewsets.ModelViewSet):
             actions = {'get': 'list'}
         return super().as_view(actions, **initkwargs)
 
-
-# Create TB_CLIENT_CATEGORIES
-class TBClientCategoriesCreateView(APIView):
+# Create CLIENT CATEGORIES
+class Client_Categories_Create_View(APIView):
     def post(self, request):
         data = request.data
         ma_khach_hang = data.get("ma_khach_hang")
@@ -191,7 +190,7 @@ class GetNextMaKhachHangView(APIView):
         # If no records exist, return KH00001
         return Response({"next_ma_khach_hang": "KH00001"}, status=status.HTTP_200_OK)
 
-# Export TB_CLIENT_CATEGORIES to Excel
+# Export CLIENT CATEGORIES to Excel
 class ExportTBClientCategoriesToExcel(APIView):
     def get(self, request):
         model_key = request.GET.get('model_key', 'TB')
