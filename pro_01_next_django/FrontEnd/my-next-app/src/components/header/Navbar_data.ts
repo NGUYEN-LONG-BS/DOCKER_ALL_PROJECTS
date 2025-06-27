@@ -14,7 +14,7 @@ export const menuItems: MenuItem[] = [
     permission: ['Admin', 'KinhDoanhTM'],
     submenu: [
       {
-        label: 'Danh sách khách hàng',
+        label: 'Quản lý khách hàng',
         permission: ['Admin', 'KinhDoanhTM'],
         submenu_02: [
           { label: 'Danh sách khách hàng', href: '/client-management' },
@@ -46,8 +46,20 @@ export const menuItems: MenuItem[] = [
     ],
   },
   { label: 'Tài Chính - Kế Toán TM', href: '#', permission: ['Admin', 'TaiChinhTM', 'KeToanTM'] },
-
-  { label: 'Kinh Doanh SX', href: '#', permission: ['Admin', 'KinhDoanhSX'] },
+  {
+    label: 'Kinh Doanh SX',
+    permission: ['Admin', 'KinhDoanhSX'],
+    submenu: [
+      {
+        label: 'Quản lý khách hàng',
+        permission: ['Admin', 'KinhDoanhSX'],
+        submenu_02: [
+          { label: 'Danh sách khách hàng', href: '/client-management' },
+          
+        ],
+      },
+    ],
+  },
   { label: 'Vật Tư SX', href: '#', permission: ['Admin', 'VatTuSX'] },
   { label: 'Kế Hoạch SX', href: '#', permission: ['Admin', 'KeHoachSX'] },
   {

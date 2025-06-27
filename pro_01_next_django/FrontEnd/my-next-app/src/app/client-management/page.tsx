@@ -283,10 +283,12 @@ const ClientManagementPage = () => {
       setError("Vui lòng nhập mật khẩu.");
       return;
     }
+    const keyToSend = modelKey && typeof modelKey === 'string' && modelKey.trim() ? modelKey : "TB";
     try {
       const response = await axios.post(API_update_xoa_sua_client_categories, {
         ma_khach_hang: form.ma_khach_hang,
         pass_field: password,
+        model_key: keyToSend,
       });
       if (response.status === 200) {
         alert("Record updated successfully.");

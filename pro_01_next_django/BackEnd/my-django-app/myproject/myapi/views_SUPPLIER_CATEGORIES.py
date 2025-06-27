@@ -16,7 +16,12 @@ from .models_Ha_Noi import HANOI_SUPPLIER_CATEGORIES
 from .models_Mien_Tay import MIENTAY_SUPPLIER_CATEGORIES
 from .models_Nam_An import NAMAN_SUPPLIER_CATEGORIES
 
+from .serializers_TB import TBSupplierCategoriesSerializer
 from .serializers_LA import LASupplierCategoriesSerializer
+from .serializers_PA import PASupplierCategoriesSerializer
+from .serializers_Ha_Noi import HANOISupplierCategoriesSerializer
+from .serializers_Nam_An import NAMANSupplierCategoriesSerializer
+from .serializers_Mien_Tay import MIENTAYSupplierCategoriesSerializer
 
 import openpyxl
 import re

@@ -17,6 +17,12 @@ from .models_PA import PA_CLIENT_CATEGORIES
 from .models_Nam_An import NAMAN_CLIENT_CATEGORIES
 
 from .serializers_TB import TBClientCategoriesSerializer
+from .serializers_LA import LAClientCategoriesSerializer
+from .serializers_PA import PAClientCategoriesSerializer
+from .serializers_Nam_An import NAMANClientCategoriesSerializer
+from .serializers_Ha_Noi import HANOIClientCategoriesSerializer
+from .serializers_Mien_Tay import MIENTAYClientCategoriesSerializer
+
 
 import openpyxl
 import re
@@ -27,11 +33,11 @@ from datetime import timedelta
 # Define model mappings
 MODEL_MAP_CLIENT_CATEGORIES = {
     "TB": (TB_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "tb"),
-    "LA": (LA_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "tala"),
-    "PA": (PA_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "pa"),
-    "NAMAN": (NAMAN_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "naman"),
-    "HANOI": (HANOI_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "hanoi"),
-    "MIENTAY": (MIENTAY_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "mientay"),
+    "LA": (LA_CLIENT_CATEGORIES, LAClientCategoriesSerializer, "tala"),
+    "PA": (PA_CLIENT_CATEGORIES, PAClientCategoriesSerializer, "pa"),
+    "NAMAN": (NAMAN_CLIENT_CATEGORIES, NAMANClientCategoriesSerializer, "naman"),
+    "HANOI": (HANOI_CLIENT_CATEGORIES, HANOIClientCategoriesSerializer, "hanoi"),
+    "MIENTAY": (MIENTAY_CLIENT_CATEGORIES, MIENTAYClientCategoriesSerializer, "mientay"),
 }
 
 # Import bulk data
@@ -266,6 +272,12 @@ class UpdateXoaSuaClientView(APIView):
     def post(self, request):
         ma_khach_hang = request.data.get("ma_khach_hang")
         pass_field = request.data.get("pass_field")
+        model_key = request.data.get("model_key", "TB")
+        model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name = model_tuple
+
         if not pass_field or pass_field != "admincome":
             return Response({"error": "Invalid or missing password."}, status=status.HTTP_403_FORBIDDEN)
 
@@ -273,7 +285,7 @@ class UpdateXoaSuaClientView(APIView):
             return Response({"error": "ma_khach_hang is required."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Check if the record exists with xoa_sua = "new"
-        record = TB_CLIENT_CATEGORIES.objects.filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").first()
+        record = ModelClass.objects.using(db_name).filter(ma_khach_hang=ma_khach_hang, xoa_sua="new").first()
         if not record:
             return Response({"error": "Record with ma_khach_hang does not exist or xoa_sua is not 'new'."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -282,7 +294,7 @@ class UpdateXoaSuaClientView(APIView):
         if time_difference < timedelta(hours=0, minutes=2):
             # Update xoa_sua to "delete"
             record.xoa_sua = "delete"
-            record.save()
+            record.save(using=db_name)
             return Response({"message": "Record updated successfully."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "overtime to delete"}, status=status.HTTP_400_BAD_REQUEST)
