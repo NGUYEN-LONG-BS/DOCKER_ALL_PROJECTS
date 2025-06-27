@@ -2,11 +2,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useAppSelector, useAppDispatch } from "@/store/store";
-import { setDocumentNumber, fetchNewDocumentNumber } from "@/features/formReceiptSlip/documentNumberSlice";
-import { RootState } from "@/store/store";
 import { RefreshCw } from "lucide-react";
 import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { API_new_number_slip_pnk } from '@/api/api';
 
 // Đặt map loại phiếu ở đầu file
 const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
@@ -24,10 +22,10 @@ interface DocumentNumberProps {
 }
 
 export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: DocumentNumberProps) {
-  const dispatch = useAppDispatch();
   const [defaultDocNumber, setDefaultDocNumber] = useState('');
-  const reduxDocNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
-  const loading = useAppSelector((state: RootState) => state.documentNumber.loading);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [docNumber, setDocNumber] = useState('');
 
   useEffect(() => {
     async function getDefaultNumber() {
@@ -43,22 +41,43 @@ export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: 
       const slip = SLIP_TYPE_MAP[modelKey] || SLIP_TYPE_MAP['TB'];
       const currentYear = new Date().getFullYear().toString().slice(-2);
       setDefaultDocNumber(`${slip.prefix}-${slip.type}-${currentYear}0001`);
+      setDocNumber(`${slip.prefix}-${slip.type}-${currentYear}0001`);
     }
     getDefaultNumber();
   }, []);
 
-  // Retrieve documentNumber from Redux store with fallback
-  const documentNumber = reduxDocNumber || propDocumentNumber || defaultDocNumber;
-
-  // Generate a new document number
-  const generateNewNumber = () => {
-    dispatch(fetchNewDocumentNumber());
+  // Gọi API tạo số phiếu mới
+  const generateNewNumber = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      let userId = '';
+      if (typeof window !== 'undefined') {
+        userId = localStorage.getItem('user_id') || '';
+      }
+      let modelKey = 'TB';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        if (key && SLIP_TYPE_MAP[key]) modelKey = key;
+      }
+      const url = `${API_new_number_slip_pnk}?model_key=${encodeURIComponent(modelKey)}`;
+      const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+      if (!response.ok) throw new Error('Failed to fetch new document number');
+      const data = await response.json();
+      setDocNumber(data.new_number_slip);
+    } catch (err: any) {
+      setError('Không thể tạo số phiếu mới.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setDocumentNumber(e.target.value)); // Update Redux store
+    setDocNumber(e.target.value);
   };
+
+  const documentNumber = docNumber || propDocumentNumber || defaultDocNumber;
 
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: "20px" }}>
@@ -87,6 +106,7 @@ export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: 
         >
           <RefreshCw size={16} />
         </button>
+        {/* {error && <div className="text-danger small mt-1">{error}</div>} */}
       </div>
     </div>
   );
