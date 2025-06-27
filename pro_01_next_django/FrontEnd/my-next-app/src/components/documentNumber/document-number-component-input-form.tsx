@@ -1,11 +1,22 @@
 // src/components/documentNumber/document-number-component-input-form.tsx
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/store/store";
 import { setDocumentNumber, fetchNewDocumentNumber } from "@/features/formReceiptSlip/documentNumberSlice";
 import { RootState } from "@/store/store";
 import { RefreshCw } from "lucide-react";
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+
+// Đặt map loại phiếu ở đầu file
+const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
+  TB: { prefix: 'TB', type: 'PNK' },
+  LA: { prefix: 'LA', type: 'PNK' },
+  PA: { prefix: 'PA', type: 'PNK' },
+  NAMAN: { prefix: 'NA', type: 'PNK' },
+  HANOI: { prefix: 'HN', type: 'PNK' },
+  MIENTAY: { prefix: 'MY', type: 'PNK' },
+};
 
 // Define props interface (documentNumber is optional, as it's now from Redux)
 interface DocumentNumberProps {
@@ -14,9 +25,30 @@ interface DocumentNumberProps {
 
 export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: DocumentNumberProps) {
   const dispatch = useAppDispatch();
-  // Retrieve documentNumber from Redux store with fallback
-  const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber) || propDocumentNumber || "TB-PNK-250001";
+  const [defaultDocNumber, setDefaultDocNumber] = useState('');
+  const reduxDocNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
   const loading = useAppSelector((state: RootState) => state.documentNumber.loading);
+
+  useEffect(() => {
+    async function getDefaultNumber() {
+      let userId = '';
+      if (typeof window !== 'undefined') {
+        userId = localStorage.getItem('user_id') || '';
+      }
+      let modelKey = 'TB';
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        if (key && SLIP_TYPE_MAP[key]) modelKey = key;
+      }
+      const slip = SLIP_TYPE_MAP[modelKey] || SLIP_TYPE_MAP['TB'];
+      const currentYear = new Date().getFullYear().toString().slice(-2);
+      setDefaultDocNumber(`${slip.prefix}-${slip.type}-${currentYear}0001`);
+    }
+    getDefaultNumber();
+  }, []);
+
+  // Retrieve documentNumber from Redux store with fallback
+  const documentNumber = reduxDocNumber || propDocumentNumber || defaultDocNumber;
 
   // Generate a new document number
   const generateNewNumber = () => {

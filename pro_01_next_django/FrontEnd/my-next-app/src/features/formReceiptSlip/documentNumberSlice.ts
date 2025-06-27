@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { API_new_number_slip_pnk } from '@/api/api';
 import { DOCUMENT_NUMBER_SELECTED_ACTION } from '@/actions/documentNumberActions';
 import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { useUserId } from '@/utils/useUserId';
 
 interface DocumentNumberState {
   documentNumber: string;
@@ -17,9 +18,22 @@ const initialState: DocumentNumberState = {
   error: null,
 };
 
+// Đặt map loại phiếu ở đầu file
+const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
+  TB: { prefix: 'TB', type: 'PNK' },
+  LA: { prefix: 'LA', type: 'PNK' },
+  PA: { prefix: 'PA', type: 'PNK' },
+  NAMAN: { prefix: 'NA', type: 'PNK' },
+  HANOI: { prefix: 'HN', type: 'PNK' },
+  MIENTAY: { prefix: 'MY', type: 'PNK' },
+  null: { prefix: '--', type: '---' },
+};
+
 export const fetchNewDocumentNumber = createAsyncThunk(
   'documentNumber/fetchNewDocumentNumber',
-  async (userId: string, { dispatch }) => {
+  async (_: void, { dispatch }) => {
+    // Lấy userId từ hook (ưu tiên Redux, fallback localStorage)
+    const userId = (typeof window !== 'undefined' && useUserId && useUserId()) || 'unknown';
     try {
       const model_key = await getSupplierModelKey(userId);
       const url =
@@ -34,7 +48,14 @@ export const fetchNewDocumentNumber = createAsyncThunk(
       const data = await response.json();
       return data.new_number_slip;
     } catch (error) {
-      return `TB-PNK-${currentYear}0001`;
+      // Lấy prefix động từ model_key nếu có, mặc định là TB
+      let model_key = 'null';
+      if (typeof userId === 'string' && userId.trim()) {
+        const key = await getSupplierModelKey(userId);
+        if (key && SLIP_TYPE_MAP[key]) model_key = key;
+      }
+      const slip = SLIP_TYPE_MAP[model_key] || SLIP_TYPE_MAP['null'];
+      return `${slip.prefix}-${slip.type}-${currentYear}0001`;
     }
   }
 );

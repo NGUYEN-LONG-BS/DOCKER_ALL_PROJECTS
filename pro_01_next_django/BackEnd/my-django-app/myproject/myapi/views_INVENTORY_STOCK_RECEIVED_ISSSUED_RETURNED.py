@@ -34,6 +34,7 @@ from .serializers_Nam_An import NAMAN_InventoryStockReceivedIssuedReturnedSerial
 # ==============================================================================
 # Model mapping
 MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED = {
+    "null": ("null", "null", "tb", "null"),
     "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb", TB_InventoryStockSerializer),
     "LA": (LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, LA_InventoryStockReceivedIssuedReturnedSerializer, "tala", LA_InventoryStockSerializer),
     "PA": (PA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, PA_InventoryStockReceivedIssuedReturnedSerializer, "pa", PA_InventoryStockSerializer),
@@ -52,7 +53,7 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
             # Nếu không có model phù hợp, trả về queryset rỗng của model đầu tiên trong mapping (không hard code)
             first_model = list(MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.values())[0][0]
             return first_model.objects.none()
-        ModelClass, _, db_name = model_tuple
+        ModelClass, _, db_name, _ = model_tuple
         return ModelClass.objects.using(db_name).all()
 
     def get_serializer_class(self):
@@ -62,7 +63,7 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
             # Không hard code serializer, lấy serializer đầu tiên trong mapping
             first_serializer = list(MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.values())[0][1]
             return first_serializer
-        _, SerializerClass, _ = model_tuple
+        _, SerializerClass, _, _ = model_tuple
         return SerializerClass
 
     def create(self, request, *args, **kwargs):
@@ -76,7 +77,7 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
-        ModelClass, SerializerClass, db_name = model_tuple
+        ModelClass, SerializerClass, db_name, _ = model_tuple
         # Check if the request body contains a list of objects
         if isinstance(request.data, list):
             serializer = SerializerClass(data=request.data, many=True)
@@ -176,7 +177,7 @@ class MaxSoPhieuView(APIView):
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
-        ModelClass, _, db_name = model_tuple
+        ModelClass, _, db_name, _ = model_tuple
         # Lấy tất cả các số phiếu từ bảng
         phieu_list = ModelClass.objects.using(db_name).all()
         
