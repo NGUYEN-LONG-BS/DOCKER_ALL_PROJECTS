@@ -34,6 +34,7 @@ import { API_check_so_phieu } from '@/api/api';
 import { useSyncUserIdFromLocalStorage } from '@/utils/useSyncUserIdFromLocalStorage';
 import { getCreateStatus } from '@/utils/getRecordStatus';
 import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { useUserId } from '@/utils/useUserId';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -56,7 +57,7 @@ interface Supplier {
 
 export function InventoryFormStockReceiveSlip() {
   useSyncUserIdFromLocalStorage();
-  const userId = useAppSelector((state: RootState) => state.user.userId);
+  const userId = useUserId();
 
   const dispatch = useAppDispatch();
   // Select state from different slices
@@ -134,7 +135,8 @@ export function InventoryFormStockReceiveSlip() {
 
     // Kiểm tra số phiếu qua API
     try {
-      const myApi = `${API_check_so_phieu}?so_phieu=${encodeURIComponent(documentNumber)}`;
+      const dynamicModelKey = userId && userId !== 'unknown' ? await getSupplierModelKey(userId) : 'TB';
+      const myApi = `${API_check_so_phieu}?so_phieu=${encodeURIComponent(documentNumber)}&model_key=${encodeURIComponent(dynamicModelKey || 'TB')}`;
       console.log("myApi:", myApi);
       const response = await axios.get(myApi, {
         headers: { 'Content-Type': 'application/json' },
