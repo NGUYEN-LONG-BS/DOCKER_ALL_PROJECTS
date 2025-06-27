@@ -1,6 +1,7 @@
 import os
 
-from django.http import FileResponse, HttpResponseNotFound
+from django.http import FileResponse
+from django.http import HttpResponseNotFound
 from django.conf import settings
 
 from rest_framework import status
@@ -8,8 +9,6 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
-from .models_TB import TB_INVENTORY_CATEGORIES
 
 from .models_TB import TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_LA import LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
@@ -31,9 +30,6 @@ from .serializers_PA import PA_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_Ha_Noi import HANOI_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_Mien_Tay import MIENTAY_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_Nam_An import NAMAN_InventoryStockReceivedIssuedReturnedSerializer
-
-
-DATABASE_NAME_tb = 'tb'
 
 # ==============================================================================
 # Model mapping
@@ -288,12 +284,17 @@ class InventoryStockListView(APIView):
 # inherit slip
 class InventoryStockBySoPhieuView(APIView):
     def get(self, request, format=None):
+        model_key = request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name, ListSerializer = model_tuple
         so_phieu = request.query_params.get('so_phieu')
         if not so_phieu:
             return Response({'error': 'Thiếu tham số so_phieu'}, status=status.HTTP_400_BAD_REQUEST)
-        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).filter(so_phieu=so_phieu, xoa_sua="new")
+        qs = ModelClass.objects.using(db_name).filter(so_phieu=so_phieu, xoa_sua="new")
         serialized_data = []
         for index, item in enumerate(qs):
-            serializer = TB_InventoryStockSerializer(item, context={'index': index})
+            serializer = ListSerializer(item, context={'index': index})
             serialized_data.append(serializer.data)
         return Response(serialized_data, status=status.HTTP_200_OK)

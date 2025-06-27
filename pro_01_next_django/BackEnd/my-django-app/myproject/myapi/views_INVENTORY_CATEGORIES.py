@@ -22,9 +22,6 @@ from .serializers_Mien_Tay import MIENTAYInventoryCategoriesSerializer
 from .serializers_Ha_Noi import HANOIInventoryCategoriesSerializer
 import openpyxl
 
-
-DATABASE_NAME_tb = 'tb'
-
 MODEL_MAP_INVENTORY_CATEGORIES = {
     "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
     "LA": (LA_INVENTORY_CATEGORIES, LAInventoryCategoriesSerializer, "tala"),
@@ -192,6 +189,11 @@ def submit_inventory_categories(request):
 # api to check if ma_hang exists
 class CheckMaHangExistView(APIView):
     def get(self, request, format=None):
+        model_key = request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name = model_tuple
         # Lấy giá trị cần tìm từ query parameters
         value_to_search = request.query_params.get('ma_hang', None)
 
@@ -202,7 +204,7 @@ class CheckMaHangExistView(APIView):
             )
 
         # Kiểm tra xem giá trị có tồn tại trong cột ma_hang của bảng không
-        exists = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=value_to_search).exists()
+        exists = ModelClass.objects.using(db_name).filter(ma_hang=value_to_search).exists()
 
         # Trả về kết quả với status 200
         return Response({'existed': exists}, status=status.HTTP_200_OK)
