@@ -4,6 +4,8 @@ from .models_Ha_Noi import HANOI_SUPPLIER_CATEGORIES
 from .models_Ha_Noi import HANOI_INVENTORY_CATEGORIES
 from .models_Ha_Noi import HANOI_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 
+DB_NAME_TB = 'hanoi'
+
 class HANOIClientCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = HANOI_CLIENT_CATEGORIES
@@ -34,7 +36,7 @@ class HANOI_InventoryStockSerializer(serializers.ModelSerializer):
     
     def get_ten_hang(self, obj):
         # Fetch ten_hang from TB_INVENTORY_CATEGORIES based on ma_hang
-        category = HANOI_INVENTORY_CATEGORIES.objects.filter(ma_hang=obj.ma_hang).first()
+        category = HANOI_INVENTORY_CATEGORIES.objects.using(DB_NAME_TB).filter(ma_hang=obj.ma_hang).first()
         return category.ten_hang if category else 'N/A'
 
     class Meta:
