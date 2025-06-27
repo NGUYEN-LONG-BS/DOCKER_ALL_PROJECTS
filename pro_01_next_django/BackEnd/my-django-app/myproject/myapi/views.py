@@ -124,5 +124,6 @@ def get_user_permission_info(request):
         }
         for up in user_permissions
     ]
+    # print('user_permission_info:', data)
     return Response(data, status=200)
 

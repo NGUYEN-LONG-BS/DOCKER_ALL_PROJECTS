@@ -66,8 +66,6 @@ const ClientManagementPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [debouncedFilter, setDebouncedFilter] = useState(filter);
-  // Lưu modelKey vào state để dùng lại nhiều nơi
-  const [modelKey, setModelKey] = useState<string | null>(null);
 
   const tableColumns = [
     { label: "Mã KH", width: "150px" },
@@ -88,10 +86,12 @@ const ClientManagementPage = () => {
   const fetchClients = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_ALL_CLIENT_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
-      setClients(response.data.results); // Access the `results` field for the list of records
-      setPage(2); // Set next page for lazy loading
-      setHasMore(response.data.results.length === 25); // Update hasMore based on data length
+      const dynamicModelKey = await getSupplierModelKey(userId);
+      const params: any = { page: 1, limit: 25, model_key: dynamicModelKey };
+      const response = await axios.get(API_get_data_ALL_CLIENT_CATEGORIES, { params });
+      setClients(response.data.results);
+      setPage(2);
+      setHasMore(response.data.results.length === 25);
     } catch (err) {
       setError("Failed to fetch clients.");
     } finally {
@@ -104,10 +104,12 @@ const ClientManagementPage = () => {
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${API_get_data_ALL_CLIENT_CATEGORIES}?page=${page}&limit=25`);
-      const fetchedData: Client[] = response.data.results; // Explicitly type fetchedData
+      const dynamicModelKey = await getSupplierModelKey(userId);
+      const params: any = { page, limit: 25, model_key: dynamicModelKey };
+      const response = await axios.get(API_get_data_ALL_CLIENT_CATEGORIES, { params });
+      const fetchedData: Client[] = response.data.results;
       if (!fetchedData || fetchedData.length === 0) {
-        setHasMore(false); // No more data to load
+        setHasMore(false);
       } else {
         setClients((prev) => {
           const newData = fetchedData.filter(
@@ -115,7 +117,7 @@ const ClientManagementPage = () => {
           );
           return [...prev, ...newData];
         });
-        setPage((prev) => prev + 1); // Increment page for next fetch
+        setPage((prev) => prev + 1);
       }
     } catch (err) {
       setError("Failed to fetch clients.");
@@ -148,17 +150,6 @@ const ClientManagementPage = () => {
     };
   }, [filter]);
 
-  // Fetch model key on mount
-  useEffect(() => {
-    async function fetchModelKey() {
-      if (userId) {
-        const key = await getSupplierModelKey(userId);
-        setModelKey(key);
-      }
-    }
-    fetchModelKey();
-  }, [userId]);
-
   // Handle form change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -168,7 +159,8 @@ const ClientManagementPage = () => {
   // Fix the handleSubmit function to separate create and edit actions
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!modelKey || typeof modelKey !== 'string' || !modelKey.trim()) {
+    const dynamicModelKey = await getSupplierModelKey(userId);
+    if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
       setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
       return;
     }
@@ -188,7 +180,7 @@ const ClientManagementPage = () => {
       ma_phan_loai_07: form.ma_phan_loai_07,
       ma_phan_loai_08: form.ma_phan_loai_08,
       action: "create",
-      model_key: modelKey,
+      model_key: dynamicModelKey,
     };
     console.log("Data to be sent (CREATE):", payload);
     try {
@@ -220,7 +212,8 @@ const ClientManagementPage = () => {
 
   // Fix type mismatch for handleEdit
   const handleEditButtonClick = async () => {
-    if (!modelKey || typeof modelKey !== 'string' || !modelKey.trim()) {
+    const dynamicModelKey = await getSupplierModelKey(userId);
+    if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
       setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
       return;
     }
@@ -240,7 +233,7 @@ const ClientManagementPage = () => {
       ma_phan_loai_07: form.ma_phan_loai_07,
       ma_phan_loai_08: form.ma_phan_loai_08,
       action: "edit",
-      model_key: modelKey,
+      model_key: dynamicModelKey,
     };
     console.log("Data to be sent (EDIT):", payload);
     try {
@@ -283,7 +276,8 @@ const ClientManagementPage = () => {
       setError("Vui lòng nhập mật khẩu.");
       return;
     }
-    const keyToSend = modelKey && typeof modelKey === 'string' && modelKey.trim() ? modelKey : "TB";
+    let keyToSend = await getSupplierModelKey(userId);
+    if (!keyToSend || typeof keyToSend !== 'string' || !keyToSend.trim()) keyToSend = "TB";
     try {
       const response = await axios.post(API_update_xoa_sua_client_categories, {
         ma_khach_hang: form.ma_khach_hang,
@@ -360,8 +354,9 @@ const ClientManagementPage = () => {
   // Add refresh icon and functionality for Mã khách hàng
   const handleRefreshMaKhachHang = async () => {
     try {
+      const dynamicModelKey = await getSupplierModelKey(userId);
       const response = await axios.get(API_get_next_ma_khach_hang, {
-        params: { model_key: modelKey },
+        params: { model_key: dynamicModelKey },
       });
       const nextMaKhachHang = response.data.next_ma_khach_hang;
       setForm((prev) => ({ ...prev, ma_khach_hang: nextMaKhachHang }));
@@ -373,7 +368,9 @@ const ClientManagementPage = () => {
   // Add functionality to download Excel file
   const handleExportToExcel = async () => {
     try {
+      const dynamicModelKey = await getSupplierModelKey(userId);
       const response = await axios.get(API_export_tb_client_categories, {
+        params: { model_key: dynamicModelKey },
         responseType: 'blob', // Ensure the response is treated as a binary file
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -581,7 +578,7 @@ const ClientManagementPage = () => {
               <button 
                 type="submit" 
                 className="btn btn-primary"
-                disabled={!modelKey || typeof modelKey !== 'string' || !modelKey.trim()}
+                disabled={!userId || userId === 'unknown'}
               >
                 Thêm mới
               </button>
@@ -589,7 +586,7 @@ const ClientManagementPage = () => {
                 type="button" 
                 className="btn btn-primary" 
                 onClick={handleEditButtonClick}
-                disabled={!modelKey || typeof modelKey !== 'string' || !modelKey.trim()}
+                disabled={!userId || userId === 'unknown'}
               >
                 Cập nhật
               </button>
