@@ -277,31 +277,21 @@ const ClientManagementPage = () => {
       return;
     }
     let keyToSend = await getSupplierModelKey(userId);
-    if (!keyToSend || typeof keyToSend !== 'string' || !keyToSend.trim()) keyToSend = "TB";
-    try {
-      const response = await axios.post(API_update_xoa_sua_client_categories, {
-        ma_khach_hang: form.ma_khach_hang,
-        pass_field: password,
-        model_key: keyToSend,
-      });
-      if (response.status === 200) {
-        alert("Record updated successfully.");
-        fetchClients(); // Refresh the table
-        setShowModal(false); // Close modal
-      } else {
-        const errorMessage = response.data?.error;
-        if (errorMessage === "overtime to delete") {
-          setError("Quá thời gian xoá, vui lòng liên hệ admin để được hỗ trợ.");
-        } else {
-          setError(errorMessage || "Failed to delete record.");
-        }
-      }
-    } catch (err: any) {
-      const backendError = err.response?.data?.error;
-      if (backendError === "overtime to delete") {
+    const response = await axios.post(API_update_xoa_sua_client_categories, {
+      ma_khach_hang: form.ma_khach_hang,
+      pass_field: password,
+      model_key: keyToSend,
+    });
+    if (response.status === 200) {
+      alert("Record updated successfully.");
+      fetchClients(); // Refresh the table
+      setShowModal(false); // Close modal
+    } else {
+      const errorMessage = response.data?.error;
+      if (errorMessage === "overtime to delete") {
         setError("Quá thời gian xoá, vui lòng liên hệ admin để được hỗ trợ.");
       } else {
-        setError("Failed to delete record.");
+        setError(errorMessage || "Failed to delete record.");
       }
     }
   };

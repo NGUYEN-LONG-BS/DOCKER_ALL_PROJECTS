@@ -33,6 +33,7 @@ import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNu
 import { API_check_so_phieu } from '@/api/api';
 import { useSyncUserIdFromLocalStorage } from '@/utils/useSyncUserIdFromLocalStorage';
 import { getCreateStatus } from '@/utils/getRecordStatus';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -155,6 +156,17 @@ export function InventoryFormStockReceiveSlip() {
       return;
     }
     
+    // Lấy model_key động từ quyền user
+    if (!userId) {
+      dispatch(setErrorMessage("Không xác định được userId. Vui lòng đăng nhập lại."));
+      return;
+    }
+    const dynamicModelKey = await getSupplierModelKey(userId);
+    if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
+      dispatch(setErrorMessage("Không xác định được model key. Vui lòng thử lại hoặc F5."));
+      return;
+    }
+
     // Tạo ngày hiện tại ở định dạng ISO
     const currentDate = new Date().toISOString();
     // Chuyển đổi date thành định dạng ISO (chỉ lấy phần ngày)
@@ -167,7 +179,7 @@ export function InventoryFormStockReceiveSlip() {
         return {};
       }
       return {
-        model_key: "TB", // Thêm model_key cố định
+        model_key: dynamicModelKey, // Lấy model_key động
         date,
         so_phieu: documentNumber,
         id_nhan_vien: userId,
