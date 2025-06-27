@@ -34,7 +34,7 @@ from .serializers_Nam_An import NAMAN_InventoryStockReceivedIssuedReturnedSerial
 # ==============================================================================
 # Model mapping
 MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED = {
-    "null": ("null", "null", "tb", "null"),
+    "null": ("null", "null", "null", "null"),
     "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb", TB_InventoryStockSerializer),
     "LA": (LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, LA_InventoryStockReceivedIssuedReturnedSerializer, "tala", LA_InventoryStockSerializer),
     "PA": (PA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, PA_InventoryStockReceivedIssuedReturnedSerializer, "pa", PA_InventoryStockSerializer),

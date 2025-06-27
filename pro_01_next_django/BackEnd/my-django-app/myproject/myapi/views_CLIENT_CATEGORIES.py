@@ -32,6 +32,7 @@ from datetime import timedelta
 
 # Define model mappings
 MODEL_MAP_CLIENT_CATEGORIES = {
+    "null": ("null", "null", "null"),
     "TB": (TB_CLIENT_CATEGORIES, TBClientCategoriesSerializer, "tb"),
     "LA": (LA_CLIENT_CATEGORIES, LAClientCategoriesSerializer, "tala"),
     "PA": (PA_CLIENT_CATEGORIES, PAClientCategoriesSerializer, "pa"),

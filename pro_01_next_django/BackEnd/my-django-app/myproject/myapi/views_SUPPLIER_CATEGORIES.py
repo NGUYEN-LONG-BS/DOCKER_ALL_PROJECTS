@@ -34,6 +34,7 @@ DATABASE_NAME_tb = 'tb'
 
 # Define model mappings
 MODEL_MAP_SUPPLIER_CATEGORIES = {
+    "null": ("null", "null"),
     "TB": (TB_SUPPLIER_CATEGORIES, "tb"),
     "LA": (LA_SUPPLIER_CATEGORIES, "tala"),
     "PA": (PA_SUPPLIER_CATEGORIES, "pa"),

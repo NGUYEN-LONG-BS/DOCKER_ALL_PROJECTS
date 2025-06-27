@@ -23,6 +23,7 @@ from .serializers_Ha_Noi import HANOIInventoryCategoriesSerializer
 import openpyxl
 
 MODEL_MAP_INVENTORY_CATEGORIES = {
+    "null": ("null", "null", "null"),
     "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
     "LA": (LA_INVENTORY_CATEGORIES, LAInventoryCategoriesSerializer, "tala"),
     "PA": (PA_INVENTORY_CATEGORIES, PAInventoryCategoriesSerializer, "pa"),
