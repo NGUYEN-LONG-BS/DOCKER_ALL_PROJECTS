@@ -36,7 +36,7 @@ from .views_SUPPLIER_CATEGORIES import get_next_ma_nha_cung_cap
 from .views_SUPPLIER_CATEGORIES import ExportTBSupplierCategoriesToExcel
 from .views_SUPPLIER_CATEGORIES import UpdateXoaSuaSupplierView
 from .views_SUPPLIER_CATEGORIES import search_supplier_categories
-from .views_SUPPLIER_CATEGORIES import get_data_TB_SUPPLIER_CATEGORIES
+from .views_SUPPLIER_CATEGORIES import get_data_ALL_SUPPLIER_CATEGORIES
 # ===========================================================================
 from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet
@@ -85,7 +85,7 @@ urlpatterns = [
     path('export-tb-supplier-categories/', ExportTBSupplierCategoriesToExcel.as_view(), name='export-tb-supplier-categories'),
     path('update-xoa-sua-supplier-categories/', UpdateXoaSuaSupplierView.as_view(), name='update-xoa-sua-supplier-categories'),
     path('search-supplier-categories/', search_supplier_categories),
-    path('get_data_TB_SUPPLIER_CATEGORIES/', get_data_TB_SUPPLIER_CATEGORIES.as_view(), name='get_data_TB_SUPPLIER_CATEGORIES'),
+    path('get_data_ALL_SUPPLIER_CATEGORIES/', get_data_ALL_SUPPLIER_CATEGORIES.as_view(), name='get_data_ALL_SUPPLIER_CATEGORIES'),
     # ========================================================================
     # TEST
     

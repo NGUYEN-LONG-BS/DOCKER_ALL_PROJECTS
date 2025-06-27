@@ -34,13 +34,13 @@ DATABASE_NAME_tb = 'tb'
 
 # Define model mappings
 MODEL_MAP_SUPPLIER_CATEGORIES = {
-    "null": ("null", "null"),
-    "TB": (TB_SUPPLIER_CATEGORIES, "tb"),
-    "LA": (LA_SUPPLIER_CATEGORIES, "tala"),
-    "PA": (PA_SUPPLIER_CATEGORIES, "pa"),
-    "HANOI": (HANOI_SUPPLIER_CATEGORIES, "hanoi"),
-    "MIENTAY": (MIENTAY_SUPPLIER_CATEGORIES, "mientay"),
-    "NAMAN": (NAMAN_SUPPLIER_CATEGORIES, "naman"),
+    "null": ("null", "null", "null"),
+    "TB": (TB_SUPPLIER_CATEGORIES, TBSupplierCategoriesSerializer, "tb"),
+    "LA": (LA_SUPPLIER_CATEGORIES, LASupplierCategoriesSerializer, "tala"),
+    "PA": (PA_SUPPLIER_CATEGORIES, PASupplierCategoriesSerializer, "pa"),
+    "HANOI": (HANOI_SUPPLIER_CATEGORIES, HANOISupplierCategoriesSerializer, "hanoi"),
+    "MIENTAY": (MIENTAY_SUPPLIER_CATEGORIES, NAMANSupplierCategoriesSerializer, "mientay"),
+    "NAMAN": (NAMAN_SUPPLIER_CATEGORIES, MIENTAYSupplierCategoriesSerializer, "naman"),
 }
 
 # ==========================================================================
@@ -121,9 +121,25 @@ class SupplierPagination(PageNumberPagination):
 
 # ==========================================================================
 # Get all data
-class get_data_TB_SUPPLIER_CATEGORIES(viewsets.ModelViewSet):
-    queryset = TB_SUPPLIER_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(xoa_sua="new").order_by("-ma_nha_cung_cap")
-    serializer_class = LASupplierCategoriesSerializer
+class get_data_ALL_SUPPLIER_CATEGORIES(viewsets.ModelViewSet):
+    def get_queryset(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
+        if not model_tuple:
+            first_model = list(MODEL_MAP_SUPPLIER_CATEGORIES.values())[0][0]
+            return first_model.objects.none()
+        ModelClass, _, db_name = model_tuple
+        return ModelClass.objects.using(db_name).filter(xoa_sua="new").order_by("-ma_nha_cung_cap")
+
+    def get_serializer_class(self):
+        model_key = self.request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
+        if not model_tuple:
+            first_serializer = list(MODEL_MAP_SUPPLIER_CATEGORIES.values())[0][1]
+            return first_serializer
+        _, SerializerClass, _ = model_tuple
+        return SerializerClass
+
     pagination_class = SupplierPagination  # Add pagination support
 
     @classmethod
@@ -133,45 +149,50 @@ class get_data_TB_SUPPLIER_CATEGORIES(viewsets.ModelViewSet):
         return super().as_view(actions, **initkwargs)
 
 # ==========================================================================
-# Create TB_SUPPLIER_CATEGORIES
+# Create SUPPLIER CATEGORIES
 class TBSupplierCategoriesCreateView(APIView):
     def post(self, request):
-        data = request.data
+        data = request.data.copy()
         ma_nha_cung_cap = data.get("ma_nha_cung_cap")
         action = data.pop("action", None)  # Remove 'action' from data
-
+        model_key = data.get("model_key", "TB")
+        model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name = model_tuple
+        # Remove model_key from data if present
+        data.pop("model_key", None)
         # Check if a record with ma_nha_cung_cap exists
-        existing_record = TB_SUPPLIER_CATEGORIES.objects.filter(ma_nha_cung_cap=ma_nha_cung_cap).first()
-
+        existing_record = ModelClass.objects.using(db_name).filter(ma_nha_cung_cap=ma_nha_cung_cap).first()
         if action == "create":
             if existing_record:
-                if TB_SUPPLIER_CATEGORIES.objects.filter(ma_nha_cung_cap=ma_nha_cung_cap, xoa_sua="new").exists():
+                if ModelClass.objects.using(db_name).filter(ma_nha_cung_cap=ma_nha_cung_cap, xoa_sua="new").exists():
                     # Return an error if the record already exists with xoa_sua = "new"
                     return Response({"error": "Record with ma_nha_cung_cap already exists and xoa_sua is 'new'."}, status=status.HTTP_400_BAD_REQUEST)
                 else:
                     # Create a new record with xoa_sua = "new"
                     data["xoa_sua"] = "new"
-                    TB_SUPPLIER_CATEGORIES.objects.create(**data)
-                    return Response({"message": "New record created successfully."}, status=status.HTTP_201_CREATED)                    
+                    ModelClass.objects.using(db_name).create(**data)
+                    return Response({"message": "New record created successfully."}, status=status.HTTP_201_CREATED)
             else:
                 # Create a new record since ma_nha_cung_cap does not exist
-                TB_SUPPLIER_CATEGORIES.objects.create(**data)
+                ModelClass.objects.using(db_name).create(**data)
                 return Response({"message": "Record created successfully."}, status=status.HTTP_201_CREATED)
         elif action == "edit":
             if existing_record:
                 if existing_record.xoa_sua == "new":
                     # Update existing record's xoa_sua to "old"
                     existing_record.xoa_sua = "old"
-                    existing_record.save()
+                    existing_record.save(using=db_name)
                     # Create a new record with xoa_sua = "new"
                     data["xoa_sua"] = "new"
-                    TB_SUPPLIER_CATEGORIES.objects.create(**data)
+                    ModelClass.objects.using(db_name).create(**data)
                     return Response({"message": "Record updated and new record created successfully."}, status=status.HTTP_200_OK)
                 else:
                     # Update the existing record directly
                     for key, value in data.items():
                         setattr(existing_record, key, value)
-                    existing_record.save()
+                    existing_record.save(using=db_name)
                     return Response({"message": "Record updated successfully."}, status=status.HTTP_200_OK)
             else:
                 # Return an error if the record does not exist
@@ -199,7 +220,7 @@ def get_next_ma_nha_cung_cap(request):
     return Response({"next_ma_nha_cung_cap": "NCC00001"}, status=status.HTTP_200_OK)
 
 # ==========================================================================
-# Export TB_SUPPLIER_CATEGORIES to Excel
+# Export TB SUPPLIER CATEGORIES to Excel
 class ExportTBSupplierCategoriesToExcel(APIView):
     def get(self, request):
         model_key = request.GET.get('model_key', 'TB')
@@ -255,23 +276,25 @@ class UpdateXoaSuaSupplierView(APIView):
     def post(self, request):
         ma_nha_cung_cap = request.data.get("ma_nha_cung_cap")
         pass_field = request.data.get("pass_field")
+        model_key = request.data.get("model_key", "TB")
+        model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
+        if not model_tuple:
+            return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name = model_tuple
         if not pass_field or pass_field != "admincome":
             return Response({"error": "Invalid or missing password."}, status=status.HTTP_403_FORBIDDEN)
-
         if not ma_nha_cung_cap:
             return Response({"error": "ma_nha_cung_cap is required."}, status=status.HTTP_400_BAD_REQUEST)
-
         # Check if the record exists with xoa_sua = "new"
-        record = TB_SUPPLIER_CATEGORIES.objects.filter(ma_nha_cung_cap=ma_nha_cung_cap, xoa_sua="new").first()
+        record = ModelClass.objects.using(db_name).filter(ma_nha_cung_cap=ma_nha_cung_cap, xoa_sua="new").first()
         if not record:
             return Response({"error": "Record with ma_nha_cung_cap does not exist or xoa_sua is not 'new'."}, status=status.HTTP_404_NOT_FOUND)
-
         # Check the time difference
         time_difference = now() - record.date
         if time_difference < timedelta(hours=0, minutes=2):
             # Update xoa_sua to "delete"
             record.xoa_sua = "delete"
-            record.save()
+            record.save(using=db_name)
             return Response({"message": "Record updated successfully."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "overtime to delete"}, status=status.HTTP_400_BAD_REQUEST)
