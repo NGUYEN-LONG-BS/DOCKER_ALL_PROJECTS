@@ -220,6 +220,11 @@ class MaxSoPhieuView(APIView):
         
 class CheckSoPhieuExistView(APIView):
     def get(self, request, format=None):
+        model_key = request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name, _ = model_tuple
         # Lấy số phiếu từ query parameters
         value_to_search = request.query_params.get('so_phieu', None)
 
@@ -230,27 +235,11 @@ class CheckSoPhieuExistView(APIView):
             )
 
         # Kiểm tra xem số phiếu đã tồn tại trong cơ sở dữ liệu chưa
-        exists = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).filter(so_phieu=value_to_search).exists()
+        exists = ModelClass.objects.using(db_name).filter(so_phieu=value_to_search).exists()
 
         # Trả về kết quả với status 200, bất kể số phiếu tồn tại hay không
         return Response({'existed': exists}, status=status.HTTP_200_OK)
     
-class CheckMaHangExistView(APIView):
-    def get(self, request, format=None):
-        # Lấy giá trị cần tìm từ query parameters
-        value_to_search = request.query_params.get('ma_hang', None)
-
-        if not value_to_search:
-            return Response(
-                {'error': 'Mã hàng không được cung cấp'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # Kiểm tra xem giá trị có tồn tại trong cột ma_hang của bảng không
-        exists = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=value_to_search).exists()
-
-        # Trả về kết quả với status 200
-        return Response({'existed': exists}, status=status.HTTP_200_OK)
 
 # ==============================================================================
 # List inventory stock

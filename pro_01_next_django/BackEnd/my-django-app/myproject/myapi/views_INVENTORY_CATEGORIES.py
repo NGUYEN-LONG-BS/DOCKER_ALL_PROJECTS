@@ -3,6 +3,7 @@ from django.db import models
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, parser_classes
+from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView
 
@@ -20,6 +21,9 @@ from .serializers_Nam_An import NAMANInventoryCategoriesSerializer
 from .serializers_Mien_Tay import MIENTAYInventoryCategoriesSerializer
 from .serializers_Ha_Noi import HANOIInventoryCategoriesSerializer
 import openpyxl
+
+
+DATABASE_NAME_tb = 'tb'
 
 MODEL_MAP_INVENTORY_CATEGORIES = {
     "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
@@ -183,3 +187,22 @@ def submit_inventory_categories(request):
             instance.save(using=db_name)
             return Response({"message": "Dữ liệu đã được thêm thành công!"}, status=status.HTTP_201_CREATED)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+# ==========================================================================
+# api to check if ma_hang exists
+class CheckMaHangExistView(APIView):
+    def get(self, request, format=None):
+        # Lấy giá trị cần tìm từ query parameters
+        value_to_search = request.query_params.get('ma_hang', None)
+
+        if not value_to_search:
+            return Response(
+                {'error': 'Mã hàng không được cung cấp'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Kiểm tra xem giá trị có tồn tại trong cột ma_hang của bảng không
+        exists = TB_INVENTORY_CATEGORIES.objects.using(DATABASE_NAME_tb).filter(ma_hang=value_to_search).exists()
+
+        # Trả về kết quả với status 200
+        return Response({'existed': exists}, status=status.HTTP_200_OK)
