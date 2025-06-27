@@ -27,6 +27,7 @@ export const API_download_import_template = `${API_BASE_URL}/api/download-import
 export const API_download_print_template = `${API_BASE_URL}/api/download-print-template/`;
 export const API_new_number_slip_pnk = `${API_BASE_URL}/api/new-number-slip-pnk/`;
 export const API_search_inventory_categories = `${API_BASE_URL}/api/search-inventory-categories/`;
+export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;
 // =======================================================================================================
 // CLIENT MANAGEMENT
 export const API_create_client_category = `${API_BASE_URL}/api/create-client-category/`;
@@ -45,6 +46,6 @@ export const API_get_data_TB_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/get_data
 export const API_search_supplier_categories = `${API_BASE_URL}/api/search-supplier-categories/`;
 // ========================================================================
 // TEST
-export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;
+
 export const API_get_json_data = `${API_BASE_URL}/api/get-json-data/`;
 

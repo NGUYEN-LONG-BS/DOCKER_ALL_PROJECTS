@@ -18,7 +18,13 @@ from .models_Mien_Tay import MIENTAY_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_Nam_An import NAMAN_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 from .models_PA import PA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
 
-from .serializers_TB import InventoryStockSerializer
+from .serializers_TB import TB_InventoryStockSerializer
+from .serializers_LA import LA_InventoryStockSerializer
+from .serializers_PA import PA_InventoryStockSerializer
+from .serializers_Ha_Noi import HANOI_InventoryStockSerializer
+from .serializers_Mien_Tay import MIENTAY_InventoryStockSerializer
+from .serializers_Nam_An import NAMAN_InventoryStockSerializer
+
 from .serializers_TB import TB_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_LA import LA_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_PA import PA_InventoryStockReceivedIssuedReturnedSerializer
@@ -26,18 +32,18 @@ from .serializers_Ha_Noi import HANOI_InventoryStockReceivedIssuedReturnedSerial
 from .serializers_Mien_Tay import MIENTAY_InventoryStockReceivedIssuedReturnedSerializer
 from .serializers_Nam_An import NAMAN_InventoryStockReceivedIssuedReturnedSerializer
 
+
 DATABASE_NAME_tb = 'tb'
 
 # ==============================================================================
 # Model mapping
 MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED = {
-    "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb"),
-    "LA": (LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, LA_InventoryStockReceivedIssuedReturnedSerializer, "tala"),
-    "PA": (PA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, PA_InventoryStockReceivedIssuedReturnedSerializer, "pa"),
-    "HANOI": (HANOI_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, HANOI_InventoryStockReceivedIssuedReturnedSerializer, "hanoi"),
-    "MIENTAY": (MIENTAY_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, MIENTAY_InventoryStockReceivedIssuedReturnedSerializer, "mientay"),
-    "NAMAN": (NAMAN_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, NAMAN_InventoryStockReceivedIssuedReturnedSerializer, "naman"),
-    "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb"),
+    "TB": (TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, TB_InventoryStockReceivedIssuedReturnedSerializer, "tb", TB_InventoryStockSerializer),
+    "LA": (LA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, LA_InventoryStockReceivedIssuedReturnedSerializer, "tala", LA_InventoryStockSerializer),
+    "PA": (PA_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, PA_InventoryStockReceivedIssuedReturnedSerializer, "pa", PA_InventoryStockSerializer),
+    "HANOI": (HANOI_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, HANOI_InventoryStockReceivedIssuedReturnedSerializer, "hanoi", HANOI_InventoryStockSerializer),
+    "MIENTAY": (MIENTAY_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, MIENTAY_InventoryStockReceivedIssuedReturnedSerializer, "mientay", MIENTAY_InventoryStockSerializer),
+    "NAMAN": (NAMAN_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED, NAMAN_InventoryStockReceivedIssuedReturnedSerializer, "naman", NAMAN_InventoryStockSerializer),
 }
 
 # ==============================================================================
@@ -169,10 +175,14 @@ def import_data(request):
 # ==============================================================================
 
 class MaxSoPhieuView(APIView):
-
     def get(self, request, format=None):
+        model_key = request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name = model_tuple
         # Lấy tất cả các số phiếu từ bảng
-        phieu_list = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).all()
+        phieu_list = ModelClass.objects.using(db_name).all()
         
         # Danh sách chứa các số phiếu và 6 số cuối của chúng
         max_phieu = None
@@ -248,6 +258,12 @@ class CheckMaHangExistView(APIView):
 
 class InventoryStockListView(APIView):
     def get(self, request, format=None):
+        model_key = request.query_params.get('model_key', 'TB')
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name, ListSerializer = model_tuple
+
         from_date = request.query_params.get('from_date')
         to_date = request.query_params.get('to_date')
         so_phieu = request.query_params.get('so_phieu')
@@ -255,7 +271,7 @@ class InventoryStockListView(APIView):
         ma_doi_tuong = request.query_params.get('ma_doi_tuong')
         ma_hang = request.query_params.get('ma_hang')
 
-        qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).all()
+        qs = ModelClass.objects.using(db_name).all()
 
         # Đúng tên trường ngày
         if from_date:
@@ -275,7 +291,7 @@ class InventoryStockListView(APIView):
 
         serialized_data = []
         for index, item in enumerate(qs):
-            serializer = InventoryStockSerializer(item, context={'index': index})
+            serializer = ListSerializer(item, context={'index': index})
             serialized_data.append(serializer.data)
         return Response(serialized_data, status=status.HTTP_200_OK)
     
@@ -289,6 +305,6 @@ class InventoryStockBySoPhieuView(APIView):
         qs = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using(DATABASE_NAME_tb).filter(so_phieu=so_phieu, xoa_sua="new")
         serialized_data = []
         for index, item in enumerate(qs):
-            serializer = InventoryStockSerializer(item, context={'index': index})
+            serializer = TB_InventoryStockSerializer(item, context={'index': index})
             serialized_data.append(serializer.data)
         return Response(serialized_data, status=status.HTTP_200_OK)

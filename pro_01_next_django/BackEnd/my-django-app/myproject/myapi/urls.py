@@ -69,6 +69,7 @@ urlpatterns = [
     path('download-print-template/', download_file_PRINT_TEMPLATE, name='download_file'),
     path('import-data/', import_data, name='import_data'),
     path('submit-inventory-categories/', submit_inventory_categories, name='submit-inventory-categories'),
+    path('get-inventory-categories/', TBInventoryCategoriesView.as_view(), name='get-inventory-categories'),
     # ========================================================================
     # CLIENT MANAGEMENT
     path('create-client-category/', Client_Categories_Create_View.as_view(), name='create-client-category'),
@@ -87,7 +88,7 @@ urlpatterns = [
     path('get_data_TB_SUPPLIER_CATEGORIES/', get_data_TB_SUPPLIER_CATEGORIES.as_view(), name='get_data_TB_SUPPLIER_CATEGORIES'),
     # ========================================================================
     # TEST
-    path('get-inventory-categories/', TBInventoryCategoriesView.as_view(), name='get-inventory-categories'),
+    
     path('get-json-data/', get_json_data, name='get-json-data'),
 ]
 

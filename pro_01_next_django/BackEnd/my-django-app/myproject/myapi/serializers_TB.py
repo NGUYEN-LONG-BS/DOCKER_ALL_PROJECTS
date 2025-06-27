@@ -24,7 +24,7 @@ class TBSupplierCategoriesSerializer(serializers.ModelSerializer):
         model = TB_SUPPLIER_CATEGORIES
         fields = '__all__'
         
-class InventoryStockSerializer(serializers.ModelSerializer):
+class TB_InventoryStockSerializer(serializers.ModelSerializer):
     STT = serializers.SerializerMethodField()
     ten_hang = serializers.SerializerMethodField()
 

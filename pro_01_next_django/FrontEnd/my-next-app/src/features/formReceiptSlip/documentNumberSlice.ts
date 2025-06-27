@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { API_new_number_slip_pnk } from '@/api/api';
 import { DOCUMENT_NUMBER_SELECTED_ACTION } from '@/actions/documentNumberActions';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 interface DocumentNumberState {
   documentNumber: string;
@@ -18,9 +19,14 @@ const initialState: DocumentNumberState = {
 
 export const fetchNewDocumentNumber = createAsyncThunk(
   'documentNumber/fetchNewDocumentNumber',
-  async (_, { dispatch }) => {
+  async (userId: string, { dispatch }) => {
     try {
-      const response = await fetch(API_new_number_slip_pnk, {
+      const model_key = await getSupplierModelKey(userId);
+      const url =
+        model_key && typeof model_key === 'string' && model_key.trim()
+          ? `${API_new_number_slip_pnk}?model_key=${encodeURIComponent(model_key)}`
+          : API_new_number_slip_pnk;
+      const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -42,20 +48,20 @@ const documentNumberSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-      builder
-        .addCase(fetchNewDocumentNumber.pending, (state) => {
-          state.loading = true;
-          state.error = null;
-        })
-        .addCase(fetchNewDocumentNumber.fulfilled, (state, action) => {
-          state.loading = false;
-          state.documentNumber = action.payload;
-        })
-        .addCase(fetchNewDocumentNumber.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.error.message || 'Failed to fetch new number';
-        });
-    },
+    builder
+      .addCase(fetchNewDocumentNumber.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchNewDocumentNumber.fulfilled, (state, action) => {
+        state.loading = false;
+        state.documentNumber = action.payload;
+      })
+      .addCase(fetchNewDocumentNumber.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch new number';
+      });
+  },
 });
 
 export const { setDocumentNumber } = documentNumberSlice.actions;

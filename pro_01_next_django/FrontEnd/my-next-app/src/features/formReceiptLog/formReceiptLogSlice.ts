@@ -2,7 +2,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_import_data, API_inventory_stock } from '@/api/api';
-
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { RootState } from '@/store/store';
 
 // Define interfaces
 interface Supplier {
@@ -105,9 +106,20 @@ export const importFile = createAsyncThunk(
 // Async thunk for fetching inventory data
 export const fetchInventoryData = createAsyncThunk(
   'form/fetchInventoryData',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const response = await axios.get(API_inventory_stock);
+      // Lấy userId từ Redux state
+      const state = getState() as RootState;
+      const userId = state.user.userId;
+      let model_key = null;
+      if (userId) {
+        model_key = await getSupplierModelKey(userId);
+      }
+      let url = API_inventory_stock;
+      if (model_key && typeof model_key === 'string' && model_key.trim()) {
+        url += `?model_key=${encodeURIComponent(model_key)}`;
+      }
+      const response = await axios.get(url);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Error fetching inventory data');

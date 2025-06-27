@@ -12,6 +12,7 @@ import { clearDocumentRequestNumber } from "@/features/formReceiptLog/documentRe
 import { clearSupplier } from "@/features/formReceiptLog/supplierFilterFormSlice";
 import { resetProductState } from "@/features/formReceiptLog/objectProductFilterFormSlice";
 import { API_inventory_stock } from '@/api/api';
+import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
 
 
 // Define interface for API data
@@ -46,6 +47,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
   const productCode = useAppSelector((state) => state.productFilterForm.Product.code);
   const dateStart = useAppSelector((state) => state.dateFilterForm.dateStart);
   const dateEnd = useAppSelector((state) => state.dateFilterForm.dateEnd);
+  const userId = useAppSelector((state) => state.user.userId);
   const [justCleared, setJustCleared] = useState(true);
   
 
@@ -97,6 +99,15 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
     if (documentRequestNumber) params.append("so_phieu_de_nghi", documentRequestNumber);
     if (supplierCode) params.append("ma_doi_tuong", supplierCode);
     if (productCode) params.append("ma_hang", productCode);
+
+    // Lấy model_key động từ quyền user
+    let model_key = null;
+    if (userId) {
+      model_key = await getSupplierModelKey(userId);
+    }
+    if (model_key && typeof model_key === 'string' && model_key.trim()) {
+      params.append('model_key', model_key);
+    }
 
     const apiUrl = `${API_inventory_stock}?${params.toString()}`;
     // console.log("API URL:", apiUrl);
