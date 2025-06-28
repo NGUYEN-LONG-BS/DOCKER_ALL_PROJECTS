@@ -17,9 +17,10 @@ import PopupFadeout from "../../popups/errorPopupComponentTypeFadeOutNum01";
 interface InventoryTableStockReceiveSlipProps {
   product: InventoryItemExport;
   onInventoryTableChange: (newItems: InventoryItemExport[]) => void;
+  formatNumber: (value: string | number) => string;
 }
 
-export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
+export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange, formatNumber }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
   const { items, errorMessage } = useAppSelector((state) => state.inventoryTable);
 
@@ -164,7 +165,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         value={item.code}
                         readOnly // Ngăn chỉnh sửa
                         style={{ backgroundColor: "#c0c7cf", width: "120px" }}
-                        // onChange={(e) => handleUpdateItem(item.id, "code", e.target.value)}
                       />
                     </td>
                     <td>
@@ -175,7 +175,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         value={item.name}
                         readOnly // Ngăn chỉnh sửa
                         style={{ backgroundColor: "#c0c7cf" }}
-                        // onChange={(e) => handleUpdateItem(item.id, "name", e.target.value)}
                       />
                     </td>
                     <td>
@@ -186,51 +185,31 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         value={item.unit}
                         readOnly // Ngăn chỉnh sửa
                         style={{ backgroundColor: "#c0c7cf", width: "60px" }}
-                        // onChange={(e) => handleUpdateItem(item.id, "unit", e.target.value)}
-                        // style={{ width: "60px" }}
                       />
                     </td>
                     <td>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control form-control-sm"
-                        value={item.quantity}
-                        onChange={(e) => {
-                          const newQuantity = Number(e.target.value);
-                          if (newQuantity < 0) return;
-                          handleUpdateItem(item.id, "quantity", newQuantity);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                          }
-                        }}
+                        value={formatNumber(item.quantity)}
+                        readOnly
                         style={{ width: "100px" }}
                       />
                     </td>
                     <td>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control form-control-sm"
-                        value={item.price}
-                        onChange={(e) => {
-                          const newPrice = Number(e.target.value);
-                          if (newPrice < 0) return;
-                          handleUpdateItem(item.id, "price", newPrice);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.preventDefault();
-                          }
-                        }}
+                        value={formatNumber(item.price)}
+                        readOnly
                         style={{ width: "100px" }}
                       />
                     </td>
                     <td>
                       <input
-                        type="number"
+                        type="text"
                         className="form-control form-control-sm"
-                        value={item.value}
+                        value={formatNumber(item.value)}
                         readOnly
                         style={{ width: "120px" }}
                       />
@@ -250,7 +229,6 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                       />
                     </td>
                     <td>
-                      {/* Thêm button xóa với icon dấu "X" */}
                       <button
                         type="button"
                         className="btn btn-danger btn-sm position-relative"
@@ -259,10 +237,10 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                           borderRadius: "50%",
                           width: "30px",
                           height: "30px",
-                          display: "flex", // Thêm flex để căn giữa
-                          alignItems: "center", // Căn giữa theo chiều dọc
-                          justifyContent: "center", // Căn giữa theo chiều ngang
-                          padding: 0, // Bỏ padding để dấu "X" không bị lệch
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          padding: 0,
                         }}
                       >
                         <span className="fw-bold">X</span>

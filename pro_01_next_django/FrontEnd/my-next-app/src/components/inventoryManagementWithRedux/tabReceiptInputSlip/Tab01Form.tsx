@@ -25,7 +25,7 @@ import { DateComponent } from "@/components/date/dateComponentInputForm";
 import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-input-form";
 import { DocumentRequestNumberInputForm } from "@/components/documentRequestNumber/document-request-number-component-input-form";
 import { SupplierComponent } from "@/components/objectSupplier/SearchSupplierFromAPIComponent";
-import { ProductComponent } from "@/components/objectProduct/SearchInventoryFromAPIComponentOnInputForm";
+import { ProductComponent } from "@/components/objectProduct/SearchInventoryFromAPIComponentOnInputForm_receipt";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
@@ -35,6 +35,7 @@ import { useSyncUserIdFromLocalStorage } from '@/utils/useSyncUserIdFromLocalSto
 import { getCreateStatus } from '@/utils/getRecordStatus';
 import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { useUserId } from '@/utils/useUserId';
+import * as Utils from '@/utils';
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
@@ -254,14 +255,19 @@ export function InventoryFormStockReceiveSlip() {
   // Hàm xử lý khi sản phẩm thay đổi
   const handleProductChange = (product: any) => {
     // Map dữ liệu từ ProductComponent (API) sang InventoryItemExport
+    const parseNumber = (val: any) => {
+      if (val === undefined || val === null) return 0;
+      const num = Number(String(val).replace(/,/g, ""));
+      return isNaN(num) ? 0 : num;
+    };
     const mappedProduct: InventoryItemExport = {
       id: 0, // hoặc có thể tạo id tự tăng nếu cần
       code: product.ma_hang || product.code || "",
       name: product.ten_hang || product.name || "",
       unit: product.dvt || product.unit || "",
-      quantity: product.quantity ? Number(product.quantity) : 0,
-      price: product.unitPrice ? Number(product.unitPrice) : 0,
-      value: product.value ? Number(product.value) : 0,
+      quantity: parseNumber(product.quantity),
+      price: parseNumber(product.unitPrice),
+      value: parseNumber(product.value),
       notes: product.notes || "",
     };
     console.log("Tab01Form - Received product from ProductComponent (mapped):", mappedProduct);
@@ -299,6 +305,7 @@ export function InventoryFormStockReceiveSlip() {
         <InventoryTableStockReceiveSlip
           product={selectedProduct}
           onInventoryTableChange={handleInventoryTableChange}
+          formatNumber={Utils.formatNumber}
         />
 
         <div className="d-flex justify-content-between gap-2 mt-3">

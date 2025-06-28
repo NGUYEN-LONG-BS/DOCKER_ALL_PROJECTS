@@ -3,7 +3,7 @@
 import { DateComponent } from "../date/dateComponentInputForm";
 import { DocumentNumberComponent } from "../documentNumber/document-number-component-input-form";
 import { ClientComponent } from "../objectClient/SearchClientFromAPIComponent"
-import { ProductComponent } from "../objectProduct/SearchInventoryFromAPIComponentOnInputForm";
+import { ProductComponent } from "../objectProduct/SearchInventoryFromAPIComponentOnInputForm_receipt";
 import { InventoryTableStockIssuesSlip } from "./Tab02Table"
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip"
 
