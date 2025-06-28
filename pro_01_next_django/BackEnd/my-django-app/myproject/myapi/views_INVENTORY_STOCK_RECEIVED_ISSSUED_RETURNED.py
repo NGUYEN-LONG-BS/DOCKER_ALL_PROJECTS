@@ -47,7 +47,7 @@ MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED = {
 #  get inventory stock received issued returned
 class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
     def get_queryset(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             # Nếu không có model phù hợp, trả về queryset rỗng của model đầu tiên trong mapping (không hard code)
@@ -57,7 +57,7 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
         return ModelClass.objects.using(db_name).all()
 
     def get_serializer_class(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             # Không hard code serializer, lấy serializer đầu tiên trong mapping
@@ -71,7 +71,7 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
         model_key = request.query_params.get('model_key')
         if not model_key:
             if isinstance(request.data, dict):
-                model_key = request.data.get('model_key', 'TB')
+                model_key = request.data.get('model_key', 'null')
             else:
                 model_key = 'TB'
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
@@ -173,7 +173,7 @@ def import_data(request):
 
 class MaxSoPhieuView(APIView):
     def get(self, request, format=None):
-        model_key = request.query_params.get('model_key', 'TB')
+        model_key = request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -217,7 +217,7 @@ class MaxSoPhieuView(APIView):
         
 class CheckSoPhieuExistView(APIView):
     def get(self, request, format=None):
-        model_key = request.query_params.get('model_key', 'TB')
+        model_key = request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -244,7 +244,7 @@ class CheckSoPhieuExistView(APIView):
 
 class InventoryStockListView(APIView):
     def get(self, request, format=None):
-        model_key = request.query_params.get('model_key', 'TB')
+        model_key = request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -285,7 +285,7 @@ class InventoryStockListView(APIView):
 # inherit slip
 class InventoryStockBySoPhieuView(APIView):
     def get(self, request, format=None):
-        model_key = request.query_params.get('model_key', 'TB')
+        model_key = request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
