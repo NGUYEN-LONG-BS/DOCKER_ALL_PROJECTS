@@ -24,7 +24,10 @@ import { RootState } from "@/store/store";
 import { DateComponent } from "@/components/date/dateComponentInputForm";
 import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-input-form";
 import { DocumentRequestNumberComponent } from "@/components/documentRequestNumber/document-request-number-component-input-form";
-import { SupplierComponent } from "@/components/objectSupplier/ObjectSupplierComponentInputForm";
+
+import { SupplierComponent } from "@/components/objectSupplier/SearchSupplierFromAPIComponent";
+// import { ClientComponent } from "@/components/objectClient/SearchClientFromAPIComponent";
+
 import { ProductComponent } from "@/components/objectProduct/SearchInventoryFromAPIComponentOnInputForm";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip";
@@ -284,6 +287,7 @@ export function InventoryFormStockReceiveSlip() {
         <div className="row g-3 mt-1">
           <div className="col-md-6">
             <SupplierComponent onSupplierChange={handleSupplierChange} />
+            {/* <ClientComponent onClientChange={handleSupplierChange} /> */}
             <InventoryNoteOfStockReceiveSlip />
           </div>
           <div className="col-md-6">

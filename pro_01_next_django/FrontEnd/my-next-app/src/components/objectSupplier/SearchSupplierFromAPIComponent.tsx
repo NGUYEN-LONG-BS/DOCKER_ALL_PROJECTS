@@ -1,36 +1,36 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { API_search_client_categories } from '@/api/api';
+import { API_search_supplier_categories } from '@/api/api';
 
-interface ClientData {
+interface SupplierData {
   code: string;
   name: string;
   taxId: string;
   address: string;
 }
 
-interface ApiClient {
-  ma_khach_hang: string;
-  ten_khach_hang: string;
+interface ApiSupplier {
+  ma_nha_cung_cap: string;
+  ten_nha_cung_cap: string;
   mst: string;
   dia_chi: string;
 }
 
-interface ClientComponentProps {
-  onClientChange?: (Client: ClientData) => void
+interface SupplierComponentProps {
+  onSupplierChange?: (Supplier: SupplierData) => void
 }
 
-export function ClientComponent({ onClientChange }: ClientComponentProps) {
-  // State variables to manage Client data, search input, and filtered Clients
-  const [Client, setClient] = useState<ClientData>({
+export function SupplierComponent({ onSupplierChange }: SupplierComponentProps) {
+  // State variables to manage Supplier data, search input, and filtered Suppliers
+  const [Supplier, setSupplier] = useState<SupplierData>({
     code: "",
     name: "",
     taxId: "",
     address: "",
   })
   const [searchText, setSearchText] = useState("") // The search text entered by the user
-  const [filteredClients, setFilteredClients] = useState<ClientData[]>([]) // Filtered list of Clients based on search text
+  const [filteredSuppliers, setFilteredSuppliers] = useState<SupplierData[]>([]) // Filtered list of Suppliers based on search text
   const [showDropdown, setShowDropdown] = useState(false) // Flag to toggle dropdown visibility
   const [loading, setLoading] = useState(false) // Loading state to show spinner when filtering
 
@@ -49,30 +49,30 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
     debounceTimeout.current = setTimeout(async () => {
       setLoading(true);
       try {
-        const res = await fetch(`${API_search_client_categories}?q=${encodeURIComponent(text)}&model_key=TB`);
+        const res = await fetch(`${API_search_supplier_categories}?q=${encodeURIComponent(text)}&model_key=TB`);
         const data = await res.json();
-        const filtered: ClientData[] = (data.results || []).map((item: ApiClient) => ({
-          code: item.ma_khach_hang,
-          name: item.ten_khach_hang,
+        const filtered: SupplierData[] = (data.results || []).map((item: ApiSupplier) => ({
+          code: item.ma_nha_cung_cap,
+          name: item.ten_nha_cung_cap,
           taxId: item.mst,
           address: item.dia_chi,
         }));
-        setFilteredClients(filtered);
+        setFilteredSuppliers(filtered);
       } catch {
-        setFilteredClients([]);
+        setFilteredSuppliers([]);
       }
       setLoading(false);
       setShowDropdown(true);
     }, 300);
   }
 
-  // Handle selection of a Client from the dropdown
-  const handleSelectClient = (s: ClientData) => {
-    setClient(s) // Set the selected Client in the state
-    setSearchText(s.code) // Set the search text to the Client's code
-    setFilteredClients([]) // Clear the filtered Clients list
+  // Handle selection of a Supplier from the dropdown
+  const handleSelectSupplier = (s: SupplierData) => {
+    setSupplier(s) // Set the selected Supplier in the state
+    setSearchText(s.code) // Set the search text to the Supplier's code
+    setFilteredSuppliers([]) // Clear the filtered Suppliers list
     setShowDropdown(false) // Hide the dropdown after selection
-    if (onClientChange) onClientChange(s) // Trigger the callback if provided
+    if (onSupplierChange) onSupplierChange(s) // Trigger the callback if provided
   }
 
   // Close the dropdown if a click occurs outside the wrapper
@@ -89,11 +89,11 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
   }, [])
 
   // Function to handle changes in the other fields (name, taxId, address)
-  const handleChange = (field: keyof ClientData, value: string) => {
-    const updatedClient = { ...Client, [field]: value }
-    setClient(updatedClient) // Update the Client state
-    if (onClientChange) {
-      onClientChange(updatedClient) // Trigger the callback if provided
+  const handleChange = (field: keyof SupplierData, value: string) => {
+    const updatedSupplier = { ...Supplier, [field]: value }
+    setSupplier(updatedSupplier) // Update the Supplier state
+    if (onSupplierChange) {
+      onSupplierChange(updatedSupplier) // Trigger the callback if provided
     }
   }
 
@@ -103,13 +103,13 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
   // Handle keyboard events for arrow keys and enter
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "ArrowDown") {
-      setHighlightedIndex(prev => Math.min(filteredClients.length - 1, prev + 1)) // Move down the list
+      setHighlightedIndex(prev => Math.min(filteredSuppliers.length - 1, prev + 1)) // Move down the list
     }
     if (e.key === "ArrowUp") {
       setHighlightedIndex(prev => Math.max(0, prev - 1)) // Move up the list
     }
     if (e.key === "Enter" && highlightedIndex >= 0) {
-      handleSelectClient(filteredClients[highlightedIndex]) // Select the highlighted Client on Enter
+      handleSelectSupplier(filteredSuppliers[highlightedIndex]) // Select the highlighted Supplier on Enter
     }
   }
 
@@ -136,18 +136,18 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
       <div className="card-body py-2">
         <div className="mb-1 position-relative">
           <div className="d-flex align-items-center gap-1" style={{ marginBottom: "0px" }}>
-            <label htmlFor="Client-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
-              Khách hàng
+            <label htmlFor="Supplier-code" className="form-label mb-0" style={{ width: "120px", whiteSpace: "nowrap" }} >
+              Nhà cung cấp
             </label>
             {/* Mã khách hàng input */}
             <input
               type="text"
               className="form-control"
-              id="Client-code"
+              id="Supplier-code"
               placeholder="Search here"
               autoComplete="off"
               value={searchText}
-              onChange={(e) => handleFilter(e.target.value)} // Filter Clients when input changes
+              onChange={(e) => handleFilter(e.target.value)} // Filter Suppliers when input changes
               onKeyDown={handleKeyDown} // Handle keyboard navigation
               onFocus={handleFocus} // Show dropdown on focus
               style={{ width: "150px" }}
@@ -156,10 +156,10 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
             <input
               type="text"
               className="form-control flex-grow-1"
-              id="Client-name"
+              id="Supplier-name"
               placeholder="tên đối tượng"
-              value={Client.name}
-              onChange={(e) => handleChange("name", e.target.value)} // Update Client name
+              value={Supplier.name}
+              onChange={(e) => handleChange("name", e.target.value)} // Update Supplier name
             />
           </div>
 
@@ -178,12 +178,12 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
               {loading ? (
                 <li className="list-group-item text-center">Đang tải...</li> // Show loading state
               ) : (
-                filteredClients.map((s, index) => (
+                filteredSuppliers.map((s, index) => (
                   <li
                     key={s.code || index}
                     className={`list-group-item list-group-item-action ${index === highlightedIndex ? 'bg-info' : ''}`}
                     style={{ cursor: "pointer", fontSize: "0.9rem" }}
-                    onClick={() => handleSelectClient(s)} // Select item on click
+                    onClick={() => handleSelectSupplier(s)} // Select item on click
                   >
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 2fr 3fr", gap: "10px" }}>
                       <div><strong>{s.code}</strong></div>
@@ -194,8 +194,8 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
                   </li>
                 ))
               )}
-              {filteredClients.length === 0 && !loading && (
-                <li className="list-group-item text-muted">Vui lòng gợi ý thông tin</li> // Display message if no Clients found
+              {filteredSuppliers.length === 0 && !loading && (
+                <li className="list-group-item text-muted">Vui lòng gợi ý thông tin</li> // Display message if no Suppliers found
               )}
             </ul>
           )}
@@ -206,20 +206,20 @@ export function ClientComponent({ onClientChange }: ClientComponentProps) {
           <input
             type="text"
             className="form-control"
-            id="Client-tax"
+            id="Supplier-tax"
             placeholder="mst"
-            value={Client.taxId}
-            onChange={(e) => handleChange("taxId", e.target.value)} // Update Client tax ID
+            value={Supplier.taxId}
+            onChange={(e) => handleChange("taxId", e.target.value)} // Update Supplier tax ID
             style={{ width: "170px" }}
           />
           {/* Địa chỉ input */}
           <input
             type="text"
             className="form-control flex-grow-1"
-            id="Client-address"
+            id="Supplier-address"
             placeholder="địa chỉ"
-            value={Client.address}
-            onChange={(e) => handleChange("address", e.target.value)} // Update Client address
+            value={Supplier.address}
+            onChange={(e) => handleChange("address", e.target.value)} // Update Supplier address
           />
         </div>
       </div>
