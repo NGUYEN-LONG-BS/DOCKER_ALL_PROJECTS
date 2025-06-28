@@ -12,7 +12,8 @@ from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import InventoryStockRecei
 from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import download_file_IMPORT_TEMPLATE
 from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import download_file_PRINT_TEMPLATE
 from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import import_data
-from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import MaxSoPhieuView
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import MaxSoPhieuView_receipt
+from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import MaxSoPhieuView_issue
 from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import CheckSoPhieuExistView
 from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import InventoryStockListView
 from .views_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED import InventoryStockBySoPhieuView
@@ -59,7 +60,8 @@ urlpatterns = [
     # ========================================================================
     # INVENTORY MANAGEMENT
     path('search-inventory-categories/', search_inventory_categories),
-    path('new-number-slip-pnk/', MaxSoPhieuView.as_view(), name='new-number-slip-pnk'),
+    path('new-number-slip-pnk/', MaxSoPhieuView_receipt.as_view(), name='new-number-slip-pnk'),
+    path('new-number-slip-pxk/', MaxSoPhieuView_issue.as_view(), name='new-number-slip-pnk'),
     path('check-so-phieu/', CheckSoPhieuExistView.as_view(), name='check-so-phieu'),
     path('inventory-stock/', InventoryStockListView.as_view(), name='inventory_stock_list'),
     path('check-ma-hang/', CheckMaHangExistView.as_view(), name='check_ma_hang'),

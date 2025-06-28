@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { setDate } from "@/features/formReceiptSlip/dateSlice";
-import { setDocumentNumber } from "@/features/formReceiptSlip/documentNumberSlice";
+import { setDocumentNumberIssue } from "@/features/formReceiptSlip/documentNumberIssueSlice";
 import { setDocumentRequestNumber } from "@/features/formReceiptSlip/documentRequestNumberSlice";
 import { setSupplier } from "@/features/formReceiptSlip/supplierInputFormSlice";
 import {
@@ -22,9 +22,9 @@ import {
 import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";
 import { RootState } from "@/store/store";
 import { DateComponent } from "@/components/date/dateComponentInputForm";
-import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-input-form";
+import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-receipt-input-form";
 import { DocumentRequestNumberInputForm } from "@/components/documentRequestNumber/document-request-number-component-input-form";
-import { SupplierComponent } from "@/components/objectSupplier/SearchSupplierFromAPIComponent";
+import { ClientComponent } from "@/components/objectClient/SearchClientFromAPIComponent";
 import { ProductComponent } from "@/components/objectProduct/SearchInventoryFromAPIComponentOnInputForm_receipt";
 import { InventoryTableStockReceiveSlip } from "./Tab02Table";
 import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip";
@@ -63,7 +63,7 @@ export function InventoryFormStockIssueSlip() {
   const dispatch = useAppDispatch();
   // Select state from different slices
   const date = useAppSelector((state: RootState) => state.date.date);
-  const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
+  const documentNumber = useAppSelector((state: RootState) => state.documentNumberReceipt.documentNumber);
   const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
   const supplier = useAppSelector((state: RootState) => state.supplier.supplier);
   const slipNote = useAppSelector((state: RootState) => state.slipNote.slipNote);
@@ -106,7 +106,7 @@ export function InventoryFormStockIssueSlip() {
 
   // Handler for document number change
   const handleDocumentNumberChange = (value: string) => {
-    dispatch(setDocumentNumber(value));
+    dispatch(setDocumentNumberIssue(value));
   };
 
   // Handle save action
@@ -192,7 +192,7 @@ export function InventoryFormStockIssueSlip() {
         so_phieu: documentNumber,
         id_nhan_vien: userId,
         xoa_sua: getCreateStatus(),
-        phan_loai_nhap_xuat_hoan: "receipt",
+        phan_loai_nhap_xuat_hoan: "issue",
         ma_doi_tuong: supplier.code || "",
         ngay_tren_phieu: date,
         so_phieu_de_nghi: documentRequestNumber,
@@ -294,7 +294,7 @@ export function InventoryFormStockIssueSlip() {
 
         <div className="row g-3 mt-1">
           <div className="col-md-6">
-            <SupplierComponent onSupplierChange={handleSupplierChange} />
+            <ClientComponent onClientChange={handleSupplierChange} />
             <InventoryNoteOfStockReceiveSlip />
           </div>
           <div className="col-md-6">

@@ -1,6 +1,6 @@
 // src/features/formReceiptSlip/documentNumberSlice.ts
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { API_new_number_slip_pnk } from '@/api/api';
+import { API_new_number_slip_pxk } from '@/api/api';
 import { DOCUMENT_NUMBER_SELECTED_ACTION } from '@/actions/documentNumberActions';
 import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { useUserId } from '@/utils/useUserId';
@@ -29,8 +29,8 @@ const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
   null: { prefix: '--', type: '---' },
 };
 
-export const fetchNewDocumentNumber = createAsyncThunk(
-  'documentNumber/fetchNewDocumentNumber',
+export const fetchNewDocumentNumberIssue = createAsyncThunk(
+  'documentNumber/fetchNewDocumentNumberIssue',
   async (_: void, { dispatch }) => {
     // Lấy userId từ hook (ưu tiên Redux, fallback localStorage)
     const userId = (typeof window !== 'undefined' && useUserId && useUserId()) || 'unknown';
@@ -38,8 +38,8 @@ export const fetchNewDocumentNumber = createAsyncThunk(
       const model_key = await getPermissionOnDB(userId);
       const url =
         model_key && typeof model_key === 'string' && model_key.trim()
-          ? `${API_new_number_slip_pnk}?model_key=${encodeURIComponent(model_key)}`
-          : API_new_number_slip_pnk;
+          ? `${API_new_number_slip_pxk}?model_key=${encodeURIComponent(model_key)}`
+          : API_new_number_slip_pxk;
       const response = await fetch(url, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -64,26 +64,26 @@ const documentNumberSlice = createSlice({
   name: DOCUMENT_NUMBER_SELECTED_ACTION,
   initialState,
   reducers: {
-    setDocumentNumber(state, action: PayloadAction<string>) {
+    setDocumentNumberIssue(state, action: PayloadAction<string>) {
       state.documentNumber = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchNewDocumentNumber.pending, (state) => {
+      .addCase(fetchNewDocumentNumberIssue.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchNewDocumentNumber.fulfilled, (state, action) => {
+      .addCase(fetchNewDocumentNumberIssue.fulfilled, (state, action) => {
         state.loading = false;
         state.documentNumber = action.payload;
       })
-      .addCase(fetchNewDocumentNumber.rejected, (state, action) => {
+      .addCase(fetchNewDocumentNumberIssue.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || 'Failed to fetch new number';
       });
   },
 });
 
-export const { setDocumentNumber } = documentNumberSlice.actions;
+export const { setDocumentNumberIssue } = documentNumberSlice.actions;
 export default documentNumberSlice.reducer;

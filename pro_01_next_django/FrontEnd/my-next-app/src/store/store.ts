@@ -5,7 +5,8 @@ import inventoryReducer from '../features/formReceiptSlip/formReceiptSlipSlice';
 import productReducer from '../features/formReceiptSlip/objectProductComponentSlice';
 import inventoryTableReducer from '../features/formReceiptSlip/inventoryTableSlice';
 import dateReducer from '../features/formReceiptSlip/dateSlice';
-import documentNumberReducer from '../features/formReceiptSlip/documentNumberSlice';
+import fetchNewDocumentNumberReceipt from '../features/formReceiptSlip/documentNumberReceiptSlice';
+import fetchNewDocumentNumberIssue from '../features/formReceiptSlip/documentNumberIssueSlice';
 import documentRequestNumberReducer from '../features/formReceiptSlip/documentRequestNumberSlice';
 import supplierReducer from '../features/formReceiptSlip/supplierInputFormSlice';
 import slipNoteReducer from '../features/formReceiptSlip/slipNoteSlice';
@@ -27,7 +28,8 @@ export const store = configureStore({
     product: productReducer,
     inventoryTable: inventoryTableReducer,
     date: dateReducer,
-    documentNumber: documentNumberReducer,
+    documentNumberReceipt: fetchNewDocumentNumberReceipt,
+    documentNumberIssue: fetchNewDocumentNumberIssue,
     documentRequestNumber: documentRequestNumberReducer,
     supplier: supplierReducer,
     slipNote: slipNoteReducer,

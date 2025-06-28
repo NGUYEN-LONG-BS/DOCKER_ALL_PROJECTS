@@ -1,4 +1,4 @@
-// src/components/documentNumber/document-number-component-input-form.tsx
+// src/components/documentNumber/document-number-component-receipt-input-form.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";

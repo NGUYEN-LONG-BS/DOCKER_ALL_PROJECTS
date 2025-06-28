@@ -13,7 +13,7 @@ import { useAppDispatch } from "@/store/store";
 import { setActiveTab, TAB_NAMES } from "@/features/formReceiptSlip/tabNavSlice";
 
 import { setDate as setDateRedux } from "@/features/formReceiptSlip/dateSlice";
-import { setDocumentNumber as setDocumentNumberRedux } from "@/features/formReceiptSlip/documentNumberSlice";
+import { setDocumentNumberReceipt as setDocumentNumberRedux } from "@/features/formReceiptSlip/documentNumberReceiptSlice";
 import { setDocumentRequestNumber as setDocumentRequestNumberRedux } from "@/features/formReceiptSlip/documentRequestNumberSlice";
 import { setSupplier as setSupplierRedux } from "@/features/formReceiptSlip/supplierInputFormSlice";
 import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";

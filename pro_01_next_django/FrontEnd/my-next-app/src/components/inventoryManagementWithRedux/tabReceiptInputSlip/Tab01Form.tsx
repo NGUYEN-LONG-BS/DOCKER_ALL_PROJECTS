@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 import axios from 'axios';
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { setDate } from "@/features/formReceiptSlip/dateSlice";
-import { setDocumentNumber } from "@/features/formReceiptSlip/documentNumberSlice";
+import { setDocumentNumberReceipt } from "@/features/formReceiptSlip/documentNumberReceiptSlice";
 import { setDocumentRequestNumber } from "@/features/formReceiptSlip/documentRequestNumberSlice";
 import { setSupplier } from "@/features/formReceiptSlip/supplierInputFormSlice";
 import {
@@ -22,7 +22,7 @@ import {
 import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";
 import { RootState } from "@/store/store";
 import { DateComponent } from "@/components/date/dateComponentInputForm";
-import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-input-form";
+import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-receipt-input-form";
 import { DocumentRequestNumberInputForm } from "@/components/documentRequestNumber/document-request-number-component-input-form";
 import { SupplierComponent } from "@/components/objectSupplier/SearchSupplierFromAPIComponent";
 import { ProductComponent } from "@/components/objectProduct/SearchInventoryFromAPIComponentOnInputForm_receipt";
@@ -63,7 +63,7 @@ export function InventoryFormStockReceiveSlip() {
   const dispatch = useAppDispatch();
   // Select state from different slices
   const date = useAppSelector((state: RootState) => state.date.date);
-  const documentNumber = useAppSelector((state: RootState) => state.documentNumber.documentNumber);
+  const documentNumber = useAppSelector((state: RootState) => state.documentNumberReceipt.documentNumber);
   const documentRequestNumber = useAppSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber);
   const supplier = useAppSelector((state: RootState) => state.supplier.supplier);
   const slipNote = useAppSelector((state: RootState) => state.slipNote.slipNote);
@@ -106,7 +106,7 @@ export function InventoryFormStockReceiveSlip() {
 
   // Handler for document number change
   const handleDocumentNumberChange = (value: string) => {
-    dispatch(setDocumentNumber(value));
+    dispatch(setDocumentNumberReceipt(value));
   };
 
   // Handle save action

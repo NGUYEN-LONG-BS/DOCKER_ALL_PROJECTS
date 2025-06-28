@@ -171,15 +171,55 @@ def import_data(request):
 # Get max number of slip
 # ==============================================================================
 
-class MaxSoPhieuView(APIView):
+class MaxSoPhieuView_receipt(APIView):
     def get(self, request, format=None):
         model_key = request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
         ModelClass, _, db_name, _ = model_tuple
-        # Lấy tất cả các số phiếu từ bảng
-        phieu_list = ModelClass.objects.using(db_name).all()
+        # Lấy tất cả các số phiếu từ bảng, chỉ lấy phiếu loại "receipt"
+        phieu_list = ModelClass.objects.using(db_name).filter(phan_loai_nhap_xuat_hoan="receipt")
+        
+        # Danh sách chứa các số phiếu và 6 số cuối của chúng
+        max_phieu = None
+        max_last_six = -1  # Giá trị ban đầu thấp nhất để so sánh
+
+        for phieu in phieu_list:
+            # Trích xuất 6 ký tự cuối và chuyển thành số
+            last_six_digits = phieu.so_phieu[-6:]
+
+            try:
+                # So sánh các số cuối cùng (chuyển sang kiểu số nguyên để so sánh)
+                last_six_number = int(last_six_digits)
+                
+                if last_six_number > max_last_six:
+                    max_last_six = last_six_number
+                    max_phieu = phieu.so_phieu
+            except ValueError:
+                continue  # Nếu không thể chuyển thành số thì bỏ qua
+
+        if max_phieu:
+            # Tăng số cuối lên 1
+            max_last_six += 1
+            
+            # Tạo số phiếu mới
+            new_number_slip = f"{max_phieu[:-6]}{max_last_six:06d}"
+            
+            # Trả về số phiếu moi
+            return Response({'new_number_slip': new_number_slip}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Không có số phiếu nào'}, status=status.HTTP_404_NOT_FOUND)
+        
+class MaxSoPhieuView_issue(APIView):
+    def get(self, request, format=None):
+        model_key = request.query_params.get('model_key', 'null')
+        model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
+        if not model_tuple:
+            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        ModelClass, _, db_name, _ = model_tuple
+        # Lấy tất cả các số phiếu từ bảng, chỉ lấy phiếu loại "receipt"
+        phieu_list = ModelClass.objects.using(db_name).filter(phan_loai_nhap_xuat_hoan="issue")
         
         # Danh sách chứa các số phiếu và 6 số cuối của chúng
         max_phieu = None
