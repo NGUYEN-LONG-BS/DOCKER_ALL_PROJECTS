@@ -4,7 +4,7 @@ import { API_get_user_permission_info } from "@/api/api";
 export async function getPermissionOnDB(userId: string): Promise<string | null> {
   try {
     const url = `${API_get_user_permission_info}?user_id=${userId}`;
-    console.log("[getPermissionOnDB] URL fetch:", url); // Log URL thực tế
+    // console.log("[getPermissionOnDB] URL fetch:", url); // Log URL thực tế
     const res = await fetch(url);
     const data = await res.json();
     if (Array.isArray(data) && data.length > 0 && data[0].subsidiary) {
