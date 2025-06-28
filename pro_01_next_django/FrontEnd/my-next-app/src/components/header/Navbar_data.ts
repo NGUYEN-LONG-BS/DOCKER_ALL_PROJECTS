@@ -7,7 +7,6 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
-  // { label: 'Kinh Doanh TM', href: '#', permission: ['Admin', 'KinhDoanhTM'] },
   {
     label: 'Kinh Doanh TM',
     href: '#',
@@ -18,7 +17,14 @@ export const menuItems: MenuItem[] = [
         permission: ['Admin', 'KinhDoanhTM'],
         submenu_02: [
           { label: 'Danh sách khách hàng', href: '/client-management' },
-          
+        ],
+      },
+      {
+        label: 'Quản lý sản phẩm',
+        permission: ['Admin', 'KinhDoanhTM'],
+        submenu_02: [
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
+          { label: 'tạo mới mã hàng', href: '#' },
         ],
       },
     ],
@@ -32,7 +38,7 @@ export const menuItems: MenuItem[] = [
         permission: ['Admin', 'VatTuTM'],
         submenu_02: [
           { label: 'Xuất nhập tồn', href: '/inventory-management' },
-          { label: 'Báo cáo kho', href: '/dashboard' },
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
         ],
       },
       {
@@ -45,7 +51,21 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  { label: 'Tài Chính - Kế Toán TM', href: '#', permission: ['Admin', 'TaiChinhTM', 'KeToanTM'] },
+  {
+    label: 'Tài Chính - Kế Toán TM',
+    href: '#',
+    permission: ['Admin', 'TaiChinhTM', 'KeToanTM'],
+    submenu: [
+      {
+        label: 'Quản lý sản phẩm',
+        permission: ['Admin', 'TaiChinhTM', 'KeToanTM'],
+        submenu_02: [
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
+          
+        ],
+      },
+    ],
+  },
   {
     label: 'Kinh Doanh SX',
     permission: ['Admin', 'KinhDoanhSX'],
@@ -55,7 +75,15 @@ export const menuItems: MenuItem[] = [
         permission: ['Admin', 'KinhDoanhSX'],
         submenu_02: [
           { label: 'Danh sách khách hàng', href: '/client-management' },
-          
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
+        ],
+      },
+      {
+        label: 'Quản lý sản phẩm',
+        permission: ['Admin', 'KinhDoanhSX'],
+        submenu_02: [
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
+          { label: 'tạo mới mã hàng', href: '#' },
         ],
       },
     ],
@@ -69,7 +97,13 @@ export const menuItems: MenuItem[] = [
         permission: ['Admin', 'VatTuSX'],
         submenu_02: [
           { label: 'Danh sách nhà cung cấp', href: '/supplier-management' },
-          
+        ],
+      },
+      {
+        label: 'Quản lý sản phẩm',
+        permission: ['Admin', 'VatTuSX'],
+        submenu_02: [
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
         ],
       },
     ],
@@ -79,16 +113,14 @@ export const menuItems: MenuItem[] = [
     permission: ['Admin', 'KeHoachSX'],
     submenu: [
       {
-        label: 'Kế toán kho',
-        permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],
+        label: 'Quản lý sản phẩm',
+        permission: ['Admin', 'KeHoachSX'],
         submenu_02: [
-          { label: 'Xuất nhập tồn', href: '/inventory-management' },
-          { label: 'Báo cáo kho', href: '/dashboard' },
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
         ],
       },
     ],
   },
-  // { label: 'Kế Hoạch SX', href: '#', permission: ['Admin', 'KeHoachSX'] },
   {
     label: 'Tài Chính - Kế Toán SX',
     permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],
@@ -98,7 +130,7 @@ export const menuItems: MenuItem[] = [
         permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],
         submenu_02: [
           { label: 'Xuất nhập tồn', href: '/inventory-management' },
-          { label: 'Báo cáo kho', href: '/dashboard' },
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
         ],
       },
     ],
