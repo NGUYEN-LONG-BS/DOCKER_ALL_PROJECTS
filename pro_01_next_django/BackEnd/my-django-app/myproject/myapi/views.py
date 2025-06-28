@@ -18,7 +18,6 @@ import json
 import os
 
 DATABASE_NAME_default = 'default'
-DATABASE_NAME_tb = 'tb'
 
 #==========================================================================
 # LoginInfo
