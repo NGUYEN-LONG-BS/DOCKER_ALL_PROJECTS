@@ -33,7 +33,7 @@ import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNu
 import { API_check_so_phieu } from '@/api/api';
 import { useSyncUserIdFromLocalStorage } from '@/utils/useSyncUserIdFromLocalStorage';
 import { getCreateStatus } from '@/utils/getRecordStatus';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { useUserId } from '@/utils/useUserId';
 
 // Định nghĩa InventoryItemExport interface
@@ -140,7 +140,7 @@ export function InventoryFormStockReceiveSlip() {
 
     // Kiểm tra số phiếu qua API
     try {
-      const dynamicModelKey = userId && userId !== 'unknown' ? await getSupplierModelKey(userId) : 'TB';
+      const dynamicModelKey = userId && userId !== 'unknown' ? await getPermissionOnDB(userId) : 'TB';
       const myApi = `${API_check_so_phieu}?so_phieu=${encodeURIComponent(documentNumber)}&model_key=${encodeURIComponent(dynamicModelKey || 'TB')}`;
       console.log("myApi:", myApi);
       const response = await axios.get(myApi, {
@@ -168,7 +168,7 @@ export function InventoryFormStockReceiveSlip() {
       dispatch(setErrorMessage("Không xác định được userId. Vui lòng đăng nhập lại."));
       return;
     }
-    const dynamicModelKey = await getSupplierModelKey(userId);
+    const dynamicModelKey = await getPermissionOnDB(userId);
     if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
       dispatch(setErrorMessage("Không xác định được model key. Vui lòng thử lại hoặc F5."));
       return;

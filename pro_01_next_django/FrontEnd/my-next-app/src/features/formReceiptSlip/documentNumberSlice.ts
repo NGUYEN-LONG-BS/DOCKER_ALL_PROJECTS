@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { API_new_number_slip_pnk } from '@/api/api';
 import { DOCUMENT_NUMBER_SELECTED_ACTION } from '@/actions/documentNumberActions';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { useUserId } from '@/utils/useUserId';
 
 interface DocumentNumberState {
@@ -35,7 +35,7 @@ export const fetchNewDocumentNumber = createAsyncThunk(
     // Lấy userId từ hook (ưu tiên Redux, fallback localStorage)
     const userId = (typeof window !== 'undefined' && useUserId && useUserId()) || 'unknown';
     try {
-      const model_key = await getSupplierModelKey(userId);
+      const model_key = await getPermissionOnDB(userId);
       const url =
         model_key && typeof model_key === 'string' && model_key.trim()
           ? `${API_new_number_slip_pnk}?model_key=${encodeURIComponent(model_key)}`
@@ -51,7 +51,7 @@ export const fetchNewDocumentNumber = createAsyncThunk(
       // Lấy prefix động từ model_key nếu có, mặc định là TB
       let model_key = 'null';
       if (typeof userId === 'string' && userId.trim()) {
-        const key = await getSupplierModelKey(userId);
+        const key = await getPermissionOnDB(userId);
         if (key && SLIP_TYPE_MAP[key]) model_key = key;
       }
       const slip = SLIP_TYPE_MAP[model_key] || SLIP_TYPE_MAP['null'];

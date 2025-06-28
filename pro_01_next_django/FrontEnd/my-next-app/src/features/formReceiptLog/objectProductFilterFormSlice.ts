@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import * as Utils from '@/utils';
 import { API_get_inventory_categories } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
 // ==== 1. Định nghĩa kiểu dữ liệu ====
 
@@ -70,7 +70,7 @@ export const fetchProducts = createAsyncThunk(
       const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') || '' : '';
       let url = API_get_inventory_categories;
       if (userId) {
-        const modelKey = await getSupplierModelKey(userId);
+        const modelKey = await getPermissionOnDB(userId);
         if (modelKey) {
           url = `${API_get_inventory_categories}?model_key=${modelKey}`;
         }

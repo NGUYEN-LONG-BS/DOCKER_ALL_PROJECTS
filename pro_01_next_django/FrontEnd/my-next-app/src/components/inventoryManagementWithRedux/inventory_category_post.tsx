@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { API_submit_inventory_categories } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
 // Định nghĩa kiểu dữ liệu cho form
 interface InventoryFormData {
@@ -37,7 +37,7 @@ const InventoryForm: React.FC = () => {
     async function fetchModelKey() {
       const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') || '' : '';
       if (userId) {
-        const key = await getSupplierModelKey(userId);
+        const key = await getPermissionOnDB(userId);
         setModelKey(key);
       }
     }

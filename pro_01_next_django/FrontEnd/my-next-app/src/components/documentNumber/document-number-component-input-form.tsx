@@ -3,7 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { RefreshCw } from "lucide-react";
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { API_new_number_slip_pnk } from '@/api/api';
 
 // Đặt map loại phiếu ở đầu file
@@ -37,7 +37,7 @@ export function DocumentNumberComponent({ value, onChange }: DocumentNumberProps
       }
       let modelKey = 'TB';
       if (userId) {
-        const key = await getSupplierModelKey(userId);
+        const key = await getPermissionOnDB(userId);
         if (key && SLIP_TYPE_MAP[key]) modelKey = key;
       }
       const url = `${API_new_number_slip_pnk}?model_key=${encodeURIComponent(modelKey)}`;

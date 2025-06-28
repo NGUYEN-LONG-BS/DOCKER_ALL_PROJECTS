@@ -4,7 +4,7 @@
 import { useState, useRef, useEffect } from "react";
 import * as Utils from '@/utils';
 import { API_search_inventory_categories } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
 interface InventoryItem {
   ma_hang: string;
@@ -49,7 +49,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
     async function fetchModelKey() {
       const userId = typeof window !== 'undefined' ? localStorage.getItem('user_id') || '' : '';
       if (userId) {
-        const key = await getSupplierModelKey(userId);
+        const key = await getPermissionOnDB(userId);
         modelKeyRef.current = key;
       }
     }

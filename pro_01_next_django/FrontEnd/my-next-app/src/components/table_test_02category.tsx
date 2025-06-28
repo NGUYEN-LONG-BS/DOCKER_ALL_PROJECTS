@@ -2,7 +2,7 @@
 import React from 'react';
 import useSWR from 'swr';
 import { API_get_json_data, API_get_inventory_categories } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
 // Định nghĩa các kiểu dữ liệu
 interface FontConfig {
@@ -91,7 +91,7 @@ const Table_test_02category = () => {
     async function fetchModelKey() {
       const userId = localStorage.getItem('user_id') || '';
       if (userId) {
-        const key = await getSupplierModelKey(userId);
+        const key = await getPermissionOnDB(userId);
         setModelKey(key);
       }
     }

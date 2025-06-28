@@ -13,7 +13,7 @@ import Footer from '@/components/footer/Footer';
 import axios from "axios";
 import { useUserId } from '@/utils/useUserId';
 import { getCreateStatus } from '@/utils/getRecordStatus';
-import { getSupplierModelKey } from "@/utils/getPermissionOnDB";
+import { getPermissionOnDB } from "@/utils/getPermissionOnDB";
 
 interface Client {
   id: number;
@@ -86,7 +86,7 @@ const ClientManagementPage = () => {
   const fetchClients = async () => {
     setLoading(true);
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
+      const dynamicModelKey = await getPermissionOnDB(userId);
       const params: any = { page: 1, limit: 25, model_key: dynamicModelKey };
       const response = await axios.get(API_get_data_ALL_CLIENT_CATEGORIES, { params });
       setClients(response.data.results);
@@ -104,7 +104,7 @@ const ClientManagementPage = () => {
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
+      const dynamicModelKey = await getPermissionOnDB(userId);
       const params: any = { page, limit: 25, model_key: dynamicModelKey };
       const response = await axios.get(API_get_data_ALL_CLIENT_CATEGORIES, { params });
       const fetchedData: Client[] = response.data.results;
@@ -159,7 +159,7 @@ const ClientManagementPage = () => {
   // Fix the handleSubmit function to separate create and edit actions
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const dynamicModelKey = await getSupplierModelKey(userId);
+    const dynamicModelKey = await getPermissionOnDB(userId);
     if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
       setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
       return;
@@ -212,7 +212,7 @@ const ClientManagementPage = () => {
 
   // Fix type mismatch for handleEdit
   const handleEditButtonClick = async () => {
-    const dynamicModelKey = await getSupplierModelKey(userId);
+    const dynamicModelKey = await getPermissionOnDB(userId);
     if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
       setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
       return;
@@ -276,7 +276,7 @@ const ClientManagementPage = () => {
       setError("Vui lòng nhập mật khẩu.");
       return;
     }
-    let keyToSend = await getSupplierModelKey(userId);
+    let keyToSend = await getPermissionOnDB(userId);
     const response = await axios.post(API_update_xoa_sua_client_categories, {
       ma_khach_hang: form.ma_khach_hang,
       pass_field: password,
@@ -344,7 +344,7 @@ const ClientManagementPage = () => {
   // Add refresh icon and functionality for Mã khách hàng
   const handleRefreshMaKhachHang = async () => {
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
+      const dynamicModelKey = await getPermissionOnDB(userId);
       const response = await axios.get(API_get_next_ma_khach_hang, {
         params: { model_key: dynamicModelKey },
       });
@@ -358,7 +358,7 @@ const ClientManagementPage = () => {
   // Add functionality to download Excel file
   const handleExportToExcel = async () => {
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
+      const dynamicModelKey = await getPermissionOnDB(userId);
       const response = await axios.get(API_export_tb_client_categories, {
         params: { model_key: dynamicModelKey },
         responseType: 'blob', // Ensure the response is treated as a binary file

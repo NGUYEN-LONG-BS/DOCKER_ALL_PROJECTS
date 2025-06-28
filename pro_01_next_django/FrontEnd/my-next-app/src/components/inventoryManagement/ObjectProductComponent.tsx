@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { API_get_inventory_categories } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
 // Define InventoryItemExport interface if it's not imported from another file
 interface InventoryItemExport { 
@@ -67,7 +67,7 @@ export function ProductComponent({ onProductChange }: ProductComponentProps) {
         const userId = localStorage.getItem('user_id') || '';
         let url = API_get_inventory_categories;
         if (userId) {
-          const modelKey = await getSupplierModelKey(userId);
+          const modelKey = await getPermissionOnDB(userId);
           if (modelKey) {
             url = `${API_get_inventory_categories}?model_key=${modelKey}`;
           }

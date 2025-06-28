@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { API_import_data, API_inventory_stock } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { RootState } from '@/store/store';
 
 // Define interfaces
@@ -113,7 +113,7 @@ export const fetchInventoryData = createAsyncThunk(
       const userId = state.user.userId;
       let model_key = null;
       if (userId) {
-        model_key = await getSupplierModelKey(userId);
+        model_key = await getPermissionOnDB(userId);
       }
       let url = API_inventory_stock;
       if (model_key && typeof model_key === 'string' && model_key.trim()) {

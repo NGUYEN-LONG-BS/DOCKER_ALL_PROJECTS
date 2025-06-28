@@ -12,7 +12,7 @@ import { clearDocumentRequestNumber } from "@/features/formReceiptLog/documentRe
 import { clearSupplier } from "@/features/formReceiptLog/supplierFilterFormSlice";
 import { resetProductState } from "@/features/formReceiptLog/objectProductFilterFormSlice";
 import { API_inventory_stock } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
 
 // Define interface for API data
@@ -103,7 +103,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
     // Lấy model_key động từ quyền user
     let model_key = null;
     if (userId) {
-      model_key = await getSupplierModelKey(userId);
+      model_key = await getPermissionOnDB(userId);
     }
     if (model_key && typeof model_key === 'string' && model_key.trim()) {
       params.append('model_key', model_key);

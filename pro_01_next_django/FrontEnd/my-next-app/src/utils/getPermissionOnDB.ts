@@ -1,7 +1,7 @@
 import { API_get_user_permission_info } from "@/api/api";
 
 // Hàm lấy subsidiary đầu tiên từ API quyền user dựa vào userId
-export async function getSupplierModelKey(userId: string): Promise<string | null> {
+export async function getPermissionOnDB(userId: string): Promise<string | null> {
   try {
     const res = await fetch(`${API_get_user_permission_info}?user_id=${userId}`);
     const data = await res.json();

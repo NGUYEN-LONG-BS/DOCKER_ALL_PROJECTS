@@ -3,7 +3,7 @@
 import React from 'react';
 import useSWR, { mutate } from 'swr';
 import { API_get_inventory_categories } from '@/api/api';
-import { getSupplierModelKey } from '@/utils/getPermissionOnDB';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
 // Hàm fetcher để gọi API
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -21,7 +21,7 @@ const table_inventory_category: React.FC<{ refreshKey?: number }> = ({ refreshKe
       // Lấy userId từ localStorage hoặc context nếu cần
       const userId = localStorage.getItem('user_id') || '';
       if (userId) {
-        const key = await getSupplierModelKey(userId);
+        const key = await getPermissionOnDB(userId);
         setModelKey(key);
       }
     }
