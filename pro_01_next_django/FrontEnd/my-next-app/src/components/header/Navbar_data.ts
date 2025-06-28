@@ -60,8 +60,35 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
-  { label: 'Vật Tư SX', href: '#', permission: ['Admin', 'VatTuSX'] },
-  { label: 'Kế Hoạch SX', href: '#', permission: ['Admin', 'KeHoachSX'] },
+  {
+    label: 'Vật Tư SX',
+    permission: ['Admin', 'VatTuSX'],
+    submenu: [
+      {
+        label: 'Danh sách nhà cung cấp',
+        permission: ['Admin', 'VatTuSX'],
+        submenu_02: [
+          { label: 'Danh sách nhà cung cấp', href: '/supplier-management' },
+          
+        ],
+      },
+    ],
+  },
+  {
+    label: 'Kế Hoạch SX',
+    permission: ['Admin', 'KeHoachSX'],
+    submenu: [
+      {
+        label: 'Kế toán kho',
+        permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],
+        submenu_02: [
+          { label: 'Xuất nhập tồn', href: '/inventory-management' },
+          { label: 'Báo cáo kho', href: '/dashboard' },
+        ],
+      },
+    ],
+  },
+  // { label: 'Kế Hoạch SX', href: '#', permission: ['Admin', 'KeHoachSX'] },
   {
     label: 'Tài Chính - Kế Toán SX',
     permission: ['Admin', 'TaiChinhSX', 'KeToanSX'],

@@ -42,7 +42,7 @@ export const API_create_supplier_category = `${API_BASE_URL}/api/create-supplier
 export const API_get_next_ma_nha_cung_cap = `${API_BASE_URL}/api/get-next-ma-nha-cung-cap/`;
 export const API_export_tb_supplier_categories = `${API_BASE_URL}/api/export-tb-supplier-categories/`;
 export const API_update_xoa_sua_supplier_categories = `${API_BASE_URL}/api/update-xoa-sua-supplier-categories/`;
-export const API_get_data_TB_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/get_data_TB_SUPPLIER_CATEGORIES/`;
+export const API_get_data_ALL_SUPPLIER_CATEGORIES = `${API_BASE_URL}/api/get_data_ALL_SUPPLIER_CATEGORIES/`;
 export const API_search_supplier_categories = `${API_BASE_URL}/api/search-supplier-categories/`;
 // ========================================================================
 // TEST

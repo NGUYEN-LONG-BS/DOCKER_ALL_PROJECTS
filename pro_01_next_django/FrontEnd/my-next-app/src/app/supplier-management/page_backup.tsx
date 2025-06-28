@@ -15,7 +15,7 @@ import { useUserId } from '@/utils/useUserId';
 import { getCreateStatus } from '@/utils/getRecordStatus';
 import { getSupplierModelKey } from "@/utils/getPermissionOnDB";
 
-interface Supplier {
+interface supplier {
   id: number;
   ma_nha_cung_cap: string;
   ten_nha_cung_cap: string;
@@ -32,11 +32,11 @@ interface Supplier {
   pass_field?: string; // Add optional pass_field property
 }
 
-const SupplierManagementPage = () => {
+const supplierManagementPage = () => {
   const userId = useUserId();
 
-  const [Suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [form, setForm] = useState<Supplier>({
+  const [suppliers, setsuppliers] = useState<supplier[]>([]);
+  const [form, setForm] = useState<supplier>({
     id: 0,
     ma_nha_cung_cap: "",
     ten_nha_cung_cap: "",
@@ -66,6 +66,8 @@ const SupplierManagementPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [debouncedFilter, setDebouncedFilter] = useState(filter);
+  // Lưu modelKey vào state để dùng lại nhiều nơi
+  const [modelKey, setModelKey] = useState<string | null>(null);
 
   const tableColumns = [
     { label: "Mã NCC", width: "150px" },
@@ -82,45 +84,41 @@ const SupplierManagementPage = () => {
     { label: "Mã thành viên", width: "150px" },
   ];
 
-  // Fetch initial Suppliers
-  const fetchSuppliers = async () => {
+  // Fetch initial suppliers
+  const fetchsuppliers = async () => {
     setLoading(true);
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
-      const params: any = { page: 1, limit: 25, model_key: dynamicModelKey };
-      const response = await axios.get(API_get_data_ALL_SUPPLIER_CATEGORIES, { params });
-      setSuppliers(response.data.results);
-      setPage(2);
-      setHasMore(response.data.results.length === 25);
+      const response = await axios.get(`${API_get_data_ALL_SUPPLIER_CATEGORIES}?page=1&limit=25`); // Limit initial load to 25 records
+      setsuppliers(response.data.results); // Access the `results` field for the list of records
+      setPage(2); // Set next page for lazy loading
+      setHasMore(response.data.results.length === 25); // Update hasMore based on data length
     } catch (err) {
-      setError("Failed to fetch Suppliers.");
+      setError("Failed to fetch suppliers.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch more Suppliers on scroll
-  const fetchSuppliersLazy = async () => {
+  // Fetch more suppliers on scroll
+  const fetchsuppliersLazy = async () => {
     if (!hasMore || loading) return;
     setLoading(true);
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
-      const params: any = { page, limit: 25, model_key: dynamicModelKey };
-      const response = await axios.get(API_get_data_ALL_SUPPLIER_CATEGORIES, { params });
-      const fetchedData: Supplier[] = response.data.results;
+      const response = await axios.get(`${API_get_data_ALL_SUPPLIER_CATEGORIES}?page=${page}&limit=25`);
+      const fetchedData: supplier[] = response.data.results; // Explicitly type fetchedData
       if (!fetchedData || fetchedData.length === 0) {
-        setHasMore(false);
+        setHasMore(false); // No more data to load
       } else {
-        setSuppliers((prev) => {
+        setsuppliers((prev) => {
           const newData = fetchedData.filter(
-            (item: Supplier) => !prev.some((existing) => existing.id === item.id)
+            (item: supplier) => !prev.some((existing) => existing.id === item.id)
           );
           return [...prev, ...newData];
         });
-        setPage((prev) => prev + 1);
+        setPage((prev) => prev + 1); // Increment page for next fetch
       }
     } catch (err) {
-      setError("Failed to fetch Suppliers.");
+      setError("Failed to fetch suppliers.");
     } finally {
       setLoading(false);
     }
@@ -128,15 +126,15 @@ const SupplierManagementPage = () => {
 
   // Fetch initial data on mount
   useEffect(() => {
-    fetchSuppliers();
+    fetchsuppliers();
   }, []);
 
   // Reset pagination and fetch data when filters change
   useEffect(() => {
-    setSuppliers([]);
+    setsuppliers([]);
     setPage(1);
     setHasMore(true);
-    fetchSuppliers();
+    fetchsuppliers();
   }, [debouncedFilter]);
 
   // Debounce filter input
@@ -150,6 +148,17 @@ const SupplierManagementPage = () => {
     };
   }, [filter]);
 
+  // Lấy modelKey khi userId thay đổi
+  useEffect(() => {
+    async function fetchModelKey() {
+      if (userId) {
+        const key = await getSupplierModelKey(userId);
+        setModelKey(key);
+      }
+    }
+    fetchModelKey();
+  }, [userId]);
+
   // Handle form change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -159,11 +168,6 @@ const SupplierManagementPage = () => {
   // Fix the handleSubmit function to separate create and edit actions
   const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const dynamicModelKey = await getSupplierModelKey(userId);
-    if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
-      setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
-      return;
-    }
     const payload = {
       id_nhan_vien: userId,
       xoa_sua: getCreateStatus(),
@@ -180,15 +184,14 @@ const SupplierManagementPage = () => {
       ma_phan_loai_07: form.ma_phan_loai_07,
       ma_phan_loai_08: form.ma_phan_loai_08,
       action: "create",
-      model_key: dynamicModelKey,
     };
-    console.log("Data to be sent (CREATE):", payload);
+    console.log("Data to be sent:", payload);
     try {
       await axios.post(API_create_supplier_category, payload);
-      setSuppliers([]);
+      setsuppliers([]);
       setPage(1);
       setHasMore(true);
-      fetchSuppliers();
+      fetchsuppliers();
       setForm({
         id: 0,
         ma_nha_cung_cap: "",
@@ -206,19 +209,14 @@ const SupplierManagementPage = () => {
       });
       setEditingId(null);
     } catch (err) {
-      setError("Failed to save Supplier.");
+      setError("Failed to save supplier.");
     }
   };
 
   // Fix type mismatch for handleEdit
   const handleEditButtonClick = async () => {
-    const dynamicModelKey = await getSupplierModelKey(userId);
-    if (!dynamicModelKey || typeof dynamicModelKey !== 'string' || !dynamicModelKey.trim()) {
-      setError("Không xác định được model key. Vui lòng thử lại hoặc F5.");
-      return;
-    }
     const payload = {
-      id_nhan_vien: userId,
+      id_nhan_vien: userId, // Use userId from the hook,
       xoa_sua: getCreateStatus(),
       ma_nha_cung_cap: form.ma_nha_cung_cap,
       ten_nha_cung_cap: form.ten_nha_cung_cap,
@@ -233,15 +231,14 @@ const SupplierManagementPage = () => {
       ma_phan_loai_07: form.ma_phan_loai_07,
       ma_phan_loai_08: form.ma_phan_loai_08,
       action: "edit",
-      model_key: dynamicModelKey,
     };
-    console.log("Data to be sent (EDIT):", payload);
+    console.log("Data to be sent:", payload);
     try {
       await axios.post(API_create_supplier_category, payload);
-      setSuppliers([]);
+      setsuppliers([]);
       setPage(1);
       setHasMore(true);
-      fetchSuppliers();
+      fetchsuppliers();
       setForm({
         id: 0,
         ma_nha_cung_cap: "",
@@ -259,7 +256,7 @@ const SupplierManagementPage = () => {
       });
       setEditingId(null);
     } catch (err) {
-      setError("Failed to save Supplier.");
+      setError("Failed to save supplier.");
     }
   };
 
@@ -276,55 +273,62 @@ const SupplierManagementPage = () => {
       setError("Vui lòng nhập mật khẩu.");
       return;
     }
-    let keyToSend = await getSupplierModelKey(userId);
-    const response = await axios.post(API_update_xoa_sua_supplier_categories, {
-      ma_nha_cung_cap: form.ma_nha_cung_cap,
-      pass_field: password,
-      model_key: keyToSend,
-    });
-    if (response.status === 200) {
-      alert("Record updated successfully.");
-      fetchSuppliers(); // Refresh the table
-      setShowModal(false); // Close modal
-    } else {
-      const errorMessage = response.data?.error;
-      if (errorMessage === "overtime to delete") {
+    try {
+      const response = await axios.post(API_update_xoa_sua_supplier_categories, {
+        ma_nha_cung_cap: form.ma_nha_cung_cap,
+        pass_field: password,
+      });
+      if (response.status === 200) {
+        alert("Record updated successfully.");
+        fetchsuppliers(); // Refresh the table
+        setShowModal(false); // Close modal
+      } else {
+        const errorMessage = response.data?.error;
+        if (errorMessage === "overtime to delete") {
+          setError("Quá thời gian xoá, vui lòng liên hệ admin để được hỗ trợ.");
+        } else {
+          setError(errorMessage || "Failed to delete record.");
+        }
+      }
+    } catch (err: any) {
+      const backendError = err.response?.data?.error;
+      if (backendError === "overtime to delete") {
         setError("Quá thời gian xoá, vui lòng liên hệ admin để được hỗ trợ.");
       } else {
-        setError(errorMessage || "Failed to delete record.");
+        setError("Failed to delete record.");
       }
     }
   };
 
   // Handle row click
-  const handleRowClick = (Supplier: Supplier) => {
+  const handleRowClick = (supplier: supplier) => {
     setForm({
-      id: Supplier.id || 0,
-      ma_nha_cung_cap: Supplier.ma_nha_cung_cap ?? "",
-      ten_nha_cung_cap: Supplier.ten_nha_cung_cap ?? "",
-      dia_chi: Supplier.dia_chi ?? "",
-      mst: Supplier.mst ?? "",
-      ma_phan_loai_01: Supplier.ma_phan_loai_01 ?? "",
-      ma_phan_loai_02: Supplier.ma_phan_loai_02 ?? "",
-      ma_phan_loai_03: Supplier.ma_phan_loai_03 ?? "",
-      ma_phan_loai_04: Supplier.ma_phan_loai_04 ?? "",
-      ma_phan_loai_05: Supplier.ma_phan_loai_05 ?? "",
-      ma_phan_loai_06: Supplier.ma_phan_loai_06 ?? "",
-      ma_phan_loai_07: Supplier.ma_phan_loai_07 ?? "",
-      ma_phan_loai_08: Supplier.ma_phan_loai_08 ?? "",
+      id: supplier.id || 0,
+      ma_nha_cung_cap: supplier.ma_nha_cung_cap ?? "",
+      ten_nha_cung_cap: supplier.ten_nha_cung_cap ?? "",
+      dia_chi: supplier.dia_chi ?? "",
+      mst: supplier.mst ?? "",
+      ma_phan_loai_01: supplier.ma_phan_loai_01 ?? "",
+      ma_phan_loai_02: supplier.ma_phan_loai_02 ?? "",
+      ma_phan_loai_03: supplier.ma_phan_loai_03 ?? "",
+      ma_phan_loai_04: supplier.ma_phan_loai_04 ?? "",
+      ma_phan_loai_05: supplier.ma_phan_loai_05 ?? "",
+      ma_phan_loai_06: supplier.ma_phan_loai_06 ?? "",
+      ma_phan_loai_07: supplier.ma_phan_loai_07 ?? "",
+      ma_phan_loai_08: supplier.ma_phan_loai_08 ?? "",
     });
-    setEditingId(Supplier.id ?? null);
+    setEditingId(supplier.id ?? null);
   };
 
-  // Filter Suppliers
-  const filteredSuppliers = Suppliers.filter(Supplier => {
+  // Filter suppliers
+  const filteredsuppliers = suppliers.filter(supplier => {
     return (
-      (!debouncedFilter.ma_nha_cung_cap || Supplier.ma_nha_cung_cap.includes(debouncedFilter.ma_nha_cung_cap)) &&
-      (!debouncedFilter.ten_nha_cung_cap || Supplier.ten_nha_cung_cap.includes(debouncedFilter.ten_nha_cung_cap)) &&
-      (!debouncedFilter.mst || Supplier.mst.includes(debouncedFilter.mst)) &&
-      (!debouncedFilter.ma_phan_loai_01 || Supplier.ma_phan_loai_01.includes(debouncedFilter.ma_phan_loai_01)) &&
-      (!debouncedFilter.ma_phan_loai_02 || Supplier.ma_phan_loai_02.includes(debouncedFilter.ma_phan_loai_02)) &&
-      (!debouncedFilter.ma_phan_loai_03 || Supplier.ma_phan_loai_03.includes(debouncedFilter.ma_phan_loai_03))
+      (!debouncedFilter.ma_nha_cung_cap || supplier.ma_nha_cung_cap.includes(debouncedFilter.ma_nha_cung_cap)) &&
+      (!debouncedFilter.ten_nha_cung_cap || supplier.ten_nha_cung_cap.includes(debouncedFilter.ten_nha_cung_cap)) &&
+      (!debouncedFilter.mst || supplier.mst.includes(debouncedFilter.mst)) &&
+      (!debouncedFilter.ma_phan_loai_01 || supplier.ma_phan_loai_01.includes(debouncedFilter.ma_phan_loai_01)) &&
+      (!debouncedFilter.ma_phan_loai_02 || supplier.ma_phan_loai_02.includes(debouncedFilter.ma_phan_loai_02)) &&
+      (!debouncedFilter.ma_phan_loai_03 || supplier.ma_phan_loai_03.includes(debouncedFilter.ma_phan_loai_03))
     );
   });
 
@@ -332,7 +336,7 @@ const SupplierManagementPage = () => {
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
     if (scrollTop + clientHeight >= scrollHeight - 10 && hasMore && !loading) {
-      fetchSuppliersLazy();
+      fetchsuppliersLazy();
     }
   };
 
@@ -344,9 +348,8 @@ const SupplierManagementPage = () => {
   // Add refresh icon and functionality for Mã nhà cung cấp
   const handleRefreshMaNhaCungCap = async () => {
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
       const response = await axios.get(API_get_next_ma_nha_cung_cap, {
-        params: { model_key: dynamicModelKey },
+        params: { model_key: modelKey },
       });
       const nextMaNhaCungCap = response.data.next_ma_nha_cung_cap;
       setForm((prev) => ({ ...prev, ma_nha_cung_cap: nextMaNhaCungCap }));
@@ -358,15 +361,13 @@ const SupplierManagementPage = () => {
   // Add functionality to download Excel file
   const handleExportToExcel = async () => {
     try {
-      const dynamicModelKey = await getSupplierModelKey(userId);
       const response = await axios.get(API_export_tb_supplier_categories, {
-        params: { model_key: dynamicModelKey },
         responseType: 'blob', // Ensure the response is treated as a binary file
       });
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'TB_SUPPLIER_CATEGORIES.xlsx');
+      link.setAttribute('download', 'TB_supplier_CATEGORIES.xlsx');
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -567,17 +568,13 @@ const SupplierManagementPage = () => {
             <div className="d-flex gap-1">
               <button 
                 type="submit" 
-                className="btn btn-primary"
-                disabled={!userId || userId === 'unknown'}
-              >
+                className="btn btn-primary">
                 Thêm mới
               </button>
               <button 
                 type="button" 
                 className="btn btn-primary" 
-                onClick={handleEditButtonClick}
-                disabled={!userId || userId === 'unknown'}
-              >
+                onClick={handleEditButtonClick}>
                 Cập nhật
               </button>
               <button 
@@ -654,20 +651,20 @@ const SupplierManagementPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredSuppliers.map((Supplier) => (
-                  <tr key={Supplier.id} onClick={() => handleRowClick(Supplier)} style={{ cursor: "pointer" }}>
-                    <td>{Supplier.ma_nha_cung_cap}</td>
-                    <td>{Supplier.ten_nha_cung_cap}</td>
-                    <td>{Supplier.dia_chi}</td>
-                    <td>{Supplier.mst}</td>
-                    <td>{Supplier.ma_phan_loai_01}</td>
-                    <td>{Supplier.ma_phan_loai_02}</td>
-                    <td>{Supplier.ma_phan_loai_03}</td>
-                    <td>{Supplier.ma_phan_loai_04}</td>
-                    <td>{Supplier.ma_phan_loai_05}</td>
-                    <td>{Supplier.ma_phan_loai_06}</td>
-                    <td>{Supplier.ma_phan_loai_07}</td>
-                    <td>{Supplier.ma_phan_loai_08}</td>
+                {filteredsuppliers.map((supplier) => (
+                  <tr key={supplier.id} onClick={() => handleRowClick(supplier)} style={{ cursor: "pointer" }}>
+                    <td>{supplier.ma_nha_cung_cap}</td>
+                    <td>{supplier.ten_nha_cung_cap}</td>
+                    <td>{supplier.dia_chi}</td>
+                    <td>{supplier.mst}</td>
+                    <td>{supplier.ma_phan_loai_01}</td>
+                    <td>{supplier.ma_phan_loai_02}</td>
+                    <td>{supplier.ma_phan_loai_03}</td>
+                    <td>{supplier.ma_phan_loai_04}</td>
+                    <td>{supplier.ma_phan_loai_05}</td>
+                    <td>{supplier.ma_phan_loai_06}</td>
+                    <td>{supplier.ma_phan_loai_07}</td>
+                    <td>{supplier.ma_phan_loai_08}</td>
                   </tr>
                 ))}
               </tbody>
@@ -719,4 +716,4 @@ const SupplierManagementPage = () => {
   );
 };
 
-export default SupplierManagementPage;
+export default supplierManagementPage;
