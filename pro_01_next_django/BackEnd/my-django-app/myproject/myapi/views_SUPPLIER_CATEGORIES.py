@@ -53,7 +53,7 @@ def import_bulk_data_to_all_SUPPLIER_CATEGORIES(request):
     model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
-    ModelClass, db_name = model_tuple
+    ModelClass, _, db_name = model_tuple
     if not file_obj:
         return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
@@ -70,11 +70,11 @@ def import_bulk_data_to_all_SUPPLIER_CATEGORIES(request):
         for field in required_fields:
             if field not in header_map:
                 return Response({'error': f'Thiếu cột bắt buộc: {field}'}, status=status.HTTP_400_BAD_REQUEST)
-        # Kiểm tra mã khách hàng trùng trước khi import
+        # Kiểm tra Mã Nhà Cung Cấp trùng trước khi import
         for idx, row in enumerate(rows[1:], start=2):
             ma_nha_cung_cap = row[header_map['ma_nha_cung_cap']]
             if ma_nha_cung_cap and ModelClass.objects.using(db_name).filter(ma_nha_cung_cap=ma_nha_cung_cap, xoa_sua="new").exists():
-                return Response({'error': f'Mã khách hàng "{ma_nha_cung_cap}" đã tồn tại.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': f'Mã Nhà Cung Cấp "{ma_nha_cung_cap}" đã tồn tại.'}, status=status.HTTP_400_BAD_REQUEST)
         count = 0
         errors = []
         for idx, row in enumerate(rows[1:], start=2):
@@ -208,7 +208,7 @@ def get_next_ma_nha_cung_cap(request):
     model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
-    ModelClass, db_name = model_tuple
+    ModelClass, _, db_name = model_tuple
     latest_record = ModelClass.objects.using(db_name).filter(ma_nha_cung_cap__startswith="NCC").order_by("-ma_nha_cung_cap").first()
     if latest_record:
         latest_ma_nha_cung_cap = latest_record.ma_nha_cung_cap
@@ -227,7 +227,7 @@ class ExportTBSupplierCategoriesToExcel(APIView):
         model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
-        ModelClass, db_name = model_tuple
+        ModelClass, _, db_name = model_tuple
         # Create a workbook and worksheet
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
@@ -235,7 +235,7 @@ class ExportTBSupplierCategoriesToExcel(APIView):
 
         # Define the headers
         headers = [
-            "ID", "Date", "ID Nhân Viên", "Xóa/Sửa", "Mã Khách Hàng", "Tên Khách Hàng",
+            "ID", "Date", "ID Nhân Viên", "Xóa/Sửa", "Mã Nhà Cung Cấp", "Tên Nhà Cung Cấp",
             "Mã Phân Loại 01", "Mã Phân Loại 02", "Mã Phân Loại 03", "Mã Phân Loại 04",
             "Mã Phân Loại 05", "Mã Phân Loại 06", "Mã Phân Loại 07", "Mã Phân Loại 08",
             "MST", "Địa Chỉ"
@@ -308,7 +308,7 @@ def search_supplier_categories(request):
     model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
-    ModelClass, db_name = model_tuple
+    ModelClass, _, db_name = model_tuple
     if not query:
         return Response({'results': []})
     qs = ModelClass.objects.using(db_name).filter(

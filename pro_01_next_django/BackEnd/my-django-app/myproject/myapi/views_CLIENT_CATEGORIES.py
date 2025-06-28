@@ -50,7 +50,7 @@ def import_bulk_data_to_all_CLIENT_CATEGORIES(request):
     model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
-    ModelClass, db_name = model_tuple
+    ModelClass, _, db_name = model_tuple
     if not file_obj:
         return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
@@ -225,7 +225,7 @@ class ExportTBClientCategoriesToExcel(APIView):
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
-        ModelClass, db_name = model_tuple
+        ModelClass, _, db_name = model_tuple
         # Create a workbook and worksheet
         workbook = openpyxl.Workbook()
         worksheet = workbook.active
@@ -308,7 +308,7 @@ def search_client_categories(request):
     model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
-    ModelClass, db_name = model_tuple
+    ModelClass, _, db_name = model_tuple
     if not query:
         return Response({'results': []})
     qs = ModelClass.objects.using(db_name).filter(
