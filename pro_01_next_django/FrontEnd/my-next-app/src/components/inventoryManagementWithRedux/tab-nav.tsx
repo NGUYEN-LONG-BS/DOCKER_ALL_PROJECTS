@@ -9,6 +9,8 @@ import { InventoryFormStockIssueSlip } from "./tabIssueInputSlip/Tab02Form";
 import { InventoryCategoryTab } from "./Tab03Form";
 import { InventoryLogStockReceiveSlip } from "./tabReceiptLog/Tab04Form";
 import { InventoryLogStockIssueSlip } from "./tabIssueLog/Tab05Form";
+import { InventoryReport } from "./tabInventoryReport/Tab06Form";
+
 
 export function TabNav() {
   const dispatch = useAppDispatch();
@@ -101,16 +103,7 @@ export function TabNav() {
           <InventoryLogStockIssueSlip />
         </div>
         <div className={`tab-pane fade ${activeTab === TAB_NAMES.BAO_CAO_TON_KHO ? "show active" : ""}`} role="tabpanel">
-          <div className="card mt-3">
-            <div className="card-header text-center">
-              <h5 className="card-title mb-0">BÁO CÁO TỒN KHO</h5>
-            </div>
-            <div className="card-body">
-              <div className="d-flex align-items-center justify-content-center" style={{ height: "250px" }}>
-                <span className="text-muted">Nội dung báo cáo tồn kho sẽ được hiển thị ở đây</span>
-              </div>
-            </div>
-          </div>
+          <InventoryReport />
         </div>
       </div>
     </div>
