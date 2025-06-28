@@ -1,56 +1,56 @@
 "use client";
 
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { setDocumentRequestNumber } from "../../features/formReceiptSlip/documentRequestNumberSlice";
-import { RootState } from "../../store/store";
-import { RefreshCw } from "lucide-react";
+import React, { useState } from "react";
+import { X } from "lucide-react"; // Thêm icon X
 
-// Define props interface (documentNumber is optional, as it's now from Redux)
-interface DocumentRequestNumberProps {
-  documentNumber?: string; // Optional, as state is managed by Redux
-}
+export function DocumentRequestNumberInputForm({ value, onChange }: { value?: string; onChange?: (val: string) => void }) {
+  // Nếu không truyền value/onChange thì dùng state nội bộ
+  const [internalValue, setInternalValue] = useState("");
+  const documentRequestNumber = value !== undefined ? value : internalValue;
 
-export function DocumentRequestNumberComponent({ documentNumber: propDocumentNumber }: DocumentRequestNumberProps) {
-  const dispatch = useDispatch();
-  // Retrieve documentRequestNumber from Redux store with fallback
-  const documentRequestNumber =
-    useSelector((state: RootState) => state.documentRequestNumber.documentRequestNumber) ||
-    propDocumentNumber ||
-    "TB-DNNK-250001";
-
-  // Generate a new document request number
-  const generateNewNumber = () => {
-    const randomNum = Math.floor(100000 + Math.random() * 900000);
-    const newNumber = `TB-DNNK-${randomNum}`;
-    dispatch(setDocumentRequestNumber(newNumber)); // Update Redux store
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (onChange) {
+      onChange(e.target.value);
+    } else {
+      setInternalValue(e.target.value);
+    }
   };
 
-  // Handle input change
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setDocumentRequestNumber(e.target.value)); // Update Redux store
+  const handleClear = () => {
+    if (onChange) {
+      onChange("");
+    } else {
+      setInternalValue("");
+    }
   };
 
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: "20px" }}>
-      <label htmlFor="document-request-number" className="form-label me-2 mb-0" style={{ whiteSpace: "nowrap" }}>
+      <label
+        htmlFor="document-number-filter"
+        className="form-label me-2 mb-0"
+        style={{ whiteSpace: "nowrap" }}
+      >
         Số đề nghị:
       </label>
       <div className="input-group" style={{ maxWidth: "200px" }}>
         <input
           type="text"
           className="form-control text-center"
-          id="document-request-number"
+          id="document-number-filter"
           value={documentRequestNumber}
           onChange={handleInputChange}
+          placeholder="Số đề nghị"
+          autoComplete="off"
         />
         <button
           className="btn btn-outline-secondary btn-icon"
           type="button"
-          onClick={generateNewNumber}
-          title="Tạo số chứng từ mới"
+          onClick={handleClear}
+          title="Xóa số phiếu"
+          disabled={!documentRequestNumber}
         >
-          <RefreshCw size={16} />
+          <X size={16} />
         </button>
       </div>
     </div>

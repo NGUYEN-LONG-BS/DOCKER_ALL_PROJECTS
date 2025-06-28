@@ -18,33 +18,13 @@ const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
 
 // Define props interface (documentNumber is optional, as it's now from Redux)
 interface DocumentNumberProps {
-  documentNumber?: string; // Optional, as state is managed by Redux
+  value: string;
+  onChange: (value: string) => void;
 }
 
-export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: DocumentNumberProps) {
-  const [defaultDocNumber, setDefaultDocNumber] = useState('');
+export function DocumentNumberComponent({ value, onChange }: DocumentNumberProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [docNumber, setDocNumber] = useState('');
-
-  useEffect(() => {
-    async function getDefaultNumber() {
-      let userId = '';
-      if (typeof window !== 'undefined') {
-        userId = localStorage.getItem('user_id') || '';
-      }
-      let modelKey = 'TB';
-      if (userId) {
-        const key = await getSupplierModelKey(userId);
-        if (key && SLIP_TYPE_MAP[key]) modelKey = key;
-      }
-      const slip = SLIP_TYPE_MAP[modelKey] || SLIP_TYPE_MAP['TB'];
-      const currentYear = new Date().getFullYear().toString().slice(-2);
-      setDefaultDocNumber(`${slip.prefix}-${slip.type}-${currentYear}0001`);
-      setDocNumber(`${slip.prefix}-${slip.type}-${currentYear}0001`);
-    }
-    getDefaultNumber();
-  }, []);
 
   // Gọi API tạo số phiếu mới
   const generateNewNumber = async () => {
@@ -64,7 +44,7 @@ export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: 
       const response = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
       if (!response.ok) throw new Error('Failed to fetch new document number');
       const data = await response.json();
-      setDocNumber(data.new_number_slip);
+      onChange(data.new_number_slip);
     } catch (err: any) {
       setError('Không thể tạo số phiếu mới.');
     } finally {
@@ -74,10 +54,8 @@ export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: 
 
   // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDocNumber(e.target.value);
+    onChange(e.target.value);
   };
-
-  const documentNumber = docNumber || propDocumentNumber || defaultDocNumber;
 
   return (
     <div className="d-flex align-items-center justify-content-center" style={{ height: "20px" }}>
@@ -93,7 +71,7 @@ export function DocumentNumberComponent({ documentNumber: propDocumentNumber }: 
           type="text"
           className="form-control text-center"
           id="document-number"
-          value={documentNumber}
+          value={value}
           onChange={handleInputChange}
           disabled={loading}
         />

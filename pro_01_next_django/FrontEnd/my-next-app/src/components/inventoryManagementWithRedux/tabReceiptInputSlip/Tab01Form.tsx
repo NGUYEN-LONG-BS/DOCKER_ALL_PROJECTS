@@ -23,11 +23,8 @@ import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";
 import { RootState } from "@/store/store";
 import { DateComponent } from "@/components/date/dateComponentInputForm";
 import { DocumentNumberComponent } from "@/components/documentNumber/document-number-component-input-form";
-import { DocumentRequestNumberComponent } from "@/components/documentRequestNumber/document-request-number-component-input-form";
-
+import { DocumentRequestNumberInputForm } from "@/components/documentRequestNumber/document-request-number-component-input-form";
 import { SupplierComponent } from "@/components/objectSupplier/SearchSupplierFromAPIComponent";
-// import { ClientComponent } from "@/components/objectClient/SearchClientFromAPIComponent";
-
 import { ProductComponent } from "@/components/objectProduct/SearchInventoryFromAPIComponentOnInputForm";
 import { InventoryTableStockReceiveSlip } from "./Tab01Table";
 import InventoryNoteOfStockReceiveSlip from "../InventoryNoteOfStockReceiveSlip";
@@ -104,6 +101,11 @@ export function InventoryFormStockReceiveSlip() {
 
   const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
     dispatch(setInventoryTable(newInventoryItems));
+  };
+
+  // Handler for document number change
+  const handleDocumentNumberChange = (value: string) => {
+    dispatch(setDocumentNumber(value));
   };
 
   // Handle save action
@@ -277,17 +279,16 @@ export function InventoryFormStockReceiveSlip() {
             <DateComponent />
           </div>
           <div className="col-md-4">
-            <DocumentNumberComponent />
+            <DocumentNumberComponent value={documentNumber} onChange={handleDocumentNumberChange} />
           </div>
           <div className="col-md-4">
-            <DocumentRequestNumberComponent />
+            <DocumentRequestNumberInputForm />
           </div>
         </div>
 
         <div className="row g-3 mt-1">
           <div className="col-md-6">
             <SupplierComponent onSupplierChange={handleSupplierChange} />
-            {/* <ClientComponent onClientChange={handleSupplierChange} /> */}
             <InventoryNoteOfStockReceiveSlip />
           </div>
           <div className="col-md-6">
