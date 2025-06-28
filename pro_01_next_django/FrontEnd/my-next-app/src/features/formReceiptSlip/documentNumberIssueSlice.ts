@@ -13,19 +13,19 @@ interface DocumentNumberState {
 
 const currentYear = new Date().getFullYear().toString().slice(-2);
 const initialState: DocumentNumberState = {
-  documentNumber: `TB-PNK-${currentYear}0001`,
+  documentNumber: `TB-PXK-${currentYear}0001`,
   loading: false,
   error: null,
 };
 
 // Đặt map loại phiếu ở đầu file
 const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
-  TB: { prefix: 'TB', type: 'PNK' },
-  LA: { prefix: 'LA', type: 'PNK' },
-  PA: { prefix: 'PA', type: 'PNK' },
-  NAMAN: { prefix: 'NA', type: 'PNK' },
-  HANOI: { prefix: 'HN', type: 'PNK' },
-  MIENTAY: { prefix: 'MY', type: 'PNK' },
+  TB: { prefix: 'TB', type: 'PXK' },
+  LA: { prefix: 'LA', type: 'PXK' },
+  PA: { prefix: 'PA', type: 'PXK' },
+  NAMAN: { prefix: 'NA', type: 'PXK' },
+  HANOI: { prefix: 'HN', type: 'PXK' },
+  MIENTAY: { prefix: 'MY', type: 'PXK' },
   null: { prefix: '--', type: '---' },
 };
 

@@ -8,6 +8,7 @@ import { InventoryFormStockReceiveSlip } from "./tabReceiptInputSlip/Tab01Form";
 import { InventoryFormStockIssueSlip } from "./tabIssueInputSlip/Tab02Form";
 import { InventoryCategoryTab } from "./Tab03Form";
 import { InventoryLogStockReceiveSlip } from "./tabReceiptLog/Tab04Form";
+import { InventoryLogStockIssueSlip } from "./tabIssueLog/Tab05Form";
 
 export function TabNav() {
   const dispatch = useAppDispatch();
@@ -97,16 +98,7 @@ export function TabNav() {
           <InventoryLogStockReceiveSlip />
         </div>
         <div className={`tab-pane fade ${activeTab === TAB_NAMES.NHAT_KY_XUAT_KHO ? "show active" : ""}`} role="tabpanel">
-          <div className="card mt-3">
-            <div className="card-header text-center">
-              <h5 className="card-title mb-0">NHẬT KÝ XUẤT KHO</h5>
-            </div>
-            <div className="card-body">
-              <div className="d-flex align-items-center justify-content-center" style={{ height: "250px" }}>
-                <span className="text-muted">Nội dung nhật ký xuất kho sẽ được hiển thị ở đây</span>
-              </div>
-            </div>
-          </div>
+          <InventoryLogStockIssueSlip />
         </div>
         <div className={`tab-pane fade ${activeTab === TAB_NAMES.BAO_CAO_TON_KHO ? "show active" : ""}`} role="tabpanel">
           <div className="card mt-3">
