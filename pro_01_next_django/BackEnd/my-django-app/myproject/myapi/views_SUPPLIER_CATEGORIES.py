@@ -123,7 +123,7 @@ class SupplierPagination(PageNumberPagination):
 # Get all data
 class get_data_ALL_SUPPLIER_CATEGORIES(viewsets.ModelViewSet):
     def get_queryset(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
         if not model_tuple:
             first_model = list(MODEL_MAP_SUPPLIER_CATEGORIES.values())[0][0]
@@ -132,7 +132,7 @@ class get_data_ALL_SUPPLIER_CATEGORIES(viewsets.ModelViewSet):
         return ModelClass.objects.using(db_name).filter(xoa_sua="new").order_by("-ma_nha_cung_cap")
 
     def get_serializer_class(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
         if not model_tuple:
             first_serializer = list(MODEL_MAP_SUPPLIER_CATEGORIES.values())[0][1]
@@ -204,7 +204,7 @@ class TBSupplierCategoriesCreateView(APIView):
 # Get next ma_nha_cung_cap
 @api_view(['GET'])
 def get_next_ma_nha_cung_cap(request):
-    model_key = request.GET.get('model_key', 'TB')
+    model_key = request.GET.get('model_key', 'null')
     model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -223,7 +223,7 @@ def get_next_ma_nha_cung_cap(request):
 # Export TB SUPPLIER CATEGORIES to Excel
 class ExportTBSupplierCategoriesToExcel(APIView):
     def get(self, request):
-        model_key = request.GET.get('model_key', 'TB')
+        model_key = request.GET.get('model_key', 'null')
         model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -267,6 +267,7 @@ class ExportTBSupplierCategoriesToExcel(APIView):
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
         response["Content-Disposition"] = f'attachment; filename="{model_key}_SUPPLIER_CATEGORIES.xlsx"'
+        response["Access-Control-Expose-Headers"] = "Content-Disposition"
         workbook.save(response)
         return response
 
@@ -304,7 +305,7 @@ class UpdateXoaSuaSupplierView(APIView):
 @api_view(['GET'])
 def search_supplier_categories(request):
     query = request.GET.get('q', '').strip()
-    model_key = request.GET.get('model_key', 'TB')
+    model_key = request.GET.get('model_key', 'null')
     model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'results': [], 'message': 'Invalid model_key'}, status=400)

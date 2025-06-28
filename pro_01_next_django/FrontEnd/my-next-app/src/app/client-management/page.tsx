@@ -363,10 +363,19 @@ const ClientManagementPage = () => {
         params: { model_key: dynamicModelKey },
         responseType: 'blob', // Ensure the response is treated as a binary file
       });
+      // Lấy tên file từ header Content-Disposition
+      let fileName = 'CLIENT_CATEGORIES.xlsx';
+      const disposition = response.headers['content-disposition'];
+      if (disposition) {
+        const match = disposition.match(/filename="(.+?)"/);
+        if (match && match[1]) {
+          fileName = match[1];
+        }
+      }
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'TB_CLIENT_CATEGORIES.xlsx');
+      link.setAttribute('download', fileName);
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -568,7 +577,7 @@ const ClientManagementPage = () => {
               <button 
                 type="submit" 
                 className="btn btn-primary"
-                disabled={!userId || userId === 'unknown'}
+                disabled={Boolean(!userId || userId === 'unknown')}
               >
                 Thêm mới
               </button>
@@ -576,7 +585,7 @@ const ClientManagementPage = () => {
                 type="button" 
                 className="btn btn-primary" 
                 onClick={handleEditButtonClick}
-                disabled={!userId || userId === 'unknown'}
+                disabled={Boolean(!userId || userId === 'unknown')}
               >
                 Cập nhật
               </button>

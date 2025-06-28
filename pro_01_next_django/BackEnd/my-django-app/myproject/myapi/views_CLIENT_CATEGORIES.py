@@ -46,7 +46,7 @@ MODEL_MAP_CLIENT_CATEGORIES = {
 @parser_classes([MultiPartParser, FormParser])
 def import_bulk_data_to_all_CLIENT_CATEGORIES(request):
     file_obj = request.FILES.get('file')
-    model_key = request.data.get("model_key", "TB")
+    model_key = request.data.get("model_key", "null")
     model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -149,7 +149,7 @@ class Client_Categories_Create_View(APIView):
         data = request.data.copy()
         ma_khach_hang = data.get("ma_khach_hang")
         action = data.pop("action", None)  # Remove 'action' from data
-        model_key = data.get("model_key", "TB")
+        model_key = data.get("model_key", "null")
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)
@@ -265,6 +265,7 @@ class ExportTBClientCategoriesToExcel(APIView):
             content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
         response["Content-Disposition"] = f'attachment; filename="{model_key}_CLIENT_CATEGORIES.xlsx"'
+        response["Access-Control-Expose-Headers"] = "Content-Disposition"
         workbook.save(response)
         return response
 
@@ -273,7 +274,7 @@ class UpdateXoaSuaClientView(APIView):
     def post(self, request):
         ma_khach_hang = request.data.get("ma_khach_hang")
         pass_field = request.data.get("pass_field")
-        model_key = request.data.get("model_key", "TB")
+        model_key = request.data.get("model_key", "null")
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)
