@@ -29,15 +29,19 @@ class TBSupplierCategoriesSerializer(serializers.ModelSerializer):
 class TB_InventoryStockSerializer(serializers.ModelSerializer):
     STT = serializers.SerializerMethodField()
     ten_hang = serializers.SerializerMethodField()
+    ten_doi_tuong = serializers.SerializerMethodField()  # Thêm dòng này để khai báo field động
 
     def get_STT(self, obj):
         # Lấy index từ context và cộng 1 để bắt đầu từ 1
         return self.context['index'] + 1
     
     def get_ten_hang(self, obj):
-        # Fetch ten_hang from TB_INVENTORY_CATEGORIES based on ma_hang
         category = TB_INVENTORY_CATEGORIES.objects.using(DB_NAME_TB).filter(ma_hang=obj.ma_hang).first()
         return category.ten_hang if category else 'N/A'
+    
+    def get_ten_doi_tuong(self, obj):
+        category = TB_SUPPLIER_CATEGORIES.objects.using(DB_NAME_TB).filter(ma_nha_cung_cap=obj.ma_doi_tuong).first()
+        return category.ten_nha_cung_cap if category else 'N/A'
 
     class Meta:
         model = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
@@ -47,6 +51,7 @@ class TB_InventoryStockSerializer(serializers.ModelSerializer):
             'ngay_tren_phieu',
             'so_phieu_de_nghi',
             'ma_doi_tuong',
+            'ten_doi_tuong',
             'ma_hang',
             'ten_hang',
             'so_luong',
