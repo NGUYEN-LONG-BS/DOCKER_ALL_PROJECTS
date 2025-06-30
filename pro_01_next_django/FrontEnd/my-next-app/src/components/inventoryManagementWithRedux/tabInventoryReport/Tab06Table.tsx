@@ -21,9 +21,9 @@ interface InventoryReportItem {
   ten_hang: string;
   dvt: string;
   ton_dau_ky: number;
-  nhap_trong_ngay: number;
-  xuat_trong_ngay: number;
-  ton_cuoi_ngay: number;
+  tong_nhap: number;
+  tong_xuat: number;
+  ton_cuoi_ky: number;
 }
 
 // Define component props
@@ -32,12 +32,24 @@ interface InventoryTableStockReceiveSlipProps {
   onRowSelect: (soPhieu: string) => void;
 }
 
+const TABLE_HEADERS = [
+  { label: "STT", width: "" },
+  { label: "Mã hàng", width: "120px" },
+  { label: "Tên hàng", width: "" },
+  { label: "Đvt", width: "" },
+  { label: "Tồn đầu kỳ", width: "" },
+  { label: "Nhập trong kỳ", width: "" },
+  { label: "Xuất trong kỳ", width: "" },
+  { label: "Tồn cuối kỳ", width: "" },
+];
+
 export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSelect }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector((state) => state.form);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [reportData, setReportData] = useState<InventoryReportItem[]>([]);
-  const [reportDate, setReportDate] = useState<string>("");
+  const [fromDate, setFromDate] = useState<string>("");
+  const [toDate, setToDate] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
 
   // Lấy filter từ Redux store
@@ -100,8 +112,19 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
       const response = await fetch(apiUrl);
       if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu!");
       const data = await response.json();
-      setReportDate(data.date || "");
-      setReportData(data.data || []);
+      setFromDate(data.from_date || "");
+      setToDate(data.to_date || "");
+      // Map lại field cho đúng interface
+      const mappedData = (data.data || []).map((item: any) => ({
+        ma_hang: item.ma_hang,
+        ten_hang: item.ten_hang,
+        dvt: item.dvt,
+        ton_dau_ky: item.ton_dau_ky,
+        tong_nhap: item.tong_nhap, // map đúng field
+        tong_xuat: item.tong_xuat, // map đúng field
+        ton_cuoi_ky: item.ton_cuoi_ky, // map đúng field
+      }));
+      setReportData(mappedData);
     } catch (err: any) {
       setErrorMessage(err.message || "Lỗi không xác định!");
     } finally {
@@ -162,23 +185,20 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
 
       <div className="border rounded">
         <div className="table-container">
-          <div className="mb-2 text-end text-muted small">
-            {reportDate && <span>Ngày báo cáo: {reportDate}</span>}
-          </div>
+          {/* <div className="mb-2 text-end text-muted small">
+            {fromDate && toDate && (
+              <span>Báo cáo từ {fromDate} đến {toDate}</span>
+            )}
+          </div> */}
           {isLoading ? (
             <div className="text-center py-4">Loading data...</div>
           ) : (
             <table className="table table-bordered table-hover mb-0">
               <thead>
                 <tr>
-                  <th>STT</th>
-                  <th>Mã hàng</th>
-                  <th>Tên hàng</th>
-                  <th>Đvt</th>
-                  <th>Tồn đầu kỳ</th>
-                  <th>Nhập trong ngày</th>
-                  <th>Xuất trong ngày</th>
-                  <th>Tồn cuối ngày</th>
+                  {TABLE_HEADERS.map((h) => (
+                    <th key={h.label} style={h.width ? { width: h.width } : {}}>{h.label}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -190,9 +210,9 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
                       <td>{item.ten_hang}</td>
                       <td>{item.dvt}</td>
                       <td>{formatNumber(item.ton_dau_ky)}</td>
-                      <td>{formatNumber(item.nhap_trong_ngay)}</td>
-                      <td>{formatNumber(item.xuat_trong_ngay)}</td>
-                      <td>{formatNumber(item.ton_cuoi_ngay)}</td>
+                      <td>{formatNumber(item.tong_nhap)}</td>
+                      <td>{formatNumber(item.tong_xuat)}</td>
+                      <td>{formatNumber(item.ton_cuoi_ky)}</td>
                     </tr>
                   ))
                 ) : (

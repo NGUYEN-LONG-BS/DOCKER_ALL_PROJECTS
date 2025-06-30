@@ -1,11 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { DateComponentFilterForm } from "@/components/date/dateComponentFilterForm";
-import { DocumentNumberFilterForm } from "@/components/documentNumber/document-number-component-filter-form";
-import { DocumentRequestNumberFilterForm } from "@/components/documentRequestNumber/document-request-number-component-filter-form";
-import { SupplierComponentFilterForm } from "@/components/objectSupplier/ObjectSupplierComponentFilterForm";
-import { ProductComponentFilterForm } from "@/components/objectProduct/ObjectProductComponentFilterForm";
+import { DateComponentFilterForm } from "@/components/date/dateComponentFilterForm_inventory_report_quanlity";
+import { ProductComponentFilterForm } from "@/components/objectProduct/ObjectProductComponentFilterForm_inventory_report_quanlity";
 import { InventoryTableStockReceiveSlip } from "./Tab06Table";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNum01";
@@ -62,9 +59,9 @@ interface InventoryReportItem {
   ten_hang: string;
   dvt: string;
   ton_dau_ky: number;
-  nhap_trong_ngay: number;
-  xuat_trong_ngay: number;
-  ton_cuoi_ngay: number;
+  tong_nhap: number;
+  tong_xuat: number;
+  ton_cuoi_ky: number;
 }
 
 export function InventoryReport() {
@@ -75,18 +72,7 @@ export function InventoryReport() {
     const today = new Date().toISOString().split('T')[0];
     return today;
   });
-  const [documentNumber, setDocumentNumber] = useState<string>('TB-PNK-250001');
-  const [documentRequestNumber, setDocumentRequestNumber] = useState<string>('TB-DNNK-250001');
-  const [slipNote, setSlipNoteState] = useState<SlipNote>({
-    selectedWarehouse: 'Kho A',
-    notesOfSlip: '',
-  });
-  const [supplier, setSupplierState] = useState<Supplier>({
-    code: '',
-    name: '',
-    taxId: '',
-    address: '',
-  });
+
   // State for all components
   const [inventoryTable, setInventoryTable] = useState<InventoryItemExport[]>([]);
   const [selectedSoPhieu, setSelectedSoPhieu] = useState<string | null>(null);
@@ -98,24 +84,6 @@ export function InventoryReport() {
   
   // Hàm cập nhật bảng thông tin tồn kho
   const handleInventoryTableChange = (newInventoryItems: InventoryReportItem[]) => {
-    // Nếu cần convert sang InventoryItemExport thì map ở đây, còn không thì giữ nguyên
-    // setInventoryTable(newInventoryItems as any);
-    // Nếu chỉ cần lưu trữ để export hoặc hiển thị, có thể lưu vào state riêng
-    // setInventoryTable(newInventoryItems);
-    // Nếu muốn convert sang InventoryItemExport[]:
-    // const converted = newInventoryItems.map((item, idx) => ({
-    //   id: idx + 1,
-    //   so_phieu: '',
-    //   ngay_tren_phieu: '',
-    //   so_phieu_de_nghi: '',
-    //   ma_doi_tuong: '',
-    //   ten_doi_tuong: '',
-    //   ma_hang: item.ma_hang,
-    //   ten_hang: item.ten_hang,
-    //   ma_kho_nhan: '',
-    //   so_luong: item.ton_cuoi_ngay.toString(),
-    // }));
-    // setInventoryTable(converted);
     setInventoryTable(newInventoryItems as any); // Tạm thời ép kiểu nếu chỉ dùng để export
   };
 
@@ -163,11 +131,6 @@ export function InventoryReport() {
 
     console.log("kết thúc");
   };
-  
-  
-  
-
-  
 
   // Use useEffect to trigger file import after selectedFile is updated
   useEffect(() => {
@@ -175,43 +138,6 @@ export function InventoryReport() {
       handleImportFile(); // Gọi hàm xử lý upload file ngay khi file được chọn
     }
   }, [selectedFile]); // This will run when selectedFile changes
-
-
-  // Cập nhật giá trị kho
-  const handleWarehouseChange = (newWarehouse: string) => {
-    setSlipNoteState((prevState) => ({
-      ...prevState,
-      selectedWarehouse: newWarehouse,
-    }));
-  };
-
-  // Cập nhật ghi chú
-  const handleNotesChange = (newNotes: string) => {
-    setSlipNoteState((prevState) => ({
-      ...prevState,
-      notesOfSlip: newNotes,
-    }));
-  };
-
-  // Hàm cập nhật thông tin ngày tháng từ DateComponent
-  const handleDateChange = (newDate: string) => {
-    setDate(newDate);
-  };
-
-  // Hàm cập nhật thông tin số tài liệu từ DocumentNumberComponent
-  const handleDocumentNumberChange = (newDocumentNumber: string) => {
-    setDocumentNumber(newDocumentNumber);
-  };
-
-  // Hàm cập nhật thông tin nhà cung cấp từ SupplierComponent
-  const handleSupplierChange = (newSupplier: Supplier) => {
-    setSupplierState(newSupplier);
-  };
-
-  // Hàm xử lý khi sản phẩm thay đổi
-  const handleProductChange = (product: InventoryItemExport) => {
-    setSelectedProduct(product); // Cập nhật thông tin sản phẩm đã chọn
-  };
 
   const mapApiDataToForm = (apiDataArray: any[]) => {
     if (!Array.isArray(apiDataArray) || apiDataArray.length === 0) return;
@@ -293,22 +219,10 @@ export function InventoryReport() {
       </div>
       <div className="card-body">
         <div className="row g-3">
-          <div className="col-md-6">
+          <div className="col-md-6" >
             <DateComponentFilterForm />
           </div>
-          <div className="col-md-3">
-            <DocumentNumberFilterForm/>
-          </div>
-          <div className="col-md-3">
-            <DocumentRequestNumberFilterForm />
-          </div>
-        </div>
-
-        <div className="row g-3 mt-1">
-          <div className="col-md-6">
-            <SupplierComponentFilterForm />
-          </div>
-          <div className="col-md-6">
+          <div className="col-md-6" >
             <ProductComponentFilterForm />
           </div>
         </div>
