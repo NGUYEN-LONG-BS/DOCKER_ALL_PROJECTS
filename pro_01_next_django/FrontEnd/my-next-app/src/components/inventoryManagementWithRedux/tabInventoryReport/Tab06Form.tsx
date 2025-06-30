@@ -8,7 +8,6 @@ import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum0
 import SuccessPopup from "@/components/popups/successPopupComponentTypeFadeOutNum01";
 import { useAppDispatch } from "@/store/store";
 import { setActiveTab, TAB_NAMES } from "@/features/formReceiptSlip/tabNavSlice";
-
 import { setDate as setDateRedux } from "@/features/formReceiptSlip/dateSlice";
 import { setDocumentNumberReceipt as setDocumentNumberRedux } from "@/features/formReceiptSlip/documentNumberReceiptSlice";
 import { setDocumentRequestNumber as setDocumentRequestNumberRedux } from "@/features/formReceiptSlip/documentRequestNumberSlice";
