@@ -2,15 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/store/store";
-import {
-  setInventoryData,
-} from "@/features/formReceiptLog/formReceiptLogSlice";
 import PopupFadeout from "@/components/popups/errorPopupComponentTypeFadeOutNum01";
 import { setDateStart, setDateEnd } from "@/features/formReceiptLog/dateFilterFormSlice";
-import { clearDocumentNumber } from "@/features/formReceiptLog/documentNumberFilterFormSlice";
-import { clearDocumentRequestNumber } from "@/features/formReceiptLog/documentRequestNumberFilterFormSlice";
-import { clearSupplier } from "@/features/formReceiptLog/supplierFilterFormSlice";
-import { resetProductState } from "@/features/formReceiptLog/objectProductFilterFormSlice";
 import { API_inventory_report_quantity } from '@/api/api';
 import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { formatNumber } from '@/utils/formatNumber';
@@ -53,10 +46,10 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
   const [isLoading, setIsLoading] = useState(false);
 
   // Lấy filter từ Redux store
-  const documentNumber = useAppSelector((state) => state.documentNumberFilterForm.documentNumber);
-  const documentRequestNumber = useAppSelector((state) => state.documentRequestNumberFilterForm.documentRequestNumber);
-  const supplierCode = useAppSelector((state) => state.supplierFilterForm.supplier.code);
-  const productCode = useAppSelector((state) => state.productFilterForm.Product.code);
+  // const documentNumber = useAppSelector((state) => state.documentNumberFilterForm.documentNumber);
+  // const documentRequestNumber = useAppSelector((state) => state.documentRequestNumberFilterForm.documentRequestNumber);
+  // const supplierCode = useAppSelector((state) => state.supplierFilterForm.supplier.code);
+  // const productCode = useAppSelector((state) => state.productFilterForm.Product.code);
   const dateStart = useAppSelector((state) => state.dateFilterForm.dateStart);
   const dateEnd = useAppSelector((state) => state.dateFilterForm.dateEnd);
   const userId = useAppSelector((state) => state.user.userId);
@@ -90,10 +83,10 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
     const params = new URLSearchParams();
     if (dateStart) params.append("from_date", dateStart);
     if (dateEnd) params.append("to_date", dateEnd);
-    if (documentNumber) params.append("so_phieu", documentNumber);
-    if (documentRequestNumber) params.append("so_phieu_de_nghi", documentRequestNumber);
-    if (supplierCode) params.append("ma_doi_tuong", supplierCode);
-    if (productCode) params.append("ma_hang", productCode);
+    // if (documentNumber) params.append("so_phieu", documentNumber);
+    // if (documentRequestNumber) params.append("so_phieu_de_nghi", documentRequestNumber);
+    // if (supplierCode) params.append("ma_doi_tuong", supplierCode);
+    // if (productCode) params.append("ma_hang", productCode);
 
     // Lấy model_key động từ quyền user
     let model_key = null;
@@ -143,12 +136,6 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
     dispatch(setDateStart(formatDate(start)));
     dispatch(setDateEnd(formatDate(end)));
 
-    // Clear các filter khác
-    dispatch(clearDocumentNumber());
-    dispatch(clearDocumentRequestNumber());
-    dispatch(clearSupplier());
-    dispatch(resetProductState());
-
     setJustCleared(true);
   };
 
@@ -185,11 +172,6 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
 
       <div className="border rounded">
         <div className="table-container">
-          {/* <div className="mb-2 text-end text-muted small">
-            {fromDate && toDate && (
-              <span>Báo cáo từ {fromDate} đến {toDate}</span>
-            )}
-          </div> */}
           {isLoading ? (
             <div className="text-center py-4">Loading data...</div>
           ) : (

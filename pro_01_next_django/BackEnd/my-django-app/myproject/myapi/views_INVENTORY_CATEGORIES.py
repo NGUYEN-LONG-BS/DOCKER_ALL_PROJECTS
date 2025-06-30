@@ -216,7 +216,6 @@ class CheckMaHangExistView(APIView):
 
 # ==========================================================================
 # api to inventory report quantity
-
 class InventoryReportQuantityView(APIView):
     def get(self, request, format=None):
         # Lấy ngày bắt đầu và kết thúc từ query param
