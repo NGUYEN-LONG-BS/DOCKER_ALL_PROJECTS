@@ -9,6 +9,7 @@ export const API_get_user_permission_info = `${API_BASE_URL}/api/get-user-permis
 export const API_get_login_info = `${API_BASE_URL}/api/get-login-info/`;
 export const API_submit_login_info = `${API_BASE_URL}/api/submit-login-info/`;
 export const API_user_permissions = `${API_BASE_URL}/api/user-permissions/`;
+export const API_user_login = `${API_BASE_URL}/api/user-login/`;
 // =======================================================================================================
 // IMPORT BULK DATA
 export const API_import_bulk_data_to_all_INVENTORY_CATEGORIES = `${API_BASE_URL}/api/import_bulk_data_to_all_INVENTORY_CATEGORIES/`;

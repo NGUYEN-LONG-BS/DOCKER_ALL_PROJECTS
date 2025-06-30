@@ -1,6 +1,7 @@
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import DefaultRouter
 from . import views
 
 from .views import LoginInfoListView
@@ -39,11 +40,12 @@ from .views_SUPPLIER_CATEGORIES import UpdateXoaSuaSupplierView
 from .views_SUPPLIER_CATEGORIES import search_supplier_categories
 from .views_SUPPLIER_CATEGORIES import get_data_ALL_SUPPLIER_CATEGORIES
 # ===========================================================================
-from rest_framework.routers import DefaultRouter
 from .views import UserPermissionViewSet
+from .views import UserLoginViewSet
 
 router = DefaultRouter()
 router.register(r'user-permissions', UserPermissionViewSet, basename='user-permission')
+router.register(r'user-login', UserLoginViewSet, basename='user-login')
 
 urlpatterns = [
     # ========================================================================

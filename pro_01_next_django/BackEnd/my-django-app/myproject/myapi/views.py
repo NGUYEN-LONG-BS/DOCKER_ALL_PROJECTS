@@ -11,7 +11,7 @@ from rest_framework.generics import ListAPIView
 from .models import LoginInfo, UserPermission
 
 from .serializers import LoginInfoSerializer
-from .serializers import LoginInfoSerializer
+from .serializers import LoginInfo_all_columns_Serializer
 from .serializers import UserPermissionSerializer
 
 import json
@@ -86,7 +86,27 @@ def check_login(request):
     return JsonResponse({'error': 'Phương thức không được hỗ trợ'}, status=405)
 
 # ==============================================================================
-# Login and Permission
+# Login
+class UserLoginViewSet(viewsets.ModelViewSet):
+    serializer_class = LoginInfo_all_columns_Serializer
+
+    def get_queryset(self):
+        queryset = LoginInfo.objects.using(DATABASE_NAME_default).all().order_by('login_id')
+        # Đánh lại số thứ tự (STT) cho từng bản ghi
+        for idx, obj in enumerate(queryset, start=1):
+            obj.stt = idx
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        # Thêm trường STT vào từng bản ghi trả về
+        data = serializer.data
+        for idx, item in enumerate(data, start=1):
+            item['stt'] = idx
+        return Response(data)
+    
+# Permission
 class UserPermissionViewSet(viewsets.ModelViewSet):
     serializer_class = UserPermissionSerializer
 

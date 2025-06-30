@@ -144,8 +144,8 @@ export const menuItems: MenuItem[] = [
         label: 'User',
         permission: ['Admin'],
         submenu_02: [
-          { label: 'Tạo mới user', href: '/admin/user' },
-          { label: 'Phân quyền user', href: '/admin/user' },
+          { label: 'Tạo mới user', href: '/admin/user-login-info' },
+          { label: 'Phân quyền user', href: '/admin/user-permission-info' },
         ],
       },
       {

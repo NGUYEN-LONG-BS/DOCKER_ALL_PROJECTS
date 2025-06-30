@@ -19,6 +19,11 @@ class LoginInfoSerializer(serializers.ModelSerializer):
         model = LoginInfo
         fields = ['login_id', 'pass_field']
 
+class LoginInfo_all_columns_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = LoginInfo
+        fields = '__all__'
+
 class UserPermissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserPermission

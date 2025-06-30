@@ -12,7 +12,7 @@ export default function UserPermissionPage() {
   // ========== Permission Check =========
   const router = useRouter();
   useEffect(() => {
-      const currentPage = "admin___user"; // Update dynamically if needed
+      const currentPage = "admin___user_permission"; // Update dynamically if needed
       const permissions = permissionData[currentPage];
       checkPermission(permissions, router);
   }, [router]);
@@ -91,7 +91,7 @@ export default function UserPermissionPage() {
       <main className="container py-5 flex-grow-1">
         
         <div className="container py-4">
-      <h2 className="mb-4">Quản lý User Permissions</h2>
+      <h2 className="mb-4">Quản lý User Permission</h2>
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit} className="mb-4 row g-2 align-items-end">
         <div className="col-md-3">
