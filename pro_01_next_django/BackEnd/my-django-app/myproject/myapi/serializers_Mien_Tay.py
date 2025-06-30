@@ -39,6 +39,10 @@ class MIENTAY_InventoryStockSerializer(serializers.ModelSerializer):
         category = MIENTAY_INVENTORY_CATEGORIES.objects.using(DB_NAME_TB).filter(ma_hang=obj.ma_hang).first()
         return category.ten_hang if category else 'N/A'
 
+    def get_ten_doi_tuong(self, obj):
+        category = MIENTAY_SUPPLIER_CATEGORIES.objects.using(DB_NAME_TB).filter(ma_nha_cung_cap=obj.ma_doi_tuong).first()
+        return category.ten_nha_cung_cap if category else 'N/A'
+
     class Meta:
         model = MIENTAY_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
         fields = [
@@ -47,6 +51,7 @@ class MIENTAY_InventoryStockSerializer(serializers.ModelSerializer):
             'ngay_tren_phieu',
             'so_phieu_de_nghi',
             'ma_doi_tuong',
+            'ten_doi_tuong',
             'ma_hang',
             'ten_hang',
             'so_luong',
