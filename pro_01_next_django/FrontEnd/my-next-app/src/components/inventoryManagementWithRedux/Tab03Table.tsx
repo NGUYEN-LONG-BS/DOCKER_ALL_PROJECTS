@@ -19,6 +19,13 @@ interface InventoryTableStockReceiveSlipProps {
   onInventoryTableChange: (newItems: InventoryItem[]) => void; // Callback to notify parent about changes
 }
 
+const TABLE_HEADERS = [
+  { label: "STT", width: "50px" },
+  { label: "Mã hàng", width: "120px" },
+  { label: "Tên hàng", width: "" },
+  { label: "Đvt", width: "" },
+];
+
 export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange }: InventoryTableStockReceiveSlipProps) {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -107,10 +114,9 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
           <table className="table table-bordered table-hover mb-0">
             <thead>
               <tr>
-                <th style={{ width: "50px" }}>STT</th>
-                <th>Mã hàng</th>
-                <th>Tên hàng</th>
-                <th>Đvt</th>
+                {TABLE_HEADERS.map((h) => (
+                  <th key={h.label} style={h.width ? { width: h.width } : {}}>{h.label}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
