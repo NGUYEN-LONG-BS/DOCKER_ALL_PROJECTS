@@ -30,6 +30,7 @@ export const API_new_number_slip_pnk = `${API_BASE_URL}/api/new-number-slip-pnk/
 export const API_new_number_slip_pxk = `${API_BASE_URL}/api/new-number-slip-pxk/`;
 export const API_search_inventory_categories = `${API_BASE_URL}/api/search-inventory-categories/`;
 export const API_get_inventory_categories = `${API_BASE_URL}/api/get-inventory-categories/`;
+export const API_inventory_report_quantity = `${API_BASE_URL}/api/inventory-report-quantity/`;
 // =======================================================================================================
 // CLIENT MANAGEMENT
 export const API_create_client_category = `${API_BASE_URL}/api/create-client-category/`;

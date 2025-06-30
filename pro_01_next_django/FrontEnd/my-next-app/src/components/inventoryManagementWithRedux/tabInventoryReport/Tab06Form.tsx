@@ -56,6 +56,17 @@ interface Supplier {
   address: string;
 }
 
+// Định nghĩa InventoryReportItem interface giống Tab06Table
+interface InventoryReportItem {
+  ma_hang: string;
+  ten_hang: string;
+  dvt: string;
+  ton_dau_ky: number;
+  nhap_trong_ngay: number;
+  xuat_trong_ngay: number;
+  ton_cuoi_ngay: number;
+}
+
 export function InventoryReport() {
   // State for all components
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -86,8 +97,26 @@ export function InventoryReport() {
   const dispatch = useAppDispatch();
   
   // Hàm cập nhật bảng thông tin tồn kho
-  const handleInventoryTableChange = (newInventoryItems: InventoryItemExport[]) => {
-    setInventoryTable(newInventoryItems);
+  const handleInventoryTableChange = (newInventoryItems: InventoryReportItem[]) => {
+    // Nếu cần convert sang InventoryItemExport thì map ở đây, còn không thì giữ nguyên
+    // setInventoryTable(newInventoryItems as any);
+    // Nếu chỉ cần lưu trữ để export hoặc hiển thị, có thể lưu vào state riêng
+    // setInventoryTable(newInventoryItems);
+    // Nếu muốn convert sang InventoryItemExport[]:
+    // const converted = newInventoryItems.map((item, idx) => ({
+    //   id: idx + 1,
+    //   so_phieu: '',
+    //   ngay_tren_phieu: '',
+    //   so_phieu_de_nghi: '',
+    //   ma_doi_tuong: '',
+    //   ten_doi_tuong: '',
+    //   ma_hang: item.ma_hang,
+    //   ten_hang: item.ten_hang,
+    //   ma_kho_nhan: '',
+    //   so_luong: item.ton_cuoi_ngay.toString(),
+    // }));
+    // setInventoryTable(converted);
+    setInventoryTable(newInventoryItems as any); // Tạm thời ép kiểu nếu chỉ dùng để export
   };
 
   // Hàm xử lý khi người dùng chọn file

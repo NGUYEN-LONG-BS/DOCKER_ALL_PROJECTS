@@ -11,34 +11,34 @@ import { clearDocumentNumber } from "@/features/formReceiptLog/documentNumberFil
 import { clearDocumentRequestNumber } from "@/features/formReceiptLog/documentRequestNumberFilterFormSlice";
 import { clearSupplier } from "@/features/formReceiptLog/supplierFilterFormSlice";
 import { resetProductState } from "@/features/formReceiptLog/objectProductFilterFormSlice";
-import { API_inventory_stock } from '@/api/api';
+import { API_inventory_report_quantity } from '@/api/api';
 import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
+import { formatNumber } from '@/utils/formatNumber';
 
-
-// Define interface for API data
-interface InventoryItem {
-  id: number;
-  so_phieu: string;
-  ngay_tren_phieu: string;
-  so_phieu_de_nghi: string;
-  ma_doi_tuong: string;
-  ten_doi_tuong?: string;
+// Định nghĩa interface cho báo cáo tồn kho
+interface InventoryReportItem {
   ma_hang: string;
-  ten_hang?: string;
-  ma_kho_nhan: string;
-  so_luong: string;
+  ten_hang: string;
+  dvt: string;
+  ton_dau_ky: number;
+  nhap_trong_ngay: number;
+  xuat_trong_ngay: number;
+  ton_cuoi_ngay: number;
 }
 
 // Define component props
 interface InventoryTableStockReceiveSlipProps {
-  onInventoryTableChange: (newItems: InventoryItem[]) => void;
+  onInventoryTableChange: (newItems: InventoryReportItem[]) => void;
   onRowSelect: (soPhieu: string) => void;
 }
 
 export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSelect }: InventoryTableStockReceiveSlipProps) {
   const dispatch = useAppDispatch();
-  const { inventoryData, status, error } = useAppSelector((state) => state.form);
+  const { status, error } = useAppSelector((state) => state.form);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [reportData, setReportData] = useState<InventoryReportItem[]>([]);
+  const [reportDate, setReportDate] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Lấy filter từ Redux store
   const documentNumber = useAppSelector((state) => state.documentNumberFilterForm.documentNumber);
@@ -49,7 +49,6 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
   const dateEnd = useAppSelector((state) => state.dateFilterForm.dateEnd);
   const userId = useAppSelector((state) => state.user.userId);
   const [justCleared, setJustCleared] = useState(true);
-  
 
   // Đảm bảo ngày mặc định là 10 ngày gần nhất khi render lần đầu
   useEffect(() => {
@@ -67,30 +66,14 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
     // eslint-disable-next-line
   }, []);
 
-  // // Fetch data on component mount
-  // useEffect(() => {
-  //   dispatch(fetchInventoryData());
-  // }, [dispatch]);
-
-  // Update parent when inventoryData changes
+  // Khi reportData thay đổi, callback cho parent
   useEffect(() => {
-    if (inventoryData.length > 0) {
-      onInventoryTableChange(inventoryData);
-    }
-  }, [inventoryData, onInventoryTableChange]);
+    onInventoryTableChange(reportData);
+  }, [reportData, onInventoryTableChange]);
 
   // Xử lý khi nhấn nút Filter
   const handleFilter = async () => {
-    // ================================================================
-    // console.log("Từ ngày:", dateStart);
-    // console.log("Đến ngày:", dateEnd);
-    // console.log("Số chứng từ:", documentNumber);
-    // console.log("Số đề nghị:", documentRequestNumber);
-    // console.log("Mã nhà cung cấp:", supplierCode);
-    // console.log("Mã sản phẩm:", productCode);
-    // ================================================================
-    // Bạn có thể thực hiện filter thực tế ở đây nếu muốn
-
+    setIsLoading(true);
     // Tạo query params
     const params = new URLSearchParams();
     if (dateStart) params.append("from_date", dateStart);
@@ -109,7 +92,7 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
       params.append('model_key', model_key);
     }
 
-    const apiUrl = `${API_inventory_stock}?${params.toString()}`;
+    const apiUrl = `${API_inventory_report_quantity}?${params.toString()}`;
     // console.log("API URL:", apiUrl);
 
     // Nếu muốn gọi API thực tế, bạn có thể fetch(apiUrl) ở đây
@@ -117,11 +100,12 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
       const response = await fetch(apiUrl);
       if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu!");
       const data = await response.json();
-      // Giả sử data là mảng InventoryItem
-      dispatch(setInventoryData(data));
-      onInventoryTableChange(data);
+      setReportDate(data.date || "");
+      setReportData(data.data || []);
     } catch (err: any) {
       setErrorMessage(err.message || "Lỗi không xác định!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -178,50 +162,49 @@ export function InventoryTableStockReceiveSlip({ onInventoryTableChange, onRowSe
 
       <div className="border rounded">
         <div className="table-container">
-          <table className="table table-bordered table-hover mb-0">
-            <thead>
-              <tr>
-                <th style={{ width: "50px" }}>STT</th>
-                <th>Số phiếu</th>
-                <th>Ngày</th>
-                <th>Số đề nghị</th>
-                <th>Mã đối tượng</th>
-                <th>Tên đối tượng</th>
-                <th>Mã hàng</th>
-                <th>Tên hàng</th>
-                <th>Kho</th>
-                <th>Số lượng</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inventoryData.length > 0 ? (
-                inventoryData.map((item, idx) => (
-                  <tr 
-                    key={item.id ? item.id : idx}
-                    onClick={() => onRowSelect(item.so_phieu)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <td>{idx + 1}</td>
-                    <td>{item.so_phieu}</td>
-                    <td>{new Date(item.ngay_tren_phieu).toLocaleDateString()}</td>
-                    <td>{item.so_phieu_de_nghi}</td>
-                    <td>{item.ma_doi_tuong}</td>
-                    <td>{item.ten_doi_tuong || 'N/A'}</td>
-                    <td>{item.ma_hang}</td>
-                    <td>{item.ten_hang || 'N/A'}</td>
-                    <td>{item.ma_kho_nhan}</td>
-                    <td>{item.so_luong}</td>
-                  </tr>
-                ))
-              ) : (
+          <div className="mb-2 text-end text-muted small">
+            {reportDate && <span>Ngày báo cáo: {reportDate}</span>}
+          </div>
+          {isLoading ? (
+            <div className="text-center py-4">Loading data...</div>
+          ) : (
+            <table className="table table-bordered table-hover mb-0">
+              <thead>
                 <tr>
-                  <td colSpan={10} className="text-center py-4">
-                    No data
-                  </td>
+                  <th>STT</th>
+                  <th>Mã hàng</th>
+                  <th>Tên hàng</th>
+                  <th>Đvt</th>
+                  <th>Tồn đầu kỳ</th>
+                  <th>Nhập trong ngày</th>
+                  <th>Xuất trong ngày</th>
+                  <th>Tồn cuối ngày</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {reportData.length > 0 ? (
+                  reportData.map((item, idx) => (
+                    <tr key={item.ma_hang || idx}>
+                      <td>{idx + 1}</td>
+                      <td>{item.ma_hang}</td>
+                      <td>{item.ten_hang}</td>
+                      <td>{item.dvt}</td>
+                      <td>{formatNumber(item.ton_dau_ky)}</td>
+                      <td>{formatNumber(item.nhap_trong_ngay)}</td>
+                      <td>{formatNumber(item.xuat_trong_ngay)}</td>
+                      <td>{formatNumber(item.ton_cuoi_ngay)}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={8} className="text-center py-4">
+                      No data
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
       <PopupFadeout message={errorMessage} onClose={() => setErrorMessage(null)} />
