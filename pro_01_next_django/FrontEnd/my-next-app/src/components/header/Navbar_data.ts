@@ -7,6 +7,9 @@ export interface MenuItem {
 }
 
 export const menuItems: MenuItem[] = [
+  // ================================================================================
+  // ========================= TRADING SUBSIDIARIES =================================
+  // ================================================================================
   {
     label: 'Kinh Doanh TM',
     href: '#',
@@ -66,6 +69,24 @@ export const menuItems: MenuItem[] = [
       },
     ],
   },
+  {
+    label: 'Kiểm soát nội bộ TM',
+    href: '#',
+    permission: ['Admin', 'KiemSoatTM'],
+    submenu: [
+      {
+        label: 'Quản lý sản phẩm',
+        permission: ['Admin', 'KiemSoatTM'],
+        submenu_02: [
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
+          
+        ],
+      },
+    ],
+  },
+  // ================================================================================
+  // ========================= FACTORY SUBSIDIARIES =================================
+  // ================================================================================
   {
     label: 'Kinh Doanh SX',
     permission: ['Admin', 'KinhDoanhSX'],
@@ -136,6 +157,24 @@ export const menuItems: MenuItem[] = [
     ],
   },
   { label: 'Nhân Sự SX', href: '/bpnhansu', permission: ['Admin', 'NhanSuSX'] },
+  {
+    label: 'Kiểm soát nội bộ SX',
+    href: '#',
+    permission: ['Admin', 'KiemSoatSX'],
+    submenu: [
+      {
+        label: 'Quản lý sản phẩm',
+        permission: ['Admin', 'KiemSoatSX'],
+        submenu_02: [
+          { label: 'Báo cáo tồn kho', href: '/dashboard' },
+          
+        ],
+      },
+    ],
+  },
+  // ================================================================================
+  // ========================= FACTORY SUBSIDIARIES =================================
+  // ================================================================================
   {
     label: 'Admin',
     permission: ['Admin'],
