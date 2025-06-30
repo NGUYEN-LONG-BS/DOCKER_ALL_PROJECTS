@@ -27,12 +27,12 @@ from datetime import datetime
 
 MODEL_MAP_INVENTORY_CATEGORIES = {
     "null": ("null", "null", "null"),
-    "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb", TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED),
-    "LA": (LA_INVENTORY_CATEGORIES, LAInventoryCategoriesSerializer, "tala", TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED),
-    "PA": (PA_INVENTORY_CATEGORIES, PAInventoryCategoriesSerializer, "pa", TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED),
-    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, NAMANInventoryCategoriesSerializer, "naman", TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED),
-    "HANOI": (HANOI_INVENTORY_CATEGORIES, HANOIInventoryCategoriesSerializer, "hanoi", TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED),
-    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, MIENTAYInventoryCategoriesSerializer, "mientay", TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED),
+    "TB": (TB_INVENTORY_CATEGORIES, TBInventoryCategoriesSerializer, "tb"),
+    "LA": (LA_INVENTORY_CATEGORIES, LAInventoryCategoriesSerializer, "tala"),
+    "PA": (PA_INVENTORY_CATEGORIES, PAInventoryCategoriesSerializer, "pa"),
+    "NAMAN": (NAMAN_INVENTORY_CATEGORIES, NAMANInventoryCategoriesSerializer, "naman"),
+    "HANOI": (HANOI_INVENTORY_CATEGORIES, HANOIInventoryCategoriesSerializer, "hanoi"),
+    "MIENTAY": (MIENTAY_INVENTORY_CATEGORIES, MIENTAYInventoryCategoriesSerializer, "mientay"),
 }
 
 # ==========================================================================
@@ -44,7 +44,7 @@ class TBInventoryCategoriesView(ListAPIView):
         if not model_tuple:
             first_model = list(MODEL_MAP_INVENTORY_CATEGORIES.values())[0][0]
             return first_model.objects.none()
-        ModelClass, _, db_name, _ = model_tuple
+        ModelClass, _, db_name = model_tuple
         return ModelClass.objects.using(db_name).all()
 
     def get_serializer_class(self):
@@ -53,7 +53,7 @@ class TBInventoryCategoriesView(ListAPIView):
         if not model_tuple:
             first_serializer = list(MODEL_MAP_INVENTORY_CATEGORIES.values())[0][1]
             return first_serializer
-        _, SerializerClass, _, _ = model_tuple
+        _, SerializerClass, _ = model_tuple
         return SerializerClass
 
 # ==========================================================================
@@ -66,7 +66,7 @@ def import_bulk_data_to_all_INVENTORY_CATEGORIES(request):
     model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
-    ModelClass, _, db_name, _ = model_tuple
+    ModelClass, db_name = model_tuple
     if not file_obj:
         return Response({'error': 'No file uploaded.'}, status=status.HTTP_400_BAD_REQUEST)
     try:
@@ -146,7 +146,7 @@ def search_inventory_categories(request):
     model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
-    ModelClass, _, db_name, _ = model_tuple
+    ModelClass, _, db_name = model_tuple
     if not query:
         return Response({'results': []})
     qs = ModelClass.objects.using(db_name).filter(
@@ -175,7 +175,7 @@ def submit_inventory_categories(request):
         model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
-        ModelClass, SerializerClass, db_name, _ = model_tuple
+        ModelClass, SerializerClass, db_name = model_tuple
         if not ma_hang:
             return Response({"error": "Trường 'ma_hang' không được để trống."}, status=status.HTTP_400_BAD_REQUEST)
         # Kiểm tra điều kiện: ma_hang chưa tồn tại hoặc đã tồn tại nhưng xoa_sua khác 'new'
@@ -197,7 +197,7 @@ class CheckMaHangExistView(APIView):
         model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
-        ModelClass, _, db_name, _ = model_tuple
+        ModelClass, _, db_name = model_tuple
         # Lấy giá trị cần tìm từ query parameters
         value_to_search = request.query_params.get('ma_hang', None)
 
@@ -218,12 +218,7 @@ class CheckMaHangExistView(APIView):
 # api to inventory report quantity
 class InventoryReportQuantityView(APIView):
     def get(self, request, format=None):
-        model_key = request.query_params.get('model_key', 'TB')
-        model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
-        if not model_tuple or len(model_tuple) < 4 or model_tuple[0] == "null":
-            return Response({'error': 'Invalid model_key'}, status=400)
-        ModelClass, _, db_name, StockModelClass = model_tuple
-
+        # Lấy ngày bắt đầu và kết thúc từ query param
         from_date_str = request.query_params.get('from_date')
         to_date_str = request.query_params.get('to_date')
         try:
@@ -238,19 +233,21 @@ class InventoryReportQuantityView(APIView):
         except Exception:
             return Response({'error': 'Sai định dạng ngày, dùng yyyy-mm-dd'}, status=400)
 
-        items = ModelClass.objects.using(db_name).all()
+        # Lấy danh sách hàng hóa từ DB tb
+        items = TB_INVENTORY_CATEGORIES.objects.using('tb').all()
         result = []
 
         for item in items:
             ma_hang = item.ma_hang
 
-            nhap_truoc = StockModelClass.objects.using(db_name).filter(
+            # Tồn đầu kỳ: tổng nhập - tổng xuất trước from_date
+            nhap_truoc = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
                 ma_hang=ma_hang,
                 phan_loai_nhap_xuat_hoan='receipt',
                 ngay_tren_phieu__date__lt=from_date
             ).aggregate(total=models.Sum('so_luong'))['total'] or 0
 
-            xuat_truoc = StockModelClass.objects.using(db_name).filter(
+            xuat_truoc = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
                 ma_hang=ma_hang,
                 phan_loai_nhap_xuat_hoan='issue',
                 ngay_tren_phieu__date__lt=from_date
@@ -258,14 +255,16 @@ class InventoryReportQuantityView(APIView):
 
             ton_dau_ky = nhap_truoc - xuat_truoc
 
-            nhap_trong_khoang = StockModelClass.objects.using(db_name).filter(
+            # Nhập trong khoảng thời gian
+            nhap_trong_khoang = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
                 ma_hang=ma_hang,
                 phan_loai_nhap_xuat_hoan='receipt',
                 ngay_tren_phieu__date__gte=from_date,
                 ngay_tren_phieu__date__lte=to_date
             ).aggregate(total=models.Sum('so_luong'))['total'] or 0
 
-            xuat_trong_khoang = StockModelClass.objects.using(db_name).filter(
+            # Xuất trong khoảng thời gian
+            xuat_trong_khoang = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
                 ma_hang=ma_hang,
                 phan_loai_nhap_xuat_hoan='issue',
                 ngay_tren_phieu__date__gte=from_date,
