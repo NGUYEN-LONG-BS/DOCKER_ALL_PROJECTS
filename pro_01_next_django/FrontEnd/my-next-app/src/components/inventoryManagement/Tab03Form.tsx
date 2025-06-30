@@ -7,12 +7,12 @@ import { DocumentNumberComponent } from "../documentNumber/document-number-compo
 import { DocumentRequestNumberComponent } from "../documentRequestNumber/document-request-number-component";
 import { SupplierComponent } from "./ObjectSupplierComponent";
 import { ProductComponent } from "./ObjectProductComponent";
-import { InventoryTableStockReceiveSlip } from "./Tab03Table";
+// import { InventoryTableStockReceiveSlip } from "./Tab03Table";
 import InventoryNoteOfStockReceiveSlip from "./InventoryNoteOfStockReceiveSlip";
 import PopupFadeout from "../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../popups/successPopupComponentTypeFadeOutNum01";
 
-import Table_inventory_category from '@/components/table_inventory_category';
+import Table_inventory_category from '@/components/inventoryManagementWithRedux/tabInventoryCategories/table_inventory_category';
 import Inventory_category_post from '@/components/inventoryManagement/inventory_category_post';
 import { API_import_data } from '@/api/api';
 

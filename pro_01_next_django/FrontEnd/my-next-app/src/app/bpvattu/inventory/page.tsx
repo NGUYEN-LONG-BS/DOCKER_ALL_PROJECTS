@@ -5,7 +5,7 @@ import Navbar from '@/components/header/Navbar_Home';
 import Table_Test from '@/components/table_test';
 import Table_test_02category from '@/components/table_test_02category';
 import Table_login_info from '@/components/table_login_info';
-import Table_inventory_category from '@/components/table_inventory_category';
+import Table_inventory_category from '@/components/inventoryManagementWithRedux/tabInventoryCategories/table_inventory_category';
 import Inventory_category_post from '@/components/inventoryManagement/inventory_category_post';
 
 // Define the type for tab keys
