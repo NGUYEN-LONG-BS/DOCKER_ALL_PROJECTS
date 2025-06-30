@@ -6,7 +6,7 @@ import { setActiveTab, TAB_NAMES } from "@/features/formReceiptSlip/tabNavSlice"
 import { resetProductState } from "@/features/formReceiptSlip/objectProductComponentSlice";
 import { InventoryFormStockReceiveSlip } from "./tabReceiptInputSlip/Tab01Form";
 import { InventoryFormStockIssueSlip } from "./tabIssueInputSlip/Tab02Form";
-import { InventoryCategoryTab } from "./Tab03Form";
+import { InventoryCategoryTab } from "./tabInventoryCategories/Tab03Form";
 import { InventoryLogStockReceiveSlip } from "./tabReceiptLog/Tab04Form";
 import { InventoryLogStockIssueSlip } from "./tabIssueLog/Tab05Form";
 import { InventoryReport } from "./tabInventoryReport/Tab06Form";
