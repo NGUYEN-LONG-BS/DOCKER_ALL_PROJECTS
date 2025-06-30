@@ -23,6 +23,7 @@ from .views_INVENTORY_CATEGORIES import import_bulk_data_to_all_INVENTORY_CATEGO
 from .views_INVENTORY_CATEGORIES import search_inventory_categories
 from .views_INVENTORY_CATEGORIES import submit_inventory_categories
 from .views_INVENTORY_CATEGORIES import CheckMaHangExistView
+from .views_INVENTORY_CATEGORIES import InventoryReportQuantityView
 
 from .views_CLIENT_CATEGORIES import import_bulk_data_to_all_CLIENT_CATEGORIES
 from .views_CLIENT_CATEGORIES import Client_Categories_Create_View
@@ -74,6 +75,7 @@ urlpatterns = [
     path('import-data/', import_data, name='import_data'),
     path('submit-inventory-categories/', submit_inventory_categories, name='submit-inventory-categories'),
     path('get-inventory-categories/', TBInventoryCategoriesView.as_view(), name='get-inventory-categories'),
+    path('inventory-report-quantity/', InventoryReportQuantityView.as_view(), name='inventory-report-quantity'),
     # ========================================================================
     # CLIENT MANAGEMENT
     path('create-client-category/', Client_Categories_Create_View.as_view(), name='create-client-category'),

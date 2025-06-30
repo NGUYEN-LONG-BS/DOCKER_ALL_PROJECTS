@@ -209,3 +209,76 @@ class CheckMaHangExistView(APIView):
 
         # Trả về kết quả với status 200
         return Response({'existed': exists}, status=status.HTTP_200_OK)
+
+
+# ==========================================================================
+# api to inventory report quantity
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.utils import timezone
+from datetime import datetime, timedelta
+
+from .models_TB import TB_INVENTORY_CATEGORIES, TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED
+
+class InventoryReportQuantityView(APIView):
+    def get(self, request, format=None):
+        # Lấy ngày truyền vào, nếu không có thì lấy ngày hiện tại
+        date_str = request.query_params.get('date')
+        if date_str:
+            try:
+                report_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+            except Exception:
+                return Response({'error': 'Sai định dạng ngày, dùng yyyy-mm-dd'}, status=400)
+        else:
+            report_date = timezone.now().date()
+
+        # Lấy danh sách hàng hóa từ DB tb
+        items = TB_INVENTORY_CATEGORIES.objects.using('tb').all()
+        result = []
+
+        for item in items:
+            ma_hang = item.ma_hang
+
+            # Tồn đầu kỳ: tổng nhập - tổng xuất trước ngày report
+            nhap_truoc = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
+                ma_hang=ma_hang,
+                phan_loai_nhap_xuat_hoan='receipt',
+                ngay_tren_phieu__date__lt=report_date
+            ).aggregate(total=models.Sum('so_luong'))['total'] or 0
+
+            xuat_truoc = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
+                ma_hang=ma_hang,
+                phan_loai_nhap_xuat_hoan='issue',
+                ngay_tren_phieu__date__lt=report_date
+            ).aggregate(total=models.Sum('so_luong'))['total'] or 0
+
+            ton_dau_ky = nhap_truoc - xuat_truoc
+
+            # Nhập trong ngày
+            nhap_trong_ngay = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
+                ma_hang=ma_hang,
+                phan_loai_nhap_xuat_hoan='receipt',
+                ngay_tren_phieu__date=report_date
+            ).aggregate(total=models.Sum('so_luong'))['total'] or 0
+
+            # Xuất trong ngày
+            xuat_trong_ngay = TB_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.objects.using('tb').filter(
+                ma_hang=ma_hang,
+                phan_loai_nhap_xuat_hoan='issue',
+                ngay_tren_phieu__date=report_date
+            ).aggregate(total=models.Sum('so_luong'))['total'] or 0
+
+            ton_cuoi_ngay = ton_dau_ky + nhap_trong_ngay - xuat_trong_ngay
+
+            result.append({
+                'ma_hang': ma_hang,
+                'ten_hang': item.ten_hang,
+                'dvt': item.dvt,
+                'ton_dau_ky': float(ton_dau_ky),
+                'nhap_trong_ngay': float(nhap_trong_ngay),
+                'xuat_trong_ngay': float(xuat_trong_ngay),
+                'ton_cuoi_ngay': float(ton_cuoi_ngay),
+            })
+
+        return Response({'date': str(report_date), 'data': result}, status=200)
