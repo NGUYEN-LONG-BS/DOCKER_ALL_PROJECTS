@@ -1,6 +1,7 @@
-from django.db import models
 import re
-    
+import uuid
+from django.db import models
+
 class LoginInfo(models.Model):
     login_id = models.CharField(max_length=100, unique=True)
     pass_field = models.CharField(max_length=254)
@@ -34,3 +35,28 @@ class UserPermission(models.Model):
         db_table = 'myconfiguration"."user_permissions'  # Đúng chuẩn schema.table
         managed = True  # Django sẽ quản lý bảng này hoàn toàn (tạo, xóa, sửa theo model).
 
+
+class TM_DANH_SACH_MA_KHO(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateTimeField()
+    id_nhan_vien = models.CharField(max_length=10)
+    xoa_sua = models.CharField(max_length=10)
+    ma_kho = models.CharField(max_length=50)
+    ten_kho = models.TextField()
+
+    class Meta:
+        db_table = 'myconfiguration"."TM_DANH_SACH_MA_KHO'
+        managed = True  # Django sẽ quản lý bảng này (tạo, xóa, sửa theo model)
+
+
+class SX_DANH_SACH_MA_KHO(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    date = models.DateTimeField()
+    id_nhan_vien = models.CharField(max_length=10)
+    xoa_sua = models.CharField(max_length=10)
+    ma_kho = models.CharField(max_length=50)
+    ten_kho = models.TextField()
+
+    class Meta:
+        db_table = 'myconfiguration"."SX_DANH_SACH_MA_KHO'
+        managed = True  # Django sẽ quản lý bảng này (tạo, xóa, sửa theo model)
