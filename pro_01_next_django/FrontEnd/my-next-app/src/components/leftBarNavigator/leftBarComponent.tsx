@@ -28,6 +28,9 @@ const LeftBar: React.FC = () => {
       <div style={{ marginBottom: "1rem" }}>
         <NavigationComponent info="Thông tin nhân sự." side="left" link="#" linkIcon="/icons/generalRepot.png" />
       </div>
+      <div style={{ marginBottom: "1rem" }}>
+        <NavigationComponent info="Tài liệu hướng dẫn." side="left" link="#" linkIcon="/icons/Help.png" />
+      </div>
     </div>
   );
 };
