@@ -15,7 +15,7 @@ import { setSupplier as setSupplierRedux } from "@/features/formReceiptSlip/supp
 import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";
 import { setSlipNote } from "@/features/formReceiptSlip/slipNoteSlice";
 import { API_import_data, API_inventory_stock_by_so_phieu } from '@/api/api';
-import CoponentSearchWarehouse from "./coponentSearchWarehouse";
+import CoponentSearchWarehouse from "../coponentSearchWarehouse_inventory_report";
 
 // Định nghĩa InventoryItemExport interface
 interface InventoryItemExport {
