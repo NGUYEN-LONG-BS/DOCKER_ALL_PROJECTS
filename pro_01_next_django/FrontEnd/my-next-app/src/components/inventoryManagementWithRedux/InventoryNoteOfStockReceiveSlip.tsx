@@ -70,7 +70,7 @@ const InventoryNoteOfStockReceiveSlip = ({
             ) : (
               warehouses.map((warehouse) => (
                 <option key={warehouse.ma_kho} value={warehouse.ma_kho}>
-                  {warehouse.ten_kho}
+                  {warehouse.ma_kho}
                 </option>
               ))
             )}
