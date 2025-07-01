@@ -50,6 +50,9 @@ router.register(r'user-login', UserLoginViewSet, basename='user-login')
 
 urlpatterns = [
     # ========================================================================
+    # CONFIGURATION
+    path('get-danh-sach-ma-kho/', views.get_danh_sach_ma_kho, name='get-danh-sach-ma-kho'),
+    # ========================================================================
     # login and permission
     path('check-login/', check_login, name='check_login'),
     path('get-user-permission-info/', views.get_user_permission_info, name='get_user_permission_info'),
@@ -92,10 +95,11 @@ urlpatterns = [
     path('update-xoa-sua-supplier-categories/', UpdateXoaSuaSupplierView.as_view(), name='update-xoa-sua-supplier-categories'),
     path('search-supplier-categories/', search_supplier_categories),
     path('get_data_ALL_SUPPLIER_CATEGORIES/', get_data_ALL_SUPPLIER_CATEGORIES.as_view(), name='get_data_ALL_SUPPLIER_CATEGORIES'),
+    
     # ========================================================================
     # TEST
-    
     path('get-json-data/', get_json_data, name='get-json-data'),
+    
 ]
 
 urlpatterns += router.urls

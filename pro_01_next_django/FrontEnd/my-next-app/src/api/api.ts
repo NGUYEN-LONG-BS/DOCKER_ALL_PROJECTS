@@ -3,6 +3,9 @@ const isLocalhost = typeof window !== 'undefined' && window.location.hostname ==
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
                             (isLocalhost ? 'http://127.0.0.1:8000' : 'http://172.16.0.4:8000');
 // =======================================================================================================
+// configuration
+export const API_get_danh_sach_ma_kho = `${API_BASE_URL}/api/get-danh-sach-ma-kho/`;
+// =======================================================================================================
 // login and permission
 export const API_check_login = `${API_BASE_URL}/api/check-login/`;
 export const API_get_user_permission_info = `${API_BASE_URL}/api/get-user-permission-info/`;

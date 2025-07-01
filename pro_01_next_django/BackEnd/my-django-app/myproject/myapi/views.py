@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.generics import ListAPIView
 
-from .models import LoginInfo, UserPermission
+from .models import LoginInfo, UserPermission, TM_DANH_SACH_MA_KHO, SX_DANH_SACH_MA_KHO
 
 from .serializers import LoginInfoSerializer
 from .serializers import LoginInfo_all_columns_Serializer
@@ -145,4 +145,22 @@ def get_user_permission_info(request):
     ]
     # print('user_permission_info:', data)
     return Response(data, status=200)
+
+# ==============================================================================
+# Get danh sach ma kho
+@api_view(['GET'])
+def get_danh_sach_ma_kho(request):
+    model_key = request.query_params.get('model_key', '').upper()
+    if model_key == 'LA':
+        qs = SX_DANH_SACH_MA_KHO.objects.all()
+    else:
+        qs = TM_DANH_SACH_MA_KHO.objects.all()
+    data = [
+        {
+            'ma_kho': obj.ma_kho,
+            'ten_kho': obj.ten_kho
+        }
+        for obj in qs
+    ]
+    return Response(data)
 

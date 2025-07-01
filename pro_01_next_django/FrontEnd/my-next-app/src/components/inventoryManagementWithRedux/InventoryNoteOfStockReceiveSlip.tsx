@@ -1,13 +1,12 @@
 // src/components/inventoryManagementWithRedux/InventoryNoteOfStockReceiveSlip.tsx
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSlipNote } from '../../features/formReceiptSlip/slipNoteSlice';
 import { RootState } from '../../store/store';
-
-// Danh sách kho mẫu
-const mockWarehouses = ['Kho A', 'Kho B', 'Kho C'];
+import { getListOfWarehouse, Warehouse } from '@/utils/getListOfWarehouse';
+import { useSyncUserIdFromLocalStorage } from '@/utils/useSyncUserIdFromLocalStorage';
 
 // Định nghĩa interface cho props của InventoryNoteOfStockReceiveSlip
 interface InventoryNoteOfStockReceiveSlipProps {
@@ -21,8 +20,21 @@ const InventoryNoteOfStockReceiveSlip = ({
 }: InventoryNoteOfStockReceiveSlipProps) => {
   const dispatch = useDispatch();
 
+  // Lấy userId từ Redux (đồng bộ với localStorage)
+  useSyncUserIdFromLocalStorage();
+  const userId = useSelector((state: RootState) => state.user.userId || "");
+
+  // State cho danh sách kho thực tế
+  const [warehouses, setWarehouses] = useState<Warehouse[]>([]);
+
   // Lấy giá trị từ Redux store
   const { selectedWarehouse, notesOfSlip } = useSelector((state: RootState) => state.slipNote.slipNote);
+
+  useEffect(() => {
+    if (userId) {
+      getListOfWarehouse(userId).then(setWarehouses).catch(() => setWarehouses([]));
+    }
+  }, [userId]);
 
   // Hàm xử lý khi kho thay đổi
   const handleWarehouseChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -53,11 +65,15 @@ const InventoryNoteOfStockReceiveSlip = ({
             value={selectedWarehouse}
             onChange={handleWarehouseChange}
           >
-            {mockWarehouses.map((warehouse, index) => (
-              <option key={index} value={warehouse}>
-                {warehouse}
-              </option>
-            ))}
+            {warehouses.length === 0 ? (
+              <option value="">Đang tải kho...</option>
+            ) : (
+              warehouses.map((warehouse) => (
+                <option key={warehouse.ma_kho} value={warehouse.ma_kho}>
+                  {warehouse.ten_kho}
+                </option>
+              ))
+            )}
           </select>
         </div>
 
