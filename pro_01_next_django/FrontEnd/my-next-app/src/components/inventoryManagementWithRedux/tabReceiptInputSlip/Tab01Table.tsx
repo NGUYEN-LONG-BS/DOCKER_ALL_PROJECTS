@@ -192,7 +192,12 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         type="text"
                         className="form-control form-control-sm"
                         value={formatNumber(item.quantity)}
-                        readOnly
+                        onChange={e => {
+                          // Chuyển về số, loại bỏ dấu phẩy
+                          const raw = e.target.value.replace(/,/g, "");
+                          const num = Number(raw);
+                          handleUpdateItem(item.id, "quantity", isNaN(num) ? 0 : num);
+                        }}
                         style={{ width: "100px" }}
                       />
                     </td>
@@ -201,7 +206,11 @@ export function InventoryTableStockReceiveSlip({ product, onInventoryTableChange
                         type="text"
                         className="form-control form-control-sm"
                         value={formatNumber(item.price)}
-                        readOnly
+                        onChange={e => {
+                          const raw = e.target.value.replace(/,/g, "");
+                          const num = Number(raw);
+                          handleUpdateItem(item.id, "price", isNaN(num) ? 0 : num);
+                        }}
                         style={{ width: "100px" }}
                       />
                     </td>
