@@ -180,13 +180,21 @@ def import_data(request):
 class MaxSoPhieuView_receipt(APIView):
     def get(self, request, format=None):
         model_key = request.query_params.get('model_key', 'null')
+        slip_type = "PNK"  # Mặc định là PNK, có thể thay đổi nếu cần
+        classification_code = "receipt"  # Mã phân loại phiếu nhập kho
+        # Debug: in ra model_key và mapping
+        # print(f"[DEBUG] model_key: {model_key}")
+        # print(f"[DEBUG] mapping for model_key: {MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)}")
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
-        if not model_tuple:
-            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        if (
+            not model_tuple
+            or not isinstance(model_tuple[0], type)
+        ):
+            return Response({'error': 'Invalid model_key or mapping not found.'}, status=status.HTTP_400_BAD_REQUEST)
         ModelClass, _, db_name, _ = model_tuple
         # Lấy tất cả các số phiếu từ bảng, chỉ lấy phiếu loại "receipt"
-        phieu_list = ModelClass.objects.using(db_name).filter(phan_loai_nhap_xuat_hoan="receipt")
-        
+        phieu_list = ModelClass.objects.using(db_name).filter(phan_loai_nhap_xuat_hoan=classification_code)
+
         # Danh sách chứa các số phiếu và 6 số cuối của chúng
         max_phieu = None
         max_last_six = -1  # Giá trị ban đầu thấp nhất để so sánh
@@ -198,7 +206,6 @@ class MaxSoPhieuView_receipt(APIView):
             try:
                 # So sánh các số cuối cùng (chuyển sang kiểu số nguyên để so sánh)
                 last_six_number = int(last_six_digits)
-                
                 if last_six_number > max_last_six:
                     max_last_six = last_six_number
                     max_phieu = phieu.so_phieu
@@ -208,14 +215,16 @@ class MaxSoPhieuView_receipt(APIView):
         if max_phieu:
             # Tăng số cuối lên 1
             max_last_six += 1
-            
             # Tạo số phiếu mới
             new_number_slip = f"{max_phieu[:-6]}{max_last_six:06d}"
-            
             # Trả về số phiếu moi
             return Response({'new_number_slip': new_number_slip}, status=status.HTTP_200_OK)
         else:
-            return Response({'error': 'Không có số phiếu nào'}, status=status.HTTP_404_NOT_FOUND)
+            # Nếu không có bản ghi nào, tạo số phiếu mặc định: <model_key>-PNK-<yy>0001
+            from datetime import datetime
+            year_suffix = str(datetime.now().year)[-2:]
+            new_number_slip = f"{model_key}-{slip_type}-{year_suffix}0001"
+            return Response({'new_number_slip': new_number_slip}, status=status.HTTP_200_OK)
         
 class MaxSoPhieuView_issue(APIView):
     def get(self, request, format=None):
