@@ -2,6 +2,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import inventoryReducer from '../features/formReceiptSlip/formReceiptSlipSlice';
+import inventoryReducer_IssueSlip from '../features/formReceiptSlip/formIssueSlipSlice';
 import productReducer from '../features/formReceiptSlip/objectProductComponentSlice';
 import inventoryTableReducer from '../features/formReceiptSlip/inventoryTableSlice';
 import dateReducer from '../features/formReceiptSlip/dateSlice';
@@ -25,6 +26,7 @@ import userReducer from '../features/userSlice';
 export const store = configureStore({
   reducer: {
     inventory: inventoryReducer,
+    inventory_IssueSlip: inventoryReducer_IssueSlip,
     product: productReducer,
     inventoryTable: inventoryTableReducer,
     date: dateReducer,

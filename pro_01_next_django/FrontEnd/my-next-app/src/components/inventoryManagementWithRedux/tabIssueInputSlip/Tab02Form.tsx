@@ -18,7 +18,7 @@ import {
   downloadImportTemplate,
   downloadPrintTemplate,
   importFile,
-} from "@/features/formReceiptSlip/formReceiptSlipSlice";
+} from "@/features/formReceiptSlip/formIssueSlipSlice";
 import { setItems } from "@/features/formReceiptSlip/inventoryTableSlice";
 import { RootState } from "@/store/store";
 import { DateComponent } from "@/components/date/dateComponentInputForm";
