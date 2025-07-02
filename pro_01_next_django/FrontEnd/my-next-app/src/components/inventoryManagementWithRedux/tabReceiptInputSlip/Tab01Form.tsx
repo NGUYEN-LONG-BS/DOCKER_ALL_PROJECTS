@@ -141,8 +141,8 @@ export function InventoryFormStockReceiveSlip() {
 
     // Kiểm tra số phiếu qua API
     try {
-      const dynamicModelKey = userId && userId !== 'unknown' ? await getPermissionOnDB(userId) : 'TB';
-      const myApi = `${API_check_so_phieu}?so_phieu=${encodeURIComponent(documentNumber)}&model_key=${encodeURIComponent(dynamicModelKey || 'TB')}`;
+      const dynamicModelKey = userId && userId !== 'unknown' ? await getPermissionOnDB(userId) : 'null';
+      const myApi = `${API_check_so_phieu}?so_phieu=${encodeURIComponent(documentNumber)}&model_key=${encodeURIComponent(dynamicModelKey || 'null')}`;
       console.log("myApi:", myApi);
       const response = await axios.get(myApi, {
         headers: { 'Content-Type': 'application/json' },

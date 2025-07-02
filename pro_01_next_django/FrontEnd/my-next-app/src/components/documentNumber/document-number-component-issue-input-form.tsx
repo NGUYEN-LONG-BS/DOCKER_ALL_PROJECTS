@@ -35,7 +35,7 @@ export function DocumentNumberComponent({ value, onChange }: DocumentNumberProps
       if (typeof window !== 'undefined') {
         userId = localStorage.getItem('user_id') || '';
       }
-      let modelKey = 'TB';
+      let modelKey = 'null';
       if (userId) {
         const key = await getPermissionOnDB(userId);
         if (key && SLIP_TYPE_MAP[key]) modelKey = key;
