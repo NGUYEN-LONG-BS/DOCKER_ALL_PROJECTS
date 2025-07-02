@@ -160,7 +160,7 @@ export function InventoryFormStockIssueSlip() {
         status: error.response?.status,
         headers: error.response?.headers,
       });
-      dispatch(setErrorMessage("Không thể kiểm tra số phiếu. Vui lòng thử lại."));
+      dispatch(setErrorMessage(typeof error === 'string' ? error : JSON.stringify(error)));
       return;
     }
     
@@ -212,7 +212,7 @@ export function InventoryFormStockIssueSlip() {
     // Log the mapped data for debugging
     console.log("Tab01Form - Data to save:", data);
 
-    dispatch(saveInventory(data));
+    dispatch(saveInventory({ data, userId }));
   };
 
   // Handle template download
@@ -273,6 +273,13 @@ export function InventoryFormStockIssueSlip() {
     console.log("Tab01Form - Received product from ProductComponent (mapped):", mappedProduct);
     dispatch(setSelectedProduct(mappedProduct));
   };
+
+  // PopupFadeout: đảm bảo message luôn là string
+  const errorMsgString = typeof errorMessage === 'string' ? errorMessage : JSON.stringify(errorMessage);
+  // Chỉ hiển thị success popup khi có successMessage và không có errorMessage
+  const showSuccess = successMessage && !errorMessage;
+  const successMsgString = typeof successMessage === 'string' ? successMessage : JSON.stringify(successMessage);
+
 
   return (
     <div className="card mt-3">
@@ -368,8 +375,10 @@ export function InventoryFormStockIssueSlip() {
           </div>
         </div>
       </div>
-      <PopupFadeout message={errorMessage} onClose={() => dispatch(setErrorMessage(null))} />
-      <SuccessPopup message={successMessage} onClose={() => dispatch(setSuccessMessage(null))} />
+      <PopupFadeout message={errorMsgString} onClose={() => dispatch(setErrorMessage(null))} />
+      {showSuccess && (
+        <SuccessPopup message={successMsgString} onClose={() => dispatch(setSuccessMessage(null))} />
+      )}
     </div>
   );
 }

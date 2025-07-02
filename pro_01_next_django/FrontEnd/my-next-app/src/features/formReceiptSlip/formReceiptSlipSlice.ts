@@ -2,6 +2,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { AppDispatch, RootState } from '../../store/store';
+import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 import { API_import_data, API_download_print_template, API_download_import_template, API_save_inventory } from '@/api/api';
 
 interface InventoryItemExport {
@@ -71,15 +72,31 @@ interface ThunkConfig {
 }
 
 // Async thunk for saving inventory data
-export const saveInventory = createAsyncThunk<any, any[], ThunkConfig>(
+export const saveInventory = createAsyncThunk<any, { data: any[], userId: string }, ThunkConfig>(
   'inventory/saveInventory',
-  async (data, { rejectWithValue }) => {
+  async ({ data, userId }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(API_save_inventory, data, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // Lấy model_key động từ quyền user
+      const dynamicModelKey = userId && userId !== 'unknown' ? await getPermissionOnDB(userId) : null;
+      console.log('model_key:', dynamicModelKey);
+      console.log('data:', data);
+      if (!dynamicModelKey) {
+        return rejectWithValue('Không xác định được model_key. Vui lòng thử lại hoặc F5.');
+      }
+      // Gắn model_key vào từng object nếu chưa có
+      const dataWithModelKey = data.map((item: any) => ({
+        ...item,
+        model_key: item.model_key || dynamicModelKey,
+      }));
+      const response = await axios.post(
+        `${API_save_inventory}?model_key=${dynamicModelKey}`,
+        dataWithModelKey,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || 'Gửi thông tin thất bại!');

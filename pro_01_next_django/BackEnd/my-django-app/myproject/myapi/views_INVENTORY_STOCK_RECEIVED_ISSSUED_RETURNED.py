@@ -67,6 +67,8 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
         return SerializerClass
 
     def create(self, request, *args, **kwargs):
+        # In ra terminal toàn bộ query_params để debug
+        print("[DEBUG] request.query_params:", request.query_params)
         # Lấy model_key từ query param, nếu không có thì lấy từ body nếu là dict, nếu là list thì mặc định 'null'
         model_key = request.query_params.get('model_key')
         if not model_key:
@@ -75,8 +77,12 @@ class InventoryStockReceivedIssuedReturnedView(generics.ListCreateAPIView):
             else:
                 model_key = 'null'
         model_tuple = MODEL_MAP_INVENTORY_STOCK_RECEIVED_ISSSUED_RETURNED.get(model_key)
-        if not model_tuple:
-            return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
+        if (
+            not model_tuple
+            or not isinstance(model_tuple[0], type)
+            or not isinstance(model_tuple[1], type)
+        ):
+            return Response({'error': 'Invalid model_key or mapping not found.'}, status=status.HTTP_400_BAD_REQUEST)
         ModelClass, SerializerClass, db_name, _ = model_tuple
         # Check if the request body contains a list of objects
         if isinstance(request.data, list):
