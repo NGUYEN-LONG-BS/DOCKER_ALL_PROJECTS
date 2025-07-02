@@ -39,7 +39,7 @@ MODEL_MAP_INVENTORY_CATEGORIES = {
 # get inventory categories
 class TBInventoryCategoriesView(ListAPIView):
     def get_queryset(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
         if not model_tuple:
             first_model = list(MODEL_MAP_INVENTORY_CATEGORIES.values())[0][0]
@@ -48,7 +48,7 @@ class TBInventoryCategoriesView(ListAPIView):
         return ModelClass.objects.using(db_name).all()
 
     def get_serializer_class(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
         if not model_tuple:
             first_serializer = list(MODEL_MAP_INVENTORY_CATEGORIES.values())[0][1]
@@ -62,7 +62,7 @@ class TBInventoryCategoriesView(ListAPIView):
 @parser_classes([MultiPartParser, FormParser])
 def import_bulk_data_to_all_INVENTORY_CATEGORIES(request):
     file_obj = request.FILES.get('file')
-    model_key = request.data.get("model_key", "TB")
+    model_key = request.data.get("model_key", "null")
     model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -142,7 +142,7 @@ def import_bulk_data_to_all_INVENTORY_CATEGORIES(request):
 @api_view(['GET'])
 def search_inventory_categories(request):
     query = request.GET.get('q', '').strip()
-    model_key = request.GET.get('model_key', 'TB')
+    model_key = request.GET.get('model_key', 'null')
     model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
@@ -171,7 +171,7 @@ def search_inventory_categories(request):
 def submit_inventory_categories(request):
     if request.method == 'POST':
         ma_hang = request.data.get('ma_hang')
-        model_key = request.data.get('model_key', 'TB')
+        model_key = request.data.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -193,7 +193,7 @@ def submit_inventory_categories(request):
 # api to check if ma_hang exists
 class CheckMaHangExistView(APIView):
     def get(self, request, format=None):
-        model_key = request.query_params.get('model_key', 'TB')
+        model_key = request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -218,7 +218,7 @@ class CheckMaHangExistView(APIView):
 # api to inventory report quantity
 class InventoryReportQuantityView(APIView):
     def get(self, request, format=None):
-        model_key = request.query_params.get('model_key', 'TB')
+        model_key = request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_INVENTORY_CATEGORIES.get(model_key)
         if not model_tuple or len(model_tuple) < 4 or model_tuple[0] == "null":
             return Response({'error': 'Invalid model_key'}, status=400)

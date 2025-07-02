@@ -49,7 +49,7 @@ MODEL_MAP_SUPPLIER_CATEGORIES = {
 @parser_classes([MultiPartParser, FormParser])
 def import_bulk_data_to_all_SUPPLIER_CATEGORIES(request):
     file_obj = request.FILES.get('file')
-    model_key = request.data.get("model_key", "TB")
+    model_key = request.data.get("model_key", "null")
     model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'error': 'Invalid model_key.'}, status=status.HTTP_400_BAD_REQUEST)
@@ -155,7 +155,7 @@ class TBSupplierCategoriesCreateView(APIView):
         data = request.data.copy()
         ma_nha_cung_cap = data.get("ma_nha_cung_cap")
         action = data.pop("action", None)  # Remove 'action' from data
-        model_key = data.get("model_key", "TB")
+        model_key = data.get("model_key", "null")
         model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)
@@ -277,7 +277,7 @@ class UpdateXoaSuaSupplierView(APIView):
     def post(self, request):
         ma_nha_cung_cap = request.data.get("ma_nha_cung_cap")
         pass_field = request.data.get("pass_field")
-        model_key = request.data.get("model_key", "TB")
+        model_key = request.data.get("model_key", "null")
         model_tuple = MODEL_MAP_SUPPLIER_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({"error": "Invalid model_key."}, status=status.HTTP_400_BAD_REQUEST)

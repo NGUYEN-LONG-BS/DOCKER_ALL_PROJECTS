@@ -118,7 +118,7 @@ class ClientPagination(PageNumberPagination):
 # Get all data
 class get_data_ALL_CLIENT_CATEGORIES(viewsets.ModelViewSet):
     def get_queryset(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             first_model = list(MODEL_MAP_CLIENT_CATEGORIES.values())[0][0]
@@ -127,7 +127,7 @@ class get_data_ALL_CLIENT_CATEGORIES(viewsets.ModelViewSet):
         return ModelClass.objects.using(db_name).filter(xoa_sua="new").order_by("-ma_khach_hang")
 
     def get_serializer_class(self):
-        model_key = self.request.query_params.get('model_key', 'TB')
+        model_key = self.request.query_params.get('model_key', 'null')
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             first_serializer = list(MODEL_MAP_CLIENT_CATEGORIES.values())[0][1]
@@ -200,7 +200,7 @@ class Client_Categories_Create_View(APIView):
 # Get next ma_khach_hang
 class GetNextMaKhachHangView(APIView):
     def get(self, request):
-        model_key = request.GET.get('model_key', 'TB')
+        model_key = request.GET.get('model_key', 'null')
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -221,7 +221,7 @@ class GetNextMaKhachHangView(APIView):
 # Export CLIENT CATEGORIES to Excel
 class ExportTBClientCategoriesToExcel(APIView):
     def get(self, request):
-        model_key = request.GET.get('model_key', 'TB')
+        model_key = request.GET.get('model_key', 'null')
         model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
         if not model_tuple:
             return Response({'error': 'Invalid model_key'}, status=status.HTTP_400_BAD_REQUEST)
@@ -305,7 +305,7 @@ class UpdateXoaSuaClientView(APIView):
 @api_view(['GET'])
 def search_client_categories(request):
     query = request.GET.get('q', '').strip()
-    model_key = request.GET.get('model_key', 'TB')
+    model_key = request.GET.get('model_key', 'null')
     model_tuple = MODEL_MAP_CLIENT_CATEGORIES.get(model_key)
     if not model_tuple:
         return Response({'results': [], 'message': 'Invalid model_key'}, status=400)
