@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "@/store/store";
 import { logout } from "@/features/userSlice";
+import { resetReduxStore } from "@/utils/resetReduxStore";
 
 export default function LogoutButton() {
   const router = useRouter()
@@ -10,12 +11,13 @@ export default function LogoutButton() {
 
   const handleLogout = () => {
     // Xóa cookie xác thực (nếu dùng cookie)
-    // Chỉ xóa được cookie nếu cookie không có httpOnly, hoặc dùng API logout server-side
     document.cookie = "isAuthenticated=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+    // Xoá toàn bộ Redux store về initialState
+    resetReduxStore();
+    dispatch(logout()); // Reset userId trong Redux
     // Có thể thêm các bước xóa localStorage/sessionStorage nếu cần
     // localStorage.removeItem('token')
     // sessionStorage.removeItem('token')
-    dispatch(logout()); // Reset userId trong Redux
     router.push("/login")
   }
 

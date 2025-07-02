@@ -12,8 +12,29 @@ interface DocumentNumberState {
 }
 
 const currentYear = new Date().getFullYear().toString().slice(-2);
+// Hàm lấy số phiếu PXK mặc định động theo quyền user
+function getDefaultDocumentNumberIssue() {
+  if (typeof window !== 'undefined') {
+    const userId = localStorage.getItem('user_id') || '';
+    const modelKey = localStorage.getItem('model_key') || 'null';
+    const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
+      TB: { prefix: 'TB', type: 'PXK' },
+      LA: { prefix: 'LA', type: 'PXK' },
+      PA: { prefix: 'PA', type: 'PXK' },
+      NAMAN: { prefix: 'NA', type: 'PXK' },
+      HANOI: { prefix: 'HN', type: 'PXK' },
+      MIENTAY: { prefix: 'MY', type: 'PXK' },
+      null: { prefix: '--', type: '---' },
+    };
+    const slip = SLIP_TYPE_MAP[modelKey] || SLIP_TYPE_MAP['TB'];
+    return `${slip.prefix}-${slip.type}-${currentYear}0001`;
+  }
+  // fallback server-side
+  return "null";
+}
+
 const initialState: DocumentNumberState = {
-  documentNumber: `TB-PXK-${currentYear}0001`,
+  documentNumber: getDefaultDocumentNumberIssue(),
   loading: false,
   error: null,
 };
