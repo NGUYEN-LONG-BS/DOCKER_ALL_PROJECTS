@@ -67,7 +67,7 @@ urlpatterns = [
     # INVENTORY MANAGEMENT
     path('search-inventory-categories/', search_inventory_categories),
     path('new-number-slip-pnk/', MaxSoPhieuView_receipt.as_view(), name='new-number-slip-pnk'),
-    path('new-number-slip-pxk/', MaxSoPhieuView_issue.as_view(), name='new-number-slip-pnk'),
+    path('new-number-slip-pxk/', MaxSoPhieuView_issue.as_view(), name='new-number-slip-pxk'),
     path('check-so-phieu/', CheckSoPhieuExistView.as_view(), name='check-so-phieu'),
     path('inventory-stock/', InventoryStockListView.as_view(), name='inventory_stock_list'),
     path('check-ma-hang/', CheckMaHangExistView.as_view(), name='check_ma_hang'),

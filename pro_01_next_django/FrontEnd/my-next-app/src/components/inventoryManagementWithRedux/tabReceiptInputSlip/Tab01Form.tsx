@@ -83,7 +83,7 @@ export function InventoryFormStockReceiveSlip() {
         selectedProduct.price !== inventoryItem.price ||
         selectedProduct.notes !== inventoryItem.notes)
     ) {
-      console.log("Syncing selectedProduct with inventoryItem:", inventoryItem);
+      // console.log("Syncing selectedProduct with inventoryItem:", inventoryItem);
       dispatch(setSelectedProduct(inventoryItem));
     }
   }, [dispatch, inventoryItem, selectedProduct]);
@@ -112,7 +112,7 @@ export function InventoryFormStockReceiveSlip() {
   // Handle save action
   const handleSave = async () => {
     // Log state của bảng (items từ inventoryTableSlice)
-    console.log("Tab01Form - Inventory Table State on Save:", tableItems);
+    // console.log("Tab01Form - Inventory Table State on Save:", tableItems);
 
     // Validate documentNumber
     if (!documentNumber) {
@@ -143,7 +143,7 @@ export function InventoryFormStockReceiveSlip() {
     try {
       const dynamicModelKey = userId && userId !== 'unknown' ? await getPermissionOnDB(userId) : 'null';
       const myApi = `${API_check_so_phieu}?so_phieu=${encodeURIComponent(documentNumber)}&model_key=${encodeURIComponent(dynamicModelKey || 'null')}`;
-      console.log("myApi:", myApi);
+      // console.log("myApi:", myApi);
       const response = await axios.get(myApi, {
         headers: { 'Content-Type': 'application/json' },
       });
@@ -210,7 +210,7 @@ export function InventoryFormStockReceiveSlip() {
       };
     });
     // Log the mapped data for debugging
-    console.log("Tab01Form - Data to save:", data);
+    // console.log("Tab01Form - Data to save:", data);
 
     // Gọi saveInventory với đúng interface mới: { data, userId }
     dispatch(saveInventory({ data, userId }));
@@ -230,7 +230,7 @@ export function InventoryFormStockReceiveSlip() {
     if (event.target.files) {
       const file = event.target.files[0];
       if (file) {
-        console.log("File selected:", file.name);
+        // console.log("File selected:", file.name);
         dispatch(setSelectedFile(file));
         dispatch(setErrorMessage(""));
       } else {
@@ -271,7 +271,7 @@ export function InventoryFormStockReceiveSlip() {
       value: parseNumber(product.value),
       notes: product.notes || "",
     };
-    console.log("Tab01Form - Received product from ProductComponent (mapped):", mappedProduct);
+    // console.log("Tab01Form - Received product from ProductComponent (mapped):", mappedProduct);
     dispatch(setSelectedProduct(mappedProduct));
   };
 
