@@ -5,7 +5,7 @@ import { mutate } from 'swr';
 import PopupFadeout from "../../popups/errorPopupComponentTypeFadeOutNum01";
 import SuccessPopup from "../../popups/successPopupComponentTypeFadeOutNum01";
 import Table_inventory_category from '@/components/inventoryManagementWithRedux/tabInventoryCategories/table_inventory_category';
-import Inventory_category_post from '@/components/inventoryManagement/inventory_category_post';
+import Inventory_category_post from '@/components/inventoryManagementWithRedux/inventory_category_post';
 import { API_import_data, API_get_inventory_categories, API_import_bulk_data_to_all_INVENTORY_CATEGORIES } from '@/api/api';
 import { getPermissionOnDB } from '@/utils/getPermissionOnDB';
 
