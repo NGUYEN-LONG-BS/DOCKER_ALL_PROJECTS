@@ -375,7 +375,10 @@ export function InventoryFormStockReceiveSlip() {
           </div>
         </div>
       </div>
-      <PopupFadeout message={errorMsgString} onClose={() => dispatch(setErrorMessage(null))} />
+      {/* Chỉ hiển thị popup khi errorMessage thực sự có nội dung và khác 'null' */}
+      {errorMessage && errorMessage !== 'null' && (
+        <PopupFadeout message={errorMsgString} onClose={() => dispatch(setErrorMessage(null))} />
+      )}
       {showSuccess && (
         <SuccessPopup message={successMsgString} onClose={() => dispatch(setSuccessMessage(null))} />
       )}
