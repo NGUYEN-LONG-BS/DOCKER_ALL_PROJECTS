@@ -15,6 +15,9 @@ export default function LogoutButton() {
     // Xoá toàn bộ Redux store về initialState
     resetReduxStore();
     dispatch(logout()); // Reset userId trong Redux
+    // Xoá localStorage các key liên quan user/model_key
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('model_key');
     // Có thể thêm các bước xóa localStorage/sessionStorage nếu cần
     // localStorage.removeItem('token')
     // sessionStorage.removeItem('token')
