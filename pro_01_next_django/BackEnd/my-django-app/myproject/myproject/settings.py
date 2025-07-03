@@ -1,3 +1,8 @@
+# Session cookie settings
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SECURE = False  # Đặt True nếu dùng HTTPS, False nếu chỉ phát triển nội bộ
+SESSION_COOKIE_AGE = 3600  # 1 giờ
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

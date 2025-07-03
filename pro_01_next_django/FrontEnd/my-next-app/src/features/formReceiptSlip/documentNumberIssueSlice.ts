@@ -12,10 +12,11 @@ interface DocumentNumberState {
 }
 
 const currentYear = new Date().getFullYear().toString().slice(-2);
-// Hàm lấy số phiếu PXK mặc định động theo quyền user
+// Hàm lấy số phiếu mặc định động theo quyền user
 function getDefaultDocumentNumberIssue() {
   if (typeof window !== 'undefined') {
     const userId = localStorage.getItem('user_id') || '';
+    // getPermissionOnDB là async, nhưng initialState cần sync, nên chỉ lấy từ localStorage
     const modelKey = localStorage.getItem('model_key') || 'null';
     const SLIP_TYPE_MAP: Record<string, { prefix: string; type: string }> = {
       TB: { prefix: 'TB', type: 'PXK' },
@@ -26,7 +27,7 @@ function getDefaultDocumentNumberIssue() {
       MIENTAY: { prefix: 'MY', type: 'PXK' },
       null: { prefix: '--', type: '---' },
     };
-    const slip = SLIP_TYPE_MAP[modelKey] || SLIP_TYPE_MAP['TB'];
+    const slip = SLIP_TYPE_MAP[modelKey] || SLIP_TYPE_MAP['null'];
     return `${slip.prefix}-${slip.type}-${currentYear}0001`;
   }
   // fallback server-side
@@ -87,6 +88,11 @@ const documentNumberSlice = createSlice({
   reducers: {
     setDocumentNumberIssue(state, action: PayloadAction<string>) {
       state.documentNumber = action.payload;
+    },
+    reset(state) {
+      state.documentNumber = initialState.documentNumber;
+      state.loading = false;
+      state.error = null;
     },
   },
   extraReducers: (builder) => {

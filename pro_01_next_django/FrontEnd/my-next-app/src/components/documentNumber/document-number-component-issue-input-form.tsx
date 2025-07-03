@@ -1,4 +1,3 @@
-// src/components/documentNumber/document-number-component-input-form.tsx
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -25,6 +24,12 @@ interface DocumentNumberProps {
 export function DocumentNumberComponent({ value, onChange }: DocumentNumberProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Chạy generateNewNumber khi mount lần đầu
+  useEffect(() => {
+    generateNewNumber();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Gọi API tạo số phiếu mới
   const generateNewNumber = async () => {
