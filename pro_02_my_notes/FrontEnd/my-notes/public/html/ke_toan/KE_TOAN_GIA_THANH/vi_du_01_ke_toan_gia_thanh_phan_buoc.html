@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Siêu ví dụ tính giá thành phân bước - Bánh mì đóng gói</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bs-body-bg: #f8f9fa; /* màu nền nhẹ */
+        }
+        .summary-card {
+            background: #ffffff;
+            border-radius: .75rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,.1);
+        }
+    </style>
+</head>
+<body>
+<main class="container py-4">
+    <h1 class="mb-4 text-center fw-bold">Siêu ví dụ: Tính giá thành phân bước</h1>
+    <p class="lead text-center">Quy trình sản xuất <strong>bánh mì đóng gói</strong> gồm 3 bước</p>
+
+    <!-- 1. Quy trình sản xuất -->
+    <section class="mb-5">
+        <h2 class="h4">1. Quy trình sản xuất</h2>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Bước</th>
+                        <th>Tên phân xưởng</th>
+                        <th>Sản phẩm tạo ra</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PX1</td>
+                        <td>Trộn &amp; Nhào bột</td>
+                        <td>Bột nhào (BTP1)</td>
+                    </tr>
+                    <tr>
+                        <td>PX2</td>
+                        <td>Nướng bánh</td>
+                        <td>Bánh nướng (BTP2)</td>
+                    </tr>
+                    <tr>
+                        <td>PX3</td>
+                        <td>Đóng gói &amp; hoàn thiện</td>
+                        <td>Bánh mì đóng gói (Thành phẩm)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 2. Dữ liệu chi phí & sản lượng -->
+    <section class="mb-5">
+        <h2 class="h4">2. Dữ liệu chi phí &amp; sản lượng</h2>
+
+        <!-- PX1 Card -->
+        <div class="summary-card p-4 mb-4">
+            <h3 class="h5 text-primary mb-3">Phân xưởng 1: Trộn bột (PX1)</h3>
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item">Chi phí nguyên vật liệu trực tiếp: <strong>100.000.000 đ</strong></li>
+                <li class="list-group-item">Chi phí nhân công trực tiếp: <strong>30.000.000 đ</strong></li>
+                <li class="list-group-item">Chi phí sản xuất chung: <strong>20.000.000 đ</strong></li>
+                <li class="list-group-item"><span class="fw-semibold">Tổng chi phí PX1</span>: 150.000.000 đ</li>
+                <li class="list-group-item">Số lượng bột nhào: <strong>10.000 kg</strong></li>
+            </ul>
+            <div class="alert alert-success mb-0" role="alert">
+                Giá thành 1 kg bột nhào = <strong>15.000 đ/kg</strong>
+            </div>
+        </div>
+
+        <!-- PX2 Card -->
+        <div class="summary-card p-4 mb-4">
+            <h3 class="h5 text-primary mb-3">Phân xưởng 2: Nướng bánh (PX2)</h3>
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item">Chi phí nhân công trực tiếp: <strong>25.000.000 đ</strong></li>
+                <li class="list-group-item">Chi phí sản xuất chung: <strong>15.000.000 đ</strong></li>
+                <li class="list-group-item">Giá trị bột đưa vào: <strong>150.000.000 đ</strong></li>
+                <li class="list-group-item"><span class="fw-semibold">Tổng chi phí PX2</span>: 190.000.000 đ</li>
+                <li class="list-group-item">Số lượng bánh nướng: <strong>9.000 cái</strong></li>
+            </ul>
+            <div class="alert alert-success mb-0" role="alert">
+                Giá thành 1 bánh nướng = <strong>21.111 đ/cái</strong>
+            </div>
+        </div>
+
+        <!-- PX3 Card -->
+        <div class="summary-card p-4 mb-4">
+            <h3 class="h5 text-primary mb-3">Phân xưởng 3: Đóng gói (PX3)</h3>
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item">Chi phí đóng gói, vật tư phụ: <strong>18.000.000 đ</strong></li>
+                <li class="list-group-item">Chi phí nhân công trực tiếp: <strong>12.000.000 đ</strong></li>
+                <li class="list-group-item">Chi phí sản xuất chung: <strong>10.000.000 đ</strong></li>
+                <li class="list-group-item">Giá trị bánh nướng chuyển vào: <strong>190.000.000 đ</strong></li>
+                <li class="list-group-item"><span class="fw-semibold">Tổng chi phí PX3</span>: 230.000.000 đ</li>
+                <li class="list-group-item">Số lượng bánh thành phẩm: <strong>9.000 cái</strong></li>
+            </ul>
+            <div class="alert alert-success mb-0" role="alert">
+                Giá thành 1 bánh hoàn chỉnh = <strong>25.556 đ/cái</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Bảng kết luận giá thành -->
+    <section>
+        <h2 class="h4">3. Bảng kết luận giá thành</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center">
+                <thead class="table-success">
+                    <tr>
+                        <th>Bước sản xuất</th>
+                        <th>Giá thành trung gian</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bột nhào (PX1)</td>
+                        <td><strong>15.000 đ/kg</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Bánh nướng (PX2)</td>
+                        <td><strong>21.111 đ/cái</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Bánh hoàn chỉnh (PX3)</td>
+                        <td><strong>25.556 đ/cái</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <footer class="text-center mt-5 text-muted">
+        <p class="mb-0">© 2025 Ví dụ minh họa tính giá thành phân bước</p>
+    </footer>
+</main>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

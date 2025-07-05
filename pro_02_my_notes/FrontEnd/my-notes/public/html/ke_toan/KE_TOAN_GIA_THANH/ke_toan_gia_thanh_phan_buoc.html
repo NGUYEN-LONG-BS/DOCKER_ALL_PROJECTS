@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Phương pháp phân bước - Kế toán giá thành</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8f9fa; font-family: 'Segoe UI', sans-serif; }
+    .section-icon { font-size: 1.3rem; margin-right: 8px; }
+    .highlight { background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 1rem; border-radius: 4px; }
+    .title { text-transform: uppercase; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <h1 class="mb-4 text-center text-primary title">📊 Kế toán giá thành theo phương pháp phân bước</h1>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5><span class="section-icon">📌</span>Khái niệm</h5>
+        <p>Phương pháp phân bước là phương pháp tính giá thành sản phẩm bằng cách chia quy trình sản xuất thành các <strong>bước (công đoạn)</strong>, mỗi bước tạo ra bán thành phẩm được chuyển tiếp sang bước tiếp theo. Chi phí được tập hợp và tính toán theo từng công đoạn để xác định giá thành cuối cùng.</p>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5><span class="section-icon">🧩</span>Đặc điểm chính</h5>
+        <ul>
+          <li>Quy trình sản xuất mang tính <strong>liên tục, nhiều công đoạn nối tiếp nhau</strong>.</li>
+          <li>Mỗi công đoạn tạo ra một <strong>bán thành phẩm</strong>.</li>
+          <li>Bán thành phẩm ở công đoạn trước là <strong>nguyên liệu đầu vào</strong> cho công đoạn sau.</li>
+          <li><strong>Sản phẩm dở dang</strong> thường xuyên phát sinh giữa các công đoạn.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h5><span class="section-icon">🧮</span>Hai phương pháp tính giá thành phân bước</h5>
+
+        <h6 class="text-success mt-3">1. Phân bước có tính giá thành bán thành phẩm (Kết chuyển tuần tự)</h6>
+        <ul>
+          <li>Áp dụng khi <strong>cần theo dõi riêng</strong> từng bán thành phẩm hoặc có thể bán ra thị trường.</li>
+          <li>Mỗi công đoạn đều có bảng tính giá thành riêng.</li>
+          <li><strong>Giá thành sản phẩm cuối cùng = Tổng giá thành bán thành phẩm</strong> đã kết chuyển qua từng bước + chi phí công đoạn cuối.</li>
+        </ul>
+
+        <h6 class="text-success mt-4">2. Phân bước không tính giá thành bán thành phẩm (Kết chuyển song song)</h6>
+        <ul>
+          <li>Dùng khi <strong>chỉ quan tâm giá thành thành phẩm cuối cùng</strong>.</li>
+          <li>Chi phí được tập hợp cùng lúc ở nhiều công đoạn mà không cần xác định riêng từng bán thành phẩm.</li>
+          <li><strong>Giá thành sản phẩm = Tổng chi phí các công đoạn</strong>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card border-success h-100">
+          <div class="card-body">
+            <h5><span class="section-icon">✅</span>Ưu điểm</h5>
+            <ul>
+              <li>Phù hợp với <strong>doanh nghiệp sản xuất liên tục</strong>, có quy trình rõ ràng.</li>
+              <li>Giúp <strong>kiểm soát tốt chi phí</strong> từng công đoạn sản xuất.</li>
+              <li>Có thể <strong>phân tích hiệu quả</strong> của từng bước sản xuất.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card border-danger h-100">
+          <div class="card-body">
+            <h5><span class="section-icon">⚠️</span>Nhược điểm</h5>
+            <ul>
+              <li>Việc tính toán phức tạp, <strong>dễ sai sót</strong> nếu dữ liệu công đoạn trước không chính xác.</li>
+              <li>Yêu cầu phải <strong>theo dõi chi tiết</strong> chi phí ở từng giai đoạn.</li>
+              <li>Không phù hợp với doanh nghiệp sản xuất đơn chiếc hoặc không liên tục.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight mt-4">
+      📌 <strong>Gợi ý:</strong> Nếu BS cần ví dụ minh họa thực tế hoặc muốn mình dựng file Excel bảng tính giá thành từng bước — cứ nói mình biết nha!
+    </div>
+  </div>
+</body>
+</html>
