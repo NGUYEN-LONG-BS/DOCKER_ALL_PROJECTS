@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>So sánh phương pháp phân bổ chi phí</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { padding: 20px; }
+    h1, h2, h3 { margin-top: 30px; }
+    table { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">So sánh phương pháp phân bổ chi phí sản xuất</h1>
+
+    <h2>1. Vì sao không nên phân bổ chi phí sản xuất chung theo nhà máy, bộ phận?</h2>
+    <p>Phân bổ theo bộ phận là cách truyền thống, thường dùng các tiêu chí đơn giản như số giờ lao động trực tiếp, số lượng sản phẩm, hoặc diện tích sử dụng. Tuy nhiên, cách làm này tồn tại nhiều hạn chế:</p>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+          <tr>
+            <th>Nhược điểm</th>
+            <th>Giải thích</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>⚠️ Không chính xác</td>
+            <td>Nhiều chi phí như bảo trì, kiểm tra chất lượng không liên quan trực tiếp đến sản lượng.</td>
+          </tr>
+          <tr>
+            <td>⚠️ Không phản ánh đúng nguồn gốc chi phí</td>
+            <td>Một sản phẩm phức tạp có thể tiêu tốn nhiều hoạt động hơn sản phẩm đơn giản nhưng bị tính giống nhau.</td>
+          </tr>
+          <tr>
+            <td>⚠️ Dễ đưa ra quyết định sai</td>
+            <td>Chi phí bị phân bổ sai lệch khiến nhà quản trị hiểu sai hiệu quả sản phẩm.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>2. Phân bổ chi phí dựa trên hoạt động (Activity-Based Costing - ABC)</h2>
+    <p>Phương pháp ABC phân tích các <strong>hoạt động</strong> tạo ra chi phí và phân bổ chi phí dựa trên mức độ sử dụng các hoạt động đó của từng sản phẩm.</p>
+    <p><strong>Ví dụ các hoạt động:</strong> Thiết lập máy, kiểm tra chất lượng, vận chuyển nội bộ, giao hàng, thiết kế sản phẩm...</p>
+
+    <h2>3. Ví dụ minh hoạ</h2>
+    <h4>Giả định:</h4>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Sản phẩm</th>
+            <th>Số lượng</th>
+            <th>Số lần setup máy</th>
+            <th>Số lần kiểm tra chất lượng</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A</td>
+            <td>1.000</td>
+            <td>2</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <td>B</td>
+            <td>500</td>
+            <td>5</td>
+            <td>5</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Chi phí hoạt động:</h4>
+    <ul>
+      <li>Setup máy: 10 triệu/lần → Tổng: 70 triệu</li>
+      <li>Kiểm tra chất lượng: 5 triệu/lần → Tổng: 35 triệu</li>
+    </ul>
+
+    <h3>➤ Phân bổ truyền thống (theo số lượng):</h3>
+    <ul>
+      <li>Tổng chi phí = 105 triệu</li>
+      <li>Tổng sản phẩm = 1.500 sản phẩm</li>
+      <li>Chi phí phân bổ mỗi sản phẩm = 70.000đ</li>
+    </ul>
+    <p><strong>➡ Sản phẩm A và B đều bị phân bổ như nhau (không phản ánh độ phức tạp).</strong></p>
+
+    <h3>➤ Phân bổ theo hoạt động (ABC):</h3>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Hoạt động</th>
+            <th>Tổng chi phí</th>
+            <th>Sản phẩm A</th>
+            <th>Sản phẩm B</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Setup</td>
+            <td>70 triệu</td>
+            <td>2 × 10tr = 20tr</td>
+            <td>5 × 10tr = 50tr</td>
+          </tr>
+          <tr>
+            <td>Kiểm tra</td>
+            <td>35 triệu</td>
+            <td>2 × 5tr = 10tr</td>
+            <td>5 × 5tr = 25tr</td>
+          </tr>
+          <tr class="table-info">
+            <td><strong>Tổng</strong></td>
+            <td>105 triệu</td>
+            <td><strong>30 triệu</strong></td>
+            <td><strong>75 triệu</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ul>
+      <li>Sản phẩm A: 30 triệu / 1.000 = <strong>30.000đ/sản phẩm</strong></li>
+      <li>Sản phẩm B: 75 triệu / 500 = <strong>150.000đ/sản phẩm</strong></li>
+    </ul>
+
+    <div class="alert alert-success mt-4">
+      <strong>Kết luận:</strong> Phân bổ theo hoạt động phản ánh đúng chi phí từng sản phẩm sử dụng. Quản trị có thể định giá, quyết định sản xuất, cắt giảm chi phí hiệu quả hơn.
+    </div>
+  </div>
+</body>
+</html>
