@@ -1,0 +1,7 @@
+pass postgreSQL: Ta#9999
+ID và pass đăng nhập frontend:
+admin 123
+tbadmin  123
+tbvtadmin  123
+tbkđamin  123
+laadmin  123
