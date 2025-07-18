@@ -1,3 +1,48 @@
+// Secondary navigation links
+const secondaryNavLinks = [
+  { href: "/kinh-te-vi-mo", label: "CFA" },
+  { href: "/nguyen-ly-ke-toan", label: "ACCA" },
+  { href: "/nguyen-ly-ke-toan", label: "Data analyst" },
+  { href: "/my-projects", label: "My projects" },
+];
+// My projects dropdown items
+const myProjectsDropdownItems = [
+  { href: "/my-projects/python-django", label: "Python Django" },
+  { href: "/my-projects/next-js", label: "NEXT js" },
+  { href: "/html/django/start_dijango_with_docker_step_01.html", label: "Django" },
+  { href: "/html/nextjs/flow-redux-toolkit.html", label: "NEXT" },
+  { href: "/html/orther-projects/danh_muc_san_pham.html", label: "orther projects from flask" },
+  { href: "/html/economic/eco-interest_rates_full.html", label: "economic" },
+  { href: "/trang-diem-co-dau", label: "Trang điểm cô dâu" },
+  { href: "/bat-dong-san/home", label: "Web bất động sản" },
+  { href: "/html/drop-shipping/tieu_chi_chon_san_pham_dropshiping.html", label: "Drop Shipping" },
+];
+// Data Analyst dropdown items
+const dataAnalystDropdownItems = [
+  { href: "/certificates/html", label: "SQL" },
+  { href: "/step-chart", label: "Step chart" },
+  { href: "/certificates/javascript", label: "Data Crawler" },
+  { href: "/da/marketing", label: "Marketing" },
+];
+// ACCA dropdown items
+const accaDropdownItems = [
+  { href: "/acca/nguyen-ly-ke-toan", label: "Nguyên lý kế toán" },
+  { href: "/exercises/css", label: "VAS" },
+  { href: "/exercises/javascript", label: "IFRS" },
+];
+// CFA dropdown items
+const cfaDropdownItems = [
+  { href: "/cfa/macro", label: "1- Phương pháp Số học" },
+  { href: "/cfa/macro", label: "2- Kinh tế học" },
+  { href: "/cfa/macro", label: "3- Báo cáo Tài chính và Phân tích" },
+  { href: "/cfa/macro", label: "4- Đầu tư Cổ phiếu" },
+  { href: "/cfa/macro", label: "5- Đầu tư Trái phiếu" },
+  { href: "/cfa/macro", label: "6- Chứng khoán Phái sinh" },
+  { href: "/cfa/macro", label: "7- Đầu tư Thay thế" },
+  { href: "/cfa/macro", label: "8- Quản lý Danh mục Đầu tư và Lập Kế hoạch Tài sản" },
+  { href: "/cfa/macro", label: "9- Báo cáo Tài chính và Phân tích" },
+  { href: "/cfa/macro", label: "10- Tiêu chuẩn Đạo đức và Chuyên môn" },
+];
 // components/Header.tsx
 import Link from "next/link";
 import HomeLogo from "@/components/iconLogo/HomeLogo";
@@ -22,57 +67,13 @@ export default function Header() {
                 CFA
               </button>
               <ul className="dropdown-menu">
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    1- Phương pháp Số học
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    2- Kinh tế học
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    3- Báo cáo Tài chính và Phân tích
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    4- Đầu tư Cổ phiếu
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    5- Đầu tư Trái phiếu
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    6- Chứng khoán Phái sinh
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    7- Đầu tư Thay thế
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    8- Quản lý Danh mục Đầu tư và Lập Kế hoạch Tài sản
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    9- Báo cáo Tài chính và Phân tích
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/cfa/macro" className="dropdown-item">
-                    10- Tiêu chuẩn Đạo đức và Chuyên môn
-                  </Link>
-                </li>
-
+                {cfaDropdownItems.map((item, idx) => (
+                  <li key={idx}>
+                    <Link href={item.href} className="dropdown-item">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -86,21 +87,13 @@ export default function Header() {
                 ACCA
               </button>
               <ul className="dropdown-menu">
-                <li>
-                  <Link href="/acca/nguyen-ly-ke-toan" className="dropdown-item">
-                    Nguyên lý kế toán
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/exercises/css" className="dropdown-item">
-                    VAS
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/exercises/javascript" className="dropdown-item">
-                    IFRS
-                  </Link>
-                </li>
+                {accaDropdownItems.map((item, idx) => (
+                  <li key={idx}>
+                    <Link href={item.href} className="dropdown-item">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -114,26 +107,13 @@ export default function Header() {
                 Data Analyst
               </button>
               <ul className="dropdown-menu">
-                <li>
-                  <Link href="/certificates/html" className="dropdown-item">
-                    SQL
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/step-chart" className="dropdown-item">
-                    Step chart
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/certificates/javascript" className="dropdown-item">
-                    Data Crawler
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/da/marketing" className="dropdown-item">
-                    Marketing
-                  </Link>
-                </li>
+                {dataAnalystDropdownItems.map((item, idx) => (
+                  <li key={idx}>
+                    <Link href={item.href} className="dropdown-item">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -147,51 +127,13 @@ export default function Header() {
                 My projects
               </button>
               <ul className="dropdown-menu">
-                <li>
-                  <Link href="/my-projects/python-django" className="dropdown-item">
-                    Python Django
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/my-projects/next-js" className="dropdown-item">
-                    NEXT js
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/html/django/start_dijango_with_docker_step_01.html" className="dropdown-item">
-                    Django
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/html/nextjs/flow-redux-toolkit.html" className="dropdown-item">
-                    NEXT
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/html/orther-projects/danh_muc_san_pham.html" className="dropdown-item">
-                    orther projects from flask
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/html/economic/eco-interest_rates_full.html" className="dropdown-item">
-                    economic
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/trang-diem-co-dau" className="dropdown-item">
-                    Trang điểm cô dâu
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/bat-dong-san/home" className="dropdown-item">
-                    Web bất động sản
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/html/drop-shipping/tieu_chi_chon_san_pham_dropshiping.html" className="dropdown-item">
-                    Drop Shipping
-                  </Link>
-                </li>
+                {myProjectsDropdownItems.map((item, idx) => (
+                  <li key={idx}>
+                    <Link href={item.href} className="dropdown-item">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -223,19 +165,19 @@ export default function Header() {
       {/* Secondary Navigation */}
       <div className="bg-dark text-white overflow-auto">
         <div className="container d-flex align-items-center py-2 gap-3" style={{ whiteSpace: "nowrap" }}>
-          <Link href="/kinh-te-vi-mo" className="px-2 py-1 bg-success text-white text-decoration-none rounded">
-            CFA
-          </Link>
-          <Link href="/nguyen-ly-ke-toan" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-            ACCA
-          </Link>
-          <Link href="/nguyen-ly-ke-toan" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-            Data analyst
-          </Link>
-          <Link href="/my-projects" className="px-2 py-1 text-white text-decoration-none hover-overlay">
-            My projects
-          </Link>
-          
+          {secondaryNavLinks.map((item, idx) => (
+            <Link
+              key={idx}
+              href={item.href}
+              className={
+                item.label === "CFA"
+                  ? "px-2 py-1 bg-success text-white text-decoration-none rounded"
+                  : "px-2 py-1 text-white text-decoration-none hover-overlay"
+              }
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
