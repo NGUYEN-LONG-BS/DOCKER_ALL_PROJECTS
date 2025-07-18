@@ -120,8 +120,8 @@ export default function Header() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/certificates/css" className="dropdown-item">
-                    Data visualisation
+                  <Link href="/step-chart" className="dropdown-item">
+                    Step chart
                   </Link>
                 </li>
                 <li>
